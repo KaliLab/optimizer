@@ -3,7 +3,7 @@ import sys
 import string
 import re
 
-scales={"V":0.001,"mV":1,"uV":1000,"nV":10**6,"pV":10**9}
+scales={"V/A":0.001,"mV/mA":1,"uV/uA":1000,"nV/nA":10**6,"pV/pA":10**9}
 # generating doubles in the range with the given step
 def real_range(start, step, end):
     return [float(n)*step for n in range(start,end)]
@@ -28,7 +28,7 @@ class SpikeTimes():
         
 class Trace:
     
-    def __init__(self,no_traces,scale="mV",t_length=1000,freq=100,trace_type=None):
+    def __init__(self,no_traces,scale="mV/mA",t_length=1000,freq=100,trace_type=None):
         self.scale=scale
         self.t_length=t_length
         self.freq=freq

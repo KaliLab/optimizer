@@ -7,7 +7,6 @@ from string import find,count
 from scipy.interpolate import interp1d
 from scipy import linspace
 import time
-from duplicity.backend import retry
 
 
 def meanstdv(x):

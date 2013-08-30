@@ -332,13 +332,13 @@ class fF():
         print "mod: ", len(spikes[0])
         print "exp: ", len(spikes[1])
         if len(spikes[1])<1 or len(spikes[0])<1:
-            return self.calc_ase(a, b)
-        tmp.append(self.calc_ase(a[0:spikes[1][0].start_pos],b[0:spikes[1][0].start_pos]))
+            return self.calc_ase(a, b,args)
+        tmp.append(self.calc_ase(a[0:spikes[1][0].start_pos],b[0:spikes[1][0].start_pos],args))
         for i,s in enumerate(spikes[1]):
             try:
-                tmp.append(self.calc_ase(a[s.stop_pos:spikes[1][i+1].start_pos],b[s.stop_pos:spikes[1][i+1].start_pos] ))
+                tmp.append(self.calc_ase(a[s.stop_pos:spikes[1][i+1].start_pos],b[s.stop_pos:spikes[1][i+1].start_pos],args ))
             except IndexError:
-                tmp.append(self.calc_ase(a[spikes[1][i].stop_pos:],b[spikes[1][i].stop_pos] ))
+                tmp.append(self.calc_ase(a[spikes[1][i].stop_pos:],b[spikes[1][i].stop_pos:],args ))
         print fsum(tmp)
         return fsum(tmp)
         
@@ -488,7 +488,8 @@ class fF():
         print "mod: ", mod_spike
         print "exp: ", exp_spike            
         try:
-            temp_fit+=float(abs(mod_spike-exp_spike))/max( float(exp_spike),float(mod_spike-1) )
+            #temp_fit+=float(abs(mod_spike-exp_spike))/max( float(exp_spike),float(mod_spike-1) )
+            temp_fit+=float(abs(mod_spike-exp_spike))/float(exp_spike+mod_spike+1)
         except ZeroDivisionError:
             print "error"
             temp_fit+=1
