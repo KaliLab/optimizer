@@ -1521,7 +1521,7 @@ class seventhLayer(wx.Frame):
 def main():         
     app = wx.App(False)  
     core = Core.coreModul()      
-    layer = firstLayer(None, 0, (800, 600), "Input Trace Selection", core, "/".join(os.getcwd().split("/")[0:-1]))
+    layer = firstLayer(None, 0, (800, 600), "Input Trace Selection", core, os.getcwd())
     #layer=secondLayer(None,0,(800,600),"Input Trace Selection",None,"/".join(os.getcwd().split("/")[0:-1]))
     #layer=thirdLayer(None,0,(800,600),"Input Trace Selection",None,"/".join(os.getcwd().split("/")[0:-1]))
     #layer=fourthLayer(None,0,(800,600),"Input Trace Selection",None,"/".join(os.getcwd().split("/")[0:-1]))
