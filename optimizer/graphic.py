@@ -251,6 +251,7 @@ class firstLayer(wx.Frame):
         self.horizontal_box12 = wx.BoxSizer(wx.HORIZONTAL)
         self.horizontal_box13 = wx.BoxSizer(wx.HORIZONTAL)
         self.horizontal_box14 = wx.BoxSizer(wx.HORIZONTAL)
+        #self.horizontal_box15 = wx.BoxSizer(wx.HORIZONTAL)
         self.vertical_box1 = wx.BoxSizer(wx.VERTICAL)
         self.vertical_box2 = wx.BoxSizer(wx.VERTICAL)
         
@@ -290,6 +291,19 @@ class firstLayer(wx.Frame):
         browser2 = wx.Button(self.panel, label="Browse...")
         browser2.Bind(wx.EVT_BUTTON, self.BrowseDir)
         self.horizontal_box5.Add(browser2, flag=wx.LEFT, border=10)
+        
+        self.input_tree=wx.TreeCtrl(self.panel,wx.ID_ANY,pos=(425,155),size=(250,100),style=wx.TR_HAS_BUTTONS)
+        self.troot=self.input_tree.AddRoot("Input data")
+        self.tvoltage=None
+        self.tcurrent=None
+        self.tspike_t=None
+        self.tother=None
+        #self.loaded_input_types=[None]*4
+        self.loaded_input_types=[self.tvoltage , 
+                                 self.tcurrent ,
+                                 self.tspike_t ,
+                                 self.tother ]
+        
         
         descr3 = wx.StaticText(self.panel, label='Number of traces')
         self.horizontal_box6.Add(descr3, flag=wx.UP, border=30)
@@ -398,11 +412,11 @@ class firstLayer(wx.Frame):
                                str(self.type_selector.GetItems()[self.type_selector.GetCurrentSelection()]).split()[0].lower()]}
             self.core.FirstStep(kwargs)
                 
-            canvas = wx.Panel(self.panel, pos=(300, 220), size=(400, self.GetSize()[1]))
+            canvas = wx.Panel(self.panel, pos=(300, 270), size=(400, self.GetSize()[1]))
             figure = Figure(figsize=(5, 3))
             axes = figure.add_axes([0.15, 0.15, 0.8, 0.8])
-            canv = FigureCanvas(canvas, -1, figure)
-            self.panel.Fit()
+            FigureCanvas(canvas,-1, figure)
+            #self.panel.Fit()
             self.Show()
             f = self.core.option_handler.input_freq
             t = self.core.option_handler.input_length
@@ -410,15 +424,52 @@ class firstLayer(wx.Frame):
             axes.set_xticklabels([n for n in range(0, t, int(float(t) / 5.0))])
             axes.set_xlabel("time [ms]")
             axes.set_ylabel("voltage [" + self.core.option_handler.input_scale + "]")
-            canvas.Fit()
-            canvas.Show()
+            #canvas.Fit()
+            #canvas.Show()
             exp_data = []
             for k in range(self.core.data_handler.number_of_traces()):
                 exp_data.extend(self.core.data_handler.data.GetTrace(k))
             axes.plot(range(0, len(exp_data)), exp_data)
             
+            if self.type_selector.GetSelection()==0:
+                for n in filter(lambda x: x[1]!=None and x[0]!=2,enumerate(self.loaded_input_types)):  
+                    self.input_tree.Delete(n[1])
+                    self.loaded_input_types[n[0]]=None
+                self.tvoltage=self.input_tree.AppendItem(self.troot,"Voltage trace")
+                self.loaded_input_types[0]=self.tvoltage
+                self.input_tree.AppendItem(self.tvoltage,self.input_file_controll.GetValue().split("/")[-1])
+            elif self.type_selector.GetSelection()==1:
+                for n in filter(lambda x: x[1]!=None and x[0]!=2,enumerate(self.loaded_input_types)):  
+                    self.input_tree.Delete(n[1])
+                    self.loaded_input_types[n[0]]=None
+                self.tcurrent=self.input_tree.AppendItem(self.troot,"Current trace")
+                self.loaded_input_types[1]=self.tcurrent
+                self.input_tree.AppendItem(self.tcurrent,self.input_file_controll.GetValue().split("/")[-1])
+            elif self.type_selector.GetSelection()==2:
+                try:
+                    self.input_tree.Delete(self.tspike_t)
+                except ValueError:
+                    pass
+                self.tspike_t=self.input_tree.AppendItem(self.troot,"Spike times")
+                self.input_tree.AppendItem(self.tspike_t,self.input_file_controll.GetValue().split("/")[-1])
+            elif self.type_selector.GetSelection()==3:
+                for n in filter(lambda x: x[1]!=None and x[0]!=2,enumerate(self.loaded_input_types)):  
+                    self.input_tree.Delete(n[1])
+                    self.loaded_input_types[n[0]]=None
+                self.tother=self.input_tree.AppendItem(self.troot,"Other data")
+                self.loaded_input_types[3]=self.tother
+                self.input_tree.AppendItem(self.tother,self.input_file_controll.GetValue().split("/")[-1])
+            else:
+                pass
+#            self.loaded_input_types=[self.tvoltage , 
+#                                 self.tcurrent ,
+#                                 self.tspike_t ,
+#                                 self.tother ]
         except ValueError:
             wx.MessageBox('Some of the cells are empty. Please fill out all of them!', 'Error', wx.OK | wx.ICON_ERROR)
+            
+            
+        
 
 
 
