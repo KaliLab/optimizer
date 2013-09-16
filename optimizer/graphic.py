@@ -150,8 +150,6 @@ class MyDialog(wx.Dialog):
             wx.MessageBox("Your function doesn't have any input parameters!", "Error", wx.OK | wx.ICON_ERROR)
         except SyntaxError as syn_err:
             wx.MessageBox(str(syn_err), "Syntax Error", wx.OK | wx.ICON_ERROR)
-        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!pas the user def function params to self.option_handler.SetOptParam(args.get("values"))
-        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!44 obtain name from self.option_handler.SetObjTOOpt() : vector[0], stb
             
         self.Destroy()
             
@@ -418,14 +416,18 @@ class firstLayer(wx.Frame):
             FigureCanvas(canvas,-1, figure)
             #self.panel.Fit()
             self.Show()
+            #this part is not working yet
             f = self.core.option_handler.input_freq
             t = self.core.option_handler.input_length
-            axes.set_xticks([n for n in range(0, f / 1000 * t, int(float(f / 1000 * t) / 5))])
-            axes.set_xticklabels([n for n in range(0, t, int(float(t) / 5.0))])
+            no_traces=self.core.option_handler.input_size
+            axes.set_xticks([n for n in range(0, int((t*no_traces)/(1000.0/f)), int((t*no_traces)/(1000.0/f)/5.0)) ])
+            axes.set_xticklabels([str(n) for n in range(0, t*no_traces, (t*no_traces)/5)])
             axes.set_xlabel("time [ms]")
-            axes.set_ylabel("voltage [" + self.core.option_handler.input_scale + "]")
-            #canvas.Fit()
-            #canvas.Show()
+            _type="voltage" if self.type_selector.GetSelection()==0 else "current" if self.type_selector.GetSelection()==1 else "unkown"
+            unit="V" if self.type_selector.GetSelection()==0 else "A" if self.type_selector.GetSelection()==1 else ""
+            axes.set_ylabel(_type+" [" + self.core.option_handler.input_scale+ unit + "]")
+            canvas.Fit()
+            canvas.Show()
             exp_data = []
             for k in range(self.core.data_handler.number_of_traces()):
                 exp_data.extend(self.core.data_handler.data.GetTrace(k))
@@ -1430,10 +1432,13 @@ class sixthLayer(wx.Frame):
         canvas.Show()
         f = self.core.option_handler.input_freq
         t = self.core.option_handler.input_length
-        axes.set_xticks([n for n in range(0, f / 1000 * t, int(float(f / 1000 * t) / 5))])
-        axes.set_xticklabels([n for n in range(0, t, int(float(t) / 5.0))])
+        no_traces=self.core.option_handler.input_size
+        axes.set_xticks([n for n in range(0, int((t*no_traces)/(1000.0/f)), int((t*no_traces)/(1000.0/f)/5.0)) ])
+        axes.set_xticklabels([str(n) for n in range(0, t*no_traces, (t*no_traces)/5)])
         axes.set_xlabel("time [ms]")
-        axes.set_ylabel("voltage [" + self.core.option_handler.input_scale + "]")
+        _type=self.core.data_handler.data.type
+        unit="V" if _type=="voltage" else "A" if _type=="current" else ""
+        axes.set_ylabel(_type+" [" + self.core.option_handler.input_scale+ unit + "]")
         exp_data = []
         model_data = []
         for n in range(self.core.data_handler.number_of_traces()):
