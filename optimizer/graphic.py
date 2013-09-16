@@ -1070,7 +1070,7 @@ class fourthLayer(wx.Frame):
         self.dd_evo.Append("SA Scipy")
         self.dd_evo.Append("Nelder-Mead")
         self.dd_evo.Append("L-BFGS-B")
-        self.dd_evo.Select(0)
+        #self.dd_evo.Select(0)
         self.num_of_ctrl=3
         self.dd_evo.Bind(wx.EVT_CHOICE, self.Algo_Select)
         self.column1.Add(descr22,flag=wx.UP,border=15)
