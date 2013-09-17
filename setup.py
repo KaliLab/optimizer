@@ -13,7 +13,7 @@ setup(
     description = "A Python library for optimization of neuronal models",
 #    long_description = long_description,
     license = "BSD",
-    url="http://libneuroml.readthedocs.org/en/latest/",
+    url="http://optimizer.readthedocs.org/en/latest/",
     classifiers = [
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: BSD License',
