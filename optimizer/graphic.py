@@ -1135,10 +1135,10 @@ class ffunctionLayer(wx.Frame):
         
         self.row0.Add(descr1)
         
-        descr2 = wx.StaticText(self.panel, label='Normalized Weights')
+        #descr2 = wx.StaticText(self.panel, label='Normalized Weights')
 
         
-        self.row0.Add(descr2, flag=wx.LEFT, border=10)
+        #self.row0.Add(descr2, flag=wx.LEFT, border=10)
         
         descr3 = wx.StaticText(self.panel, label='Function Parameters')
         descr3.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
@@ -1152,7 +1152,7 @@ class ffunctionLayer(wx.Frame):
         self.param_list[2] = ["Spike Detection Thres.", "Spike Window"]
         self.param_list_container = []
         self.weights = []
-        self.norm_weights = []
+        #self.norm_weights = []
         tmp = []
         for f in self.param_list:
             self.row1 = wx.BoxSizer(wx.HORIZONTAL)
@@ -1160,10 +1160,10 @@ class ffunctionLayer(wx.Frame):
             tmp_ctrl.Disable()
             self.weights.append(tmp_ctrl)
             self.row1.Add(tmp_ctrl)
-            tmp_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(50, 25))
-            tmp_ctrl.Disable()
-            self.norm_weights.append(tmp_ctrl)
-            self.row1.Add(tmp_ctrl, flag=wx.LEFT, border=15)
+#            tmp_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(50, 25))
+#            tmp_ctrl.Disable()
+#            self.norm_weights.append(tmp_ctrl)
+#            self.row1.Add(tmp_ctrl, flag=wx.LEFT, border=15)
             for p in f:
                 tmp_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(50, 25))
                 tmp_ctrl.Disable()
@@ -1202,7 +1202,7 @@ class ffunctionLayer(wx.Frame):
         sum_o_weights = sum(tmp)
         for n in is_enabled:
             try:
-                self.norm_weights[n[0]].SetValue(str(float(n[1].GetValue()) / float(sum_o_weights)))
+                self.weights[n[0]].SetValue(str(float(n[1].GetValue()) / float(sum_o_weights)))
             except ValueError:
                 continue
         
@@ -1214,7 +1214,7 @@ class ffunctionLayer(wx.Frame):
                     for p in self.param_list_container[i]:
                         p.Enable()
                     self.weights[i].Enable()
-                    self.norm_weights[i].Enable()
+                    #self.norm_weights[i].Enable()
                 except IndexError:
                     break
             else:
@@ -1222,13 +1222,14 @@ class ffunctionLayer(wx.Frame):
                     for p in self.param_list_container[i]:
                         p.Disable()
                     self.weights[i].Disable()
-                    self.norm_weights[i].Disable()
+                    #self.norm_weights[i].Disable()
                 except IndexError:
                     break
                 
             
            
     def Next(self, e):
+            
         tmp_dict = {}
         for fun, fun_name in zip(self.param_list_container, self.param_list):
             for f, f_n in zip(fun, fun_name):
@@ -1238,7 +1239,17 @@ class ffunctionLayer(wx.Frame):
                             [tmp_dict,
                              [self.core.ffun_calc_list[fun[0]] for fun in filter(lambda x: x[1].IsEnabled(), enumerate(self.weights))]]
                             })
-        self.kwargs.update({"weights" : [float(w.GetValue()) for w in filter(lambda x: x.IsEnabled(), self.norm_weights)]})
+        self.kwargs.update({"weights" : [float(w.GetValue()) for w in filter(lambda x: x.IsEnabled(), self.weights)]})
+        if sum(self.kwargs["weights"])!=1:
+            dlg = wx.MessageDialog(self, "You did not normalize your weights!\nDo you want to continue?",'Warning', wx.YES_NO | wx.ICON_QUESTION)
+            b_id=dlg.ShowModal()
+            if  b_id== wx.ID_YES:
+                dlg.Destroy()
+                print "yes"
+            if b_id == wx.ID_NO:
+                print "no"
+                dlg.Destroy()
+                return
         try:
             self.layer.Show()
             self.layer.Design()
@@ -1293,7 +1304,7 @@ class algorithmLayer(wx.Frame):
         self.toolbar.Realize()
         self.Bind(wx.EVT_TOOL, self.Next, button_toolbar_fward)
         self.Bind(wx.EVT_TOOL, self.Prev, button_toolbar_bward)
-        self.toolbar.EnableTool(wx.ID_FORWARD,True)
+        self.toolbar.EnableTool(wx.ID_FORWARD,False)
     
     def Design(self):
         self.column1=wx.BoxSizer(wx.VERTICAL)
@@ -1446,7 +1457,7 @@ class algorithmLayer(wx.Frame):
                 })
             self.kwargs.update({"algo_options":tmp})
         except AttributeError:
-            dlg = wx.TextEntryDialog(self, "You forget to select an algorithm!")
+            dlg = wx.MessageBox( "You forget to select an algorithm!",'Error', wx.OK | wx.ICON_ERROR)
             if dlg.ShowModal() == wx.ID_OK:
                 dlg.Destroy()
         self.core.Print()
