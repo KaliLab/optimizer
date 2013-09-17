@@ -276,6 +276,7 @@ class inputLayer(wx.Frame):
         self.type_selector = wx.Choice(self.panel, wx.ID_ANY)
         self.type_selector.AppendItems(["Voltage trace", "Current trace", "Spike times", "Other"])
         self.type_selector.SetSelection(0)
+        self.type_selector.Bind(wx.EVT_CHOICE, self.typeChanged)
         self.horizontal_box3.Add(self.type_selector, flag=wx.LEFT, border=10)
         
         descr2 = wx.StaticText(self.panel, label='Base Directory')
@@ -306,7 +307,7 @@ class inputLayer(wx.Frame):
         descr3 = wx.StaticText(self.panel, label='Number of traces')
         self.horizontal_box6.Add(descr3, flag=wx.UP, border=30)
         
-        descr6 = wx.StaticText(self.panel, label='Unit of the data')
+        descr6 = wx.StaticText(self.panel, label='Si Prefix')
         self.horizontal_box6.Add(descr6, flag=wx.UP | wx.LEFT, border=30)
         
         self.size_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, pos=(10, 245), size=(100, 30), name="NO traces")
@@ -314,7 +315,7 @@ class inputLayer(wx.Frame):
         
         self.dropdown = wx.Choice(self.panel, wx.ID_ANY, (150, 245))
         self.dropdown.SetSize((100, 30))
-        self.dropdown.AppendItems(Core.scales.keys())
+        self.dropdown.AppendItems(Core.scales[str(self.type_selector.GetItems()[self.type_selector.GetCurrentSelection()]).split()[0].lower()].keys())
         self.dropdown.Select(1)
         self.horizontal_box7.Add(self.dropdown, flag=wx.LEFT, border=50)
         
@@ -369,7 +370,10 @@ class inputLayer(wx.Frame):
             self.Hide()
             
             
-        
+    def typeChanged(self,e):
+        self.dropdown.Clear()
+        self.dropdown.AppendItems(Core.scales[str(self.type_selector.GetItems()[self.type_selector.GetCurrentSelection()]).split()[0].lower()].keys())
+        self.dropdown.Select(1)
                     
     def BrowseFile(self, e):
 
@@ -998,7 +1002,7 @@ class stimuliLayer(wx.Frame):
                                 float(self.pos_ctrl.GetValue()),
                                 float(self.vrest_ctrl.GetValue())]}
         try:
-            self.layer.Design()
+            #self.layer.Design()
             self.layer.Show()
         except AttributeError:
             #self.layer = algorithmLayer(self, 4, self.Size, "Select Algorithm", self.core, self.path, self.kwargs)

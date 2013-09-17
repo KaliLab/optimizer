@@ -3,7 +3,9 @@ import sys
 import string
 import re
 
-scales={"V/A":0.001,"mV/mA":1,"uV/uA":1000,"nV/nA":10**6,"pV/pA":10**9}
+voltage_scales={"none":0.001,"milli":1,"micro":10**3,"nano":10**6,"pico":10**9}
+current_scales={"none":10**(-9),"milli":10**(-6),"micro":10**(-3),"nano":1,"pico":10**3}
+scales={"voltage" : voltage_scales, "current" : current_scales, "other" : {"none" : 1}, "spike" : {"none" : 1}}
 # generating doubles in the range with the given step
 def real_range(start, step, end):
     return [float(n)*step for n in range(start,end)]
@@ -28,20 +30,20 @@ class SpikeTimes():
         
 class Trace:
     
-    def __init__(self,no_traces,scale="mV/mA",t_length=1000,freq=100,trace_type=None):
+    def __init__(self,no_traces,scale="milli",t_length=1000,freq=100,trace_type=None):
         self.scale=scale
         self.t_length=t_length
         self.freq=freq
         self.step=float(1000/float(self.freq))
         self.no_traces=no_traces
         self.data=[]
-        self.curent_scale=""
+        self.curent_scale=1
         self.type=trace_type
         try:
-            self.curent_scale=scales[self.scale]
+            self.curent_scale=scales.get(trace_type,{}).get(self.scale,1)
         except KeyError:
             print self.scale + "\n"
-            sys.exit("Unknown voltage format, please choose one of the following: V, mV, uV, nV, pV \nExiting...\n")
+            sys.exit("Unknown prefix")
             
     def SetTrace(self,d):
         self.data.append(d)
@@ -102,7 +104,7 @@ class DATA():
         while(i<9):
             tmp.append(f.readline())
             i+=1
-        if trace_type.upper()!="SPIKE TIMES":
+        if trace_type!="spike":
             self.data=self.detect_format(tmp[4])(path,no_traces,scale,t_length,freq,trace_type)
         else:
             self.additional_data=self.spikeTimeReader(path, no_traces, scale, t_length, freq, trace_type)

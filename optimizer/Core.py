@@ -246,10 +246,12 @@ class coreModul():
         if self.option_handler.evo_strat=="L-BFGS-B":
             self.optimizer=L_BFGS_B(self.data_handler,self.model_handler,self.option_handler)
 
-        
+        start_time=time.time()
         self.optimizer.Optimize()
+        stop_time=time.time()
         self.optimizer.final_pop.sort(reverse=True)
         print self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)],"fitness: ",self.optimizer.final_pop[0].fitness
+        print "Optimization lasted for ", stop_time-start_time, " s"
         
     def FourthStep(self,args={}):
         self.final_result=[]

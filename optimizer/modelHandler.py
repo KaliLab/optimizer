@@ -253,7 +253,7 @@ class modelHandlerNeuron():
         
     # creates a trace object from the recordings
     def Recordings(self,vector):
-        tr=Trace(1,"mV/mA",self.hoc_obj.tstop,self.hoc_obj.tstop/self.hoc_obj.dt)
+        tr=Trace(1,"",self.hoc_obj.tstop,self.hoc_obj.tstop/self.hoc_obj.dt)
         tr.Convert(vector)
         return tr.data
         # comment: pass the hoc vector to Convert, not the hoc_object
