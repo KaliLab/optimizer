@@ -905,7 +905,16 @@ class stimuliLayer(wx.Frame):
         
         descr6 = wx.StaticText(self.panel, label='Section')
         self.dd_sec1 = wx.Choice(self.panel, wx.ID_ANY, size=(150, 30))
-        self.dd_sec1.AppendItems(self.core.ReturnSections())
+        tmp=self.core.ReturnSections()
+        self.dd_sec1.AppendItems(tmp)
+        try:
+            self.dd_sec1.Select(tmp.index("Soma"))
+        except ValueError:
+            try:
+                self.dd_sec1.Select(tmp.index("soma"))
+            except ValueError:
+                self.dd_sec1.Select(0)
+        
         self.column1.Add(descr6, flag=wx.UP, border=15)
         self.column1.Add(self.dd_sec1, flag=wx.UP, border=5)
         
@@ -969,7 +978,15 @@ class stimuliLayer(wx.Frame):
         
         descr8 = wx.StaticText(self.panel, label='Section')
         self.dd_sec = wx.Choice(self.panel, wx.ID_ANY, size=(100, 30))
-        self.dd_sec.AppendItems(self.core.ReturnSections())
+        self.dd_sec.AppendItems(tmp)
+        
+        try:
+            self.dd_sec.Select(tmp.index("Soma"))
+        except ValueError:
+            try:
+                self.dd_sec.Select(tmp.index("soma"))
+            except ValueError:
+                self.dd_sec.Select(0)
         self.column2.Add(descr8, flag=wx.UP, border=15)
         self.column2.Add(self.dd_sec, flag=wx.UP, border=5)
                 
