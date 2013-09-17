@@ -275,7 +275,7 @@ class coreModul():
             except SyntaxError:
                 print "Your function contained syntax errors!! Please fix them!"
             
-            self.usr_fun_name=self.option_handler.GetUFunString().split("\n")[3][self.option_handler.GetUFunString().split("\n")[3].find(" ")+1:self.option_handler.GetUFunString().split("\n")[3].find("(")]
+            self.usr_fun_name=self.option_handler.GetUFunString().split("\n")[4][self.option_handler.GetUFunString().split("\n")[4].find(" ")+1:self.option_handler.GetUFunString().split("\n")[4].find("(")]
             self.usr_fun=locals()[self.usr_fun_name]
             self.usr_fun(self,self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)]))
         #the first cell is a vector with all the stimuli in the simulation

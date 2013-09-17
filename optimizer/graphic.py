@@ -106,7 +106,11 @@ class MyDialog(wx.Dialog):
         #panel=wx.Panel(self,size=(300,250))
         #wx.StaticText(self,label="#Please define your function below!\n#The first uncommented line should contain\neither the word python or hoc.\n#This would tell the compiler \nwhich language do you use.",id=wx.ID_ANY,pos=(465,10),style=wx.TE_MULTILINE)
         self.string = wx.TextCtrl(self, id=wx.ID_ANY, pos=(10, 10), size=(450, 400), style=wx.TE_MULTILINE | wx.TE_AUTO_URL | wx.TE_PROCESS_TAB)
-        self.string.SetValue("#Please define your function below in the template!\n#You may choose an arbitrary name for your function,\n#but the input parameters must be self and a vector!In the first line of the function specify the length of the vector in a comment!\ndef usr_fun(self,v):")
+        self.string.SetValue("#Please define your function below in the template!\n"+
+                             "#You may choose an arbitrary name for your function,\n"+
+                             "#but the input parameters must be self and a vector!In the first line of the function specify the length of the vector in a comment!\n"+
+                             "#In the second line you may specify the names of the parameters in a comment, separated by spaces.\n"+
+                             "def usr_fun(self,v):")
         okButton = wx.Button(self, label='Ok', pos=(50, 420))
         closeButton = wx.Button(self, label='Close', pos=(200, 420))
         okButton.Bind(wx.EVT_BUTTON, self.OnOk)
@@ -121,30 +125,40 @@ class MyDialog(wx.Dialog):
         try:
             #print self.string.GetValue()
             self.parent.core.option_handler.u_fun_string = str(self.string.GetValue())
+            self.parent.core.option_handler.adjusted_params=[]
             self.parent.model.DeleteAllItems()
             text = ""
-            text = map(strip, str(self.string.GetValue()).split("\n"))[3:-1]
+            text = map(strip, str(self.string.GetValue()).split("\n"))[4:-1]
             print text
             variables = []
             variables = map(strip, str(text[0][text[0].index("(") + 1:text[0].index(")")]).split(","))
             print variables
             var_len = int(text[1].lstrip("#"))
             print var_len
+            if text[2][0]=="#":
+                var_names=text[2].lstrip("#").split()
+                if len(var_names)!=var_len:
+                    raise SyntaxError("Number of parameter names must equal to number of parameters")
+            else:
+                var_names=None
             for i in range(var_len):
                 self.parent.core.option_handler.SetOptParam(0.1)
-                self.parent.core.option_handler.SetObjTOOpt("Vector" + "[" + str(i) + "]")
+                if var_names != None:
+                    self.parent.core.option_handler.SetObjTOOpt(var_names[i])
+                else:
+                    self.parent.core.option_handler.SetObjTOOpt("Vector" + "[" + str(i) + "]")
             print variables, variables[0]
             if variables[0] == '':
                 raise ValueError
             compile(self.string.GetValue(), '<string>', 'exec')
             self.parent.toolbar.EnableTool(888, True)
+            self.Destroy()
         except ValueError as val_err:
             print val_err
             wx.MessageBox("Your function doesn't have any input parameters!", "Error", wx.OK | wx.ICON_ERROR)
         except SyntaxError as syn_err:
             wx.MessageBox(str(syn_err), "Syntax Error", wx.OK | wx.ICON_ERROR)
             
-        self.Destroy()
             
         
         
@@ -967,7 +981,7 @@ class stimuliLayer(wx.Frame):
         
         descr4 = wx.StaticText(self.panel, label='tstop (ms)')
         self.tstop_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="tstop")
-        self.tstop_ctrl.SetValue(str(1000))
+        self.tstop_ctrl.SetValue(str(self.core.data_handler.data.t_length))
         self.column2.Add(descr4, flag=wx.UP, border=15)
         self.column2.Add(self.tstop_ctrl, flag=wx.UP, border=5)
         
@@ -1441,7 +1455,7 @@ class algorithmLayer(wx.Frame):
         print self.kwargs
         self.core.ThirdStep(self.kwargs)
 
-        wx.MessageBox('Optimization finished. Press the Next button for the results', 'Done', wx.OK | wx.ICON_EXCLAMATION)
+        wx.MessageBox('Optimization finished. Press the Next button for the results!', 'Done', wx.OK | wx.ICON_EXCLAMATION)
     
         self.core.Print()
         self.toolbar.EnableTool(wx.ID_FORWARD, True)
@@ -1493,8 +1507,11 @@ class resultsLayer(wx.Frame):
         heading.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
         text = "Results:"
         for n, k in zip(self.core.option_handler.GetObjTOOpt(), self.core.optimizer.fit_obj.ReNormalize(self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)])):
-            
-            text += "\n" + ": ".join([n.split()[0], n.split()[-1]]) + "\n" + "\t" + str(k)
+            param=[n.split()[0], n.split()[-1]]
+            if param[0]!=param[1]:
+                text += "\n" + ": ".join(param) + "\n" + "\t" + str(k)
+            else:
+                text += "\n" + param[0] + "\n" + "\t" + str(k)
         text += "\n" + "fitness:\n" + "\t" + str(self.core.optimizer.final_pop[0].fitness)
         wx.StaticText(self.panel, label=text, pos=(10, 40))
         wx.StaticLine(self.panel, pos=(1, 0), size=(self.Size[0], 1))

@@ -52,7 +52,7 @@ class fF():
             s=self.option.GetUFunString()
             s=replace(s,"h.","self.model.hoc_obj.")
             exec(compile(replace(s,"h(","self.model.hoc_obj("),'<string>','exec'))
-            self.usr_fun_name=self.option.GetUFunString().split("\n")[3][self.option.GetUFunString().split("\n")[3].find(" ")+1:self.option.GetUFunString().split("\n")[3].find("(")]
+            self.usr_fun_name=self.option.GetUFunString().split("\n")[4][self.option.GetUFunString().split("\n")[4].find(" ")+1:self.option.GetUFunString().split("\n")[4].find("(")]
             self.usr_fun=locals()[self.usr_fun_name]
         except SyntaxError:
             print "Your function contained syntax errors!! Please fix them!"
