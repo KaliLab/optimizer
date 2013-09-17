@@ -8,7 +8,7 @@ setup(
     version = '0.0.1alpha',
     packages = ['optimizer'],
 #    package_data = {'neuroml.test': ['*.nml']},
-    author = "libNeuroML authors and contributors",
+    author = "optimizer authors and contributors",
     author_email = "vellamike@gmail.com",
     description = "A Python library for optimization of neuronal models",
 #    long_description = long_description,
