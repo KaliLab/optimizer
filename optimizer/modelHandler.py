@@ -110,7 +110,7 @@ class modelHandlerNeuron():
         #ref=self.hoc_obj.ref(self.stimulus.amp)
         self.vec.play(self.hoc_obj.cas()(0.5).point_processes()[0]._ref_amp,self.hoc_obj.dt)
         self.stimulus.delay=0
-        self.stimulus.dur=1e9
+        self.stimulus.dur=self.parameters[2]
         f.close()
         
             
