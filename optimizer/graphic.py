@@ -51,7 +51,9 @@ class boundarywindow(wx.Frame):
     def my_close(self, e):
         wx.Exit()
         
-
+class stimuliwindow2(wx.Frame):
+    def __init__(self, par):
+        self.container=[]
             
 class stimuliwindow(wx.Frame):
     def __init__(self, par):
@@ -62,8 +64,8 @@ class stimuliwindow(wx.Frame):
         wx.StaticText(self.panel, label="Number of stimuli:", pos=(10, 10))
         self.generate = wx.Button(self.panel, label="Create", pos=(250, 10))
         self.generate.Bind(wx.EVT_BUTTON, self.Set)
-        self.load_waveform = wx.Button(self.panel, label="Time Varying\nStimulus", pos=(250, 50))
-        self.load_waveform.Bind(wx.EVT_BUTTON, self.Load)
+        #self.load_waveform = wx.Button(self.panel, label="Time Varying\nStimulus", pos=(250, 50))
+        #self.load_waveform.Bind(wx.EVT_BUTTON, self.Load)
         self.number = wx.TextCtrl(self.panel, id=wx.ID_ANY, pos=(150, 10), size=(50, 30))
         self.accept = wx.Button(self.panel, label="Accept", pos=(200, 450))
         self.accept.Disable()
@@ -90,17 +92,8 @@ class stimuliwindow(wx.Frame):
             self.container.append(float(self.temp[n].GetValue()))
         self.stimuli_window.Hide()
     
-    def Load(self, e):
-        dlg = wx.FileDialog(self.stimuli_window, "Choose a file", os.getcwd(), "", "*.*", style=wx.OPEN)
-        if dlg.ShowModal() == wx.ID_OK:
-            input_file = dlg.GetDirectory() + "/" + dlg.GetFilename()
-        dlg.Destroy()
-        self.container.append(input_file)
-        self.par.del_ctrl.SetValue("0")
-        self.par.del_ctrl.Disable()
-        self.par.dur_ctrl.SetValue("0")
-        self.par.dur_ctrl.Disable()
-        self.stimuli_window.Hide()
+    #def Load(self, e):
+        
         
     def my_close(self, e):
         wx.Exit()
@@ -890,11 +883,6 @@ class stimuliLayer(wx.Frame):
         descr3.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
         self.column1.Add(descr3)
         
-        descr7 = wx.StaticText(self.panel, label='Amplitude')
-        stimuli = wx.Button(self.panel, label="Amplitude(s)")
-        stimuli.Bind(wx.EVT_BUTTON, self.Stimuli)
-        self.column1.Add(descr7, flag=wx.UP, border=15)
-        self.column1.Add(stimuli, flag=wx.UP, border=5)
         
         descr5 = wx.StaticText(self.panel, label='Stimulation type')
         self.dd_type = wx.Choice(self.panel, wx.ID_ANY, size=(150, 30))
@@ -918,12 +906,38 @@ class stimuliLayer(wx.Frame):
         self.column1.Add(descr6, flag=wx.UP, border=15)
         self.column1.Add(self.dd_sec1, flag=wx.UP, border=5)
         
-        descr8 = wx.StaticText(self.panel, label='Delay/Resistance')
+        self.stimuli_type=wx.Choice(self.panel,wx.ID_ANY,size=(150,30))
+        self.stimuli_type.AppendItems(["Step Protocol", "Custom Waveform"])
+        self.stimuli_type.Bind(wx.EVT_CHOICE, self.typeChange)
+        self.stimuli_type.Select(0)
+        descr7 = wx.StaticText(self.panel, label='Stimuli Type Selection')
+        self.column1.Add(descr7, flag=wx.UP, border=15)
+        self.column1.Add(self.stimuli_type, flag=wx.UP, border=5)
+        
+        descr7 = wx.StaticText(self.panel, label='Amplitude')
+        self.stimuli = wx.Button(self.panel, label="Amplitude(s)")
+        self.stimuli.Bind(wx.EVT_BUTTON, self.Stimuli)
+        
+        tmp_sizer=wx.BoxSizer(wx.HORIZONTAL)
+        tmp_sizer.Add(descr7)
+        descr7 = wx.StaticText(self.panel, label='Custom Waveform')
+        tmp_sizer.Add(descr7,flag=wx.LEFT,border=15)
+        self.column1.Add(tmp_sizer, flag=wx.UP, border=15)
+        
+        tmp_sizer2=wx.BoxSizer(wx.HORIZONTAL)
+        tmp_sizer2.Add(self.stimuli)
+        self.stimuli2 = wx.Button(self.panel, label="Load Waveform")
+        self.stimuli2.Bind(wx.EVT_BUTTON, self.Stimuli2)
+        self.stimuli2.Disable()
+        tmp_sizer2.Add(self.stimuli2,flag=wx.LEFT,border=15)
+        self.column1.Add(tmp_sizer2, flag=wx.UP, border=5)
+        
+        descr8 = wx.StaticText(self.panel, label='Delay (ms)')
         self.del_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="Value")
         self.column1.Add(descr8, flag=wx.UP, border=15)
         self.column1.Add(self.del_ctrl, flag=wx.UP, border=5)
         
-        descr9 = wx.StaticText(self.panel, label='Duration')
+        descr9 = wx.StaticText(self.panel, label='Duration (ms)')
         self.dur_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="Value")
         self.column1.Add(descr9, flag=wx.UP, border=15)
         self.column1.Add(self.dur_ctrl, flag=wx.UP, border=5)
@@ -944,14 +958,14 @@ class stimuliLayer(wx.Frame):
         descr1.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
         self.column2.Add(descr1)
                
-        descr3 = wx.StaticText(self.panel, label='Resting Voltage')
+        descr3 = wx.StaticText(self.panel, label='Resting Voltage (mV)')
         self.vrest_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="vrest")        
         self.vrest_ctrl.SetValue("-65")
         self.column2.Add(descr3, flag=wx.UP, border=15)
         self.column2.Add(self.vrest_ctrl, flag=wx.UP, border=5)
         
         
-        descr4 = wx.StaticText(self.panel, label='tstop')
+        descr4 = wx.StaticText(self.panel, label='tstop (ms)')
         self.tstop_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="tstop")
         self.tstop_ctrl.SetValue(str(1000))
         self.column2.Add(descr4, flag=wx.UP, border=15)
@@ -963,6 +977,10 @@ class stimuliLayer(wx.Frame):
         self.column2.Add(descr5, flag=wx.UP, border=15)
         self.column2.Add(self.dt_ctrl, flag=wx.UP, border=5)
 
+        descr8 = wx.StaticText(self.panel, label='Section')
+        self.dd_sec = wx.Choice(self.panel, wx.ID_ANY, size=(100, 30))
+        self.dd_sec.AppendItems(tmp)
+        
         descr6 = wx.StaticText(self.panel, label='Position')
         self.pos_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="pos")
         self.pos_ctrl.SetValue("0.5")
@@ -976,9 +994,6 @@ class stimuliLayer(wx.Frame):
         self.column2.Add(descr7, flag=wx.UP, border=15)
         self.column2.Add(self.dd_record, flag=wx.UP, border=5)
         
-        descr8 = wx.StaticText(self.panel, label='Section')
-        self.dd_sec = wx.Choice(self.panel, wx.ID_ANY, size=(100, 30))
-        self.dd_sec.AppendItems(tmp)
         
         try:
             self.dd_sec.Select(tmp.index("Soma"))
@@ -1002,11 +1017,34 @@ class stimuliLayer(wx.Frame):
         self.panel.SetSizer(self.final_sizer)
 
      
+        
+    def typeChange(self,e):
+        if self.stimuli_type.GetSelection()==0:#step prot
+            self.stimuli.Enable()
+            self.stimuli2.Disable()
+            self.del_ctrl.Enable()
+            self.dur_ctrl.Enable()
+        if self.stimuli_type.GetSelection()==1:#wave prot
+            self.stimuli2.Enable()
+            self.stimuli.Disable()
+        
     def Stimuli(self, e):
         #start=float(self.del_ctrl.GetValue())
         #dur=float(self.dur_ctrl.GetValue())
         self.stim_window = stimuliwindow(self)
            
+    def Stimuli2(self,e):
+        self.stim_window = stimuliwindow2(self) 
+        dlg = wx.FileDialog(self, "Choose a file", os.getcwd(), "", "*.*", style=wx.OPEN)
+        if dlg.ShowModal() == wx.ID_OK:
+            input_file = dlg.GetDirectory() + "/" + dlg.GetFilename()
+        dlg.Destroy()
+        self.stim_window.container.append(input_file)
+        self.del_ctrl.SetValue("0")
+        self.del_ctrl.Disable()
+        self.dur_ctrl.SetValue("0")
+        self.dur_ctrl.Disable()
+    
     def Next(self, e):
         print {"stim" : [str(self.dd_type.GetItems()[self.dd_type.GetCurrentSelection()]), float(self.pos_ctrl.GetValue()), str(self.dd_sec1.GetItems()[self.dd_sec1.GetCurrentSelection()])],
                               "stimparam" : [self.stim_window.container, float(self.del_ctrl.GetValue()), float(self.dur_ctrl.GetValue())]}
