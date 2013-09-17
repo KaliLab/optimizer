@@ -150,8 +150,6 @@ class MyDialog(wx.Dialog):
             wx.MessageBox("Your function doesn't have any input parameters!", "Error", wx.OK | wx.ICON_ERROR)
         except SyntaxError as syn_err:
             wx.MessageBox(str(syn_err), "Syntax Error", wx.OK | wx.ICON_ERROR)
-        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!pas the user def function params to self.option_handler.SetOptParam(args.get("values"))
-        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!44 obtain name from self.option_handler.SetObjTOOpt() : vector[0], stb
             
         self.Destroy()
             
@@ -210,7 +208,7 @@ class combinewindow(wx.Dialog):
 
 
 
-class firstLayer(wx.Frame):
+class inputLayer(wx.Frame):
     def __init__(self, parent, ID, size, title, core, path):
         
         wx.Frame.__init__(self, parent, ID, title=title, size=size)
@@ -366,7 +364,7 @@ class firstLayer(wx.Frame):
             try:
                 self.layer.Show()
             except AttributeError:
-                self.layer = secondLayer(self, 1, self.Size, "Model & Parameter Selection", self.core, self.path)
+                self.layer = modelLayer(self, 1, self.Size, "Model & Parameter Selection", self.core, self.path)
                 self.layer.Show()
             self.Hide()
             
@@ -418,14 +416,18 @@ class firstLayer(wx.Frame):
             FigureCanvas(canvas,-1, figure)
             #self.panel.Fit()
             self.Show()
+            #this part is not working yet
             f = self.core.option_handler.input_freq
             t = self.core.option_handler.input_length
-            axes.set_xticks([n for n in range(0, f / 1000 * t, int(float(f / 1000 * t) / 5))])
-            axes.set_xticklabels([n for n in range(0, t, int(float(t) / 5.0))])
+            no_traces=self.core.option_handler.input_size
+            axes.set_xticks([n for n in range(0, int((t*no_traces)/(1000.0/f)), int((t*no_traces)/(1000.0/f)/5.0)) ])
+            axes.set_xticklabels([str(n) for n in range(0, t*no_traces, (t*no_traces)/5)])
             axes.set_xlabel("time [ms]")
-            axes.set_ylabel("voltage [" + self.core.option_handler.input_scale + "]")
-            #canvas.Fit()
-            #canvas.Show()
+            _type="voltage" if self.type_selector.GetSelection()==0 else "current" if self.type_selector.GetSelection()==1 else "unkown"
+            unit="V" if self.type_selector.GetSelection()==0 else "A" if self.type_selector.GetSelection()==1 else ""
+            axes.set_ylabel(_type+" [" + self.core.option_handler.input_scale+ unit + "]")
+            canvas.Fit()
+            canvas.Show()
             exp_data = []
             for k in range(self.core.data_handler.number_of_traces()):
                 exp_data.extend(self.core.data_handler.data.GetTrace(k))
@@ -473,7 +475,7 @@ class firstLayer(wx.Frame):
 
 
 
-class secondLayer(wx.Frame):
+class modelLayer(wx.Frame):
     def __init__(self, parent, ID, size, title, core, path):
         
         wx.Frame.__init__(self, parent, ID, title=title, size=size)
@@ -641,9 +643,9 @@ class secondLayer(wx.Frame):
                                        "vrest"]
                         }
             if self.dd_type.GetSelection() == 1:
-                self.layer = fourthLayer(self, 4, self.Size, "Select Algorithm", self.core, self.path, self.kwargs)  
+                self.layer = algorithmLayer(self, 4, self.Size, "Select Algorithm", self.core, self.path, self.kwargs)  
             else:
-                self.layer = thirdLayer(self, 2, self.Size, "Stimuli & Recording Settings", self.core, self.path)
+                self.layer = stimuliLayer(self, 2, self.Size, "Stimuli & Recording Settings", self.core, self.path)
             self.Hide()
             self.layer.Show()
         
@@ -848,7 +850,7 @@ class secondLayer(wx.Frame):
     def my_close(self, e):
         wx.Exit()
 
-class thirdLayer(wx.Frame):
+class stimuliLayer(wx.Frame):
     def __init__(self, parent, ID, size, title, core, path):
         wx.Frame.__init__(self, parent, ID, title=title, size=size)
         self.Bind(wx.EVT_CLOSE, self.my_close)
@@ -999,8 +1001,9 @@ class thirdLayer(wx.Frame):
             self.layer.Design()
             self.layer.Show()
         except AttributeError:
-            self.layer = fourthLayer(self, 4, self.Size, "Select Algorithm", self.core, self.path, self.kwargs)
-            self.layer.Design()
+            #self.layer = algorithmLayer(self, 4, self.Size, "Select Algorithm", self.core, self.path, self.kwargs)
+            self.layer = ffunctionLayer(self, 4, self.Size, "Fitness Function Selection", self.core, self.path, self.kwargs)
+            #self.layer.Design()
             self.layer.Show()
         self.Hide()
         
@@ -1013,7 +1016,183 @@ class thirdLayer(wx.Frame):
 
 
 
-class fourthLayer(wx.Frame):
+
+
+
+
+#optimizer settings
+#fittnes function settings
+#might need new interface        
+class ffunctionLayer(wx.Frame):
+    def __init__(self, parent, ID, size, title, core, path, kwargs):
+        wx.Frame.__init__(self, parent, ID, title=title, size=size)
+        self.Bind(wx.EVT_CLOSE, self.my_close)
+        self.core = core
+        self.panel = wx.Panel(self)
+        self.parent = parent
+        self.path = path
+        self.Center()
+        self.ToolbarCreator()
+        self.Design()
+        self.seed = None
+        self.kwargs = kwargs
+        
+        
+        self.layer = None
+
+    def ToolbarCreator(self):
+        self.toolbar = self.CreateToolBar()
+        button_toolbar_bward = self.toolbar.AddLabelTool(wx.ID_ANY, 'PrevLayer', wx.Bitmap(self.path + "/2leftarrow.png"))
+        button_toolbar_fward = self.toolbar.AddLabelTool(wx.ID_FORWARD, 'NextLayer', wx.Bitmap(self.path + "/2rightarrow.png"))
+        self.toolbar.Realize()
+        self.Bind(wx.EVT_TOOL, self.Next, button_toolbar_fward)
+        self.Bind(wx.EVT_TOOL, self.Prev, button_toolbar_bward)
+        self.toolbar.EnableTool(wx.ID_FORWARD, True)
+    
+    def Design(self):
+        
+        self.column1 = wx.BoxSizer(wx.VERTICAL)
+        self.column2 = wx.BoxSizer(wx.VERTICAL)
+        self.row0 = wx.BoxSizer(wx.HORIZONTAL)
+
+        descr0 = wx.StaticText(self.panel, label='Fitness Functions')
+        descr0.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
+        
+        descr1 = wx.StaticText(self.panel, label='Weights')
+        
+        self.row0.Add(descr1)
+        
+        descr2 = wx.StaticText(self.panel, label='Normalized Weights')
+
+        
+        self.row0.Add(descr2, flag=wx.LEFT, border=10)
+        
+        descr3 = wx.StaticText(self.panel, label='Function Parameters')
+        descr3.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
+        
+        self.row0.Add(descr3, flag=wx.LEFT, border=10)
+        self.column2.Add(self.row0, flag=wx.BOTTOM, border=8)
+        self.my_list = copy(self.core.ffun_calc_list)
+        #self.my_list=["ffun1","ffun","ffun3"]
+        self.param_list = [[]] * len(self.my_list)
+        self.param_list[1] = ["Spike Detection Thres."]
+        self.param_list[2] = ["Spike Detection Thres.", "Spike Window"]
+        self.param_list_container = []
+        self.weights = []
+        self.norm_weights = []
+        tmp = []
+        for f in self.param_list:
+            self.row1 = wx.BoxSizer(wx.HORIZONTAL)
+            tmp_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(50, 25))
+            tmp_ctrl.Disable()
+            self.weights.append(tmp_ctrl)
+            self.row1.Add(tmp_ctrl)
+            tmp_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(50, 25))
+            tmp_ctrl.Disable()
+            self.norm_weights.append(tmp_ctrl)
+            self.row1.Add(tmp_ctrl, flag=wx.LEFT, border=15)
+            for p in f:
+                tmp_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(50, 25))
+                tmp_ctrl.Disable()
+                tmp.append(tmp_ctrl)
+                descr4 = wx.StaticText(self.panel, label=p)
+                self.row1.Add(descr4, flag=wx.LEFT, border=20)
+                self.row1.Add(tmp_ctrl, flag=wx.LEFT, border=2)
+            self.param_list_container.append(tmp)
+            self.column2.Add(self.row1, flag=wx.UP, border=2)
+            tmp = []
+        self.listbox = wx.CheckListBox(self.panel, wx.ID_ANY, choices=self.my_list)
+        self.listbox.Bind(wx.EVT_CHECKLISTBOX, self.FunSelect)
+        self.listbox.GetChecked()
+        self.column1.Add(descr0)
+        self.column1.Add(self.listbox, flag=wx.ALL, border=10)
+        self.normalize = wx.Button(self.panel, label="Normalize")
+        self.normalize.Bind(wx.EVT_BUTTON, self.Normalize)
+        self.row3 = wx.BoxSizer(wx.HORIZONTAL)
+        self.row3.Add(self.normalize, flag=wx.LEFT, border=10)
+        self.column2.Add(self.row3, flag=wx.UP, border=50)
+        self.final_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.final_sizer.Add(self.column1, flag=wx.LEFT, border=10)
+        self.final_sizer.Add(self.column2, flag=wx.LEFT, border=10)
+        
+        self.SetSizer(self.final_sizer)
+
+            
+    def Normalize(self, e):
+        is_enabled = filter(lambda x: x[1].IsEnabled(), enumerate(self.weights))
+        tmp = []
+        for n in is_enabled:
+            try:
+                tmp.append(float(n[1].GetValue()))
+            except ValueError:
+                continue
+        sum_o_weights = sum(tmp)
+        for n in is_enabled:
+            try:
+                self.norm_weights[n[0]].SetValue(str(float(n[1].GetValue()) / float(sum_o_weights)))
+            except ValueError:
+                continue
+        
+    def FunSelect(self, e):
+        
+        for i, n in enumerate(self.listbox.GetItems()):
+            if i in self.listbox.Checked:
+                try:
+                    for p in self.param_list_container[i]:
+                        p.Enable()
+                    self.weights[i].Enable()
+                    self.norm_weights[i].Enable()
+                except IndexError:
+                    break
+            else:
+                try:
+                    for p in self.param_list_container[i]:
+                        p.Disable()
+                    self.weights[i].Disable()
+                    self.norm_weights[i].Disable()
+                except IndexError:
+                    break
+                
+            
+           
+    def Next(self, e):
+        tmp_dict = {}
+        for fun, fun_name in zip(self.param_list_container, self.param_list):
+            for f, f_n in zip(fun, fun_name):
+                if f.IsEnabled():
+                    tmp_dict.update({f_n : float(f.GetValue())})
+        self.kwargs.update({"feat":
+                            [tmp_dict,
+                             [self.core.ffun_calc_list[fun[0]] for fun in filter(lambda x: x[1].IsEnabled(), enumerate(self.weights))]]
+                            })
+        self.kwargs.update({"weights" : [float(w.GetValue()) for w in filter(lambda x: x.IsEnabled(), self.norm_weights)]})
+        try:
+            self.layer.Show()
+            self.layer.Design()
+        except AttributeError:
+            #self.layer = resultsLayer(self, 4, self.Size, "Results", self.core, self.path)
+            self.layer = algorithmLayer(self, 4, self.Size, "Select Algorithm", self.core, self.path, self.kwargs)
+            self.layer.Show()
+            self.layer.Design()
+        self.Hide()
+        
+    def Prev(self, e):
+#        self.Hide()
+#        tmp=self.parent
+#        grandparent=self.parent.parent
+#        grandparent.layer=algorithmLayer(grandparent, 4, self.Size, "Select Algorithm", self.core, self.path, self.kwargs)
+#        self.parent=grandparent.layer
+#        self.parent.Design()
+#        tmp.Destroy()
+#        self.parent.Show()
+        self.parent.Show()
+        self.Hide()
+        
+        
+    def my_close(self, e):
+        wx.Exit()
+
+class algorithmLayer(wx.Frame):
     def __init__(self,parent,ID,size,title,core,path,kwargs):
         wx.Frame.__init__(self,parent,ID,title=title,size=size)
         self.Bind(wx.EVT_CLOSE, self.my_close)
@@ -1048,6 +1227,7 @@ class fourthLayer(wx.Frame):
         self.column2=wx.BoxSizer(wx.VERTICAL)
         #self.column3=wx.BoxSizer(wx.VERTICAL)
         self.sub_row=wx.BoxSizer(wx.HORIZONTAL)
+        self.sub_row2=wx.BoxSizer(wx.HORIZONTAL)
         self.final_sizer=wx.BoxSizer(wx.HORIZONTAL)
         
         descr2 = wx.StaticText(self.panel, label='Optimizer Settings')
@@ -1068,20 +1248,28 @@ class fourthLayer(wx.Frame):
         self.dd_evo.Append("SA Scipy")
         self.dd_evo.Append("Nelder-Mead")
         self.dd_evo.Append("L-BFGS-B")
-        self.dd_evo.Select(0)
+        #self.dd_evo.Select(0)
         self.num_of_ctrl=3
         self.dd_evo.Bind(wx.EVT_CHOICE, self.Algo_Select)
         self.column1.Add(descr22,flag=wx.UP,border=15)
         self.column1.Add(self.dd_evo,flag=wx.UP,border=5)
 
-        self.starting_points=wx.Button(self.panel,label="Starting Points")
-        self.starting_points.Bind(wx.EVT_BUTTON, self.Seed)
-        self.sub_row.Add(self.starting_points)
+        self.run = wx.Button(self.panel, label="Run")
+        self.run.Disable()
+        self.run.Bind(wx.EVT_BUTTON, self.Run)
+        self.sub_row2.Add(self.run)
         
         self.boundaries=wx.Button(self.panel,label="Boundaries")
         self.boundaries.Bind(wx.EVT_BUTTON, self.Boundaries)
-        self.sub_row.Add(self.boundaries,flag=wx.LEFT,border=15)
+        self.sub_row.Add(self.boundaries)
+        
+        self.starting_points=wx.Button(self.panel,label="Starting Points")
+        self.starting_points.Bind(wx.EVT_BUTTON, self.Seed)
+        self.sub_row.Add(self.starting_points,flag=wx.LEFT,border=15)
+        
+        
         self.column1.Add(self.sub_row,flag=wx.UP,border=15)
+        self.column1.Add(self.sub_row2,flag=wx.UP,border=15)
         
         descr24 = wx.StaticText(self.panel, label='Number of parameters to optimize:'+str(len(self.core.option_handler.GetObjTOOpt())))      
         self.column1.Add(descr24,flag=wx.UP,border=15)
@@ -1148,6 +1336,7 @@ class fourthLayer(wx.Frame):
         self.final_sizer.Add(self.column2,flag=wx.LEFT,border=100)
         self.SetSizer(self.final_sizer)
         self.final_sizer.Layout()
+        self.run.Enable()
         
         
         
@@ -1169,8 +1358,8 @@ class fourthLayer(wx.Frame):
     def Boundaries(self, e):
         boundarywindow(self)
         #self.run.Enable()           
-           
-    def Next(self, e):
+    
+    def Run(self, e):
         try:
             tmp = {"seed" : float(self.seed_ctrl.GetValue()),
                 "evo_strat" : str(self.dd_evo.GetItems()[self.dd_evo.GetCurrentSelection()])
@@ -1187,11 +1376,28 @@ class fourthLayer(wx.Frame):
             dlg = wx.TextEntryDialog(self, "You forget to select an algorithm!")
             if dlg.ShowModal() == wx.ID_OK:
                 dlg.Destroy()
+        self.core.Print()
+        #[map(float,map(wxTextCtrl.GetValue,fun)) for fun in self.param_list_container]
+        
+        print self.kwargs
+        self.core.ThirdStep(self.kwargs)
+
+        wx.MessageBox('Optimization finished. Press the Next button for the results', 'Done', wx.OK | wx.ICON_EXCLAMATION)
+    
+        self.core.Print()
+        self.toolbar.EnableTool(wx.ID_FORWARD, True)
+        self.seed = None
+            #except ValueError:
+            #wx.MessageBox('Some of the cells are empty. Please fill out all of them!', 'Error', wx.OK|wx.ICON_ERROR)
+
+           
+    def Next(self, e):
         try:
             self.layer.Show()
             #self.layer.Design()
         except AttributeError:
-            self.layer = fifthLayer(self, 4, self.Size, "Fitness Function Selection", self.core, self.path, self.kwargs)
+            self.layer = resultsLayer(self, 4, self.Size, "Results", self.core, self.path,self.kwargs)
+            #self.layer = ffunctionLayer(self, 4, self.Size, "Fitness Function Selection", self.core, self.path, self.kwargs)
             self.layer.Show()
             #self.layer.Design()
         self.Hide()
@@ -1206,196 +1412,8 @@ class fourthLayer(wx.Frame):
 
 
 
-
-
-#optimizer settings
-#fittnes function settings
-#might need new interface        
-class fifthLayer(wx.Frame):
-    def __init__(self, parent, ID, size, title, core, path, kwargs):
-        wx.Frame.__init__(self, parent, ID, title=title, size=size)
-        self.Bind(wx.EVT_CLOSE, self.my_close)
-        self.core = core
-        self.panel = wx.Panel(self)
-        self.parent = parent
-        self.path = path
-        self.Center()
-        self.ToolbarCreator()
-        self.Design()
-        self.seed = None
-        self.kwargs = kwargs
-        
-        
-        self.layer = None
-
-    def ToolbarCreator(self):
-        self.toolbar = self.CreateToolBar()
-        button_toolbar_bward = self.toolbar.AddLabelTool(wx.ID_ANY, 'PrevLayer', wx.Bitmap(self.path + "/2leftarrow.png"))
-        button_toolbar_fward = self.toolbar.AddLabelTool(wx.ID_FORWARD, 'NextLayer', wx.Bitmap(self.path + "/2rightarrow.png"))
-        self.toolbar.Realize()
-        self.Bind(wx.EVT_TOOL, self.Next, button_toolbar_fward)
-        self.Bind(wx.EVT_TOOL, self.Prev, button_toolbar_bward)
-        self.toolbar.EnableTool(wx.ID_FORWARD, False)
-    
-    def Design(self):
-        
-        self.column1 = wx.BoxSizer(wx.VERTICAL)
-        self.column2 = wx.BoxSizer(wx.VERTICAL)
-        self.row0 = wx.BoxSizer(wx.HORIZONTAL)
-
-        descr0 = wx.StaticText(self.panel, label='Fitness Functions')
-        descr0.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
-        
-        descr1 = wx.StaticText(self.panel, label='Weights')
-        
-        self.row0.Add(descr1)
-        
-        descr2 = wx.StaticText(self.panel, label='Normalized Weights')
-
-        
-        self.row0.Add(descr2, flag=wx.LEFT, border=10)
-        
-        descr3 = wx.StaticText(self.panel, label='Function Parameters')
-        descr3.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
-        
-        self.row0.Add(descr3, flag=wx.LEFT, border=10)
-        self.column2.Add(self.row0, flag=wx.BOTTOM, border=8)
-        self.my_list = copy(self.core.ffun_calc_list)
-        #self.my_list=["ffun1","ffun","ffun3"]
-        self.param_list = [[]] * len(self.my_list)
-        self.param_list[1] = ["Spike Detection Thres."]
-        self.param_list[2] = ["Spike Detection Thres.", "Spike Window"]
-        self.param_list_container = []
-        self.weights = []
-        self.norm_weights = []
-        tmp = []
-        for f in self.param_list:
-            self.row1 = wx.BoxSizer(wx.HORIZONTAL)
-            tmp_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(50, 25))
-            tmp_ctrl.Disable()
-            self.weights.append(tmp_ctrl)
-            self.row1.Add(tmp_ctrl)
-            tmp_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(50, 25))
-            tmp_ctrl.Disable()
-            self.norm_weights.append(tmp_ctrl)
-            self.row1.Add(tmp_ctrl, flag=wx.LEFT, border=15)
-            for p in f:
-                tmp_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(50, 25))
-                tmp_ctrl.Disable()
-                tmp.append(tmp_ctrl)
-                descr4 = wx.StaticText(self.panel, label=p)
-                self.row1.Add(descr4, flag=wx.LEFT, border=20)
-                self.row1.Add(tmp_ctrl, flag=wx.LEFT, border=2)
-            self.param_list_container.append(tmp)
-            self.column2.Add(self.row1, flag=wx.UP, border=2)
-            tmp = []
-        self.listbox = wx.CheckListBox(self.panel, wx.ID_ANY, choices=self.my_list)
-        self.listbox.Bind(wx.EVT_CHECKLISTBOX, self.FunSelect)
-        self.listbox.GetChecked()
-        self.column1.Add(descr0)
-        self.column1.Add(self.listbox, flag=wx.ALL, border=10)
-        self.run = wx.Button(self.panel, label="Run")
-        self.normalize = wx.Button(self.panel, label="Normalize")
-        self.normalize.Bind(wx.EVT_BUTTON, self.Normalize)
-        self.row3 = wx.BoxSizer(wx.HORIZONTAL)
-        self.row3.Add(self.normalize, flag=wx.LEFT, border=10)
-        self.row3.Add(self.run, flag=wx.LEFT, border=300)
-        self.column2.Add(self.row3, flag=wx.UP, border=50)
-        self.run.Disable()
-        self.run.Bind(wx.EVT_BUTTON, self.Run)
-        self.final_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.final_sizer.Add(self.column1, flag=wx.LEFT, border=10)
-        self.final_sizer.Add(self.column2, flag=wx.LEFT, border=10)
-        
-        self.SetSizer(self.final_sizer)
-
-            
-    def Normalize(self, e):
-        is_enabled = filter(lambda x: x[1].IsEnabled(), enumerate(self.weights))
-        tmp = []
-        for n in is_enabled:
-            try:
-                tmp.append(float(n[1].GetValue()))
-            except ValueError:
-                continue
-        sum_o_weights = sum(tmp)
-        for n in is_enabled:
-            try:
-                self.norm_weights[n[0]].SetValue(str(float(n[1].GetValue()) / float(sum_o_weights)))
-            except ValueError:
-                continue
-        
-    def FunSelect(self, e):
-        self.run.Enable()
-        for i, n in enumerate(self.listbox.GetItems()):
-            if i in self.listbox.Checked:
-                try:
-                    for p in self.param_list_container[i]:
-                        p.Enable()
-                    self.weights[i].Enable()
-                    self.norm_weights[i].Enable()
-                except IndexError:
-                    break
-            else:
-                try:
-                    for p in self.param_list_container[i]:
-                        p.Disable()
-                    self.weights[i].Disable()
-                    self.norm_weights[i].Disable()
-                except IndexError:
-                    break
-    def Run(self, e):
-        self.core.Print()
-        tmp_dict = {}
-        #[map(float,map(wxTextCtrl.GetValue,fun)) for fun in self.param_list_container]
-        for fun, fun_name in zip(self.param_list_container, self.param_list):
-            for f, f_n in zip(fun, fun_name):
-                if f.IsEnabled():
-                    tmp_dict.update({f_n : float(f.GetValue())})
-        self.kwargs.update({"feat":
-                            [tmp_dict,
-                             [self.core.ffun_calc_list[fun[0]] for fun in filter(lambda x: x[1].IsEnabled(), enumerate(self.weights))]]
-                            })
-        self.kwargs.update({"weights" : [float(w.GetValue()) for w in filter(lambda x: x.IsEnabled(), self.norm_weights)]})
-        print self.kwargs
-        self.core.ThirdStep(self.kwargs)
-
-        wx.MessageBox('Optimization finished. Press the Next button for the results', 'Done', wx.OK | wx.ICON_EXCLAMATION)
-    
-        self.core.Print()
-        self.toolbar.EnableTool(wx.ID_FORWARD, True)
-        self.seed = None
-            #except ValueError:
-            #wx.MessageBox('Some of the cells are empty. Please fill out all of them!', 'Error', wx.OK|wx.ICON_ERROR)
-            
-            
-           
-    def Next(self, e):
-        try:
-            self.layer.Show()
-            self.layer.Design()
-        except AttributeError:
-            self.layer = sixthLayer(self, 4, self.Size, "Results", self.core, self.path)
-            self.layer.Show()
-            self.layer.Design()
-        self.Hide()
-        
-    def Prev(self, e):
-        self.Hide()
-        tmp=self.parent
-        grandparent=self.parent.parent
-        grandparent.layer=fourthLayer(grandparent, 4, self.Size, "Select Algorithm", self.core, self.path, self.kwargs)
-        self.parent=grandparent.layer
-        self.parent.Design()
-        tmp.Destroy()
-        self.parent.Show()
-        
-        
-    def my_close(self, e):
-        wx.Exit()
-
-class sixthLayer(wx.Frame):
-    def __init__(self, parent, ID, size, title, core, path):
+class resultsLayer(wx.Frame):
+    def __init__(self, parent, ID, size, title, core, path,kwargs):
         wx.Frame.__init__(self, parent, ID, title=title, size=size)
         self.Bind(wx.EVT_CLOSE, self.my_close)
         self.core = core
@@ -1407,6 +1425,7 @@ class sixthLayer(wx.Frame):
         self.Center()
         self.ToolbarCreator()
         self.Design()
+        self.kwargs=kwargs
         
 
         
@@ -1430,10 +1449,13 @@ class sixthLayer(wx.Frame):
         canvas.Show()
         f = self.core.option_handler.input_freq
         t = self.core.option_handler.input_length
-        axes.set_xticks([n for n in range(0, f / 1000 * t, int(float(f / 1000 * t) / 5))])
-        axes.set_xticklabels([n for n in range(0, t, int(float(t) / 5.0))])
+        no_traces=self.core.option_handler.input_size
+        axes.set_xticks([n for n in range(0, int((t*no_traces)/(1000.0/f)), int((t*no_traces)/(1000.0/f)/5.0)) ])
+        axes.set_xticklabels([str(n) for n in range(0, t*no_traces, (t*no_traces)/5)])
         axes.set_xlabel("time [ms]")
-        axes.set_ylabel("voltage [" + self.core.option_handler.input_scale + "]")
+        _type=self.core.data_handler.data.type
+        unit="V" if _type=="voltage" else "A" if _type=="current" else ""
+        axes.set_ylabel(_type+" [" + self.core.option_handler.input_scale+ unit + "]")
         exp_data = []
         model_data = []
         for n in range(self.core.data_handler.number_of_traces()):
@@ -1459,8 +1481,16 @@ class sixthLayer(wx.Frame):
     
     
     def Prev(self, e):
-        self.Destroy()
+        self.Hide()
+        tmp=self.parent
+        grandparent=self.parent.parent
+        grandparent.layer=algorithmLayer(grandparent, 4, self.Size, "Select Algorithm", self.core, self.path, self.kwargs)
+        self.parent=grandparent.layer
+        #self.parent.Design()
+        tmp.Destroy()
         self.parent.Show()
+#        self.Destroy()
+#        self.parent.Show()
         
     def Next(self, e):
         self.Hide()
@@ -1468,7 +1498,7 @@ class sixthLayer(wx.Frame):
             self.layer.Design()
             self.layer.Show()
         except AttributeError:
-            self.layer = seventhLayer(self, 5, self.Size, "Analysis", self.core, self.path)
+            self.layer = analyzisLayer(self, 5, self.Size, "Analysis", self.core, self.path)
             self.layer.Design()
             self.layer.Show()
             
@@ -1478,7 +1508,7 @@ class sixthLayer(wx.Frame):
         
      
      
-class seventhLayer(wx.Frame):
+class analyzisLayer(wx.Frame):
     def __init__(self, parent, ID, size, title, core, path):
         wx.Frame.__init__(self, parent, ID, title=title, size=size)
         self.Bind(wx.EVT_CLOSE, self.my_close)
@@ -1572,11 +1602,12 @@ class seventhLayer(wx.Frame):
 def main():         
     app = wx.App(False)  
     core = Core.coreModul()      
-    layer = firstLayer(None, 0, (800, 600), "Input Trace Selection", core, os.getcwd())
-    #layer=secondLayer(None,0,(800,600),"Input Trace Selection",None,"/".join(os.getcwd().split("/")[0:-1]))
-    #layer=thirdLayer(None,0,(800,600),"Input Trace Selection",None,"/".join(os.getcwd().split("/")[0:-1]))
-    #layer=fourthLayer(None,0,(800,600),"Input Trace Selection",None,"/".join(os.getcwd().split("/")[0:-1]))
-    #layer=fifthLayer(None,0,(800,600),"Input Trace Selection",None,"/".join(os.getcwd().split("/")[0:-1]))
+    layer = inputLayer(None, 0, (800, 600), "Input Trace Selection", core, os.getcwd())
+    #layer=modelLayer(None,0,(800,600),"Input Trace Selection",None,"/".join(os.getcwd().split("/")[0:-1]))
+    #layer=stimuliLayer(None,0,(800,600),"Input Trace Selection",None,"/".join(os.getcwd().split("/")[0:-1]))
+    #layer=algorithmLayer(None,0,(800,600),"Input Trace Selection",None,"/".join(os.getcwd().split("/")[0:-1]))
+    #layer=ffunctionLayer(None,0,(800,600),"Input Trace Selection",None,os.getcwd(),{})
+    #layer.Show()
     app.MainLoop()
     try:
         ##core.model_handler.hoc_obj.quit()
