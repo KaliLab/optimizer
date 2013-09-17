@@ -90,8 +90,9 @@ class modelHandlerNeuron():
             self.stimulus.dur=self.parameters[2]
         else:
             self.stimulus.amp1=self.parameters[0]
-            self.stimulus.rs=self.parameters[1]
+            self.stimulus.delay=self.parameters[1]
             self.stimulus.dur=self.parameters[2]
+            self.stimulus.rs=0.01
             
         #except TypeError:
         #    sys.exit("Unknown stimulus type!")
