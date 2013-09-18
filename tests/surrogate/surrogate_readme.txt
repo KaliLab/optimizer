@@ -1,0 +1,11 @@
+Test With Surrogate:
+The data file has one trace, which is 1000 ms long and the sampling frequency was 40kHz.
+The data file also contains the time and was obtained from the corresponding model by using an IClamp (connected to the middle (0.5) of the soma) with the following parameters:
+stim.del=100
+stim.dur=500
+stim.amp=0.5
+
+The following model parameters were set (the others are default):
+l=23
+gnabar_hh=0.2
+g_pas=0.0001
