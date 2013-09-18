@@ -177,6 +177,55 @@ class MyDialog(wx.Dialog):
             fun = fun + l
         self.string.SetValue(fun)
         
+class MyDialog2(wx.Dialog):
+    def __init__(self,parent,*args,**kwargs):
+        super(MyDialog2,self).__init__(parent)
+        self.parent = parent
+        n_o_params=args[0]
+        self.container=[]
+        self.vals=args[1]
+        _sizer=wx.GridSizer(n_o_params+1,2,50,20)
+#        row_sizer=wx.BoxSizer(wx.HORIZONTAL)
+#        col_sizer1=wx.BoxSizer(wx.VERTICAL)
+#        col_sizer2=wx.BoxSizer(wx.VERTICAL)
+        for n in range(n_o_params):
+            p_name=self.parent.core.option_handler.GetObjTOOpt()[n].split()[-1]
+            p_name_txt=wx.StaticText(self,label=p_name)
+            ctrl=wx.TextCtrl(self,wx.ID_ANY,size=(100,30))
+            self.container.append(ctrl)
+            #col_sizer1.Add(p_name_txt,flag=wx.UP,border=15)
+            #col_sizer2.Add(ctrl,flag=wx.UP,border=15)
+            _sizer.Add(p_name_txt,flag=wx.LEFT,border=15)
+            _sizer.Add(ctrl,flag=wx.LEFT,border=15)
+            
+        b_ok=wx.Button(self,label="Ok")
+        b_close=wx.Button(self,label="Cancel")
+        b_ok.Bind(wx.EVT_BUTTON, self.OnOk)
+        b_close.Bind(wx.EVT_BUTTON, self.OnClose)
+#        col_sizer1.Add(b_ok,flag=wx.UP,border=15)
+#        col_sizer2.Add(b_close,flag=wx.UP,border=15)
+#        row_sizer.Add(col_sizer1,flag=wx.LEFT,border=20)
+#        row_sizer.Add(col_sizer2,flag=wx.LEFT,border=50)
+#        self.SetSizer(row_sizer)
+        _sizer.Add(b_ok,flag=wx.LEFT,border=15)
+        _sizer.Add(b_close,flag=wx.LEFT,border=15)
+        self.SetSizer(_sizer)
+        
+        
+    def OnOk(self,e):
+        try:
+            for n in self.container:
+                self.vals.append(float(n.GetValue()))
+            self.Destroy()
+        except ValueError:
+            wx.MessageBox("You must give every parameter an initial value!", "Error", wx.OK | wx.ICON_ERROR)
+        
+        
+    def OnClose(self,e):
+        self.Destroy()
+            
+        
+        
         
 class combinewindow(wx.Dialog):
     def __init__(self, par, kwargs):
@@ -323,7 +372,7 @@ class inputLayer(wx.Frame):
         self.dropdown = wx.Choice(self.panel, wx.ID_ANY, (150, 245))
         self.dropdown.SetSize((100, 30))
         self.dropdown.AppendItems(Core.scales[str(self.type_selector.GetItems()[self.type_selector.GetCurrentSelection()]).split()[0].lower()].keys())
-        self.dropdown.Select(1)
+        self.dropdown.Select(2)
         self.horizontal_box7.Add(self.dropdown, flag=wx.LEFT, border=50)
         
         descr4 = wx.StaticText(self.panel, label='Length of traces (ms)')
@@ -380,7 +429,7 @@ class inputLayer(wx.Frame):
     def typeChanged(self,e):
         self.dropdown.Clear()
         self.dropdown.AppendItems(Core.scales[str(self.type_selector.GetItems()[self.type_selector.GetCurrentSelection()]).split()[0].lower()].keys())
-        self.dropdown.Select(1)
+        self.dropdown.Select(2)
                     
     def BrowseFile(self, e):
 
@@ -1172,7 +1221,7 @@ class ffunctionLayer(wx.Frame):
                 self.row1.Add(descr4, flag=wx.LEFT, border=20)
                 self.row1.Add(tmp_ctrl, flag=wx.LEFT, border=2)
             self.param_list_container.append(tmp)
-            self.column2.Add(self.row1, flag=wx.UP, border=2)
+            self.column2.Add(self.row1, flag=wx.UP, border=1)
             tmp = []
         self.listbox = wx.CheckListBox(self.panel, wx.ID_ANY, choices=self.my_list)
         self.listbox.Bind(wx.EVT_CHECKLISTBOX, self.FunSelect)
@@ -1240,7 +1289,7 @@ class ffunctionLayer(wx.Frame):
                              [self.core.ffun_calc_list[fun[0]] for fun in filter(lambda x: x[1].IsEnabled(), enumerate(self.weights))]]
                             })
         self.kwargs.update({"weights" : [float(w.GetValue()) for w in filter(lambda x: x.IsEnabled(), self.weights)]})
-        if sum(self.kwargs["weights"])!=1:
+        if not(0.9999<sum(self.kwargs["weights"])<=1):
             dlg = wx.MessageDialog(self, "You did not normalize your weights!\nDo you want to continue?",'Warning', wx.YES_NO | wx.ICON_QUESTION)
             b_id=dlg.ShowModal()
             if  b_id== wx.ID_YES:
@@ -1304,7 +1353,7 @@ class algorithmLayer(wx.Frame):
         self.toolbar.Realize()
         self.Bind(wx.EVT_TOOL, self.Next, button_toolbar_fward)
         self.Bind(wx.EVT_TOOL, self.Prev, button_toolbar_bward)
-        self.toolbar.EnableTool(wx.ID_FORWARD,False)
+        self.toolbar.EnableTool(wx.ID_FORWARD,True)
     
     def Design(self):
         self.column1=wx.BoxSizer(wx.VERTICAL)
@@ -1425,11 +1474,10 @@ class algorithmLayer(wx.Frame):
         
         
     def Seed(self, e):
-        dlg = wx.TextEntryDialog(self, "Insert initial values in the appropriate order, separated by commas!")
+        num_o_params=len(self.core.option_handler.GetObjTOOpt())
         seeds = []
-        if dlg.ShowModal() == wx.ID_OK:
-            seeds = map(float, dlg.GetValue().split(","))
-            dlg.Destroy()
+        new_dialog_window=MyDialog2(self,num_o_params,seeds)
+        new_dialog_window.ShowModal()
 #        if dlg.ShowModal()==wx.ID_CANCEL:
 #            print "cancel"
 #            seeds=None
@@ -1524,6 +1572,7 @@ class resultsLayer(wx.Frame):
             else:
                 text += "\n" + param[0] + "\n" + "\t" + str(k)
         text += "\n" + "fitness:\n" + "\t" + str(self.core.optimizer.final_pop[0].fitness)
+        
         wx.StaticText(self.panel, label=text, pos=(10, 40))
         wx.StaticLine(self.panel, pos=(1, 0), size=(self.Size[0], 1))
         wx.StaticLine(self.panel, pos=(200, 0), size=(1, self.GetSize()[1]), style=wx.LI_VERTICAL)
@@ -1626,9 +1675,20 @@ class analyzisLayer(wx.Frame):
         
         wx.StaticLine(self.panel, pos=(400, 0), size=(1, 600), style=wx.LI_VERTICAL)
         
-        
+        tmp_str=[]
         stats = inspyred.ec.analysis.fitness_statistics(self.core.optimizer.final_pop)
         string = "Best: " + str(stats['best']) + "\nWorst: " + str(stats['worst']) + "\nMean: " + str(stats['mean']) + "\nMedian: " + str(stats['median']) + "\nStd:" + str(stats['std'])
+        string += "\n\nFitness Components:\n\t"
+        for c in self.core.error_comps:
+            tmp_str.append( "*".join([str(c[0]),c[1].__name__]))
+        string +="+".join(tmp_str)
+        string +="\n\t"
+        tmp_str=[]
+        tmp_sum=0
+        for c in self.core.error_comps:
+            tmp_str.append( "*".join([str(c[0]),str(c[2])]))
+            tmp_sum +=(c[0]*c[2])
+        string +="+".join(tmp_str)+" = "+str(tmp_sum)
         wx.StaticText(self.panel, label=string, pos=(410, 55))
         
         

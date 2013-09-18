@@ -476,7 +476,7 @@ class fF():
         add_data=args.get("add_data",None)
         temp_fit=0
         spikes=[0,0]
-        print a[0:50]
+        #print a[0:50]
         spikes[0]=self.detectSpike(a)
         print spikes[0]
         if add_data!=None:
@@ -572,6 +572,21 @@ class fF():
             temp_fit=0
         return self.fitnes
     
+    def getErrorComponents(self,index_of_trace,model_output):
+        features=self.option.feats
+        weigths=self.option.weights
+        fit_list=[]
+        window=self.option.spike_window
+        try:
+            add_data=[spike_frame(n-window,0,n,1,n+50,0) for n in self.reader.additional_data.get(index_of_trace)]
+        except AttributeError:
+            add_data=None
+        args={}
+        args["add_data"]=add_data
+        for f,w in zip(features,weigths):
+            print w,f
+            fit_list.append([w,f,w*(f( model_output,self.reader.data.GetTrace(index_of_trace),args ))])
+        return fit_list
     
     def smallFeaturesExtractor(self,candidates,args):
         #temp=[]

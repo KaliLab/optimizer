@@ -3,8 +3,8 @@ import sys
 import string
 import re
 
-voltage_scales={"none":0.001,"milli":1,"micro":10**3,"nano":10**6,"pico":10**9}
-current_scales={"none":10**(-9),"milli":10**(-6),"micro":10**(-3),"nano":1,"pico":10**3}
+voltage_scales={"none":0.001,"milli":1,"micro":10**3}
+current_scales={"micro":10**(-3),"nano":1,"pico":10**3}
 scales={"voltage" : voltage_scales, "current" : current_scales, "other" : {"none" : 1}, "spike" : {"none" : 1}}
 # generating doubles in the range with the given step
 def real_range(start, step, end):
