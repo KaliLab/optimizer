@@ -246,10 +246,12 @@ class coreModul():
         if self.option_handler.evo_strat=="L-BFGS-B":
             self.optimizer=L_BFGS_B(self.data_handler,self.model_handler,self.option_handler)
 
-        
+        start_time=time.time()
         self.optimizer.Optimize()
+        stop_time=time.time()
         self.optimizer.final_pop.sort(reverse=True)
         print self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)],"fitness: ",self.optimizer.final_pop[0].fitness
+        print "Optimization lasted for ", stop_time-start_time, " s"
         
     def FourthStep(self,args={}):
         self.final_result=[]
@@ -273,7 +275,7 @@ class coreModul():
             except SyntaxError:
                 print "Your function contained syntax errors!! Please fix them!"
             
-            self.usr_fun_name=self.option_handler.GetUFunString().split("\n")[3][self.option_handler.GetUFunString().split("\n")[3].find(" ")+1:self.option_handler.GetUFunString().split("\n")[3].find("(")]
+            self.usr_fun_name=self.option_handler.GetUFunString().split("\n")[4][self.option_handler.GetUFunString().split("\n")[4].find(" ")+1:self.option_handler.GetUFunString().split("\n")[4].find("(")]
             self.usr_fun=locals()[self.usr_fun_name]
             self.usr_fun(self,self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)]))
         #the first cell is a vector with all the stimuli in the simulation

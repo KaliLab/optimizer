@@ -90,8 +90,9 @@ class modelHandlerNeuron():
             self.stimulus.dur=self.parameters[2]
         else:
             self.stimulus.amp1=self.parameters[0]
-            self.stimulus.rs=self.parameters[1]
+            self.stimulus.delay=self.parameters[1]
             self.stimulus.dur=self.parameters[2]
+            self.stimulus.rs=0.01
             
         #except TypeError:
         #    sys.exit("Unknown stimulus type!")
@@ -111,6 +112,7 @@ class modelHandlerNeuron():
         self.vec.play(self.hoc_obj.cas()(0.5).point_processes()[0]._ref_amp,self.hoc_obj.dt)
         self.stimulus.delay=0
         self.stimulus.dur=1e9
+        #self.stimulus.dur=self.parameters[2]
         f.close()
         
             
@@ -253,7 +255,7 @@ class modelHandlerNeuron():
         
     # creates a trace object from the recordings
     def Recordings(self,vector):
-        tr=Trace(1,"mV/mA",self.hoc_obj.tstop,self.hoc_obj.tstop/self.hoc_obj.dt)
+        tr=Trace(1,"",self.hoc_obj.tstop,self.hoc_obj.tstop/self.hoc_obj.dt)
         tr.Convert(vector)
         return tr.data
         # comment: pass the hoc vector to Convert, not the hoc_object
