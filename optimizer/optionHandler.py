@@ -238,8 +238,8 @@ class optionHandler(object):
                 self.feats,self.weights ]
         
     def SetFitnesParam(self,options):
-        self.spike_thres=options[0][0].get("Spike Detection Thres.",0.0)
-        self.spike_window=options[0][0].get("Spike Window",50)
+        self.spike_thres=options[0][0].get("Spike Detection Thres. (mv)",0.0)
+        self.spike_window=options[0][0].get("Spike Window (ms)",50)*self.input_freq/1000.0
         #self.ffunction=options[0][1]
         self.feats=options[0][1]
         self.weights=options[1]

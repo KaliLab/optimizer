@@ -84,11 +84,10 @@ class DATA():
     
     def detect_format(self,line):
     #TODO
-    #neuron_rule recognizes traces with time
-        #need more rule for spike timings and other
+    #need more rule for spike timings and other
         pynn_rule=re.compile("# variable = [a-zA-Z]")
         neuron_rule_time=re.compile("[0-9]*(.[0-9]*)?\t-?[0-9]*(.[0-9]*)?")
-        neuron_rule=re.compile("-?[0-9]*(.[0-9]*)?")
+        neuron_rule=re.compile("-?[0-9]*(.[0-9]*)?$")
         spike_times_rule=re.compile("# variable = spikes")
         rules=[pynn_rule,neuron_rule_time,neuron_rule,spike_times_rule]
         result=[n!=None for n in [re.match(k,line) for k in rules ] ]
@@ -190,7 +189,9 @@ class DATA():
                         tmp_dict[int(tmp[1])].extend([float(tmp[0])])
                     except KeyError:
                         tmp_dict[int(tmp[1])]=[float(tmp[0])]
-        
+        no_spike_ind=list(set(range(no_traces))-set(tmp_dict.keys()))
+        for i in no_spike_ind:
+            tmp_dict[i]=[]
         self.additional_data=tmp_dict
 # class to write data to file            
 class traceWriter(Trace):

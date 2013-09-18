@@ -172,7 +172,10 @@ class MyDialog(wx.Dialog):
             fun_file_path = dlg.GetDirectory() + "/" + dlg.GetFilename()
         dlg.Destroy()
         f = open(fun_file_path, "r")
-        fun = "#Please define your function below in the template!\n#You may choose an arbitrary name for your function,\n#but the input parameters must be self and a vector!In the first line of the function specify the length of the vector in a comment!\n"
+        fun =   ("#Please define your function below in the template!\n"+
+                "#You may choose an arbitrary name for your function,\n"+
+                "#but the input parameters must be self and a vector!In the first line of the function specify the length of the vector in a comment!\n"+
+                "#In the second line you may specify the names of the parameters in a comment, separated by spaces.\n")
         for l in f:
             fun = fun + l
         self.string.SetValue(fun)
@@ -181,10 +184,12 @@ class MyDialog2(wx.Dialog):
     def __init__(self,parent,*args,**kwargs):
         super(MyDialog2,self).__init__(parent)
         self.parent = parent
+        self.Bind(wx.EVT_CLOSE,self.OnClose)
         n_o_params=args[0]
         self.container=[]
         self.vals=args[1]
-        _sizer=wx.GridSizer(n_o_params+1,2,50,20)
+        self.SetSize((400,100*n_o_params+1))
+        _sizer=wx.GridSizer(n_o_params+1,2,40,10)
 #        row_sizer=wx.BoxSizer(wx.HORIZONTAL)
 #        col_sizer1=wx.BoxSizer(wx.VERTICAL)
 #        col_sizer2=wx.BoxSizer(wx.VERTICAL)
@@ -195,8 +200,8 @@ class MyDialog2(wx.Dialog):
             self.container.append(ctrl)
             #col_sizer1.Add(p_name_txt,flag=wx.UP,border=15)
             #col_sizer2.Add(ctrl,flag=wx.UP,border=15)
-            _sizer.Add(p_name_txt,flag=wx.LEFT,border=15)
-            _sizer.Add(ctrl,flag=wx.LEFT,border=15)
+            _sizer.Add(p_name_txt,flag=wx.LEFT | wx.UP,border=15)
+            _sizer.Add(ctrl,flag=wx.LEFT | wx.UP,border=15)
             
         b_ok=wx.Button(self,label="Ok")
         b_close=wx.Button(self,label="Cancel")
@@ -207,8 +212,8 @@ class MyDialog2(wx.Dialog):
 #        row_sizer.Add(col_sizer1,flag=wx.LEFT,border=20)
 #        row_sizer.Add(col_sizer2,flag=wx.LEFT,border=50)
 #        self.SetSizer(row_sizer)
-        _sizer.Add(b_ok,flag=wx.LEFT,border=15)
-        _sizer.Add(b_close,flag=wx.LEFT,border=15)
+        _sizer.Add(b_ok,flag=wx.LEFT | wx.UP,border=15)
+        _sizer.Add(b_close,flag=wx.LEFT | wx.UP,border=15)
         self.SetSizer(_sizer)
         
         
@@ -222,6 +227,7 @@ class MyDialog2(wx.Dialog):
         
         
     def OnClose(self,e):
+        self.vals=None
         self.Destroy()
             
         
@@ -347,7 +353,7 @@ class inputLayer(wx.Frame):
         browser2.Bind(wx.EVT_BUTTON, self.BrowseDir)
         self.horizontal_box5.Add(browser2, flag=wx.LEFT, border=10)
         
-        self.input_tree=wx.TreeCtrl(self.panel,wx.ID_ANY,pos=(425,155),size=(250,100),style=wx.TR_HAS_BUTTONS)
+        self.input_tree=wx.TreeCtrl(self.panel,wx.ID_ANY,pos=(425,155),size=(250,100),style=wx.TR_HAS_BUTTONS | wx.TR_EXTENDED)
         self.troot=self.input_tree.AddRoot("Input data")
         self.tvoltage=None
         self.tcurrent=None
@@ -1197,8 +1203,8 @@ class ffunctionLayer(wx.Frame):
         self.my_list = copy(self.core.ffun_calc_list)
         #self.my_list=["ffun1","ffun","ffun3"]
         self.param_list = [[]] * len(self.my_list)
-        self.param_list[1] = ["Spike Detection Thres."]
-        self.param_list[2] = ["Spike Detection Thres.", "Spike Window"]
+        self.param_list[1] = [("Spike Detection Thres. (mv)",0.0)]
+        self.param_list[2] = [("Spike Detection Thres. (mv)",0.0), ("Spike Window (ms)",50.0)]
         self.param_list_container = []
         self.weights = []
         #self.norm_weights = []
@@ -1215,9 +1221,10 @@ class ffunctionLayer(wx.Frame):
 #            self.row1.Add(tmp_ctrl, flag=wx.LEFT, border=15)
             for p in f:
                 tmp_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(50, 25))
+                tmp_ctrl.SetValue(str(p[1]))
                 tmp_ctrl.Disable()
                 tmp.append(tmp_ctrl)
-                descr4 = wx.StaticText(self.panel, label=p)
+                descr4 = wx.StaticText(self.panel, label=p[0])
                 self.row1.Add(descr4, flag=wx.LEFT, border=20)
                 self.row1.Add(tmp_ctrl, flag=wx.LEFT, border=2)
             self.param_list_container.append(tmp)
@@ -1415,19 +1422,19 @@ class algorithmLayer(wx.Frame):
         
     
     def Algo_Select(self,e):
-        descr19 = 'Size of Population:'
-        descr20 = 'Number of Generations:'
-        descr21 = 'Mutation Rate:'
-        descr22 = 'Cooling Rate:'
-        descr23 = 'Mean of Gaussian:'
-        descr24 = 'Std. Deviation of Gaussian:'
-        descr25 = 'Cooling Schedule:'
-        descr26 = 'Initial Temperature:'
-        descr27 = 'Final Temperature:'
-        descr28 = 'Accuracy:'
-        descr29 = 'Dwell:'
-        descr30 = 'Error Tolerance for x:'
-        descr31 = 'Error Tolerance for f:'
+        descr19 = ('Size of Population:',10)
+        descr20 = ('Number of Generations:',10)
+        descr21 = ('Mutation Rate:',0.25)
+        descr22 = ('Cooling Rate:',0.5)
+        descr23 = ('Mean of Gaussian:',0)
+        descr24 = ('Std. Deviation of Gaussian:',1)
+        descr25 = ('Cooling Schedule:',1)
+        descr26 = ('Initial Temperature:',1.2)
+        descr27 = ('Final Temperature:',1e-12)
+        descr28 = ('Accuracy:',1e-06)
+        descr29 = ('Dwell:', 50)
+        descr30 = ('Error Tolerance for x:',0.0001)
+        descr31 = ('Error Tolerance for f:',0.0001)
         
         while(self.num_of_ctrl>0):
             self.column2.Hide(self.num_of_ctrl-1)
@@ -1442,12 +1449,13 @@ class algorithmLayer(wx.Frame):
 
         self.column2=wx.BoxSizer(wx.VERTICAL)
         selected_algo=self.dd_evo.GetItems()[self.dd_evo.GetSelection()]
+############################use descX[0]####################################################        
         if selected_algo=="Classical EO":                             
             alg=[descr19,descr20,descr21]
         elif selected_algo=="Simulated Annealing":
-            alg=[descr20,descr21,descr22,descr23,descr24]
+            alg=[descr20,descr21,descr22,descr23,descr24,descr26]
         elif selected_algo=="SA Scipy":
-            alg=[descr20,descr25,descr26,descr27,descr21,descr28,descr29]
+            alg=[descr20,descr25,descr26,descr27,descr21,descr31,descr29]
         elif selected_algo=="Nelder-Mead":
             alg=[descr20,descr30,descr31]
         elif selected_algo=="L-BFGS-B":
@@ -1456,14 +1464,15 @@ class algorithmLayer(wx.Frame):
         self.algo_param=[]
         for i in range(len(alg)):
             tmp=wx.TextCtrl(self.panel,id=wx.ID_ANY,size=(100,30))
-            self.algo_param.append((tmp,alg[i]))
-            self.column2.Add(wx.StaticText(self.panel,label=alg[i]),flag=wx.UP,border=15)
+            tmp.SetValue(str(alg[i][1]))
+            self.algo_param.append((tmp,alg[i][0]))
+            self.column2.Add(wx.StaticText(self.panel,label=alg[i][0]),flag=wx.UP,border=15)
             self.column2.Add(tmp,flag=wx.UP,border=5)
-            value=self.core.option_handler.GetOptimizerOptions().get(alg[i])
+            value=self.core.option_handler.GetOptimizerOptions().get(alg[i][0])
             if value!=None:
                 tmp.SetValue(str(value))
-            elif self.kwargs.get("algo_options",{}).get(alg[i],None)!=None:
-                tmp.SetValue(str(self.kwargs.get("algo_options",{}).get(alg[i],None)))
+            elif self.kwargs.get("algo_options",{}).get(alg[i][0],None)!=None:
+                tmp.SetValue(str(self.kwargs.get("algo_options",{}).get(alg[i][0],None)))
         
         
         self.final_sizer.Add(self.column2,flag=wx.LEFT,border=100)
@@ -1482,6 +1491,8 @@ class algorithmLayer(wx.Frame):
 #            print "cancel"
 #            seeds=None
 #            dlg.Destroy()
+        if len(seeds)!=num_o_params:
+            seeds=None
         self.seed = seeds
             
 
@@ -1686,7 +1697,7 @@ class analyzisLayer(wx.Frame):
         tmp_str=[]
         tmp_sum=0
         for c in self.core.error_comps:
-            tmp_str.append( "*".join([str(c[0]),str(c[2])]))
+            tmp_str.append( "*".join([str(c[0]),str(c[2])[0:5]]))
             tmp_sum +=(c[0]*c[2])
         string +="+".join(tmp_str)+" = "+str(tmp_sum)
         wx.StaticText(self.panel, label=string, pos=(410, 55))

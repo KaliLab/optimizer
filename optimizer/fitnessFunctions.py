@@ -585,7 +585,7 @@ class fF():
         args["add_data"]=add_data
         for f,w in zip(features,weigths):
             print w,f
-            fit_list.append([w,f,w*(f( model_output,self.reader.data.GetTrace(index_of_trace),args ))])
+            fit_list.append([w,f,(f( model_output,self.reader.data.GetTrace(index_of_trace),args ))])
         return fit_list
     
     def smallFeaturesExtractor(self,candidates,args):
