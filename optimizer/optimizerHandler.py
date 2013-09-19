@@ -71,9 +71,14 @@ class annealing(baseOptimizer):
 #        self.evo_strat.variator=[variators.gaussian_mutation,
 #                                 variators.blend_crossover]
         self.evo_strat.observer=[observers.population_observer,observers.file_observer]
-        self.pop_size=option_obj.pop_size
+        #self.pop_size=option_obj.pop_size
         self.max_evaluation=option_obj.max_evaluation
         self.mutation_rate=option_obj.mutation_rate
+        self.g_m=option_obj.m_gauss
+        self.g_std=option_obj.std_gauss
+        self.inint_T=option_obj.init_temp
+        self.cooling_rate=option_obj.cooling_rate
+    
         self.num_inputs=option_obj.num_inputs
         self.SetBoundaries(option_obj.boundaries)####!!!!!!!!!!!!!!!!!!!!!!!!!!!!probably should place it into the Optimize()!!!!!!!!!###########xx
         self.maximize=False #hard wired, always minimize
@@ -106,19 +111,19 @@ class annealing(baseOptimizer):
         logger.addHandler(file_handler)
         self.final_pop=self.evo_strat.evolve(generator=uniform, evaluator=self.ffun,  
                                              max_evaluations=self.max_evaluation, 
-                                             mutation_rate=self.mutation_rate, 
+                                             mutation_rate=self.mutation_rate,
+                                             temperature=self.inint_T,
+                                             cooling_rate=self.cooling_rate, 
+                                             gaussian_mean=self.g_m,
+                                             gaussian_stdev=self.g_std,
                                              num_inputs=self.num_inputs, 
                                              maximize=self.maximize, 
                                              bounder=self.bounder,
                                              seeds=self.starting_points,
-#                                             cooling_rate=0.01,
-#                                             gaussian_mean=0,
-#                                             gaussian_stdev=1,
                                              boundaries=self.min_max,
                                              statistics_file=self.stat_file,
                                              individuals_file=self.ind_file,
-                                             gaussian_stdev=0.5)
-#                                             cooling_rate=0.3)
+                                             )
         
         
     def SetBoundaries(self,bounds):
@@ -144,7 +149,7 @@ class scipy_anneal(baseOptimizer):
         self.mutation_rate=option_obj.mutation_rate
         self.schedule={'1' : 'fast', '2' : 'cauchy', '3' : 'boltzmann'}[str(int(option_obj.schedule))]
         self.dwell=option_obj.dwell
-        self.feps=option_obj.acc
+        self.feps=option_obj.f_tol
         self.num_inputs=option_obj.num_inputs
         self.SetBoundaries(option_obj.boundaries)
         try:
@@ -285,12 +290,16 @@ class grid(baseOptimizer):
         self.fit_obj=fF(reader_obj,model_obj,option_obj)
         self.SetFFun(option_obj)
         self.num_inputs=option_obj.num_inputs
-        #self.resolution=2000**(1.0/self.num_inputs)
-        self.resolution=5
-        print self.resolution
+        self.num_points_per_dim=2000**(1.0/self.num_inputs)
+        #self.resolution=5
+        #print self.resolution
         self.SetBoundaries(option_obj.boundaries)
         
-
+    def frange(self,start,stop,step):
+        r = start
+        while r < stop:
+            yield r
+            r += step
     
     
     def Optimize(self):
@@ -298,8 +307,10 @@ class grid(baseOptimizer):
         #vals between self.bounder.lower_bound
         self.final_pop=[[],[]]
         import itertools
-        f_r=map(lambda x:x/10.0,range(0,11,self.resolution))
-        it=itertools.product(f_r,repeat=self.num_inputs)
+        f_r=[]
+        for b_min,b_max in self.min_max:
+            f_r.append(self.frange(b_min, b_max, float(b_max-b_min)/self.num_points_per_dim))
+        it=itertools.product(f_r)
         points=[]
         for c in it:
             points.append(list(c))

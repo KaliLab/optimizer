@@ -18,9 +18,9 @@ import Core
 
 class boundarywindow(wx.Frame):
     def __init__(self, par):
-        self.boundaries_window = wx.Frame(par.panel, wx.ID_PROPERTIES, "Boundaries", size=(400, 700))
-        panel = wx.Panel(self.boundaries_window)
-
+        wx.Frame.__init__(self,par, wx.ID_PROPERTIES, "Boundaries", size=(400, 700))
+        panel = wx.Panel(self)
+        #self.Bind(wx.EVT_CLOSE, self.my_close)
         self.par = par
         hstep = 200
         vstep = 35
@@ -40,13 +40,14 @@ class boundarywindow(wx.Frame):
                 tmp_max.SetValue(str(self.par.core.option_handler.boundaries[1][l]))
         Setbutton = wx.Button(panel, label="Set", pos=(hstep, 650))
         Setbutton.Bind(wx.EVT_BUTTON, self.Set)    
-        self.boundaries_window.Show()
+        self.Show()
         
     def Set(self, e):
             self.par.core.option_handler.boundaries[0] = [float(n.GetValue()) for n in self.min]
             self.par.core.option_handler.boundaries[1] = [float(n.GetValue()) for n in self.max]
             
-            self.boundaries_window.Destroy()
+            #self.boundaries_window.Destroy()
+            self.Close()
             
     def my_close(self, e):
         wx.Exit()
@@ -79,8 +80,8 @@ class stimuliwindow(wx.Frame):
         hoffset = 10
         voffset = 50
         for l in range(min(10, int(self.number.GetValue()))):
-            wx.StaticText(self.panel, label="Amplitude" + str(l) + ":", pos=(hoffset, voffset + l * vstep))
-            tmp_obj = wx.TextCtrl(self.panel, id=l, pos=(hstep / 2, voffset + l * vstep), size=(75, 30))
+            wx.StaticText(self.panel, label="Amplitude" + str(l+1) + " (nA):", pos=(hoffset, voffset + l * vstep))
+            tmp_obj = wx.TextCtrl(self.panel, id=l, pos=(hstep / 2+25, voffset + l * vstep), size=(75, 30))
             self.temp.append(tmp_obj)
         self.accept.Enable()
         self.stimuli_window.Show()
@@ -99,7 +100,6 @@ class stimuliwindow(wx.Frame):
         wx.Exit()
             
 class MyDialog(wx.Dialog):
-    
     def __init__(self, parent, *args, **kw):
         super(MyDialog, self).__init__(*args, **kw)
         self.parent = parent
@@ -109,7 +109,7 @@ class MyDialog(wx.Dialog):
         self.string.SetValue("#Please define your function below in the template!\n"+
                              "#You may choose an arbitrary name for your function,\n"+
                              "#but the input parameters must be self and a vector!In the first line of the function specify the length of the vector in a comment!\n"+
-                             "#In the second line you may specify the names of the parameters in a comment, separated by spaces.\n"+
+                             "#In the next lines you may specify the names of the parameters in separate comments.\n"+
                              "def usr_fun(self,v):")
         okButton = wx.Button(self, label='Ok', pos=(50, 420))
         closeButton = wx.Button(self, label='Close', pos=(200, 420))
@@ -135,11 +135,14 @@ class MyDialog(wx.Dialog):
             print variables
             var_len = int(text[1].lstrip("#"))
             print var_len
-            if text[2][0]=="#":
-                var_names=text[2].lstrip("#").split()
-                if len(var_names)!=var_len:
-                    raise SyntaxError("Number of parameter names must equal to number of parameters")
-            else:
+            i=0
+            var_names=[]
+            while text[i+2][0]=="#" and i<var_len:
+                var_names.append(text[i+2].lstrip("#"))
+                i+=1
+            if len(var_names)!=var_len:
+                raise SyntaxError("Number of parameter names must equal to number of parameters")
+            if var_names==[]:
                 var_names=None
             for i in range(var_len):
                 self.parent.core.option_handler.SetOptParam(0.1)
@@ -172,10 +175,65 @@ class MyDialog(wx.Dialog):
             fun_file_path = dlg.GetDirectory() + "/" + dlg.GetFilename()
         dlg.Destroy()
         f = open(fun_file_path, "r")
-        fun = "#Please define your function below in the template!\n#You may choose an arbitrary name for your function,\n#but the input parameters must be self and a vector!In the first line of the function specify the length of the vector in a comment!\n"
+        fun =   ("#Please define your function below in the template!\n"+
+                "#You may choose an arbitrary name for your function,\n"+
+                "#but the input parameters must be self and a vector!In the first line of the function specify the length of the vector in a comment!\n"+
+                "#In the second line you may specify the names of the parameters in a comment, separated by spaces.\n")
         for l in f:
             fun = fun + l
         self.string.SetValue(fun)
+        
+class MyDialog2(wx.Dialog):
+    def __init__(self,parent,*args,**kwargs):
+        super(MyDialog2,self).__init__(parent)
+        self.parent = parent
+        self.Bind(wx.EVT_CLOSE,self.OnClose)
+        n_o_params=args[0]
+        self.container=[]
+        self.vals=args[1]
+        self.SetSize((400,100*n_o_params+1))
+        _sizer=wx.GridSizer(n_o_params+1,2,40,10)
+#        row_sizer=wx.BoxSizer(wx.HORIZONTAL)
+#        col_sizer1=wx.BoxSizer(wx.VERTICAL)
+#        col_sizer2=wx.BoxSizer(wx.VERTICAL)
+        for n in range(n_o_params):
+            p_name=self.parent.core.option_handler.GetObjTOOpt()[n].split()[-1]
+            p_name_txt=wx.StaticText(self,label=p_name)
+            ctrl=wx.TextCtrl(self,wx.ID_ANY,size=(100,30))
+            self.container.append(ctrl)
+            #col_sizer1.Add(p_name_txt,flag=wx.UP,border=15)
+            #col_sizer2.Add(ctrl,flag=wx.UP,border=15)
+            _sizer.Add(p_name_txt,flag=wx.LEFT | wx.UP,border=15)
+            _sizer.Add(ctrl,flag=wx.LEFT | wx.UP,border=15)
+            
+        b_ok=wx.Button(self,label="Ok")
+        b_close=wx.Button(self,label="Cancel")
+        b_ok.Bind(wx.EVT_BUTTON, self.OnOk)
+        b_close.Bind(wx.EVT_BUTTON, self.OnClose)
+#        col_sizer1.Add(b_ok,flag=wx.UP,border=15)
+#        col_sizer2.Add(b_close,flag=wx.UP,border=15)
+#        row_sizer.Add(col_sizer1,flag=wx.LEFT,border=20)
+#        row_sizer.Add(col_sizer2,flag=wx.LEFT,border=50)
+#        self.SetSizer(row_sizer)
+        _sizer.Add(b_ok,flag=wx.LEFT | wx.UP,border=15)
+        _sizer.Add(b_close,flag=wx.LEFT | wx.UP,border=15)
+        self.SetSizer(_sizer)
+        
+        
+    def OnOk(self,e):
+        try:
+            for n in self.container:
+                self.vals.append(float(n.GetValue()))
+            self.Destroy()
+        except ValueError:
+            wx.MessageBox("You must give every parameter an initial value!", "Error", wx.OK | wx.ICON_ERROR)
+        
+        
+    def OnClose(self,e):
+        self.vals=None
+        self.Destroy()
+            
+        
         
         
 class combinewindow(wx.Dialog):
@@ -298,7 +356,7 @@ class inputLayer(wx.Frame):
         browser2.Bind(wx.EVT_BUTTON, self.BrowseDir)
         self.horizontal_box5.Add(browser2, flag=wx.LEFT, border=10)
         
-        self.input_tree=wx.TreeCtrl(self.panel,wx.ID_ANY,pos=(425,155),size=(250,100),style=wx.TR_HAS_BUTTONS)
+        self.input_tree=wx.TreeCtrl(self.panel,wx.ID_ANY,pos=(425,155),size=(250,100),style=wx.TR_HAS_BUTTONS | wx.TR_EXTENDED)
         self.troot=self.input_tree.AddRoot("Input data")
         self.tvoltage=None
         self.tcurrent=None
@@ -314,7 +372,7 @@ class inputLayer(wx.Frame):
         descr3 = wx.StaticText(self.panel, label='Number of traces')
         self.horizontal_box6.Add(descr3, flag=wx.UP, border=30)
         
-        descr6 = wx.StaticText(self.panel, label='Si Prefix')
+        descr6 = wx.StaticText(self.panel, label='Units')
         self.horizontal_box6.Add(descr6, flag=wx.UP | wx.LEFT, border=30)
         
         self.size_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, pos=(10, 245), size=(100, 30), name="NO traces")
@@ -419,8 +477,12 @@ class inputLayer(wx.Frame):
                                int(self.freq_ctrl.GetValue()),
                                self.time_checker.IsChecked(),
                                str(self.type_selector.GetItems()[self.type_selector.GetCurrentSelection()]).split()[0].lower()]}
-            self.core.FirstStep(kwargs)
-                
+        except ValueError as ve:
+            wx.MessageBox('Some of the cells are empty. Please fill out all of them!', 'Error', wx.OK | wx.ICON_ERROR)
+            print ve
+            
+        self.core.FirstStep(kwargs)
+        if self.type_selector.GetSelection()==0 or self.type_selector.GetSelection()==1 or self.type_selector.GetSelection()==3:
             canvas = wx.Panel(self.panel, pos=(300, 270), size=(400, self.GetSize()[1]))
             figure = Figure(figsize=(5, 3))
             axes = figure.add_axes([0.15, 0.15, 0.8, 0.8])
@@ -435,8 +497,8 @@ class inputLayer(wx.Frame):
             axes.set_xticklabels([str(n) for n in range(0, t*no_traces, (t*no_traces)/5)])
             axes.set_xlabel("time [ms]")
             _type="voltage" if self.type_selector.GetSelection()==0 else "current" if self.type_selector.GetSelection()==1 else "unkown"
-            unit="V" if self.type_selector.GetSelection()==0 else "A" if self.type_selector.GetSelection()==1 else ""
-            axes.set_ylabel(_type+" [" + self.core.option_handler.input_scale+ unit + "]")
+            #unit="V" if self.type_selector.GetSelection()==0 else "A" if self.type_selector.GetSelection()==1 else ""
+            axes.set_ylabel(_type+" [" + self.core.option_handler.input_scale + "]")
             canvas.Fit()
             canvas.Show()
             exp_data = []
@@ -478,11 +540,7 @@ class inputLayer(wx.Frame):
 #                                 self.tcurrent ,
 #                                 self.tspike_t ,
 #                                 self.tother ]
-        except ValueError:
-            wx.MessageBox('Some of the cells are empty. Please fill out all of them!', 'Error', wx.OK | wx.ICON_ERROR)
-            
-            
-        
+    
 
 
 
@@ -888,7 +946,9 @@ class stimuliLayer(wx.Frame):
         self.toolbar.EnableTool(wx.ID_FORWARD, False)
     
     def Design(self):
-        
+        #duration
+        #section
+        #positon
         self.column1 = wx.BoxSizer(wx.VERTICAL)
         self.column2 = wx.BoxSizer(wx.VERTICAL)
         self.final_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -898,12 +958,53 @@ class stimuliLayer(wx.Frame):
         self.column1.Add(descr3)
         
         
-        descr5 = wx.StaticText(self.panel, label='Stimulation type')
+        descr5 = wx.StaticText(self.panel, label='Stimulation protocol')
         self.dd_type = wx.Choice(self.panel, wx.ID_ANY, size=(150, 30))
         self.dd_type.AppendItems(["IClamp", "VClamp"])
         self.dd_type.Select(0)
         self.column1.Add(descr5, flag=wx.UP, border=15)
         self.column1.Add(self.dd_type, flag=wx.UP, border=5)
+        
+        
+        
+        self.stimuli_type=wx.Choice(self.panel,wx.ID_ANY,size=(150,30))
+        self.stimuli_type.AppendItems(["Step Protocol", "Custom Waveform"])
+        self.stimuli_type.Bind(wx.EVT_CHOICE, self.typeChange)
+        self.stimuli_type.Select(0)
+        descr7 = wx.StaticText(self.panel, label='Stimulus Type')
+        self.column1.Add(descr7, flag=wx.UP, border=15)
+        self.column1.Add(self.stimuli_type, flag=wx.UP, border=5)
+        
+        #remove this label
+        #descr7 = wx.StaticText(self.panel, label='Amplitude')
+        self.stimuli = wx.Button(self.panel, label="Amplitude(s)")
+        self.stimuli.Bind(wx.EVT_BUTTON, self.Stimuli)
+        
+        #tmp_sizer=wx.BoxSizer(wx.HORIZONTAL)
+        #tmp_sizer.Add(descr7)
+        #remove this label
+        #descr7 = wx.StaticText(self.panel, label='Custom Waveform')
+        #tmp_sizer.Add(descr7,flag=wx.LEFT,border=15)
+        #self.column1.Add(tmp_sizer, flag=wx.UP, border=15)
+        
+        tmp_sizer2=wx.BoxSizer(wx.HORIZONTAL)
+        tmp_sizer2.Add(self.stimuli)
+        self.stimuli2 = wx.Button(self.panel, label="Load Waveform")
+        self.stimuli2.Bind(wx.EVT_BUTTON, self.Stimuli2)
+        self.stimuli2.Disable()
+        self.stimuli2.Hide()
+        tmp_sizer2.Add(self.stimuli2)
+        self.column1.Add(tmp_sizer2, flag=wx.UP, border=15)
+        
+        descr8 = wx.StaticText(self.panel, label='Delay (ms)')
+        self.del_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="Value")
+        self.column1.Add(descr8, flag=wx.UP, border=15)
+        self.column1.Add(self.del_ctrl, flag=wx.UP, border=5)
+        
+        descr9 = wx.StaticText(self.panel, label='Duration (ms)')
+        self.dur_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="Value")
+        self.column1.Add(descr9, flag=wx.UP, border=15)
+        self.column1.Add(self.dur_ctrl, flag=wx.UP, border=5)
         
         descr6 = wx.StaticText(self.panel, label='Section')
         self.dd_sec1 = wx.Choice(self.panel, wx.ID_ANY, size=(150, 30))
@@ -920,42 +1021,6 @@ class stimuliLayer(wx.Frame):
         self.column1.Add(descr6, flag=wx.UP, border=15)
         self.column1.Add(self.dd_sec1, flag=wx.UP, border=5)
         
-        self.stimuli_type=wx.Choice(self.panel,wx.ID_ANY,size=(150,30))
-        self.stimuli_type.AppendItems(["Step Protocol", "Custom Waveform"])
-        self.stimuli_type.Bind(wx.EVT_CHOICE, self.typeChange)
-        self.stimuli_type.Select(0)
-        descr7 = wx.StaticText(self.panel, label='Stimuli Type Selection')
-        self.column1.Add(descr7, flag=wx.UP, border=15)
-        self.column1.Add(self.stimuli_type, flag=wx.UP, border=5)
-        
-        descr7 = wx.StaticText(self.panel, label='Amplitude')
-        self.stimuli = wx.Button(self.panel, label="Amplitude(s)")
-        self.stimuli.Bind(wx.EVT_BUTTON, self.Stimuli)
-        
-        tmp_sizer=wx.BoxSizer(wx.HORIZONTAL)
-        tmp_sizer.Add(descr7)
-        descr7 = wx.StaticText(self.panel, label='Custom Waveform')
-        tmp_sizer.Add(descr7,flag=wx.LEFT,border=15)
-        self.column1.Add(tmp_sizer, flag=wx.UP, border=15)
-        
-        tmp_sizer2=wx.BoxSizer(wx.HORIZONTAL)
-        tmp_sizer2.Add(self.stimuli)
-        self.stimuli2 = wx.Button(self.panel, label="Load Waveform")
-        self.stimuli2.Bind(wx.EVT_BUTTON, self.Stimuli2)
-        self.stimuli2.Disable()
-        tmp_sizer2.Add(self.stimuli2,flag=wx.LEFT,border=15)
-        self.column1.Add(tmp_sizer2, flag=wx.UP, border=5)
-        
-        descr8 = wx.StaticText(self.panel, label='Delay (ms)')
-        self.del_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="Value")
-        self.column1.Add(descr8, flag=wx.UP, border=15)
-        self.column1.Add(self.del_ctrl, flag=wx.UP, border=5)
-        
-        descr9 = wx.StaticText(self.panel, label='Duration (ms)')
-        self.dur_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="Value")
-        self.column1.Add(descr9, flag=wx.UP, border=15)
-        self.column1.Add(self.dur_ctrl, flag=wx.UP, border=5)
-        
         descr10 = wx.StaticText(self.panel, label='Position inside the section')
         self.pos_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="Value")
         self.pos_ctrl.SetValue("0.5")
@@ -968,11 +1033,11 @@ class stimuliLayer(wx.Frame):
         
         
         
-        descr1 = wx.StaticText(self.panel, label='Run Controll')
+        descr1 = wx.StaticText(self.panel, label='Run Control')
         descr1.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
         self.column2.Add(descr1)
                
-        descr3 = wx.StaticText(self.panel, label='Resting Voltage (mV)')
+        descr3 = wx.StaticText(self.panel, label='Initial Voltage (mV)')
         self.vrest_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="vrest")        
         self.vrest_ctrl.SetValue("-65")
         self.column2.Add(descr3, flag=wx.UP, border=15)
@@ -991,15 +1056,6 @@ class stimuliLayer(wx.Frame):
         self.column2.Add(descr5, flag=wx.UP, border=15)
         self.column2.Add(self.dt_ctrl, flag=wx.UP, border=5)
 
-        descr8 = wx.StaticText(self.panel, label='Section')
-        self.dd_sec = wx.Choice(self.panel, wx.ID_ANY, size=(100, 30))
-        self.dd_sec.AppendItems(tmp)
-        
-        descr6 = wx.StaticText(self.panel, label='Position')
-        self.pos_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="pos")
-        self.pos_ctrl.SetValue("0.5")
-        self.column2.Add(descr6, flag=wx.UP, border=15)
-        self.column2.Add(self.pos_ctrl, flag=wx.UP, border=5)
         
         descr7 = wx.StaticText(self.panel, label='Parameter to record')
         self.dd_record = wx.Choice(self.panel, wx.ID_ANY, size=(100, 30))
@@ -1008,6 +1064,14 @@ class stimuliLayer(wx.Frame):
         self.column2.Add(descr7, flag=wx.UP, border=15)
         self.column2.Add(self.dd_record, flag=wx.UP, border=5)
         
+        
+        descr6 = wx.StaticText(self.panel, label='Position')
+        self.pos_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="pos")
+        self.pos_ctrl.SetValue("0.5")
+        
+        descr8 = wx.StaticText(self.panel, label='Section')
+        self.dd_sec = wx.Choice(self.panel, wx.ID_ANY, size=(100, 30))
+        self.dd_sec.AppendItems(tmp)
         
         try:
             self.dd_sec.Select(tmp.index("Soma"))
@@ -1018,9 +1082,11 @@ class stimuliLayer(wx.Frame):
                 self.dd_sec.Select(0)
         self.column2.Add(descr8, flag=wx.UP, border=15)
         self.column2.Add(self.dd_sec, flag=wx.UP, border=5)
+        self.column2.Add(descr6, flag=wx.UP, border=15)
+        self.column2.Add(self.pos_ctrl, flag=wx.UP, border=5)
                 
         
-        self.final_sizer.Add(self.column2, flag=wx.LEFT, border=50)
+        self.final_sizer.Add(self.column2, flag=wx.LEFT, border=75)
         #eg:self.horizontal_box5.Add(self.sim_path,flag=wx.RIGHT,border=15)
         
         
@@ -1038,9 +1104,19 @@ class stimuliLayer(wx.Frame):
             self.stimuli2.Disable()
             self.del_ctrl.Enable()
             self.dur_ctrl.Enable()
+            self.stimuli2.Hide()
+            self.stimuli.Show()
+            self.final_sizer.Layout()
+            #hide wave button
         if self.stimuli_type.GetSelection()==1:#wave prot
             self.stimuli2.Enable()
             self.stimuli.Disable()
+            self.del_ctrl.Disable()
+            self.dur_ctrl.Disable()
+            self.stimuli.Hide()
+            self.stimuli2.Show()
+            self.final_sizer.Layout()
+            #hide step button
         
     def Stimuli(self, e):
         #start=float(self.del_ctrl.GetValue())
@@ -1054,10 +1130,10 @@ class stimuliLayer(wx.Frame):
             input_file = dlg.GetDirectory() + "/" + dlg.GetFilename()
         dlg.Destroy()
         self.stim_window.container.append(input_file)
-        self.del_ctrl.SetValue("0")
-        self.del_ctrl.Disable()
-        self.dur_ctrl.SetValue("0")
-        self.dur_ctrl.Disable()
+#        self.del_ctrl.SetValue("0")
+#        self.del_ctrl.Disable()
+#        self.dur_ctrl.SetValue("0")
+#        self.dur_ctrl.Disable()
     
     def Next(self, e):
         print {"stim" : [str(self.dd_type.GetItems()[self.dd_type.GetCurrentSelection()]), float(self.pos_ctrl.GetValue()), str(self.dd_sec1.GetItems()[self.dd_sec1.GetCurrentSelection()])],
@@ -1148,8 +1224,8 @@ class ffunctionLayer(wx.Frame):
         self.my_list = copy(self.core.ffun_calc_list)
         #self.my_list=["ffun1","ffun","ffun3"]
         self.param_list = [[]] * len(self.my_list)
-        self.param_list[1] = ["Spike Detection Thres."]
-        self.param_list[2] = ["Spike Detection Thres.", "Spike Window"]
+        self.param_list[1] = [("Spike Detection Thres. (mv)",0.0)]
+        self.param_list[2] = [("Spike Detection Thres. (mv)",0.0), ("Spike Window (ms)",50.0)]
         self.param_list_container = []
         self.weights = []
         #self.norm_weights = []
@@ -1166,13 +1242,14 @@ class ffunctionLayer(wx.Frame):
 #            self.row1.Add(tmp_ctrl, flag=wx.LEFT, border=15)
             for p in f:
                 tmp_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(50, 25))
+                tmp_ctrl.SetValue(str(p[1]))
                 tmp_ctrl.Disable()
                 tmp.append(tmp_ctrl)
-                descr4 = wx.StaticText(self.panel, label=p)
+                descr4 = wx.StaticText(self.panel, label=p[0])
                 self.row1.Add(descr4, flag=wx.LEFT, border=20)
                 self.row1.Add(tmp_ctrl, flag=wx.LEFT, border=2)
             self.param_list_container.append(tmp)
-            self.column2.Add(self.row1, flag=wx.UP, border=2)
+            self.column2.Add(self.row1, flag=wx.UP, border=1)
             tmp = []
         self.listbox = wx.CheckListBox(self.panel, wx.ID_ANY, choices=self.my_list)
         self.listbox.Bind(wx.EVT_CHECKLISTBOX, self.FunSelect)
@@ -1240,7 +1317,7 @@ class ffunctionLayer(wx.Frame):
                              [self.core.ffun_calc_list[fun[0]] for fun in filter(lambda x: x[1].IsEnabled(), enumerate(self.weights))]]
                             })
         self.kwargs.update({"weights" : [float(w.GetValue()) for w in filter(lambda x: x.IsEnabled(), self.weights)]})
-        if sum(self.kwargs["weights"])!=1:
+        if not(0.9999<sum(self.kwargs["weights"])<=1):
             dlg = wx.MessageDialog(self, "You did not normalize your weights!\nDo you want to continue?",'Warning', wx.YES_NO | wx.ICON_QUESTION)
             b_id=dlg.ShowModal()
             if  b_id== wx.ID_YES:
@@ -1304,7 +1381,7 @@ class algorithmLayer(wx.Frame):
         self.toolbar.Realize()
         self.Bind(wx.EVT_TOOL, self.Next, button_toolbar_fward)
         self.Bind(wx.EVT_TOOL, self.Prev, button_toolbar_bward)
-        self.toolbar.EnableTool(wx.ID_FORWARD,False)
+        self.toolbar.EnableTool(wx.ID_FORWARD,True)
     
     def Design(self):
         self.column1=wx.BoxSizer(wx.VERTICAL)
@@ -1366,19 +1443,19 @@ class algorithmLayer(wx.Frame):
         
     
     def Algo_Select(self,e):
-        descr19 = 'Size of Population:'
-        descr20 = 'Number of Generations:'
-        descr21 = 'Mutation Rate:'
-        descr22 = 'Cooling Rate:'
-        descr23 = 'Mean of Gaussian:'
-        descr24 = 'Std. Deviation of Gaussian:'
-        descr25 = 'Cooling Schedule:'
-        descr26 = 'Initial Temperature:'
-        descr27 = 'Final Temperature:'
-        descr28 = 'Accuracy:'
-        descr29 = 'Dwell:'
-        descr30 = 'Error Tolerance for x:'
-        descr31 = 'Error Tolerance for f:'
+        descr19 = ('Size of Population:',100)
+        descr20 = ('Number of Generations:',100)
+        descr21 = ('Mutation Rate:',0.25)
+        descr22 = ('Cooling Rate:',0.5)
+        descr23 = ('Mean of Gaussian:',0)
+        descr24 = ('Std. Deviation of Gaussian:',1)
+        descr25 = ('Cooling Schedule:',1)
+        descr26 = ('Initial Temperature:',1.2)
+        descr27 = ('Final Temperature:',1e-12)
+        descr28 = ('Accuracy:',1e-06)
+        descr29 = ('Dwell:', 50)
+        descr30 = ('Error Tolerance for x:',0.0001)
+        descr31 = ('Error Tolerance for f:',0.0001)
         
         while(self.num_of_ctrl>0):
             self.column2.Hide(self.num_of_ctrl-1)
@@ -1396,9 +1473,9 @@ class algorithmLayer(wx.Frame):
         if selected_algo=="Classical EO":                             
             alg=[descr19,descr20,descr21]
         elif selected_algo=="Simulated Annealing":
-            alg=[descr20,descr21,descr22,descr23,descr24]
+            alg=[descr20,descr21,descr22,descr23,descr24,descr26]
         elif selected_algo=="SA Scipy":
-            alg=[descr20,descr25,descr26,descr27,descr21,descr28,descr29]
+            alg=[descr20,descr25,descr26,descr27,descr21,descr31,descr29]
         elif selected_algo=="Nelder-Mead":
             alg=[descr20,descr30,descr31]
         elif selected_algo=="L-BFGS-B":
@@ -1407,14 +1484,15 @@ class algorithmLayer(wx.Frame):
         self.algo_param=[]
         for i in range(len(alg)):
             tmp=wx.TextCtrl(self.panel,id=wx.ID_ANY,size=(100,30))
-            self.algo_param.append((tmp,alg[i]))
-            self.column2.Add(wx.StaticText(self.panel,label=alg[i]),flag=wx.UP,border=15)
+            tmp.SetValue(str(alg[i][1]))
+            self.algo_param.append((tmp,alg[i][0]))
+            self.column2.Add(wx.StaticText(self.panel,label=alg[i][0]),flag=wx.UP,border=15)
             self.column2.Add(tmp,flag=wx.UP,border=5)
-            value=self.core.option_handler.GetOptimizerOptions().get(alg[i])
+            value=self.core.option_handler.GetOptimizerOptions().get(alg[i][0])
             if value!=None:
                 tmp.SetValue(str(value))
-            elif self.kwargs.get("algo_options",{}).get(alg[i],None)!=None:
-                tmp.SetValue(str(self.kwargs.get("algo_options",{}).get(alg[i],None)))
+            elif self.kwargs.get("algo_options",{}).get(alg[i][0],None)!=None:
+                tmp.SetValue(str(self.kwargs.get("algo_options",{}).get(alg[i][0],None)))
         
         
         self.final_sizer.Add(self.column2,flag=wx.LEFT,border=100)
@@ -1425,15 +1503,16 @@ class algorithmLayer(wx.Frame):
         
         
     def Seed(self, e):
-        dlg = wx.TextEntryDialog(self, "Insert initial values in the appropriate order, separated by commas!")
+        num_o_params=len(self.core.option_handler.GetObjTOOpt())
         seeds = []
-        if dlg.ShowModal() == wx.ID_OK:
-            seeds = map(float, dlg.GetValue().split(","))
-            dlg.Destroy()
+        new_dialog_window=MyDialog2(self,num_o_params,seeds)
+        new_dialog_window.ShowModal()
 #        if dlg.ShowModal()==wx.ID_CANCEL:
 #            print "cancel"
 #            seeds=None
 #            dlg.Destroy()
+        if len(seeds)!=num_o_params:
+            seeds=None
         self.seed = seeds
             
 
@@ -1524,6 +1603,7 @@ class resultsLayer(wx.Frame):
             else:
                 text += "\n" + param[0] + "\n" + "\t" + str(k)
         text += "\n" + "fitness:\n" + "\t" + str(self.core.optimizer.final_pop[0].fitness)
+        
         wx.StaticText(self.panel, label=text, pos=(10, 40))
         wx.StaticLine(self.panel, pos=(1, 0), size=(self.Size[0], 1))
         wx.StaticLine(self.panel, pos=(200, 0), size=(1, self.GetSize()[1]), style=wx.LI_VERTICAL)
@@ -1626,9 +1706,18 @@ class analyzisLayer(wx.Frame):
         
         wx.StaticLine(self.panel, pos=(400, 0), size=(1, 600), style=wx.LI_VERTICAL)
         
-        
+        tmp_str=[]
         stats = inspyred.ec.analysis.fitness_statistics(self.core.optimizer.final_pop)
         string = "Best: " + str(stats['best']) + "\nWorst: " + str(stats['worst']) + "\nMean: " + str(stats['mean']) + "\nMedian: " + str(stats['median']) + "\nStd:" + str(stats['std'])
+        string += "\n\nFitness Components:\n\t"
+        string += "\nname\tvalue\tweight\tweighted value\n"
+        tmp_w_sum=0
+        for c in self.core.error_comps:
+            #tmp_str.append( "*".join([str(c[0]),c[1].__name__]))
+            string += c[1].__name__+"\t"+(str(c[2])[0:5])+"\t"+str(c[0])+"\t"+(str(c[0]*c[2])[0:5])
+            string += "\n"
+            tmp_w_sum +=c[0]*c[2]
+        string +="weighted sum: "+(str(tmp_w_sum)[0:5])
         wx.StaticText(self.panel, label=string, pos=(410, 55))
         
         
@@ -1655,7 +1744,14 @@ class analyzisLayer(wx.Frame):
             self.Show()
         
     def PlotGrid(self, e):
-        if self.core.grid_result == None:
+        self.prev_bounds=copy(self.core.option_handler.boundaries)
+        self.bw=boundarywindow(self)
+        self.bw.Bind(wx.EVT_CLOSE, self.DisplayGrid)
+    
+    def DisplayGrid(self,e):
+        self.bw.Destroy()
+        act_bounds=self.core.option_handler.boundaries
+        if self.core.grid_result == None or act_bounds!=self.prev_bounds:
             self.core.callGrid()
         no_dims = len(self.core.optimizer.final_pop[0]) / 2 + 1
         import matplotlib.pyplot as plt
@@ -1664,14 +1760,15 @@ class analyzisLayer(wx.Frame):
         for i in axes:
             for j in i:
                 a.append(j)     
-        print len(self.core.optimizer.final_pop[1])
-        print len(self.core.optimizer.final_pop[0])
-        print len(self.core.optimizer.final_pop[1][0])
-        print len(self.core.optimizer.final_pop[0][0])
+#        print len(self.core.optimizer.final_pop[1])
+#        print len(self.core.optimizer.final_pop[0])
+#        print len(self.core.optimizer.final_pop[1][0])
+#        print len(self.core.optimizer.final_pop[0][0])
         #,marker='o', color='r', ls=''
         for i, v in enumerate(self.core.optimizer.final_pop[1]):
             a[i].plot(self.core.optimizer.final_pop[0][i],
                                    v, marker='o', color='r', ls='')
+            a[i].set_title(self.core.option_handler.GetObjTOOpt()[i])
         
         matplotlib.pyplot.show()
         
