@@ -290,12 +290,16 @@ class grid(baseOptimizer):
         self.fit_obj=fF(reader_obj,model_obj,option_obj)
         self.SetFFun(option_obj)
         self.num_inputs=option_obj.num_inputs
-        #self.resolution=2000**(1.0/self.num_inputs)
-        self.resolution=5
-        print self.resolution
+        self.num_points_per_dim=2000**(1.0/self.num_inputs)
+        #self.resolution=5
+        #print self.resolution
         self.SetBoundaries(option_obj.boundaries)
         
-
+    def frange(self,start,stop,step):
+        r = start
+        while r < stop:
+            yield r
+            r += step
     
     
     def Optimize(self):
@@ -303,8 +307,10 @@ class grid(baseOptimizer):
         #vals between self.bounder.lower_bound
         self.final_pop=[[],[]]
         import itertools
-        f_r=map(lambda x:x/10.0,range(0,11,self.resolution))
-        it=itertools.product(f_r,repeat=self.num_inputs)
+        f_r=[]
+        for b_min,b_max in self.min_max:
+            f_r.append(self.frange(b_min, b_max, float(b_max-b_min)/self.num_points_per_dim))
+        it=itertools.product(f_r)
         points=[]
         for c in it:
             points.append(list(c))

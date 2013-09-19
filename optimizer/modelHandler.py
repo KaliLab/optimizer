@@ -81,7 +81,7 @@ class modelHandlerNeuron():
     #    else:
     #        raise TypeError()
     # params: 0.: amplitude, 1.: delay, 2.:duration 
-    def SetStimuli(self,params):
+    def SetStimuli(self,params,extra_params):
         
         self.parameters=params
         if self.stims[0]=="IClamp":
@@ -89,9 +89,14 @@ class modelHandlerNeuron():
             self.stimulus.delay=self.parameters[1]
             self.stimulus.dur=self.parameters[2]
         else:
-            self.stimulus.amp1=self.parameters[0]
-            self.stimulus.delay=self.parameters[1]
-            self.stimulus.dur=self.parameters[2]
+            self.stimulus.amp1=extra_params[5]
+            self.stimulus.amp2=self.parameters[0]
+            self.stimulus.amp3=extra_params[5]
+            
+            self.stimulus.dur1=self.parameters[1]
+            self.stimulus.dur2=self.parameters[2]
+            self.stimulus.dur3=extra_params[0]-(self.stimulus.dur1+self.stimulus.dur2)
+            
             self.stimulus.rs=0.01
             
         #except TypeError:

@@ -22,8 +22,8 @@ def meanstdv(x):
 
 class coreModul():
     def __init__(self):
-        self.data_handler=None
-        self.option_handler=None
+        self.data_handler=DATA()
+        self.option_handler=optionHandler()
         self.model_handler=None
         self.optimizer=None
         self.ffun_list=["Average Squared Error",
@@ -102,11 +102,9 @@ class coreModul():
                self.option_handler.GetOptimizerOptions()]
         print "\n"
     def FirstStep(self,args):
-        self.option_handler=optionHandler()
         self.option_handler.SetFileOptions(args.get("file"))
         self.option_handler.SetInputOptions(args.get("input"))
 
-        self.data_handler=DATA()
         self.data_handler.Read([self.option_handler.input_dir],self.option_handler.input_size,self.option_handler.input_scale,self.option_handler.input_length,self.option_handler.input_freq,self.option_handler.type[-1])
     # model handler is created to handle model operations        
     # model is loaded, ready for the user to adjust stimuli, select parameters, etc
@@ -287,7 +285,8 @@ class coreModul():
                 if isinstance(parameter[0], unicode):
                     self.model_handler.SetCustStimuli(parameter)
                 else:
-                    self.model_handler.SetStimuli(parameter)
+                    extra_param=self.option_handler.GetModelRun()
+                    self.model_handler.SetStimuli(parameter,extra_param)
                 if isinstance(self.model_handler, externalHandler):
                     from subprocess import call
                     call(self.model_handler.GetExec())

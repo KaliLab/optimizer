@@ -3,8 +3,8 @@ import sys
 import string
 import re
 
-voltage_scales={"none":0.001,"milli":1,"micro":10**3}
-current_scales={"micro":10**(-3),"nano":1,"pico":10**3}
+voltage_scales={"V":0.001,"mV":1,"uV":10**3}
+current_scales={"uA":10**(-3),"nA":1,"pA":10**3}
 scales={"voltage" : voltage_scales, "current" : current_scales, "other" : {"none" : 1}, "spike" : {"none" : 1}}
 # generating doubles in the range with the given step
 def real_range(start, step, end):
@@ -186,9 +186,9 @@ class DATA():
                 else:
                     tmp=l.strip().split()
                     try:
-                        tmp_dict[int(tmp[1])].extend([float(tmp[0])])
+                        tmp_dict[int(float(tmp[1]))].extend([float(tmp[0])])
                     except KeyError:
-                        tmp_dict[int(tmp[1])]=[float(tmp[0])]
+                        tmp_dict[int(float(tmp[1]))]=[float(tmp[0])]
         no_spike_ind=list(set(range(no_traces))-set(tmp_dict.keys()))
         for i in no_spike_ind:
             tmp_dict[i]=[]

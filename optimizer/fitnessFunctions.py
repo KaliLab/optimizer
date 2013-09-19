@@ -32,12 +32,7 @@ class fF():
         self.option=option_object
         self.reader=reader_object
         #self.current_pop=0
-        self.fun_dict={"Average Squared Error": self.ase,
-                       "Spike Count": self.countSpike, 
-                       "Combinations": self.combineFeatures, 
-                       "Averaged Squared Error II": self.spike_ase,
-                       "Feature Extractor I": self.smallFeaturesExtractor,
-                       "Derivative Difference": self.derivate_diff}
+        self.fun_dict={"Combinations": self.combineFeatures} 
         self.calc_dict={"Average Squared Error": self.calc_ase,
                         "Spike Count": self.calc_spike, 
                         "Averaged Squared Error II": self.calc_spike_ase,
@@ -104,6 +99,35 @@ class fF():
             self.compileUDF(section, settings, candidates)
             self.model.RunControll(settings)
 
+
+    def ReNormalize(self,l):
+        tmp=[]
+        for i in range(len(l)):
+            tmp.append(l[i]*(self.option.boundaries[1][i]-self.option.boundaries[0][i])+self.option.boundaries[0][i])
+        return tmp
+    
+    
+    
+        
+    # spike detection
+    def detectSpike(self,vect):
+        start_pos=0
+        stop_pos=0
+        start=0
+        temp1=[]
+        for n in range(len(vect)):
+            if vect[n]>self.thres and start==0:
+                start_pos=n
+                start=1
+            elif vect[n]<self.thres and start==1:
+                stop_pos=n
+                start=0
+                s=spike_frame(start_pos,vect[start_pos],vect.index(max(vect[start_pos:stop_pos])),max(vect[start_pos:stop_pos]),stop_pos,vect[stop_pos])
+                temp1.append(s)
+            
+        return temp1
+
+
         #calculates the gradient at the given time
     def calc_grad_dif(self,a,b,args):
         dt=self.reader.step
@@ -118,39 +142,7 @@ class fF():
             tmp.append((grad_a-grad_b)**2)
             
         return fsum(tmp)/len(tmp)#fsum( map( lambda x: x/max(tmp) ,tmp) )/len(tmp)  
-    
-    
-    
-    def derivate_diff(self,candidates,args):
-        #temp=[]
-        self.fitnes=[]
-        temp_fit=0
-        #param=self.option.GetModelStimParam()
-        #parameter=param
-        self.model.CreateStimuli(self.option.GetModelStim())
-        for l in candidates:
-            print l
-            l=self.ReNormalize(l)
-            print l
-            for k in range(self.reader.number_of_traces()):
-                param=self.option.GetModelStimParam()
-                parameter=param
-                parameter[0]=param[0][k]
-                if isinstance(parameter[0], unicode):
-                    self.model.SetCustStimuli(parameter)
-                else:
-                    self.model.SetStimuli(parameter)
-                
-                self.modelRunner(l)
-                temp_fit+=self.calc_grad_dif(self.model.record[0],self.reader.data.GetTrace(k),args)#fsum(temp)/len(temp)
-                        
-            self.fitnes.append(temp_fit)
-            print temp_fit
-            temp_fit=0
-            #self.current_pop+=1
-        return self.fitnes
-
-        
+           
             
         
         #compare the incoming traces, based on the spike rate, 
@@ -307,11 +299,7 @@ class fF():
         for s1,s2 in zip(spikes[0],spikes[1]):
             avg1+=s1.peak+len(a[s1.peak:s1.stop_pos])/2-s1.start_pos+len(a[s1.start_pos:s1.peak])/2
             avg2+=s2.peak+len(b[s2.peak:s2.stop_pos])/2-s2.start_pos+len(b[s2.start_pos:s2.peak])/2
-#            avg1=s1.start_pos+len(a[s1.start_pos:s1.peak])/2
-#            avg2=s1.peak+len(a[s1.peak:s1.stop_pos])/2
-#            avg3=s2.start_pos+len(b[s2.start_pos:s2.peak])/2
-#            avg4=s2.peak+len(b[s2.peak:s2.stop_pos])/2
-#            tmp+=abs((s1.stop_pos-s1.start_pos)-(s2.stop_pos-s2.start_pos))+abs((a[avg1]-a[avg2])-(a[avg3]-a[avg4]))
+
         avg1=float(avg1)/float(len(spikes[0]))
         avg2=float(avg2)/float(len(spikes[1]))
         print abs(avg1-avg2)
@@ -361,116 +349,6 @@ class fF():
         #fsum( map( lambda x: x/max(tmp) ,tmp) ) 
         return fsum(temp)/len(temp)/max(temp)#(sqrt(fsum(temp)/len(temp)))/(max(max(exp,model))-min(min(exp,model)))
     
-    def ReNormalize(self,l):
-        tmp=[]
-        for i in range(len(l)):
-            tmp.append(l[i]*(self.option.boundaries[1][i]-self.option.boundaries[0][i])+self.option.boundaries[0][i])
-        return tmp
-    
-    def ase(self,candidates,args):
-        #temp=[]
-        self.fitnes=[]
-        temp_fit=0
-        #param=self.option.GetModelStimParam()
-        #parameter=param
-        self.model.CreateStimuli(self.option.GetModelStim())
-        for l in candidates:
-            print l
-            l=self.ReNormalize(l)
-            print l
-            for k in range(self.reader.number_of_traces()):
-                add_data=None
-                args["add_data"]=add_data
-                param=self.option.GetModelStimParam()
-                parameter=param
-                parameter[0]=param[0][k]
-                
-                if isinstance(parameter[0], unicode):
-                    self.model.SetCustStimuli(parameter)
-                else:
-                    self.model.SetStimuli(parameter)
-                
-                self.modelRunner(l)
-                #for n in range(len(self.reader.data)):
-                #    temp.append(pow(self.reader.GetTrace(k)[n]-self.model.record[k][n],2))
-                temp_fit+=self.calc_ase(self.model.record[0],self.reader.data.GetTrace(k),args)#fsum(temp)/len(temp)
-                        
-            self.fitnes.append(temp_fit)
-            print temp_fit
-            temp_fit=0
-            #self.current_pop+=1
-        return self.fitnes
-
-
-    def spike_ase(self,candidates,args):
-        #temp=[]
-        self.fitnes=[]
-        temp_fit=0
-        #param=self.option.GetModelStimParam()
-        #parameter=param
-        window=self.option.spike_window
-        self.model.CreateStimuli(self.option.GetModelStim())
-        for l in candidates:
-            print l
-            l=self.ReNormalize(l)
-            print l
-            for k in range(self.reader.number_of_traces()):
-                try:
-                    add_data=[spike_frame(n-window,0,n,1,n+50,0) for n in self.reader.additional_data.get(k)]
-                except AttributeError:
-                    add_data=None
-                args["add_data"]=add_data
-                param=self.option.GetModelStimParam()
-                parameter=param
-                parameter[0]=param[0][k]
-                if isinstance(parameter[0], unicode):
-                    self.model.SetCustStimuli(parameter)
-                else:
-                    self.model.SetStimuli(parameter)
-                self.modelRunner(l)                
-                temp_fit+=self.calc_spike_ase(self.model.record[0],self.reader.data.GetTrace(k),args)#fsum(temp)/len(temp)
-                        
-            self.fitnes.append(temp_fit)
-            print temp_fit
-            temp_fit=0
-            #self.current_pop+=1
-        return self.fitnes
-
-
-        
-    # spike detection
-    def detectSpike(self,vect):
-        start_pos=0
-        stop_pos=0
-        start=0
-        temp1=[]
-        for n in range(len(vect)):
-            if vect[n]>self.thres and start==0:
-                start_pos=n
-                start=1
-            elif vect[n]<self.thres and start==1:
-                stop_pos=n
-                start=0
-                s=spike_frame(start_pos,vect[start_pos],vect.index(max(vect[start_pos:stop_pos])),max(vect[start_pos:stop_pos]),stop_pos,vect[stop_pos])
-                temp1.append(s)
-#        start_pos=0
-#        stop_pos=0
-#        start=0
-#        for n in range(len(vect2)):
-#            if vect2[n]>self.thres and start==0:
-#                start_pos=n
-#                start=1
-#            if vect2[n]<self.thres and start==1:
-#                stop_pos=n
-#                start=0
-#                s=spike_frame(start_pos,vect2[start_pos],vect2.index(max(vect2[start_pos:stop_pos])),max(vect2[start_pos:stop_pos]),stop_pos,vect2[stop_pos])
-#                temp2.append(s)
-#        
-#        spikes.append(temp1)#model
-#        spikes.append(temp2)#exp
-#        
-            
-        return temp1
     
     def calc_spike(self,a,b,args):
         add_data=args.get("add_data",None)
@@ -498,41 +376,7 @@ class fF():
 
     
     
-    def countSpike(self,candidates,args):
-        temp_fit=0
-        self.fitnes=[]
-        #spikes=[]
-        #param=self.option.GetModelStimParam()
-        #parameter=param
-        window=self.option.spike_window
-        self.model.CreateStimuli(self.option.GetModelStim())
-        for l in candidates:
-            print l
-            l=self.ReNormalize(l)
-            print l
-            for k in range(self.reader.number_of_traces()):
-                print self.reader.additional_data==None
-                try:
-                    add_data=[spike_frame(n-window,0,n,1,n+50,0) for n in self.reader.additional_data.get(k)]
-                    print len(add_data)
-                except AttributeError:
-                    add_data=None
-                args["add_data"]=add_data
-                param=self.option.GetModelStimParam()
-                parameter=param
-                parameter[0]=param[0][k]
-                if isinstance(parameter[0], unicode):
-                    self.model.SetCustStimuli(parameter)
-                else:
-                    self.model.SetStimuli(parameter)
-                self.modelRunner(l)
-                temp_fit+=self.calc_spike(self.model.record[0],self.reader.data.GetTrace(k),args)
-            self.fitnes.append(temp_fit)
-            print temp_fit
-            temp_fit=0         
-            
-            #self.current_pop+=1
-        return self.fitnes
+    
     
     def combineFeatures(self,candidates,args):
         print "combine"
@@ -548,7 +392,7 @@ class fF():
             print l
             for k in range(self.reader.number_of_traces()):
                 try:
-                    add_data=[spike_frame(n-window,0,n,1,n+50,0) for n in self.reader.additional_data.get(k)]
+                    add_data=[spike_frame(n-window,self.thres,n,1,n+window,self.thres) for n in self.reader.additional_data.get(k)]
                 except AttributeError:
                     add_data=None
                 args={}
@@ -559,7 +403,8 @@ class fF():
                 if isinstance(parameter[0], unicode):
                     self.model.SetCustStimuli(parameter)
                 else:
-                    self.model.SetStimuli(parameter)
+                    extra_param=self.option.GetModelRun()
+                    self.model.SetStimuli(parameter,extra_param)
                 self.modelRunner(l)
                 print features,weigths
                 for f,w in zip(features,weigths):
@@ -588,41 +433,4 @@ class fF():
             fit_list.append([w,f,(f( model_output,self.reader.data.GetTrace(index_of_trace),args ))])
         return fit_list
     
-    def smallFeaturesExtractor(self,candidates,args):
-        #temp=[]
-        self.fitnes=[]
-        temp_fit=0
-        #param=self.option.GetModelStimParam()
-        #parameter=param
-        window=self.option.spike_window
-        self.model.CreateStimuli(self.option.GetModelStim())
-        for l in candidates:
-            print l
-            l=self.ReNormalize(l)
-            print l
-            for k in range(self.reader.number_of_traces()):
-                try:
-                    add_data=[spike_frame(n-window,0,n,1,n+50,0) for n in self.reader.additional_data.get(k)]
-                except AttributeError:
-                    add_data=None
-                args["add_data"]=add_data
-                param=self.option.GetModelStimParam()
-                parameter=param
-                parameter[0]=param[0][k]
-                if isinstance(parameter[0], unicode):
-                    self.model.SetCustStimuli(parameter)
-                else:
-                    self.model.SetStimuli(parameter)
-                self.modelRunner(l)
-                #for n in range(len(self.reader.data)):
-                #    temp.append(pow(self.reader.GetTrace(k)[n]-self.model.record[k][n],2))
-                for f in [self.spike_rate,self.isi_differ,self.first_spike,self.AP_overshoot,self.AHP_depth,self.AP_width]:
-                    temp_fit+=f(self.model.record[0],self.reader.data.GetTrace(k),args)
-                        
-            self.fitnes.append(temp_fit)
-            print temp_fit
-            temp_fit=0
-            #self.current_pop+=1
-        return self.fitnes
-       
- 
+    
