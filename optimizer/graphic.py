@@ -1584,11 +1584,16 @@ class resultsLayer(wx.Frame):
         self.path = path
         self.panel = wx.Panel(self)
         self.parent = parent
-        self.core.FourthStep()
-        self.Center()
-        self.ToolbarCreator()
-        self.Design()
         self.kwargs=kwargs
+        try:
+            self.core.FourthStep()
+            self.Center()
+            self.ToolbarCreator()
+            self.Design()
+        except AttributeError:
+            wx.MessageBox("No optimization result to display!","Erro",wx.OK | wx.ICON_ERROR)
+            self.Prev(None)
+            
         
 
         
@@ -1748,8 +1753,11 @@ class analyzisLayer(wx.Frame):
         
     def PlotGrid(self, e):
         self.prev_bounds=copy(self.core.option_handler.boundaries)
-        self.bw=boundarywindow(self)
-        self.bw.Bind(wx.EVT_CLOSE, self.DisplayGrid)
+        try:
+            self.bw.Close()
+        except AttributeError:
+            self.bw=boundarywindow(self)
+            self.bw.Bind(wx.EVT_CLOSE, self.DisplayGrid)
     
     def DisplayGrid(self,e):
         self.bw.Destroy()
@@ -1768,10 +1776,15 @@ class analyzisLayer(wx.Frame):
 #        print len(self.core.optimizer.final_pop[1][0])
 #        print len(self.core.optimizer.final_pop[0][0])
         #,marker='o', color='r', ls=''
-        for i, v in enumerate(self.core.optimizer.final_pop[1]):
-            a[i].plot(self.core.optimizer.final_pop[0][i],
-                                   v, marker='o', color='r', ls='')
+        for i in range(len(self.core.option_handler.GetObjTOOpt())):
+            for points, fitness in zip(self.core.optimizer.final_pop[0][i],self.core.optimizer.final_pop[1][i]):
+                a[i].plot(points[i],
+                                       fitness[0], marker='o', color='r', ls='')
             a[i].set_title(self.core.option_handler.GetObjTOOpt()[i])
+        
+        #hide unused subplots
+        for i in range(len(self.core.option_handler.GetObjTOOpt()),no_dims**2):
+            a[i].axis('off')
         
         matplotlib.pyplot.show()
         

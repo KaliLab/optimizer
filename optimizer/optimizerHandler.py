@@ -12,6 +12,8 @@ import logging
 from scipy import optimize, array, ndarray
 from numpy import random
 import copy
+from Image import NONE
+from jinja2._stringdefs import No
 #from math import exp
 
 #from inspyred.ec.terminators import max_evaluations
@@ -290,7 +292,7 @@ class grid(baseOptimizer):
         self.fit_obj=fF(reader_obj,model_obj,option_obj)
         self.SetFFun(option_obj)
         self.num_inputs=option_obj.num_inputs
-        self.num_points_per_dim=2000**(1.0/self.num_inputs)
+        self.num_points_per_dim=2000**(1.0/(self.num_inputs-1))
         #self.resolution=5
         #print self.resolution
         self.SetBoundaries(option_obj.boundaries)
@@ -302,25 +304,30 @@ class grid(baseOptimizer):
             r += step
     
     
-    def Optimize(self):
+    def Optimize(self,optimals):
         #return result in self.final_pop
         #vals between self.bounder.lower_bound
         self.final_pop=[[],[]]
-        import itertools
-        f_r=[]
-        for c in self.frange(0,1, float(1)/self.num_points_per_dim):
-            f_r.append(c)
-        it=itertools.product(f_r,repeat=self.num_inputs)
+        _o=copy.copy(optimals)
+        _o=normalize(_o, self)
+        #import itertools
         points=[]
-        for c in it:
-            points.append(list(c))
-        fitness=self.ffun(points,{})
-        fitness=map(lambda x: [x]*self.num_inputs,fitness)
-        for p in range(len(points)):
-            points[p]=self.fit_obj.ReNormalize(points[p])
-        #transpose
-        points=map(list,zip(*points))
-        fitness=map(list,zip(*fitness))
+        fitness=[]
+        tmp1=[]
+        tmp2=[]
+        for n in range(self.num_inputs):
+            for c in self.frange(0,1, float(1)/self.num_points_per_dim):
+                _o[n]=c
+                tmp1.append(self.fit_obj.ReNormalize(_o))
+                tmp2.append(self.ffun([_o],{}))
+            points.append(tmp1)
+            tmp1=[]
+            fitness.append(tmp2)
+            tmp2=[]
+            _o=copy.copy(optimals)
+            _o=normalize(_o, self)
+            
+
         self.final_pop[0]=points
         self.final_pop[1]=fitness
             

@@ -253,6 +253,7 @@ class coreModul():
         
     def FourthStep(self,args={}):
         self.final_result=[]
+        self.optimal_params=self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])
         if self.option_handler.GetUFunString()=='':
             out_handler=open("params.param","w")
             for n,k in zip(self.option_handler.GetObjTOOpt(),self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])):
@@ -333,7 +334,7 @@ class coreModul():
                 
     def callGrid(self):
         self.optimizer=grid(self.data_handler,self.model_handler,self.option_handler)
-        self.optimizer.Optimize()
+        self.optimizer.Optimize(self.optimal_params)
         self.grid_result=self.optimizer.final_pop
         
 
