@@ -1,5 +1,14 @@
 
 import time
+from xml.etree.ElementTree import Element as e, SubElement as se
+from xml.etree import ElementTree
+from xml.dom import minidom
+
+def prettify(e):
+    r_str=ElementTree.tostring(e,'utf-8')
+    repsed=minidom.parseString(r_str)
+    return repsed.toprettyxml(indent="  ")
+
 # class to handle the settings specified by the user
 # there are no separate classes for the different settings, only get-set member functions
 # the proper initialization is done via the target classes' constructors (traceReader, modelHandlerNeuron) 
@@ -76,16 +85,26 @@ class optionHandler(object):
         post=dir(self)
         self.class_content=list(set(post)-set(prev))
         
+#    def dump(self):
+#        target=""
+#        for m in self.class_content:
+#            #error here:TypeError: cannot concatenate 'str' and 'NoneType' objects
+#            try:
+#                target+=m+" = "+self.__getattribute__(m).__repr__()+"\n"
+#            except TypeError:
+#                target+=m+" = "+"None"+"\n"
+#                
+#        return target
+
     def dump(self):
-        target=""
+        root=e("settings")
         for m in self.class_content:
-            #error here:TypeError: cannot concatenate 'str' and 'NoneType' objects
+            child=se(root,m)
             try:
-                target+=m+" = "+self.__getattribute__(m).__repr__()+"\n"
+                child.text=self.__getattribute__(m).__repr__()
             except TypeError:
-                target+=m+" = "+"None"+"\n"
-                
-        return target
+                child.text="None"
+        return prettify(root)
         
 
         

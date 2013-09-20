@@ -1,12 +1,21 @@
 import sys
 import Core
+import xml.etree.ElementTree as ET
 
 
 def main(fname):
     try:
         f=open(fname,"r")
-    except IOError:
-        sys.exit("File not found!")
+    except IOError as ioe:
+        sys.exit("File not found!\n"+ioe)
+    tree = ET.parse()
+    root = tree.getroot()
+    if root.tag!="settings":
+        sys.exit("Missing \"settings\" tag in xml!")
+
+    core=Core.coreModul()
+    #iterate over root to get parameters
+    #fill option handler then use get methods to obtain parameters and pass them to core steps
     base_dir=f.readline() # path to base directory
     input_dir=f.readline() # path to input file
     input_size=int(f.readline()) # no_traces
@@ -54,7 +63,6 @@ def main(fname):
     ffunction=f.readline() #other parameters might be necessary
     feats=f.readline().split(",")
     weights=map(float,f.readline().split(","))
-    core=Core.coreModul()
     kwargs={"file" : base_dir,"input" : [base_dir,input_dir,input_size,input_scale,
                                          input_length,input_freq,input_cont_t]}
     core.FirstStep(kwargs)

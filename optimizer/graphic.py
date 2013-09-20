@@ -4,7 +4,7 @@ import matplotlib
 from inspyred.ec import analysis
 from inspyred.ec.analysis import generation_plot, allele_plot
 import inspyred
-from wxPython._controls import wxTextCtrl
+#from wxPython._controls import wxTextCtrl
 matplotlib.use('WXAgg')
 from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -1707,7 +1707,10 @@ class analyzisLayer(wx.Frame):
         wx.StaticLine(self.panel, pos=(400, 0), size=(1, 600), style=wx.LI_VERTICAL)
         
         tmp_str=[]
-        stats = inspyred.ec.analysis.fitness_statistics(self.core.optimizer.final_pop)
+        try:
+            stats = inspyred.ec.analysis.fitness_statistics(self.core.optimizer.final_pop)
+        except AttributeError:
+            stats={'best' : "unkown",'worst' : "unkown",'mean' : "unkown",'median' : "unkown", 'std' : "unkown"}
         string = "Best: " + str(stats['best']) + "\nWorst: " + str(stats['worst']) + "\nMean: " + str(stats['mean']) + "\nMedian: " + str(stats['median']) + "\nStd:" + str(stats['std'])
         string += "\n\nFitness Components:\n\t"
         string += "\nname\tvalue\tweight\tweighted value\n"

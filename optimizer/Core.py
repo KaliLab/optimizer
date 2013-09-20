@@ -302,7 +302,7 @@ class coreModul():
                 self.error_comps=self.optimizer.fit_obj.getErrorComponents(k, self.model_handler.record[0])
                 self.final_result.extend(self.model_handler.record)
                 
-        f_handler=open(self.option_handler.model_path.split("/")[-1].split(".")[0]+"_settings.txt","w")
+        f_handler=open(self.option_handler.model_path.split("/")[-1].split(".")[0]+"_settings.xml","w")
         f_handler.write(self.option_handler.dump())
         f_handler.close()
         

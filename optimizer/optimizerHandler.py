@@ -308,9 +308,9 @@ class grid(baseOptimizer):
         self.final_pop=[[],[]]
         import itertools
         f_r=[]
-        for b_min,b_max in self.min_max:
-            f_r.append(self.frange(b_min, b_max, float(b_max-b_min)/self.num_points_per_dim))
-        it=itertools.product(f_r)
+        for c in self.frange(0,1, float(1)/self.num_points_per_dim):
+            f_r.append(c)
+        it=itertools.product(f_r,repeat=self.num_inputs)
         points=[]
         for c in it:
             points.append(list(c))
