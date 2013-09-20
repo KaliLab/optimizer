@@ -26,12 +26,17 @@ class coreModul():
         self.option_handler=optionHandler()
         self.model_handler=None
         self.optimizer=None
-        self.ffun_list=["Average Squared Error",
-                        "Spike Count",
-                        "Combinations",
-                        "Averaged Squared Error II",
-                        "Feature Extractor I",
-                        "Derivative Difference"]
+        f_m={"Average Squared Error": "calc_ase",
+                        "Spike Count": "calc_spike", 
+                        "Averaged Squared Error II": "calc_spike_ase",
+                        "Spike Rate": "spike_rate",
+                        "ISI Differences": "isi_differ",
+                        "Latency to 1st Spike": "first_spike",
+                        "AP Overshoot": "AP_overshoot",
+                        "AHP Depth": "AHP_depth",
+                        "AP Width": "AP_width",
+                        "Derivative Difference" : "calc_grad_dif"}
+        self.ffun_mapper=dict((v,k) for k,v in f_m.iteritems())
         self.ffun_calc_list=["Average Squared Error",
                              "Spike Count", 
                              "Averaged Squared Error II",
@@ -110,11 +115,12 @@ class coreModul():
     # model is loaded, ready for the user to adjust stimuli, select parameters, etc
     # options are registered 
     def LoadModel(self,args):
-        if args.get("simulator","Neuron")=="Neuron":
+        self.option_handler.SetSimParam([args.get("simulator","Neuron"),args.get("sim_command"),None])
+        if self.option_handler.GetSimParam()[0]=="Neuron":
             self.option_handler.SetModelOptions(args.get("model"))
             self.model_handler=modelHandlerNeuron(self.option_handler.model_path,self.option_handler.model_spec_dir,self.option_handler.base_dir)
         else:
-            self.model_handler=externalHandler(args.get("sim_command"))
+            self.model_handler=externalHandler(self.option_handler.GetSimParam()[1])
             self.model_handler.SetNParams(self.option_handler)
             self.option_handler.SetModelStimParam([[0]*self.data_handler.number_of_traces(),0,0])
     
@@ -164,7 +170,7 @@ class coreModul():
         ch_param.append("None")
         return ch_param
     
-    
+    #not in use
     def SetModel(self,args):
         
         if args.get("channel")!="None":
@@ -174,10 +180,10 @@ class coreModul():
     
     def SetModel2(self,args):
         if args.get("channel")!="None":
-            self.option_handler.SetObjTOOpt(args.get("section")+" "+args.get("channel")+" "+args.get("params"))
+            self.option_handler.SetObjTOOpt(args.get("section").encode("utf-8")+" "+args.get("channel").encode("utf-8")+" "+args.get("params").encode("utf-8"))
             self.option_handler.SetOptParam(args.get("values"))
         else:
-            self.option_handler.SetObjTOOpt(args.get("section")+" "+args.get("morph"))
+            self.option_handler.SetObjTOOpt(args.get("section").encode("utf-8")+" "+args.get("morph").encode("utf-8"))
             self.option_handler.SetOptParam(args.get("values"))
     
     def SecondStep(self,args):
@@ -207,30 +213,30 @@ class coreModul():
             #tmp.append(args.get("starting_points"))
             self.option_handler.SetOptimizerOptions(tmp)
             
-            if self.option_handler.run_controll_dt<self.data_handler.data.step:
-                #we have to resample the input trace so it would match the model output
-                #will use lin interpolation
-                x=linspace(0,self.option_handler.run_controll_tstop,self.option_handler.run_controll_tstop*(1/self.data_handler.data.step))#x axis of data points
-                
-                tmp=[]
-                for i in range(self.data_handler.number_of_traces()):
-                    y=self.data_handler.data.GetTrace(i)#y axis, the values from the input traces, corresponding to x
-                    f=interp1d(x,y)
-                    #we have the continuous trace, we could resample it now
-                    new_x=linspace(0,self.option_handler.run_controll_tstop,self.option_handler.run_controll_tstop/self.option_handler.run_controll_dt)
-                    #self.trace_reader.SetColumn(i,f(new_x)) the resampled vector replaces the original in the trace reader object
-                    tmp.append(f(new_x))
-                self.data_handler.data.t_length=len(tmp[0])
-                self.data_handler.data.freq=self.option_handler.run_controll_tstop/self.option_handler.run_controll_dt
-                self.data_handler.data.step=self.option_handler.run_controll_dt
-                transp=map(list,zip(*tmp))
-                self.data_handler.data.data=[]
-                for n in transp:
-                    self.data_handler.data.SetTrace(n)
-            #running simulation with smaller resolution is not supported
-            if self.option_handler.run_controll_dt>self.data_handler.data.step:
-                self.option_handler.run_controll_dt=self.data_handler.data.step
-                
+        if self.option_handler.run_controll_dt<self.data_handler.data.step:
+            #we have to resample the input trace so it would match the model output
+            #will use lin interpolation
+            x=linspace(0,self.option_handler.run_controll_tstop,self.option_handler.run_controll_tstop*(1/self.data_handler.data.step))#x axis of data points
+            
+            tmp=[]
+            for i in range(self.data_handler.number_of_traces()):
+                y=self.data_handler.data.GetTrace(i)#y axis, the values from the input traces, corresponding to x
+                f=interp1d(x,y)
+                #we have the continuous trace, we could resample it now
+                new_x=linspace(0,self.option_handler.run_controll_tstop,self.option_handler.run_controll_tstop/self.option_handler.run_controll_dt)
+                #self.trace_reader.SetColumn(i,f(new_x)) the resampled vector replaces the original in the trace reader object
+                tmp.append(f(new_x))
+            self.data_handler.data.t_length=len(tmp[0])
+            self.data_handler.data.freq=self.option_handler.run_controll_tstop/self.option_handler.run_controll_dt
+            self.data_handler.data.step=self.option_handler.run_controll_dt
+            transp=map(list,zip(*tmp))
+            self.data_handler.data.data=[]
+            for n in transp:
+                self.data_handler.data.SetTrace(n)
+        #running simulation with smaller resolution is not supported
+        if self.option_handler.run_controll_dt>self.data_handler.data.step:
+            self.option_handler.run_controll_dt=self.data_handler.data.step
+            
                 
                 
         if self.option_handler.evo_strat=="Classical EO":
@@ -304,7 +310,7 @@ class coreModul():
                 self.final_result.extend(self.model_handler.record)
                 
         f_handler=open(self.option_handler.model_path.split("/")[-1].split(".")[0]+"_settings.xml","w")
-        f_handler.write(self.option_handler.dump())
+        f_handler.write(self.option_handler.dump(self.ffun_mapper))
         f_handler.close()
         
         name=self.option_handler.model_path.split("/")[-1].split(".")[0]

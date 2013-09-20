@@ -32,6 +32,9 @@ class optionHandler(object):
         
         self.u_fun_string=""#string of the user defined function waiting for compilation
         
+        self.simulator=""
+        self.sim_command=""
+        
         #stim settings
         self.stim_type="" # type of stimulus
         self.stim_pos=0 # position
@@ -96,15 +99,47 @@ class optionHandler(object):
 #                
 #        return target
 
-    def dump(self):
+    def dump(self,f_mapper):
         root=e("settings")
         for m in self.class_content:
             child=se(root,m)
             try:
-                child.text=self.__getattribute__(m).__repr__()
+                if m=="feats":
+                    child.text=", ".join(map(lambda x:f_mapper[x.__name__],self.__getattribute__(m)))
+                else:
+                    child.text=str(self.__getattribute__(m).__str__())
+                    if child.text=='':
+                        child.text="\"\""
             except TypeError:
                 child.text="None"
         return prettify(root)
+    
+    def read_all(self,root):
+        for child in root:
+            if child.tag not in self.class_content:
+                raise AttributeError(child.tag)
+            if child.tag=="adjusted_params":
+                self.__setattr__(child.tag,child.text.lstrip("['").rstrip("']").split("', '"))
+            elif child.tag=="param_vals":
+                self.__setattr__(child.tag,map(float,child.text.lstrip("[").rstrip("]").split(",")))
+            elif child.tag=="boundaries":
+                self.__setattr__(child.tag,map(lambda x:map(float,x.split(", ")), child.text[2:len(child.text)-2].split("], [")))
+            elif child.tag=="type":
+                self.__setattr__(child.tag,child.text.lstrip("['").rstrip("']").split(","))
+            elif child.tag=="feats":
+                self.__setattr__(child.tag,child.text.split(", "))
+            elif child.tag=="stim_amp":
+                self.__setattr__(child.tag,map(float,child.text.lstrip("[").rstrip("]").split(",")))
+            elif child.tag=="weights":
+                self.__setattr__(child.tag,map(float,child.text.lstrip("[").rstrip("]").split(",")))
+            else:
+                try:
+                    self.__setattr__(child.tag,float(child.text))
+                except ValueError:
+                    self.__setattr__(child.tag,None if child.text=="None" else True if child.text=="True" else False if child.text=="false" else child.text )
+                except TypeError:
+                    print "type error",child.tag,child.text
+            
         
 
         
@@ -121,7 +156,7 @@ class optionHandler(object):
     
     # returns the current input file options     
     def GetInputOptions(self):
-        return [[self.input_dir], self.input_size, self.input_scale, self.input_length, self.input_freq, self.input_cont_t]
+        return [self.input_dir, self.input_size, self.input_scale, self.input_length, self.input_freq, self.input_cont_t,self.type[0]]
     
     # sets the input file options to the given values    
     def SetInputOptions(self,options):
@@ -132,6 +167,13 @@ class optionHandler(object):
         self.input_freq=options[4]
         self.input_cont_t=options[5]
         self.type.append(options[6])
+        
+    def SetSimParam(self,options):
+        self.simulator=options[0]
+        self.sim_command=options[1]
+        
+    def GetSimParam(self):
+        return [self.simulator,self.sim_command]
         
     # returns the current model options (name, parameters, stimuli, etc)        
     def GetModelOptions(self):
@@ -144,7 +186,7 @@ class optionHandler(object):
         self.model_spec_dir=options[1]
         
     def GetUFunString(self):
-        return self.u_fun_string
+        return self.u_fun_string.strip("\"")
     
     def SetUFunString(self,s):
         self.u_fun_string=s
@@ -253,8 +295,8 @@ class optionHandler(object):
         self.starting_points=options.get("starting_points",None)
         
     def GetFitnessParam(self):
-        return [ self.spike_thres,
-                self.feats,self.weights ]
+        return [ [{"Spike Detection Thres. (mv)" : self.spike_thres,
+                "Spike Window (ms)" : self.spike_window},self.feats],self.weights ]
         
     def SetFitnesParam(self,options):
         self.spike_thres=options[0][0].get("Spike Detection Thres. (mv)",0.0)

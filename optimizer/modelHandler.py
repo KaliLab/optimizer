@@ -237,6 +237,7 @@ class modelHandlerNeuron():
         #5:vrest
         #6:sampling rate
     def RunControll(self, settings):
+        print settings
         #self.hoc_obj.cvode_active(1)#variable time step is active
         self.hoc_obj.tstop=settings[0]
         self.hoc_obj.steps_per_ms=1/settings[1]

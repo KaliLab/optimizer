@@ -59,7 +59,7 @@ class fF():
     def compileUDF(self,section,settings,params):
         
         #print section
-        if self.option.GetUFunString()=='':
+        if self.option.GetUFunString()=="":
             for sec in section:
                 #print sec
                 if len(split(sec," "))==3:

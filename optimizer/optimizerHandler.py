@@ -30,6 +30,7 @@ class baseOptimizer():
         try:
             option_obj.feats=map(lambda x:self.fit_obj.calc_dict[x],option_obj.feats)
         except KeyError:
+            print "error with fitness function: ",option_obj.feats," not in: ",self.fit_obj.calc_dict.keys()
             pass
         
     
@@ -46,7 +47,7 @@ def uniform(random,args):
     size=args.get("num_inputs")
     bounds=args.get("_ec",args.get("self")).bounder
     candidate=[]
-    for n in range(size):
+    for n in range(int(size)):
         candidate.append(random.uniform(bounds.lower_bound[n],bounds.upper_bound[n]))
     print "uni",candidate
     return candidate

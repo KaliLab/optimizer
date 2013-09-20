@@ -572,9 +572,7 @@ class modelLayer(wx.Frame):
         self.toolbar.Realize()
         self.Bind(wx.EVT_TOOL, self.Next, button_toolbar_fward)
         self.Bind(wx.EVT_TOOL, self.Prev, button_toolbar_bward)
-        self.toolbar.EnableTool(button_toolbar_fward.GetId(), False)
-        
-        
+        self.toolbar.EnableTool(button_toolbar_fward.GetId(), False)     
     def Design(self):
         
         self.horizontal_box1 = wx.BoxSizer(wx.HORIZONTAL)
@@ -1112,7 +1110,9 @@ class stimuliLayer(wx.Frame):
             self.stimuli2.Enable()
             self.stimuli.Disable()
             self.del_ctrl.Disable()
+            self.del_ctrl.SetValue("0")
             self.dur_ctrl.Disable()
+            self.dur_ctrl.SetValue("1e9")
             self.stimuli.Hide()
             self.stimuli2.Show()
             self.final_sizer.Layout()
@@ -1146,9 +1146,11 @@ class stimuliLayer(wx.Frame):
                                 str(self.dd_sec.GetItems()[self.dd_sec.GetCurrentSelection()]),
                                 float(self.pos_ctrl.GetValue()),
                                 float(self.vrest_ctrl.GetValue())]}
+        print self.kwargs
         try:
             #self.layer.Design()
             self.layer.Show()
+            self.layer.kwargs=self.kwargs
         except AttributeError:
             #self.layer = algorithmLayer(self, 4, self.Size, "Select Algorithm", self.core, self.path, self.kwargs)
             self.layer = ffunctionLayer(self, 4, self.Size, "Fitness Function Selection", self.core, self.path, self.kwargs)
@@ -1330,6 +1332,7 @@ class ffunctionLayer(wx.Frame):
         try:
             self.layer.Show()
             self.layer.Design()
+            self.layer.kwargs=self.kwargs
         except AttributeError:
             #self.layer = resultsLayer(self, 4, self.Size, "Results", self.core, self.path)
             self.layer = algorithmLayer(self, 4, self.Size, "Select Algorithm", self.core, self.path, self.kwargs)
@@ -1520,7 +1523,8 @@ class algorithmLayer(wx.Frame):
             
     def Boundaries(self, e):
         boundarywindow(self)
-        #self.run.Enable()           
+        #self.run.Enable()     
+              
     
     def Run(self, e):
         try:
@@ -1557,6 +1561,7 @@ class algorithmLayer(wx.Frame):
     def Next(self, e):
         try:
             self.layer.Show()
+            self.layer.kwargs=self.kwargs
             #self.layer.Design()
         except AttributeError:
             self.layer = resultsLayer(self, 4, self.Size, "Results", self.core, self.path,self.kwargs)
@@ -1695,18 +1700,26 @@ class analyzisLayer(wx.Frame):
         self.Buttons()
         
     def Buttons(self):
-        gen_plot = wx.Button(self.panel, label="Generation Plot", pos=(25, 50))
+        gen_plot = wx.Button(self.panel, label="Generation Plot", pos=(25, 300))
         gen_plot.Bind(wx.EVT_BUTTON, self.PlotGen)
-        allele_plot = wx.Button(self.panel, label="Allele Plot", pos=(25, 100))
+        allele_plot = wx.Button(self.panel, label="Allele Plot", pos=(25, 350))
         allele_plot.Bind(wx.EVT_BUTTON, self.PlotAllele)
-        grid_plot = wx.Button(self.panel, label="Grid Plot", pos=(25, 150))
+        grid_plot = wx.Button(self.panel, label="Grid Plot", pos=(25, 400))
         grid_plot.Bind(wx.EVT_BUTTON, self.PlotGrid)
         
         
     def Design(self):
         heading = wx.StaticText(self.panel, label='Analysis', pos=(10, 15))
         heading.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
-        sub_title1 = wx.StaticText(self.panel, label='Generation & Allele plot', pos=(10, 35))
+        text = "Results:"
+        for n, k in zip(self.core.option_handler.GetObjTOOpt(), self.core.optimizer.fit_obj.ReNormalize(self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)])):
+            param=[n.split()[0], n.split()[-1]]
+            if param[0]!=param[1]:
+                text += "\n" + ": ".join(param) + "\n" + "\t" + str(k)
+            else:
+                text += "\n" + param[0] + "\n" + "\t" + str(k)
+        text += "\n" + "fitness:\n" + "\t" + str(self.core.optimizer.final_pop[0].fitness)
+        sub_title1 = wx.StaticText(self.panel, label=text, pos=(10, 35))
         sub_title2 = wx.StaticText(self.panel, label='Fitness statistics', pos=(410, 35))
         
         wx.StaticLine(self.panel, pos=(400, 0), size=(1, 600), style=wx.LI_VERTICAL)
@@ -1771,16 +1784,15 @@ class analyzisLayer(wx.Frame):
         for i in axes:
             for j in i:
                 a.append(j)     
-#        print len(self.core.optimizer.final_pop[1])
-#        print len(self.core.optimizer.final_pop[0])
-#        print len(self.core.optimizer.final_pop[1][0])
-#        print len(self.core.optimizer.final_pop[0][0])
+
         #,marker='o', color='r', ls=''
         for i in range(len(self.core.option_handler.GetObjTOOpt())):
             for points, fitness in zip(self.core.optimizer.final_pop[0][i],self.core.optimizer.final_pop[1][i]):
                 a[i].plot(points[i],
                                        fitness[0], marker='o', color='r', ls='')
             a[i].set_title(self.core.option_handler.GetObjTOOpt()[i])
+            a[i].relim()
+            a[i].autoscale(True,'both',False)
         
         #hide unused subplots
         for i in range(len(self.core.option_handler.GetObjTOOpt()),no_dims**2):

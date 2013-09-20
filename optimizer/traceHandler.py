@@ -75,7 +75,7 @@ class DATA():
         self.path_list=[]
         
     def number_of_traces(self):
-        return self.data.no_traces
+        return int(self.data.no_traces)
     
     def get_type(self):
         return self.data.type
@@ -97,6 +97,7 @@ class DATA():
     
     def Read(self,path=[os.getcwd()+"/inputTrace.txt"],no_traces=1,scale="mV",t_length=1000,freq=1000,trace_type="voltage"):
         self.path_list.append(path)
+        print path
         f=open(path[0],"r")
         i=0
         tmp=[]
