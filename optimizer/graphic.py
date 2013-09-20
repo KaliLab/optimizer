@@ -279,6 +279,11 @@ class inputLayer(wx.Frame):
         wx.Frame.__init__(self, parent, ID, title=title, size=size)
         self.Bind(wx.EVT_CLOSE, self.my_close)
         self.core = core
+
+        #this will need to be wrapped in a try statement later:
+        import optimizer
+        path = os.path.dirname(optimizer.__file__)
+
         self.path = path
         self.layer = None
         self.panel = wx.Panel(self)
@@ -553,6 +558,12 @@ class modelLayer(wx.Frame):
         self.parent = parent
         self.core = core
         self.layer = None
+
+        #this will need to be wrapped in a try statement later:
+        import optimizer
+        print optimizer.__file__
+        path = os.path.dirname(optimizer.__file__)
+
         self.path = path
         self.Center()
         self.ToolbarCreator()
@@ -927,6 +938,12 @@ class stimuliLayer(wx.Frame):
         self.panel = wx.Panel(self)
         self.parent = parent
         self.core = core
+
+        #this will need to be wrapped in a try statement later:
+        import optimizer
+        print optimizer.__file__
+        path = os.path.dirname(optimizer.__file__)
+        
         self.path = path
         self.Center()
         self.ToolbarCreator()
@@ -1179,6 +1196,12 @@ class ffunctionLayer(wx.Frame):
         self.core = core
         self.panel = wx.Panel(self)
         self.parent = parent
+
+        #this will need to be wrapped in a try statement later:
+        import optimizer
+        print optimizer.__file__        
+        path = os.path.dirname(optimizer.__file__)
+        
         self.path = path
         self.Center()
         self.ToolbarCreator()
@@ -1581,6 +1604,12 @@ class resultsLayer(wx.Frame):
         self.Bind(wx.EVT_CLOSE, self.my_close)
         self.core = core
         self.layer = None
+
+        #this will need to be wrapped in a try statement later:
+        import optimizer
+        print optimizer.__file__        
+        path = os.path.dirname(optimizer.__file__)
+
         self.path = path
         self.panel = wx.Panel(self)
         self.parent = parent
@@ -1687,6 +1716,9 @@ class analyzisLayer(wx.Frame):
         self.panel = wx.Panel(self)
         self.parent = parent
         self.core = core
+       
+        path = os.path.dirname(optimizer.__file__)
+
         self.path = path
         self.Center()
         self.ToolbarCreator()

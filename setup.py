@@ -3,11 +3,11 @@
 from distutils.core import setup
 
 setup(
-#    data_files=[()],
+#    data_files=[('optimizer/)],
     name = "optimizer",
     version = '0.0.1alpha',
     packages = ['optimizer'],
-#    package_data = {'neuroml.test': ['*.nml']},
+    package_data = {'optimizer': ['*.png']},
     author = "Optimizer authors and contributors",
     author_email = "vellamike@gmail.com",
     description = "A Python library for optimization of neuronal models",
