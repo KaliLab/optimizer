@@ -1,0 +1,3 @@
+#!/bin/bash
+#Script for starting optimizer GUI
+python -c 'from optimizer import graphic; graphic.main()'
