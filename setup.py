@@ -27,6 +27,6 @@ setup(
         'Topic :: Scientific/Engineering']
 )
 
-
-script_dir = '/usr/bin'
-shutil.copyfile('neuraloptimizer',os.path.join(script_dir,'neuraloptimizer'))
+if os.name == 'posix':
+    script_dir = '/usr/bin'
+    shutil.copyfile('neuraloptimizer',os.path.join(script_dir,'neuraloptimizer'))
