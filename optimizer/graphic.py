@@ -1722,6 +1722,9 @@ class analyzisLayer(wx.Frame):
         self.parent = parent
         self.core = core
        
+        #this will need to be wrapped in a try statement later:
+        import optimizer
+        print optimizer.__file__
         path = os.path.dirname(optimizer.__file__)
 
         self.path = path
