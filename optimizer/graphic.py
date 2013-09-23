@@ -140,7 +140,7 @@ class MyDialog(wx.Dialog):
             while text[i+2][0]=="#" and i<var_len:
                 var_names.append(text[i+2].lstrip("#"))
                 i+=1
-            if len(var_names)!=var_len:
+            if len(var_names)!=var_len and len(var_names)!=0:
                 raise SyntaxError("Number of parameter names must equal to number of parameters")
             if var_names==[]:
                 var_names=None
@@ -344,7 +344,9 @@ class inputLayer(wx.Frame):
         self.horizontal_box3.Add(self.time_checker, flag=wx.LEFT, border=10)
         
         self.type_selector = wx.Choice(self.panel, wx.ID_ANY)
-        self.type_selector.AppendItems(["Voltage trace", "Current trace", "Spike times", "Other"])
+        #enable this later
+        #self.type_selector.AppendItems(["Voltage trace", "Current trace", "Spike times", "Other"])
+        self.type_selector.AppendItems(["Voltage trace", "Current trace", "Other"])
         self.type_selector.SetSelection(0)
         self.type_selector.Bind(wx.EVT_CHOICE, self.typeChanged)
         self.horizontal_box3.Add(self.type_selector, flag=wx.LEFT, border=10)
@@ -367,10 +369,10 @@ class inputLayer(wx.Frame):
         self.tcurrent=None
         self.tspike_t=None
         self.tother=None
-        #self.loaded_input_types=[None]*4
+        #enable this later
         self.loaded_input_types=[self.tvoltage , 
                                  self.tcurrent ,
-                                 self.tspike_t ,
+#                                 self.tspike_t ,
                                  self.tother ]
         
         
@@ -1153,17 +1155,22 @@ class stimuliLayer(wx.Frame):
 #        self.dur_ctrl.Disable()
     
     def Next(self, e):
-        print {"stim" : [str(self.dd_type.GetItems()[self.dd_type.GetCurrentSelection()]), float(self.pos_ctrl.GetValue()), str(self.dd_sec1.GetItems()[self.dd_sec1.GetCurrentSelection()])],
-                              "stimparam" : [self.stim_window.container, float(self.del_ctrl.GetValue()), float(self.dur_ctrl.GetValue())]}
-        self.core.SecondStep({"stim" : [str(self.dd_type.GetItems()[self.dd_type.GetCurrentSelection()]), float(self.pos_ctrl.GetValue()), str(self.dd_sec1.GetItems()[self.dd_sec1.GetCurrentSelection()])],
-                              "stimparam" : [self.stim_window.container, float(self.del_ctrl.GetValue()), float(self.dur_ctrl.GetValue())]})
-        self.kwargs = {"runparam":[float(self.tstop_ctrl.GetValue()),
-                                float(self.dt_ctrl.GetValue()),
-                                str(self.dd_record.GetItems()[self.dd_record.GetCurrentSelection()]),
-                                str(self.dd_sec.GetItems()[self.dd_sec.GetCurrentSelection()]),
-                                float(self.pos_ctrl.GetValue()),
-                                float(self.vrest_ctrl.GetValue())]}
-        print self.kwargs
+        try:
+            print {"stim" : [str(self.dd_type.GetItems()[self.dd_type.GetCurrentSelection()]), float(self.pos_ctrl.GetValue()), str(self.dd_sec1.GetItems()[self.dd_sec1.GetCurrentSelection()])],
+                                  "stimparam" : [self.stim_window.container, float(self.del_ctrl.GetValue()), float(self.dur_ctrl.GetValue())]}
+            self.core.SecondStep({"stim" : [str(self.dd_type.GetItems()[self.dd_type.GetCurrentSelection()]), float(self.pos_ctrl.GetValue()), str(self.dd_sec1.GetItems()[self.dd_sec1.GetCurrentSelection()])],
+                                  "stimparam" : [self.stim_window.container, float(self.del_ctrl.GetValue()), float(self.dur_ctrl.GetValue())]})
+            self.kwargs = {"runparam":[float(self.tstop_ctrl.GetValue()),
+                                    float(self.dt_ctrl.GetValue()),
+                                    str(self.dd_record.GetItems()[self.dd_record.GetCurrentSelection()]),
+                                    str(self.dd_sec.GetItems()[self.dd_sec.GetCurrentSelection()]),
+                                    float(self.pos_ctrl.GetValue()),
+                                    float(self.vrest_ctrl.GetValue())]}
+            print self.kwargs
+        except AttributeError:
+            wx.MessageBox("No stimulus amplitude was selected!","Error", wx.OK | wx.ICON_ERROR)
+        except ValueError:
+            wx.MessageBox('Some of the cells are empty. Please fill out all of them!', 'Error', wx.OK | wx.ICON_ERROR)
         try:
             #self.layer.Design()
             self.layer.Show()
