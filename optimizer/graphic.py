@@ -1803,9 +1803,11 @@ class analyzisLayer(wx.Frame):
         wx.Exit()
 
 
-def main():         
+def main(param=None):         
     app = wx.App(False)  
-    core = Core.coreModul()      
+    core = Core.coreModul()
+    if param!=None:
+        core.option_handler.output_level=param.lstrip("v_level=")   
     layer = inputLayer(None, 0, (800, 600), "Input Trace Selection", core, os.getcwd())
     #layer=modelLayer(None,0,(800,600),"Input Trace Selection",None,"/".join(os.getcwd().split("/")[0:-1]))
     #layer=stimuliLayer(None,0,(800,600),"Input Trace Selection",None,"/".join(os.getcwd().split("/")[0:-1]))
