@@ -14,6 +14,7 @@ def prettify(e):
 # the proper initialization is done via the target classes' constructors (traceReader, modelHandlerNeuron) 
 class optionHandler(object):
     def __init__(self):
+        self.output_level="1"
         prev=dir(self)
         self.start_time_stamp=time.time()
         #exp data settings

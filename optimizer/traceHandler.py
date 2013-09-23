@@ -91,13 +91,13 @@ class DATA():
         spike_times_rule=re.compile("# variable = spikes")
         rules=[pynn_rule,neuron_rule_time,neuron_rule,spike_times_rule]
         result=[n!=None for n in [re.match(k,line) for k in rules ] ]
-        print result
-        print result.index(True)
+        #print result
+        #print result.index(True)
         return [self.PyNNReader,self.traceReaderTime,self.traceReader,self.spikeTimeReader][result.index(True)]
     
     def Read(self,path=[os.getcwd()+"/inputTrace.txt"],no_traces=1,scale="mV",t_length=1000,freq=1000,trace_type="voltage"):
         self.path_list.append(path)
-        print path
+        #print path
         f=open(path[0],"r")
         i=0
         tmp=[]
@@ -112,7 +112,7 @@ class DATA():
         
     def traceReader(self,path,no_traces,scale,t_length,freq,trace_type):        
         trace=Trace(no_traces, scale, t_length, freq,trace_type)
-        print "no time"
+        #print "no time"
         for my_file in path:
             try:
                 data_file=open(my_file,'r')
@@ -132,7 +132,7 @@ class DATA():
 
     def traceReaderTime(self,path,no_traces,scale,t_length,freq,trace_type):
         trace=Trace(no_traces, scale, t_length, freq,trace_type)
-        print "time"
+        #print "time"
         for my_file in path:
             try:
                 data_file=open(my_file,'r')
@@ -173,8 +173,8 @@ class DATA():
                     except KeyError:
                         tmp_dict[tmp[1]]=[float(tmp[0])]
         trace.data=map(list,zip(*(tmp_dict.values())))
-        print len(self.data),len(self.data[0])
-        print self.data[0][0:10]
+        #print len(self.data),len(self.data[0])
+        #print self.data[0][0:10]
         return trace
         
     def spikeTimeReader(self,path,no_traces,scale,t_length,freq,trace_type):
