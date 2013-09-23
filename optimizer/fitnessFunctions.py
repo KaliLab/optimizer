@@ -137,10 +137,12 @@ class fF():
         tmp=[]
         for i in range(1,min(len(mod_t),len(exp_t))-1):
             grad_a=((mod_t[i+1]-mod_t[i-1])/(2*dt))
-            #print grad_a
             grad_b=((exp_t[i+1]-exp_t[i-1])/(2*dt))
-            #print grad_b
             tmp.append((grad_a-grad_b)**2)
+        if self.option.output_level=="1":
+            print "grad dif"
+            print fsum(tmp)/len(tmp)/(pow(max(tmp)-min(tmp),2))
+            
             
         return fsum(tmp)/len(tmp)/(pow(max(tmp)-min(tmp),2))  
            
@@ -160,9 +162,6 @@ class fF():
             spikes[1]=add_data
         else:
             spikes[1]=self.detectSpike( exp_t[int(self.option.stim_del*self.option.input_freq/1000):int(self.option.stim_del*self.option.input_freq/1000+stim_dur*self.option.input_freq/1000)])
-        print "spike rate:"
-        print "mod: ", len(spikes[0])
-        print "exp: ", len(spikes[1])
         mod_spike=len(spikes[0])
         exp_spike=len(spikes[1])
         if len(spikes[0])<1 or len(spikes[1])<1:
@@ -171,9 +170,12 @@ class fF():
             #temp_fit+=float(abs(mod_spike-exp_spike))/max( float(exp_spike),float(mod_spike-1) )
             temp_fit+=float(abs(mod_spike-exp_spike))/float(exp_spike+mod_spike+1)
         except ZeroDivisionError:
-            print "error"
             temp_fit+=1
-            
+        if self.option.output_level=="1":
+            print "spike rate:"
+            print "mod: ", len(spikes[0])
+            print "exp: ", len(spikes[1])
+            print temp_fit
         return temp_fit
         
     
@@ -185,7 +187,6 @@ class fF():
 #four ISIs or one-fifth of the total number of ISIs, whichever was the smaller
 #of the two
         add_data=args.get("add_data",None)
-        print "isi difference:"
         spikes=[0,0]
         spikes[0]=self.detectSpike( mod_t)
         if add_data!=None:
@@ -194,8 +195,6 @@ class fF():
             spikes[1]=self.detectSpike( exp_t)
         tmp=[]
         #tmp.append(abs(len(spikes[0])-len(spikes[1]))/max( float(len(spikes[0])),float(len(spikes[1])-1) ))
-        print "mod: ", len(spikes[0])
-        print "exp: ", len(spikes[1])
         if len(spikes[0])<1 and len(spikes[1])<1:
             return 0
         if len(spikes[0])<1 != len(spikes[1])<1:
@@ -211,27 +210,32 @@ class fF():
                 
             except IndexError:
                 pass
-        print fsum(tmp)/len(exp_t)
+        if self.option.output_level=="1":
+            print "isi difference:"
+            print "mod: ", len(spikes[0])
+            print "exp: ", len(spikes[1])
+            print fsum(tmp)/len(exp_t)
         return fsum(tmp)/len(exp_t)
     
     
         #compares the two traces based on the latency of the first spikes
     def first_spike(self,mod_t,exp_t,args):
         add_data=args.get("add_data",None)
-        print "first spike"
         spikes=[0,0]
         spikes[0]=self.detectSpike( mod_t)
         if add_data!=None:
             spikes[1]=add_data
         else:
             spikes[1]=self.detectSpike( exp_t)
-        print "mod: ", len(spikes[0])
-        print "exp: ", len(spikes[1])
         if len(spikes[0])<1 and len(spikes[1])<1:
             return 0
         if len(spikes[0])<1 != len(spikes[1])<1:
             return 1
-        print pow(spikes[0][0].start_pos-spikes[1][0].start_pos,2)/len(exp_t)
+        if self.option.output_level=="1":            
+            print "first spike"
+            print "mod: ", len(spikes[0])
+            print "exp: ", len(spikes[1])
+            print pow(spikes[0][0].start_pos-spikes[1][0].start_pos,2)/len(exp_t)
         return pow(spikes[0][0].start_pos-spikes[1][0].start_pos,2)/len(exp_t)
     
     
@@ -240,15 +244,12 @@ class fF():
         #normalized
     def AP_overshoot(self,mod_t,exp_t,args):
         add_data=args.get("add_data",None)
-        print "AP oveshoot:"
         spikes=[0,0]
         spikes[0]=self.detectSpike( mod_t)
         if add_data!=None:
             spikes[1]=add_data
         else:
             spikes[1]=self.detectSpike( exp_t)
-        print "mod: ", len(spikes[0])
-        print "exp: ", len(spikes[1])
         max_amp=max(map(lambda x: max(x.peak_val),exp_t))
         if len(spikes[0])<1 and len(spikes[1])<1:
             return 0
@@ -256,10 +257,15 @@ class fF():
             return 1
         tmp=[pow((s1.peak_val-self.thres)-(s2.peak_val-self.thres),2) for s1,s2 in zip(spikes[0],spikes[1])]
         try:
-            print fsum(tmp)/len(tmp)/max_amp
+            if self.option.output_level=="1":
+                print "AP oveshoot:"
+                print "mod: ", len(spikes[0])
+                print "exp: ", len(spikes[1])
+                print fsum(tmp)/len(tmp)/max_amp
             return  fsum(tmp)/len(tmp)/max_amp
         except OverflowError:
-            return 1000
+            print "overflow"
+            return 10
     
     
         #compares the two traces based on the after-hyperpolarization depth
@@ -271,15 +277,12 @@ class fF():
         #normalize by (square of) the range of all exp voltage values
         #(subthreshold range would be even better, but may be more difficult).
         add_data=args.get("add_data",None)
-        print "AHP depth:"
         spikes=[0,0]
         spikes[0]=self.detectSpike( mod_t)
         if add_data!=None:
             spikes[1]=add_data
         else:
             spikes[1]=self.detectSpike( exp_t)
-        print "mod: ", len(spikes[0])
-        print "exp: ", len(spikes[1])
         if len(spikes[0])<1 and len(spikes[1])<1:
             return 0
         if len(spikes[0])<1 != len(spikes[1])<1:
@@ -297,6 +300,11 @@ class fF():
         avg_e=fsum(e)/len(e)
         avg_m=fsum(m)/len(m)
         sub_t_e=filter(lambda x: x<self.thres, exp_t)
+        if self.option.output_level=="1":
+            print "AHP depth:"
+            print "mod: ", len(spikes[0])
+            print "exp: ", len(spikes[1])
+            print pow(avg_e-avg_m,2)/pow(max(sub_t_e)-min(sub_t_e),2)
         tmp=pow(avg_e-avg_m,2)/pow(max(sub_t_e)-min(sub_t_e),2) 
         return tmp
     
@@ -306,15 +314,12 @@ class fF():
         #not normalized 
     def AP_width(self,mod_t,exp_t,args):#atlagos spike szelesseget, vagy utolso/elso vagy csak az elso
         add_data=args.get("add_data",None)
-        print "AP width:"
         spikes=[0,0]
         spikes[0]=self.detectSpike( mod_t)
         if add_data!=None:
             spikes[1]=add_data
         else:
             spikes[1]=self.detectSpike( exp_t)
-        print "mod: ", len(spikes[0])
-        print "exp: ", len(spikes[1])
         if len(spikes[0])<1 and len(spikes[1])<1:
             return 0
         if len(spikes[0])<1 != len(spikes[1])<1:
@@ -325,7 +330,11 @@ class fF():
             avg1.append((s1.stop_pos-s1.start_pos)/2)
             avg2.append((s2.stop_pos-s2.start_pos)/2)
 
-        
+        if self.option.output_level=="1":
+            print "AP width:"
+            print "mod: ", len(spikes[0])
+            print "exp: ", len(spikes[1])
+            print pow((fsum(avg2)/len(avg2)-fsum(avg1)/len(avg1))/(fsum(avg2)/len(avg2)),2)
         return pow((fsum(avg2)/len(avg2)-fsum(avg1)/len(avg1))/(fsum(avg2)/len(avg2)),2)
 
     
@@ -340,8 +349,6 @@ class fF():
             spikes[1]=add_data
         else:
             spikes[1]=self.detectSpike(exp_t)
-        print "mod: ", len(spikes[0])
-        print "exp: ", len(spikes[1])
         e=copy(mod_t)
         m=copy(exp_t)
         if len(spikes[1])<1 and len(spikes[0])<1:
@@ -358,6 +365,11 @@ class fF():
 #            except IndexError:
 #                tmp.append(self.calc_ase(a[spikes[1][i].stop_pos+window:],b[spikes[1][i].stop_pos+window:],args ))
 #        print fsum(tmp)/len(tmp)
+        if self.option.output_level=="1":
+            print "spike_ase"
+            print "mod: ", len(spikes[0])
+            print "exp: ", len(spikes[1])
+            print self.calc_ase(m, e, args)
         return self.calc_ase(m, e, args)
         
         # averaged squared error 
@@ -373,10 +385,9 @@ class fF():
                 return 100
             except TypeError:
                 return 2
-        
-        #take the sqrt of the whole
-        #calc the square of the max-min
-        #fsum( map( lambda x: x/max(tmp) ,tmp) ) 
+        if self.option.output_level=="1":
+            print "ase"
+            print fsum(temp)/len(temp)/( pow( max(exp_t)-min(exp_t),2 ) )
         return fsum(temp)/len(temp)/( pow( max(exp_t)-min(exp_t),2 ) )#(sqrt(fsum(temp)/len(temp)))/(max(max(exp,model))-min(min(exp,model)))
     
     
@@ -384,7 +395,6 @@ class fF():
         add_data=args.get("add_data",None)
         temp_fit=0
         spikes=[0,0]
-        #print a[0:50]
         spikes[0]=self.detectSpike(mod_t)
         print spikes[0]
         if add_data!=None:
@@ -393,15 +403,16 @@ class fF():
             spikes[1]=self.detectSpike(exp_t)
         mod_spike=len(spikes[0])
         exp_spike=len(spikes[1])
-        print "mod: ", mod_spike
-        print "exp: ", exp_spike            
         try:
             #temp_fit+=float(abs(mod_spike-exp_spike))/max( float(exp_spike),float(mod_spike-1) )
             temp_fit+=float(abs(mod_spike-exp_spike))/float(exp_spike+mod_spike+1)
         except ZeroDivisionError:
-            print "error"
             temp_fit+=1
-        print temp_fit
+        if self.option.output_level=="1":
+            print "spike count"
+            print "mod: ", mod_spike
+            print "exp: ", exp_spike
+            print temp_fit
         return temp_fit
 
     
@@ -409,7 +420,6 @@ class fF():
     
     
     def combineFeatures(self,candidates,args):
-        print "combine"
         self.fitnes=[]
         features=self.option.feats
         weigths=self.option.weights
@@ -417,9 +427,11 @@ class fF():
         window=self.option.spike_window
         self.model.CreateStimuli(self.option.GetModelStim())
         for l in candidates:
-            print l
+            if self.option.output_level=="1":
+                print l
             l=self.ReNormalize(l)
-            print l
+            if self.option.output_level=="1":
+                print l
             for k in range(self.reader.number_of_traces()):
                 try:
                     add_data=[spike_frame(n-window,self.thres,n,1,n+window,self.thres) for n in self.reader.additional_data.get(k)]
@@ -436,14 +448,15 @@ class fF():
                     extra_param=self.option.GetModelRun()
                     self.model.SetStimuli(parameter,extra_param)
                 self.modelRunner(l)
-                print features,weigths
+                if self.option.output_level=="1":
+                    print features,weigths
                 for f,w in zip(features,weigths):
-                    print w
                     temp_fit+=w*(f( self.model.record[0],
                                                     self.reader.data.GetTrace(k),args ))
                             
             self.fitnes.append(temp_fit)
-            print temp_fit
+            if self.option.output_level=="1":
+                print temp_fit
             temp_fit=0
         return self.fitnes
     
@@ -459,7 +472,6 @@ class fF():
         args={}
         args["add_data"]=add_data
         for f,w in zip(features,weigths):
-            print w,f
             fit_list.append([w,f,(f( model_output,self.reader.data.GetTrace(index_of_trace),args ))])
         return fit_list
     

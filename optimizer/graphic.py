@@ -1,11 +1,14 @@
 import wx
 import sys
-import matplotlib
-from inspyred.ec import analysis
+try:
+    import matplotlib
+    matplotlib.use('WXAgg')
+except RuntimeError as re:
+    print re
+#from inspyred.ec import analysis
 from inspyred.ec.analysis import generation_plot, allele_plot
 import inspyred
 #from wxPython._controls import wxTextCtrl
-matplotlib.use('WXAgg')
 from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
 from matplotlib.figure import Figure
 import os
@@ -129,12 +132,12 @@ class MyDialog(wx.Dialog):
             self.parent.model.DeleteAllItems()
             text = ""
             text = map(strip, str(self.string.GetValue()).split("\n"))[4:-1]
-            print text
+            #print text
             variables = []
             variables = map(strip, str(text[0][text[0].index("(") + 1:text[0].index(")")]).split(","))
-            print variables
+            #print variables
             var_len = int(text[1].lstrip("#"))
-            print var_len
+            #print var_len
             i=0
             var_names=[]
             while text[i+2][0]=="#" and i<var_len:
@@ -150,7 +153,7 @@ class MyDialog(wx.Dialog):
                     self.parent.core.option_handler.SetObjTOOpt(var_names[i])
                 else:
                     self.parent.core.option_handler.SetObjTOOpt("Vector" + "[" + str(i) + "]")
-            print variables, variables[0]
+            #print variables, variables[0]
             if variables[0] == '':
                 raise ValueError
             compile(self.string.GetValue(), '<string>', 'exec')
@@ -236,41 +239,6 @@ class MyDialog2(wx.Dialog):
         
         
         
-class combinewindow(wx.Dialog):
-    def __init__(self, par, kwargs):
-        self.combine_window = wx.Frame(par.panel, wx.ID_ANY, "Functions & Weights", size=(400, 500))
-        self.panel = wx.Panel(self.combine_window)
-        self.par = par
-        self.kwargs = kwargs
-        self.ok = wx.Button(self.panel, label="Ok", pos=(300, 450))
-        self.ok.Bind(wx.EVT_BUTTON, self.OnOk)
-        wx.StaticText(self.panel, label="Put the weights into the panel above,\n separated by commas!", pos=(10, 450))
-        self.my_list = copy(self.par.core.ffun_calc_list)
-        #self.my_list.remove("Combinations")
-        self.listbox = wx.CheckListBox(self.panel, wx.ID_ANY, pos=(10, 10), size=(380, 400), choices=self.my_list)
-        self.w = wx.TextCtrl(self.panel, wx.ID_ANY, pos=(10, 410), size=(380, 40))
-        self.combine_window.Show()
-        self.weights = []
-        self.feat = []
-        
-    def OnOk(self, e):
-        self.weights = map(float, self.w.GetValue().split(","))        
-        self.feat = list(self.listbox.GetCheckedStrings())
-        self.combine_window.Hide()
-        msg = "Optimization will start after you pressed ok, after that please wait.."
-        dlg = wx.MessageBox(msg, "Starting", wx.OK | wx.ICON_EXCLAMATION)
-        
-        self.kwargs["feat"] = self.feat
-        self.kwargs["weights"] = self.weights
-        
-        self.par.core.ThirdStep(self.kwargs)
-
-        wx.MessageBox('Optimization finished. Press the Next button for the results', 'Done', wx.OK | wx.ICON_EXCLAMATION)
-
-        self.par.core.Print()
-        self.par.toolbar.EnableTool(wx.ID_FORWARD, True)
-        
-
 
 
 class inputLayer(wx.Frame):
@@ -433,7 +401,6 @@ class inputLayer(wx.Frame):
     def Next(self, e):
         
             self.core.Print()
-            
             try:
                 self.layer.Show()
             except AttributeError:
@@ -543,10 +510,6 @@ class inputLayer(wx.Frame):
                 self.input_tree.AppendItem(self.tother,self.input_file_controll.GetValue().split("/")[-1])
             else:
                 pass
-#            self.loaded_input_types=[self.tvoltage , 
-#                                 self.tcurrent ,
-#                                 self.tspike_t ,
-#                                 self.tother ]
     
 
 
@@ -777,7 +740,7 @@ class modelLayer(wx.Frame):
     
             
               
-            kwargs = {"section" : self.model.GetItem(item_selected, 0).GetText(),
+            kwargs = {"section" : section,
                     "channel" : chan,
                     "morph" : morph,
                     "params" : par,
@@ -827,7 +790,7 @@ class modelLayer(wx.Frame):
             if par == "-":
                 par = "None"
               
-            kwargs = {"section" : self.model.GetItem(item_selected, 0).GetText(),
+            kwargs = {"section" : section,
                 "channel" : chan,
                 "morph" : morph,
                 "params" : par,
@@ -836,10 +799,8 @@ class modelLayer(wx.Frame):
                 temp = kwargs["section"] + " " + kwargs["morph"]
             else:
                 temp = kwargs["section"] + " " + kwargs["channel"] + " " + kwargs["params"]
-            print self.core.option_handler.GetObjTOOpt()
             self.core.option_handler.param_vals.pop(self.core.option_handler.GetObjTOOpt().index(temp))
             self.core.option_handler.adjusted_params.remove(temp)
-            print self.core.option_handler.GetObjTOOpt()
             if len(self.core.option_handler.GetObjTOOpt()) == 0:
                 self.remover.Disable()
             searchValue = [kwargs["section"], kwargs["params"], kwargs["morph"]]
@@ -963,9 +924,6 @@ class stimuliLayer(wx.Frame):
         self.toolbar.EnableTool(wx.ID_FORWARD, False)
     
     def Design(self):
-        #duration
-        #section
-        #positon
         self.column1 = wx.BoxSizer(wx.VERTICAL)
         self.column2 = wx.BoxSizer(wx.VERTICAL)
         self.final_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -997,12 +955,6 @@ class stimuliLayer(wx.Frame):
         self.stimuli = wx.Button(self.panel, label="Amplitude(s)")
         self.stimuli.Bind(wx.EVT_BUTTON, self.Stimuli)
         
-        #tmp_sizer=wx.BoxSizer(wx.HORIZONTAL)
-        #tmp_sizer.Add(descr7)
-        #remove this label
-        #descr7 = wx.StaticText(self.panel, label='Custom Waveform')
-        #tmp_sizer.Add(descr7,flag=wx.LEFT,border=15)
-        #self.column1.Add(tmp_sizer, flag=wx.UP, border=15)
         
         tmp_sizer2=wx.BoxSizer(wx.HORIZONTAL)
         tmp_sizer2.Add(self.stimuli)
@@ -1104,7 +1056,6 @@ class stimuliLayer(wx.Frame):
                 
         
         self.final_sizer.Add(self.column2, flag=wx.LEFT, border=75)
-        #eg:self.horizontal_box5.Add(self.sim_path,flag=wx.RIGHT,border=15)
         
         
         
@@ -1138,8 +1089,6 @@ class stimuliLayer(wx.Frame):
             #hide step button
         
     def Stimuli(self, e):
-        #start=float(self.del_ctrl.GetValue())
-        #dur=float(self.dur_ctrl.GetValue())
         self.stim_window = stimuliwindow(self)
            
     def Stimuli2(self,e):
@@ -1156,8 +1105,6 @@ class stimuliLayer(wx.Frame):
     
     def Next(self, e):
         try:
-            print {"stim" : [str(self.dd_type.GetItems()[self.dd_type.GetCurrentSelection()]), float(self.pos_ctrl.GetValue()), str(self.dd_sec1.GetItems()[self.dd_sec1.GetCurrentSelection()])],
-                                  "stimparam" : [self.stim_window.container, float(self.del_ctrl.GetValue()), float(self.dur_ctrl.GetValue())]}
             self.core.SecondStep({"stim" : [str(self.dd_type.GetItems()[self.dd_type.GetCurrentSelection()]), float(self.pos_ctrl.GetValue()), str(self.dd_sec1.GetItems()[self.dd_sec1.GetCurrentSelection()])],
                                   "stimparam" : [self.stim_window.container, float(self.del_ctrl.GetValue()), float(self.dur_ctrl.GetValue())]})
             self.kwargs = {"runparam":[float(self.tstop_ctrl.GetValue()),
@@ -1166,7 +1113,10 @@ class stimuliLayer(wx.Frame):
                                     str(self.dd_sec.GetItems()[self.dd_sec.GetCurrentSelection()]),
                                     float(self.pos_ctrl.GetValue()),
                                     float(self.vrest_ctrl.GetValue())]}
-            print self.kwargs
+            if self.core.option_handler.output_level=="1":
+                print {"stim" : [str(self.dd_type.GetItems()[self.dd_type.GetCurrentSelection()]), float(self.pos_ctrl.GetValue()), str(self.dd_sec1.GetItems()[self.dd_sec1.GetCurrentSelection()])],
+                       "stimparam" : [self.stim_window.container, float(self.del_ctrl.GetValue()), float(self.dur_ctrl.GetValue())]}
+                print self.kwargs
         except AttributeError:
             wx.MessageBox("No stimulus amplitude was selected!","Error", wx.OK | wx.ICON_ERROR)
         except ValueError:
@@ -1576,7 +1526,8 @@ class algorithmLayer(wx.Frame):
         self.core.Print()
         #[map(float,map(wxTextCtrl.GetValue,fun)) for fun in self.param_list_container]
         
-        print self.kwargs
+        if self.core.option_handler.output_level=="1":
+            print self.kwargs
         self.core.ThirdStep(self.kwargs)
 
         wx.MessageBox('Optimization finished. Press the Next button for the results!', 'Done', wx.OK | wx.ICON_EXCLAMATION)
@@ -1656,7 +1607,7 @@ class resultsLayer(wx.Frame):
         canvas = wx.Panel(self.panel, pos=(210, 10), size=(550, self.GetSize()[1]))
         figure = Figure(figsize=(7, 6))
         axes = figure.add_subplot(111)
-        canv = FigureCanvas(canvas, -1, figure)
+        FigureCanvas(canvas, -1, figure)
         self.panel.Fit()
         self.Show()
         canvas.Show()
@@ -1761,12 +1712,11 @@ class analyzisLayer(wx.Frame):
             else:
                 text += "\n" + param[0] + "\n" + "\t" + str(k)
         text += "\n" + "fitness:\n" + "\t" + str(self.core.optimizer.final_pop[0].fitness)
-        sub_title1 = wx.StaticText(self.panel, label=text, pos=(10, 35))
-        sub_title2 = wx.StaticText(self.panel, label='Fitness statistics', pos=(410, 35))
+        wx.StaticText(self.panel, label=text, pos=(10, 35))
+        wx.StaticText(self.panel, label='Fitness statistics', pos=(410, 35))
         
         wx.StaticLine(self.panel, pos=(400, 0), size=(1, 600), style=wx.LI_VERTICAL)
         
-        tmp_str=[]
         try:
             stats = inspyred.ec.analysis.fitness_statistics(self.core.optimizer.final_pop)
         except AttributeError:
@@ -1853,9 +1803,11 @@ class analyzisLayer(wx.Frame):
         wx.Exit()
 
 
-def main():         
+def main(param=None):         
     app = wx.App(False)  
-    core = Core.coreModul()      
+    core = Core.coreModul()
+    if param!=None:
+        core.option_handler.output_level=param.lstrip("v_level=")   
     layer = inputLayer(None, 0, (800, 600), "Input Trace Selection", core, os.getcwd())
     #layer=modelLayer(None,0,(800,600),"Input Trace Selection",None,"/".join(os.getcwd().split("/")[0:-1]))
     #layer=stimuliLayer(None,0,(800,600),"Input Trace Selection",None,"/".join(os.getcwd().split("/")[0:-1]))

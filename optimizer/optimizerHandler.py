@@ -49,7 +49,7 @@ def uniform(random,args):
     candidate=[]
     for n in range(int(size)):
         candidate.append(random.uniform(bounds.lower_bound[n],bounds.upper_bound[n]))
-    print "uni",candidate
+    #print "uni",candidate
     return candidate
 
 class my_candidate():
@@ -69,12 +69,10 @@ class annealing(baseOptimizer):
         self.rand.seed(self.seed)
         self.evo_strat=ec.SA(self.rand)
         self.evo_strat.terminator=terminators.evaluation_termination
-#        self.evo_strat.selector=inspyred.ec.selectors.default_selection
-#        self.evo_strat.replacer=inspyred.ec.replacers.simulated_annealing_replacement
-#        self.evo_strat.variator=[variators.gaussian_mutation,
-#                                 variators.blend_crossover]
-        self.evo_strat.observer=[observers.population_observer,observers.file_observer]
-        #self.pop_size=option_obj.pop_size
+        if option_obj.output_level=="1":
+            self.evo_strat.observer=[observers.population_observer,observers.file_observer]
+        else:
+            self.evo_strat.observer=[observers.file_observer]
         self.max_evaluation=option_obj.max_evaluation
         self.mutation_rate=option_obj.mutation_rate
         self.g_m=option_obj.m_gauss
@@ -83,7 +81,7 @@ class annealing(baseOptimizer):
         self.cooling_rate=option_obj.cooling_rate
     
         self.num_inputs=option_obj.num_inputs
-        self.SetBoundaries(option_obj.boundaries)####!!!!!!!!!!!!!!!!!!!!!!!!!!!!probably should place it into the Optimize()!!!!!!!!!###########xx
+        self.SetBoundaries(option_obj.boundaries)
         self.maximize=False #hard wired, always minimize
         self.stat_file=open("stat_file.txt","w")
         self.ind_file=open("ind_file.txt","w")
@@ -93,7 +91,8 @@ class annealing(baseOptimizer):
             self.starting_points=[normalize(option_obj.starting_points,self)]
         except TypeError:
             self.starting_points=None
-        print "optimizer",self.starting_points
+        if option_obj.output_level=="1":
+            print "starting points: ",self.starting_points
         
 #    def wrapper(self,candidates,args):
 #        tmp=ndarray.tolist(candidates)
@@ -159,7 +158,8 @@ class scipy_anneal(baseOptimizer):
             self.starting_points=[normalize(option_obj.starting_points,self)]
         except TypeError:
             self.starting_points=uniform(self.rand,{"num_inputs" : self.num_inputs,"self": self})
-        print "optimizer",self.starting_points
+        if option_obj.output_level=="1":
+            print "starting points: ",self.starting_points
         
 
     def wrapper(self,candidates,args):
@@ -207,7 +207,8 @@ class fmin(baseOptimizer):
             self.starting_points=[normalize(option_obj.starting_points,self)]
         except TypeError:
             self.starting_points=uniform(self.rand,{"num_inputs" : self.num_inputs,"self": self})
-        print "optimizer",self.starting_points
+        if option_obj.output_level=="1":
+            print "starting points: ",self.starting_points
         
         
         
@@ -254,7 +255,9 @@ class L_BFGS_B(baseOptimizer):
             self.starting_points=[normalize(option_obj.starting_points,self)]
         except TypeError:
             self.starting_points=uniform(self.rand,{"num_inputs" : self.num_inputs,"self": self})
-        print "optimizer",self.starting_points
+            
+        if option_obj.output_level=="1":
+            print "starting points: ",self.starting_points
         
         
     def wrapper(self,candidates,args):
@@ -354,12 +357,15 @@ class simpleEO(baseOptimizer):
         self.evo_strat.replacer=inspyred.ec.replacers.generational_replacement
         self.evo_strat.variator=[variators.gaussian_mutation,
                                  variators.blend_crossover]
-        self.evo_strat.observer=[observers.population_observer,observers.file_observer]
+        if option_obj.output_level=="1":
+            self.evo_strat.observer=[observers.population_observer,observers.file_observer]
+        else:
+            self.evo_strat.observer=[observers.file_observer]
         self.pop_size=option_obj.pop_size
         self.max_evaluation=option_obj.max_evaluation
         self.mutation_rate=option_obj.mutation_rate
         self.num_inputs=option_obj.num_inputs
-        self.SetBoundaries(option_obj.boundaries)####!!!!!!!!!!!!!!!!!!!!!!!!!!!!probably should place it into the Optimize()!!!!!!!!!###########xx
+        self.SetBoundaries(option_obj.boundaries)
         self.maximize=False #hard wired, always minimize
         self.stat_file=open("stat_file.txt","w")
         self.ind_file=open("ind_file.txt","w")

@@ -3,20 +3,26 @@ import os
 
 
 def main(parameters):
-    print parameters[1]
     if parameters[0]=="-h":
         print("This is the command line help of Optimizer\nRecognised arguments:\n\t-h:Help\n\t-g:Graphical interface\n\t-c:Command line interface, specify the settings file in the 2nd argument")
     elif parameters[0]=="-g":
         #os.system(os.getcwd()+"/graphic.py")
         import graphic
-        graphic.main()
+        try:
+            graphic.main(parameters[1])
+        except IndexError:
+            graphic.main()
     elif parameters[0]=="-c":
-        #try:
+        try:
             import cmd_line
-            cmd_line.main(parameters[1])
-        #except IndexError as IE:
-            #print IE
-            #sys.exit("Missing filename!")
+            try:
+                cmd_line.main(parameters[1],parameters[2])
+            except IndexError:
+                cmd_line.main(parameters[1])
+            
+        except IndexError as IE:
+            print IE
+            sys.exit("Missing filename!")
     else:
         sys.exit("Unknown arguments!\nPlease run the program with either -h, -g,-c arguments!")         
     
@@ -25,9 +31,9 @@ def main(parameters):
 
 if __name__=="__main__":
     #print sys.argv
-    #try:
+    try:
         parameters=sys.argv[1:]
         main(parameters)
-    #except IndexError:
+    except IndexError:
         #sys.exit("Missing arguments!\n Please run the program with either -h, -g,-c arguments!")
     

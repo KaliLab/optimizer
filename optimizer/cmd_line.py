@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 from reportlab.lib.colors import coral
 
 
-def main(fname):
+def main(fname,param=None):
     try:
         f=open(fname,"r")
     except IOError as ioe:
@@ -16,8 +16,8 @@ def main(fname):
         sys.exit("Missing \"settings\" tag in xml!")
 
     core=Core.coreModul()
-    #iterate over root to get parameters
-    #fill option handler then use get methods to obtain parameters and pass them to core steps
+    if param!=None:
+        core.option_handler.output_level=param.lstrip("v_level=") 
     core.option_handler.read_all(root)
     core.Print()
     kwargs={"file" : core.option_handler.GetFileOption(),
