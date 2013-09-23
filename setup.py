@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
-
+import sys
+import getopt
+import shutil
 from distutils.core import setup
+import os
 
 setup(
 #    data_files=[('optimizer/)],
@@ -23,3 +26,7 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Topic :: Scientific/Engineering']
 )
+
+
+script_dir = '/usr/bin'
+shutil.copyfile('neuraloptimizer',os.path.join(script_dir,'neuraloptimizer'))
