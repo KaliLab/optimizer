@@ -21,6 +21,16 @@ def meanstdv(x):
     return mean, std
 
 class coreModul():
+    """
+    This class is responsible to carry out the main steps of the optimization process by
+    interacting with the other modules. The main attributes are the following:
+    - *data_handler* -- performs input operations and handles input data
+    - *option_handler* -- stores the settings
+    - *model_handler* -- handles the model and runs the simulations and carries out other model related tasks
+    - *optimizer* -- carries out the optimization process
+    - *optimal_params* -- contains the resulting parameters
+    - *ffun_calc_list* -- contains the list of available fitness functions in a dictionary
+    """
     def __init__(self):
         self.data_handler=DATA()
         self.option_handler=optionHandler()
@@ -91,10 +101,6 @@ class coreModul():
         return "<img style=\"border:none;\" src=\""+inp+"\" align=\"center\">"
     
     
-    # input file (experimental data) handler is created
-    # option handler is created
-    # input file is read
-    # options are registered
     def Print(self):
         print [self.option_handler.GetFileOption(),
                self.option_handler.GetInputOptions(),
@@ -106,15 +112,23 @@ class coreModul():
                self.option_handler.GetFitnessParam(),
                self.option_handler.GetOptimizerOptions()]
         print "\n"
+        
     def FirstStep(self,args):
+        """
+        Carries out the first step of the optimization:
+        stores the location of the input, sets the base directory and reads the data from the file.
+        """
         self.option_handler.SetFileOptions(args.get("file"))
         self.option_handler.SetInputOptions(args.get("input"))
 
         self.data_handler.Read([self.option_handler.input_dir],self.option_handler.input_size,self.option_handler.input_scale,self.option_handler.input_length,self.option_handler.input_freq,self.option_handler.type[-1])
-    # model handler is created to handle model operations        
-    # model is loaded, ready for the user to adjust stimuli, select parameters, etc
-    # options are registered 
+
     def LoadModel(self,args):
+        """
+        Stores the type of the simulator as well as the optional parameters passed to it.
+        Creates the model_handler objects which can be either *modelHandlerNeuron* or *externalHandler*.
+        If the externalHandler is selected then the number of parameters subject to optimization is also set.
+        """
         self.option_handler.SetSimParam([args.get("simulator","Neuron"),args.get("sim_command"),None])
         if self.option_handler.GetSimParam()[0]=="Neuron":
             self.option_handler.SetModelOptions(args.get("model"))
@@ -124,6 +138,9 @@ class coreModul():
             self.model_handler.SetNParams(self.option_handler)
             self.option_handler.SetModelStimParam([[0]*self.data_handler.number_of_traces(),0,0])
     
+    """
+    Returns the sections found in the model in a string list.
+    """
     def ReturnSections(self):
         temp=self.model_handler.GetParameters()
         sections=[]
@@ -132,8 +149,10 @@ class coreModul():
         sections=list(set(sections))
         sections.append("None")
         return sections
-            
-        
+           
+    """
+    Returns the morphological parameters found in the model.
+    """
     def ReturnMorphology(self):
         temp=self.model_handler.GetParameters()
         morphs=(string.split(temp[0][1], ", "))
@@ -141,7 +160,9 @@ class coreModul():
         morphs.append("None")
         return morphs
         
-        
+    """
+    Returns the channels in the given section.
+    """
     def ReturnChannels(self,section):
         temp=self.model_handler.GetParameters()
         channels=[]
@@ -157,7 +178,10 @@ class coreModul():
         channels=list(set(channels))
         channels.append("None")
         return channels
-        
+    """
+    Returns the channel parameters in the given channel.
+    This function returns everything from the channel object not only the parameters.
+    """    
     def ReturnChParams(self,channel):
         temp=self.model_handler.GetParameters()
         ch_param=[]

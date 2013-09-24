@@ -141,10 +141,10 @@ class fF():
             tmp.append((grad_a-grad_b)**2)
         if self.option.output_level=="1":
             print "grad dif"
-            print fsum(tmp)/len(tmp)/(pow(max(tmp)-min(tmp),2))
+            print fsum(tmp)/len(tmp)/(pow(max(exp_t)-min(exp_t),2))
             
             
-        return fsum(tmp)/len(tmp)/(pow(max(tmp)-min(tmp),2))  
+        return fsum(tmp)/len(tmp)/(pow(max(exp_t)-min(exp_t),2))  
            
             
         
@@ -164,13 +164,7 @@ class fF():
             spikes[1]=self.detectSpike( exp_t[int(self.option.stim_del*self.option.input_freq/1000):int(self.option.stim_del*self.option.input_freq/1000+stim_dur*self.option.input_freq/1000)])
         mod_spike=len(spikes[0])
         exp_spike=len(spikes[1])
-        if len(spikes[0])<1 or len(spikes[1])<1:
-            return 1000
-        try:
-            #temp_fit+=float(abs(mod_spike-exp_spike))/max( float(exp_spike),float(mod_spike-1) )
-            temp_fit+=float(abs(mod_spike-exp_spike))/float(exp_spike+mod_spike+1)
-        except ZeroDivisionError:
-            temp_fit+=1
+        temp_fit+=float(abs(mod_spike-exp_spike))/float(exp_spike+mod_spike+1)
         if self.option.output_level=="1":
             print "spike rate:"
             print "mod: ", len(spikes[0])
@@ -205,8 +199,8 @@ class fF():
             try:
                 k+=1
                 if k>limit:
-                    tmp.append(pow((spikes[0][s1+1].peak-spikes[0][s1].peak)
-                        -(spikes[1][s2+1].peak-spikes[1][s2].peak)),2)
+                    tmp.append(abs((spikes[0][s1+1].peak-spikes[0][s1].peak)
+                        -(spikes[1][s2+1].peak-spikes[1][s2].peak)))
                 
             except IndexError:
                 pass
@@ -250,7 +244,7 @@ class fF():
             spikes[1]=add_data
         else:
             spikes[1]=self.detectSpike( exp_t)
-        max_amp=max(map(lambda x: max(x.peak_val),exp_t))
+        max_amp=max(map(lambda x: x.peak_val-self.thres,spikes[1]))
         if len(spikes[0])<1 and len(spikes[1])<1:
             return 0
         if len(spikes[0])<1 != len(spikes[1])<1:
@@ -356,6 +350,8 @@ class fF():
         for s_e,s_m in zip(spikes[1],spikes[0]):
             e[s_e.start_pos-window:s_e.stop_pos+window]=0
             m[s_m.start_pos-window:s_m.stop_pos+window]=0
+            m[s_e.start_pos-window:s_e.stop_pos+window]=0
+            e[s_m.start_pos-window:s_m.stop_pos+window]=0
 #        tmp.append(self.calc_ase(a[0:spikes[1][0].start_pos-window],
 #                                 b[0:spikes[1][0].start_pos-window],args))
 #        for i,s in enumerate(spikes[1]):
