@@ -24,12 +24,12 @@ class coreModul():
     """
     This class is responsible to carry out the main steps of the optimization process by
     interacting with the other modules. The main attributes are the following:
-    - *data_handler* -- performs input operations and handles input data
-    - *option_handler* -- stores the settings
-    - *model_handler* -- handles the model and runs the simulations and carries out other model related tasks
-    - *optimizer* -- carries out the optimization process
-    - *optimal_params* -- contains the resulting parameters
-    - *ffun_calc_list* -- contains the list of available fitness functions in a dictionary
+    .. data:: data_handler: performs input operations and handles input data
+    .. data:: option_handler: stores the settings
+    .. data:: model_handler: handles the model and runs the simulations and carries out other model related tasks
+    .. data:: optimizer: carries out the optimization process
+    .. data:: optimal_params: contains the resulting parameters
+    .. data:: ffun_calc_list: contains the list of available fitness functions in a dictionary
     """
     def __init__(self):
         self.data_handler=DATA()
@@ -115,8 +115,9 @@ class coreModul():
         
     def FirstStep(self,args):
         """
-        Carries out the first step of the optimization:
-        stores the location of the input, sets the base directory and reads the data from the file.
+        Stores the location of the input, and the base directory in the ``option_handler`` object
+        and reads the data from the file into the ``data_handler`` object.
+        :param args: dictionary with keys "file" and "input"
         """
         self.option_handler.SetFileOptions(args.get("file"))
         self.option_handler.SetInputOptions(args.get("input"))
@@ -126,8 +127,9 @@ class coreModul():
     def LoadModel(self,args):
         """
         Stores the type of the simulator as well as the optional parameters passed to it.
-        Creates the model_handler objects which can be either *modelHandlerNeuron* or *externalHandler*.
-        If the externalHandler is selected then the number of parameters subject to optimization is also set.
+        Creates the ``model_handler`` objects which can be either ``modelHandlerNeuron`` or ``externalHandler``.
+        If the ``externalHandler`` is selected then the number of parameters subject to optimization is also set.
+        :param args: dictionary with keys "simulator" and "sim_command"
         """
         self.option_handler.SetSimParam([args.get("simulator","Neuron"),args.get("sim_command"),None])
         if self.option_handler.GetSimParam()[0]=="Neuron":
@@ -137,11 +139,10 @@ class coreModul():
             self.model_handler=externalHandler(self.option_handler.GetSimParam()[1])
             self.model_handler.SetNParams(self.option_handler)
             self.option_handler.SetModelStimParam([[0]*self.data_handler.number_of_traces(),0,0])
-    
-    """
-    Returns the sections found in the model in a string list.
-    """
     def ReturnSections(self):
+        """
+        :return: the sections found in the model including "None" in a ``string`` ``list``.
+        """
         temp=self.model_handler.GetParameters()
         sections=[]
         for n in temp:
@@ -150,20 +151,22 @@ class coreModul():
         sections.append("None")
         return sections
            
-    """
-    Returns the morphological parameters found in the model.
-    """
     def ReturnMorphology(self):
+        """
+        :return: the morphological parameters found in the model including "None" in a ``string`` ``list``.
+        """
         temp=self.model_handler.GetParameters()
         morphs=(string.split(temp[0][1], ", "))
         morphs=list(set(morphs))
         morphs.append("None")
         return morphs
         
-    """
-    Returns the channels in the given section.
-    """
     def ReturnChannels(self,section):
+        """
+        Collects the channels from the given section.
+        :param section: the name of the section 
+        :return: the channels in the given section including "None" in a ``string`` ``list``.
+        """
         temp=self.model_handler.GetParameters()
         channels=[]
         for n in temp:
@@ -178,11 +181,15 @@ class coreModul():
         channels=list(set(channels))
         channels.append("None")
         return channels
-    """
-    Returns the channel parameters in the given channel.
-    This function returns everything from the channel object not only the parameters.
-    """    
+
     def ReturnChParams(self,channel):
+        """
+        Collects channel parameters from the given channel
+        :param channel: the name of the channel mechanism
+        :return: the channel parameters in the given channel including "None" in a ``string`` ``list``.
+        .. note::
+            This function returns everything from the channel object not only the parameters.
+        """    
         temp=self.model_handler.GetParameters()
         ch_param=[]
         for n in temp:
@@ -201,30 +208,93 @@ class coreModul():
             self.model_handler.SetChannelParameters(args.get("section"), args.get("channel"), args.get("params"), args.get("values"))
         else:
             self.model_handler.SetMorphParameters(args.get("section"), args.get("morph"), args.get("values"))      
-    
+
     def SetModel2(self,args):
+        """
+        Stores the selected parameter as subject to optimization in the ``option_handler`` object.
+        For future use it offers a way to store initial value (not in use at the moment).
+        :param args: must be a string-string dictionary containing the following keys:
+            * section
+            * channel
+            * params
+            * value
+            or:
+            * section
+            * morph
+            * values
+        """
         if args.get("channel")!="None":
             self.option_handler.SetObjTOOpt(args.get("section").encode("utf-8")+" "+args.get("channel").encode("utf-8")+" "+args.get("params").encode("utf-8"))
             self.option_handler.SetOptParam(args.get("values"))
         else:
             self.option_handler.SetObjTOOpt(args.get("section").encode("utf-8")+" "+args.get("morph").encode("utf-8"))
             self.option_handler.SetOptParam(args.get("values"))
-    
+
     def SecondStep(self,args):
+        """
+        Stores the stimulation settings in the option object.
+        :param args: must be a dictionary with the following keys:
+            * stim
+                must hold a ``list`` as value, which contains:
+                * stimulus type as ``string``, must be either "IClamp" or "VClamp"
+                * position of stimulus inside the section as of real value (0-1)
+                * name of stimulated section as ``string``
+            * stimparam
+                must hold a ``list`` as value which contains:
+                * stimulus amplitudes as a ``list`` of real values
+                * delay of stimulus as real value
+                * duration of stimulus as real value
+                
+        """    
         self.option_handler.SetModelStim(args.get("stim"))
         self.option_handler.SetModelStimParam(args.get("stimparam"))
         
         
-
-        
-        
-        # the other interaction is carried out by the graphic interface
-        
-    # optimizer handler is created
-    # optimizer and fitness function settings
-    # options are registered
-        
     def ThirdStep(self,args):
+        """
+        Stores the parameters in the ``option_handler`` object regarding the optimization process.
+        If the sampling rate of the simulation is higher than the sampling rate of the input trace,
+        then it re-samples the input using linear interpolation to create more points.
+        Currently running a simulation with lower sampling rate than the input trace is not supported!
+        After storing the necessary settings the ``optimizer`` object is initialized and the optimization is performed.
+        The raw results are stored in the ``final_pop`` variable in the ``optimizer`` object.
+        :param args: a dictionary containing the following keys: 
+            * runparam
+                must be a list containing the following values:
+                * length of simulation as real value
+                * integration step as real value
+                * parameter to record as ``string``
+                * name of the section where the recording takes place as ``string``
+                * position inside the section as real value (0-1)
+                * initial voltage as a real value
+            * feat
+                must be a ``list`` with the names of the selected fitness functions
+            * weights
+                must be a list of real values
+            * algo_options
+                must be a dictionary containing options related to the optimization algorithm
+                mandatory parameters:
+                    * seed
+                    * evo_strat
+                    * pop_size
+                    * num_inputs
+                    * boundaries
+                optional parameters belonging to the different algorithms (see the optimizerHandler module for more)
+                    * max_evaluation
+                    * mutation_rate
+                    * cooling_rate
+                    * m_gauss
+                    * std_gauss
+                    * schedule
+                    * init_temp
+                    * final_temp
+                    * acc
+                    * dwell
+                    * x_tol
+                    * f_tol
+                optional parameter shared by every algorithm
+                    * starting_points
+        """        
         if args!=None:
             self.option_handler.SetModelRun(args.get("runparam"))
             fit_par=[]
@@ -246,7 +316,7 @@ class coreModul():
             for i in range(self.data_handler.number_of_traces()):
                 y=self.data_handler.data.GetTrace(i)#y axis, the values from the input traces, corresponding to x
                 f=interp1d(x,y)
-                #we have the continuous trace, we could resample it now
+                #we have the continuous trace, we could re-sample it now
                 new_x=linspace(0,self.option_handler.run_controll_tstop,self.option_handler.run_controll_tstop/self.option_handler.run_controll_dt)
                 #self.trace_reader.SetColumn(i,f(new_x)) the resampled vector replaces the original in the trace reader object
                 tmp.append(f(new_x))
@@ -280,8 +350,16 @@ class coreModul():
         self.optimizer.final_pop.sort(reverse=True)
         print self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)],"fitness: ",self.optimizer.final_pop[0].fitness
         print "Optimization lasted for ", stop_time-start_time, " s"
-        
+    
     def FourthStep(self,args={}):
+        """
+        Renormalizes the output of the ``optimizer`` (see optimizerHandler module for more), and runs
+        a simulation with the optimal parameters to receive an optimal trace.
+        The components of the fitness value is calculated on this optimal trace.
+        Settings of the entire work flow are saved into a configuration file named "model name"_settings.xml.
+        A report of the results is generated in the form of a html document.
+        :param args: currently not in use
+        """   
         self.final_result=[]
         self.optimal_params=self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])
         if self.option_handler.GetUFunString()=='':
@@ -363,6 +441,10 @@ class coreModul():
         
                 
     def callGrid(self):
+        """
+        Calculates fitness values on a defined grid (see optimizerHandler module for more).
+        This tool is purely for analyzing results, and we do not recommend to use it to obtain parameter values.
+        """
         self.optimizer=grid(self.data_handler,self.model_handler,self.option_handler)
         self.optimizer.Optimize(self.optimal_params)
         self.grid_result=self.optimizer.final_pop

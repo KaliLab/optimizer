@@ -20,9 +20,17 @@ from jinja2._stringdefs import No
 
 # to generate a new set of parameters
 class baseOptimizer():
+    """
+    An abstract base class to implement an optimization process.
+    """
     def __init__(self):
         pass
     def SetFFun(self,option_obj):
+        """
+        Sets the combination function and converts the name of the fitness functions into function instances.
+        :param option_obj: an ``optionHandler`` instance
+    
+        """
         try:
             self.ffun=self.fit_obj.fun_dict["Combinations"]
         except KeyError:
@@ -36,6 +44,14 @@ class baseOptimizer():
     
 
 def normalize(v,args):
+    """
+    Normalizes the values of the given ``list`` using the defined boundaries.
+    :param v: the ``list`` of values
+    :param args: an object which has a ``min_max`` attribute which consists of two ``list``s
+        each with the same number of values as the given list
+        
+    :return: the ``list`` of normalized values
+    """
     c=copy.copy(v)
     for i in range(len(v)):
         c[i]=(v[i]-args.min_max[0][i])/(args.min_max[1][i]-args.min_max[0][i])
@@ -44,6 +60,13 @@ def normalize(v,args):
 
 
 def uniform(random,args):
+    """
+    Creates random values from a uniform distribution. Used to create initial population.
+    :param random: random number generator object
+    :param args: ``dictionary``, must contain key "num_inputs" and either "_ec" or "self"
+    
+    :return: the created random values in a ``list``
+    """
     size=args.get("num_inputs")
     bounds=args.get("_ec",args.get("self")).bounder
     candidate=[]
@@ -53,6 +76,12 @@ def uniform(random,args):
     return candidate
 
 class my_candidate():
+    """
+    Mimics the behavior of ``candidate`` from the ``inspyred`` package to allow the uniform
+    handling of the results produced by the different algorithms.
+    :param vals: the result of the optimization
+    :param fitn: the fitness of the result
+    """
     def __init__(self,vals, fitn=-1):
         self.candidate=ndarray.tolist(vals)
         self.candidate.extend(vals)
@@ -61,6 +90,12 @@ class my_candidate():
        
 
 class annealing(baseOptimizer):
+    """
+    Implements the ``Simulated Annealing`` algorithm for minimization from the ``inspyred`` package.
+    :param reader_obj: an instance of ``DATA`` object
+    :param model_obj: an instance of a model handler object, either ``externalHandler`` or ``modelHandlerNeuron``
+    :param option_obj: an instance of ``optionHandler`` object
+    """
     def __init__(self,reader_obj,model_obj,option_obj):
         self.fit_obj=fF(reader_obj,model_obj,option_obj)
         self.SetFFun(option_obj)
@@ -104,6 +139,9 @@ class annealing(baseOptimizer):
 #        return self.ffun([c],args)[0]
         
     def Optimize(self):
+        """
+        Performs the optimization.
+        """
         logger = logging.getLogger('inspyred.ec')
         logger.setLevel(logging.DEBUG)
         file_handler = logging.FileHandler('inspyred.log', mode='w')
@@ -129,6 +167,11 @@ class annealing(baseOptimizer):
         
         
     def SetBoundaries(self,bounds):
+        """
+        Stores the bounds of the parameters and creates a ``bounder`` object which bounds
+        every parameter into the range of 0-1 since the algorithms are using normalized values.
+        :param bounds: ``list`` containing the minimum and maximum values.
+        """
         self.min_max=bounds
         self.bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
             
@@ -139,6 +182,12 @@ class annealing(baseOptimizer):
             
         
 class scipy_anneal(baseOptimizer):
+    """
+    Implements the ``Simulated Annealing`` algorithm for minimization from the ``scipy`` package.
+    :param reader_obj: an instance of ``DATA`` object
+    :param model_obj: an instance of a model handler object, either ``externalHandler`` or ``modelHandlerNeuron``
+    :param option_obj: an instance of ``optionHandler`` object
+    """
     def __init__(self,reader_obj,model_obj,option_obj):
         self.fit_obj=fF(reader_obj,model_obj,option_obj)
         self.SetFFun(option_obj)
@@ -163,6 +212,13 @@ class scipy_anneal(baseOptimizer):
         
 
     def wrapper(self,candidates,args):
+        """
+        Converts the ``ndarray`` object into a ``list`` and passes it to the fitness function.
+        :param candidates: the ``ndarray`` object
+        :param args: optional parameters to be passed to the fitness function
+        
+        :return: the return value of the fitness function
+        """
         tmp=ndarray.tolist(candidates)
         candidates=self.bounder(tmp,args) 
         return self.ffun([candidates],args)[0]
@@ -170,6 +226,9 @@ class scipy_anneal(baseOptimizer):
         
         
     def Optimize(self):
+        """
+        Performs the optimization.
+        """
         self.result=optimize.anneal(self.wrapper, 
                                       x0=ndarray((self.num_inputs,),buffer=array(self.starting_points),offset=0,dtype=float), 
                                       args=[[]],  
@@ -187,11 +246,22 @@ class scipy_anneal(baseOptimizer):
         self.final_pop=[my_candidate(self.result[0],self.result[1])]
         
     def SetBoundaries(self,bounds):
+        """
+        Stores the bounds of the parameters and creates a ``bounder`` object which bounds
+        every parameter into the range of 0-1 since the algorithms are using normalized values.
+        :param bounds: ``list`` containing the minimum and maximum values.
+        """
         self.min_max=bounds
         self.bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
         
         
 class fmin(baseOptimizer):
+    """
+    Implements a downhill simplex algorithm for minimization from the ``scipy`` package.
+    :param reader_obj: an instance of ``DATA`` object
+    :param model_obj: an instance of a model handler object, either ``externalHandler`` or ``modelHandlerNeuron``
+    :param option_obj: an instance of ``optionHandler`` object
+    """
     def __init__(self,reader_obj,model_obj,option_obj):
         self.fit_obj=fF(reader_obj,model_obj,option_obj)
         self.SetFFun(option_obj)
@@ -213,6 +283,13 @@ class fmin(baseOptimizer):
         
         
     def wrapper(self,candidates,args):
+        """
+        Converts the ``ndarray`` object into a ``list`` and passes it to the fitness function.
+        :param candidates: the ``ndarray`` object
+        :param args: optional parameters to be passed to the fitness function
+        
+        :return: the return value of the fitness function
+        """
         tmp=ndarray.tolist(candidates)
         candidates=self.bounder(tmp,args) 
         return self.ffun([candidates],args)[0]
@@ -222,6 +299,9 @@ class fmin(baseOptimizer):
         
         
     def Optimize(self):
+        """
+        Performs the optimization.
+        """
         self.result=optimize.fmin(self.wrapper, 
                                       x0=ndarray((self.num_inputs,),buffer=array(self.starting_points),offset=0,dtype=float), 
 #                                      x0=ndarray( (self.num_inputs,1) ,buffer=array([0.784318808, 4.540607953, -11.919391073,-100]),dtype=float),
@@ -235,12 +315,23 @@ class fmin(baseOptimizer):
         self.final_pop=[my_candidate(self.result[0],self.result[1])]
         
     def SetBoundaries(self,bounds):
+        """
+        Stores the bounds of the parameters and creates a ``bounder`` object which bounds
+        every parameter into the range of 0-1 since the algorithms are using normalized values.
+        :param bounds: ``list`` containing the minimum and maximum values.
+        """
         self.min_max=bounds
         self.bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
         
 
 
 class L_BFGS_B(baseOptimizer):
+    """
+    Implements L-BFGS-B algorithm for minimization from the ``scipy`` package.
+    :param reader_obj: an instance of ``DATA`` object
+    :param model_obj: an instance of a model handler object, either ``externalHandler`` or ``modelHandlerNeuron``
+    :param option_obj: an instance of ``optionHandler`` object
+    """
     def __init__(self,reader_obj,model_obj,option_obj):
         self.fit_obj=fF(reader_obj,model_obj,option_obj)
         self.SetFFun(option_obj)
@@ -261,6 +352,13 @@ class L_BFGS_B(baseOptimizer):
         
         
     def wrapper(self,candidates,args):
+        """
+        Converts the ``ndarray`` object into a ``list`` and passes it to the fitness function.
+        :param candidates: the ``ndarray`` object
+        :param args: optional parameters to be passed to the fitness function
+        
+        :return: the return value of the fitness function
+        """
         tmp=ndarray.tolist(candidates)
         candidates=self.bounder(tmp,args) 
         return self.ffun([candidates],args)[0]
@@ -269,6 +367,9 @@ class L_BFGS_B(baseOptimizer):
         
         
     def Optimize(self):
+        """
+        Performs the optimization.
+        """
         self.result=optimize.fmin_l_bfgs_b(self.wrapper, 
                                       x0=ndarray((self.num_inputs,),buffer=array(self.starting_points),offset=0,dtype=float), 
 #                                      x0=ndarray( (self.num_inputs,1) ,buffer=array([0.784318808, 4.540607953, -11.919391073,-100]),dtype=float),
@@ -285,6 +386,11 @@ class L_BFGS_B(baseOptimizer):
         self.final_pop=[my_candidate(self.result[0],self.result[1])]
         
     def SetBoundaries(self,bounds):
+        """
+        Stores the bounds of the parameters and creates a ``bounder`` object which bounds
+        every parameter into the range of 0-1 since the algorithms are using normalized values.
+        :param bounds: ``list`` containing the minimum and maximum values.
+        """
         self.min_max=bounds
         self.bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
         
@@ -292,6 +398,12 @@ class L_BFGS_B(baseOptimizer):
                 
                 
 class grid(baseOptimizer):
+    """
+    Implements a brute force algorithm for minimization from the ``scipy`` package.
+    :param reader_obj: an instance of ``DATA`` object
+    :param model_obj: an instance of a model handler object, either ``externalHandler`` or ``modelHandlerNeuron``
+    :param option_obj: an instance of ``optionHandler`` object
+    """
     def __init__(self,reader_obj,model_obj,option_obj):
         self.fit_obj=fF(reader_obj,model_obj,option_obj)
         self.SetFFun(option_obj)
@@ -302,6 +414,12 @@ class grid(baseOptimizer):
         self.SetBoundaries(option_obj.boundaries)
         
     def frange(self,start,stop,step):
+        """
+        Generates range of real values.
+        :param start: beginning of range
+        :param stop: end of range
+        :param step: step size between values
+        """
         r = start
         while r < stop:
             yield r
@@ -309,8 +427,10 @@ class grid(baseOptimizer):
     
     
     def Optimize(self,optimals):
-        #return result in self.final_pop
-        #vals between self.bounder.lower_bound
+        """
+        Performs the optimization.
+        """
+        
         self.final_pop=[[],[]]
         _o=copy.copy(optimals)
         _o=normalize(_o, self)
@@ -337,6 +457,11 @@ class grid(baseOptimizer):
             
         
     def SetBoundaries(self,bounds):
+        """
+        Stores the bounds of the parameters and creates a ``bounder`` object which bounds
+        every parameter into the range of 0-1 since the algorithms are using normalized values.
+        :param bounds: ``list`` containing the minimum and maximum values.
+        """
         self.min_max=bounds
         self.bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
         
@@ -345,6 +470,17 @@ class grid(baseOptimizer):
         
 # simple EO algorithm
 class simpleEO(baseOptimizer):
+    """
+    Implements a custom version of ``Evolution Strategy`` algorithm for minimization from the ``inspyred`` package.
+    :param reader_obj: an instance of ``DATA`` object
+    :param model_obj: an instance of a model handler object, either ``externalHandler`` or ``modelHandlerNeuron``
+    :param option_obj: an instance of ``optionHandler`` object
+    
+    .. note::
+        The changed parameters compared to the defaults are the following:
+            *replacer: genrational_replacement
+            *variator: gaussian_mutation, blend_crossover
+    """
     def __init__(self,reader_obj,model_obj,option_obj):
         self.fit_obj=fF(reader_obj,model_obj,option_obj)
         self.SetFFun(option_obj)
@@ -382,6 +518,9 @@ class simpleEO(baseOptimizer):
         # bounder comes from the class, should be callable
         
     def Optimize(self):
+        """
+        Performs the optimization.
+        """
         logger = logging.getLogger('inspyred.ec')
         logger.setLevel(logging.DEBUG)
         file_handler = logging.FileHandler('inspyred.log', mode='w')
@@ -403,6 +542,11 @@ class simpleEO(baseOptimizer):
                                              gaussian_stdev=0.5)
         
     def SetBoundaries(self,bounds):
+        """
+        Stores the bounds of the parameters and creates a ``bounder`` object which bounds
+        every parameter into the range of 0-1 since the algorithms are using normalized values.
+        :param bounds: ``list`` containing the minimum and maximum values.
+        """
         self.min_max=bounds
         self.bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
     

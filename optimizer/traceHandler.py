@@ -8,28 +8,66 @@ current_scales={"uA":10**(-3),"nA":1,"pA":10**3}
 scales={"voltage" : voltage_scales, "current" : current_scales, "other" : {"none" : 1}, "spike" : {"none" : 1}}
 # generating doubles in the range with the given step
 def real_range(start, step, end):
+    """
+    Not in use!
+    Generates real values from the given range.
+    :param start: begin of range
+    :param step: step between the values
+    :param end: the end of the range
+    
+    :return: ``list`` of real values
+    """
     return [float(n)*step for n in range(start,end)]
 
     
 # exception class to handle zero size containers and too short strings
 class sizeError(Exception):
-    def __init__(self,massage):
+    """
+    Exception class used by the trace handling related objects.
+    :param message: error message to be displayed
+    """
+    def __init__(self,message):
         print "There was an error with the size/length of an object, probably not enough element in container. "
         print "Check the no_traces variable!"
-        print massage
+        print message
         sys.exit("Exiting...")
         
-# class to handle traces (matrix form)
-# stores the data, the scale, it's length, and the sampling frequency, 
-# also calculates the necessary dt step for neuron 
+
 class SpikeTimes():
+    """
+    Not in use!
+    Stores spike times in ``dictionary`` indexed by the cell's id.
+    :param dictionary: the ``dictionary`` which contains the data
+    :param trace_type: type of the trace (should be fixed to "spikes")
+    """
     def __init__(self,dictionary,trace_type="spikes"):
         self.dict=dictionary       
         self.type=trace_type
         
         
 class Trace:
+    """
+    Trace set object. Stores a trace set of a given type with every relevant data.
+    :param no_traces: number of traces held by the object
+    :param scale: the unit of the data (required for conversions)
+    :param t_length: length of the trace(s)
+    :param freq: sampling frequency
+    :param trace_type: type of the trace set
     
+    .. data:: data
+        The traces are contained in the attribute named ``data`` in the order they were in the input file.
+    
+    .. note::
+        The sampling rate should be uniform in the set.
+        
+    .. note::
+        The length of the traces should be the same, or the length of the shortest one
+        should be considered.
+        
+    .. note::
+        If the type of the trace is not recognized, the program will abort.
+        The recognized types are "voltage", "current" and "other" ("spike" is not available yet).
+    """
     def __init__(self,no_traces,scale="milli",t_length=1000,freq=100,trace_type=None):
         self.scale=scale
         self.t_length=t_length
@@ -46,18 +84,39 @@ class Trace:
             sys.exit("Unknown prefix")
             
     def SetTrace(self,d):
+        """
+        Adds the given trace to the container.
+        :param d: ``list`` containing the trace
+        """
         self.data.append(d)
     # converts a hoc vector to python list
     def Convert(self,hoc_obj):
+        """
+        Converts a hoc vector into a python ``list`` and stores it in the container.
+        :param hoc_obj: a hoc vector object
+        """
         temp=[]
         for n in range(int(hoc_obj.size())):
             temp.append(hoc_obj.x[n])
         self.SetTrace(temp)
         
     def Print(self):
+        """
+        Prints the contained data. Created for debugging purpose.
+        """
         print "\n".join(map(str,(n for n in self.data)))
     # returns one column from the data matrix: returns one trace    
     def GetTrace(self,index):
+        """
+        Returns the trace having the index ``index`` form the container. Always use this function to get a given
+        trace as they are stored in a non intuitive way and direct access would probably cause errors.
+        :param index: the index of the trace to get
+        
+        .. note::
+            If the given index is out of range, a ``sizeError`` is raised.
+            
+        :return: the required trace
+        """
         if index>self.no_traces:
             raise sizeError("There is no " + index + "trace in the structure")
         #print [n[index] for n in self.data]
@@ -65,24 +124,58 @@ class Trace:
     
 
     def reScale(self,value):
+        """
+        Re-scales the given value based on the scale of the ``Trace`` object.
+        :param value: the value to be rescaled
+        
+        :return: the rescaled value 
+        """
         return value/self.curent_scale
 
 
 class DATA():
+    """
+    The main data container class.
+    .. data:: data
+        This attribute holds the ``Trace`` object which contains the trace set.
+        
+    .. note::
+        This class will be able to hold multiple data sets with multiple types.
+        
+    """
     def __init__(self):
         self.data=None
         self.additional_data=None
         self.path_list=[]
         
     def number_of_traces(self):
+        """
+        Gets the number of traces held by the object.
+        :return: number of traces
+        """
         return int(self.data.no_traces)
     
     def get_type(self):
+        """
+        Gets the type of the trace set.
+        :return: type
+        """
         return self.data.type
     
     
     
     def detect_format(self,line):
+        """
+        Automatically detects the format of the file and returns a reader functions which can process it correctly.
+        The recognized formats are the following:
+            *simple text file with data columns separated by "\t"
+            *simple text file, containing time trace as well and data columns separated by "\t"
+            *default recording result from pyNN with 9 line of headers
+            *spike timing file from pyNN with 9 line of headers (not used)
+        :param line: one line from the file, which the recognition is based on
+        
+        :return: a reader function
+        """
     #TODO
     #need more rule for spike timings and other
         pynn_rule=re.compile("# variable = [a-zA-Z]")
@@ -96,6 +189,16 @@ class DATA():
         return [self.PyNNReader,self.traceReaderTime,self.traceReader,self.spikeTimeReader][result.index(True)]
     
     def Read(self,path=[os.getcwd()+"/inputTrace.txt"],no_traces=1,scale="mV",t_length=1000,freq=1000,trace_type="voltage"):
+        """
+        The main reader function. This calls the recognition function ``detect_format``
+        and uses the obtained reader function to read the data.
+        :param path: list of data path(s) (currently only one file is handled)
+        
+        (see the explanation of the other parameters in the description of ``Trace``)
+        
+        .. note::
+            The function uses the 5. line of the file for recognition.
+        """
         self.path_list.append(path)
         #print path
         f=open(path[0],"r")
@@ -110,7 +213,20 @@ class DATA():
             self.additional_data=self.spikeTimeReader(path, no_traces, scale, t_length, freq, trace_type)
         
         
-    def traceReader(self,path,no_traces,scale,t_length,freq,trace_type):        
+    def traceReader(self,path,no_traces,scale,t_length,freq,trace_type):
+        """
+        Reads a simple text file with data columns separated by "\t".
+        (the parameters are the same as in the ``Read`` function)
+        
+        :return: a ``trace`` object holding the content of the file
+        
+        .. note::
+            If the given file is not accessible the program will abort.
+            
+        .. note::
+            If the number of traces in the file and the corresponding parameter is not equal,
+            a ``sizeError`` is raised.
+        """        
         trace=Trace(no_traces, scale, t_length, freq,trace_type)
         #print "no time"
         for my_file in path:
@@ -131,6 +247,19 @@ class DATA():
         
 
     def traceReaderTime(self,path,no_traces,scale,t_length,freq,trace_type):
+        """
+        Reads a simple text file, containing time trace as well and data columns separated by "\t".
+        (the parameters are the same as in the ``Read`` function)
+        
+        :return: a ``trace`` object holding the content of the file
+        
+        .. note::
+            If the given file is not accessible the program will abort.
+        
+        .. note::
+            If the number of traces in the file and the corresponding parameter is not equal,
+            a ``sizeError`` is raised.
+        """ 
         trace=Trace(no_traces, scale, t_length, freq,trace_type)
         #print "time"
         for my_file in path:
@@ -152,13 +281,22 @@ class DATA():
                 sys.exit("Can't open data file at " + self.full_path + " ! Exiting...")
         return trace
     
-    def Print(self):
-        print self.data
-        print "\n"
-        print self.t
        
 
     def PyNNReader(self,path,no_traces,scale,t_length,freq,trace_type):
+        """
+        Reads a default recording result from pyNN with 9 line of headers
+        (the parameters are the same as in the ``Read`` function)
+        
+        :return: a ``trace`` object holding the content of the file
+        
+        .. note::
+            If the given file is not accessible the program will abort.
+        
+        .. note::
+            If the number of traces in the file and the corresponding parameter is not equal,
+            a ``sizeError`` is raised.
+        """ 
         trace=Trace(no_traces, scale, t_length, freq,trace_type)
         for my_file in path:
             tmp_dict={}
@@ -178,6 +316,23 @@ class DATA():
         return trace
         
     def spikeTimeReader(self,path,no_traces,scale,t_length,freq,trace_type):
+        """
+        Not available yet!
+        Reads a spike timing file from pyNN with 9 line of headers
+        (the parameters are the same as in the ``Read`` function)
+        
+        :return: a ``dictionary`` object holding the content of the file
+        
+        .. note::
+            If the given file is not accessible the program will abort.
+        
+        .. note::
+            If the number of traces in the file and the corresponding parameter is not equal,
+            a ``sizeError`` is raised.
+            
+        .. note::
+            In the future, it will return a ``SpikeTimes`` object instead.
+        """ 
         for my_file in path:
             tmp_dict={}
             f=open(my_file,"r")
@@ -194,13 +349,24 @@ class DATA():
         for i in no_spike_ind:
             tmp_dict[i]=[]
         self.additional_data=tmp_dict
+        
 # class to write data to file            
+#it receives a trace object and other settings
+#comment: comments to the file
+# flag_w: writes the recording data to the file
+# flag_m: writes the results to multiple files (columnwise)
+# separator: separating character in the file
 class traceWriter(Trace):
-    #it receives a trace object and other settings
-    #comment: comments to the file
-    # flag_w: writes the recording data to the file
-    # flag_m: writes the results to multiple files (columnwise)
-    # separator: separating character in the file
+    """
+    Not used!
+    Writes the content of the given trace object to the given file(s).
+    :param tr_object: trace object which must have ``data`` attribute
+    :param full_path: the path of the output file
+    :param comment: some header information
+    :param flag_write: indicates if the properties of the trace is written or not
+    :param sep: data separator ``string``
+    :param flag_multi: indicates if the separate traces should be written into separate files
+    """
     def __init__(self,tr_object,full_path,comment="",flag_write=1,sep="\n",flag_multi=0):
         Trace.__init__(self, tr_object.no_traces, tr_object.scale, tr_object.t_length, tr_object.freq)
         self.comment=comment
@@ -210,6 +376,12 @@ class traceWriter(Trace):
         self.separator=sep
         self.SetTrace(tr_object.data)
     def Write(self):
+        """
+        Performs the writing.
+        
+        .. note::
+            If ``flag_multi`` was set to true, then the traces will be written to multiple files.
+        """
         if self.flag_m==1:
             for f_n in self.no_traces:
                 f=open(self.path[f_n],'w')

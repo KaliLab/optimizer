@@ -3,6 +3,13 @@ import os
 
 
 def main(parameters):
+    """
+    The main function, which starts to software according to the given command line arguments.
+    :param parameters: the command line parameters:
+        *-h help
+        *-c command line
+        *-g graphic interface
+    """
     if parameters[0]=="-h":
         print("This is the command line help of Optimizer\nRecognised arguments:\n\t-h:Help\n\t-g:Graphical interface\n\t-c:Command line interface, specify the settings file in the 2nd argument")
     elif parameters[0]=="-g":
