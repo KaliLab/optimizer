@@ -1,5 +1,5 @@
 Documentation of Core module
 ============================
 
-..automodule:: core
+.. automodule:: core
 	:members:
