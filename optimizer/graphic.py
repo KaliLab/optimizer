@@ -1770,7 +1770,7 @@ class analyzisLayer(wx.Frame):
         act_bounds=self.core.option_handler.boundaries
         if self.core.grid_result == None or act_bounds!=self.prev_bounds:
             self.core.callGrid()
-        no_dims = len(self.core.optimizer.final_pop[0]) / 2 + 1
+        no_dims = len(self.core.option_handler.GetObjTOOpt()) / 2 + 1
         import matplotlib.pyplot as plt
         f, axes = plt.subplots(no_dims, no_dims)
         a = []
