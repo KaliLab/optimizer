@@ -24,12 +24,31 @@ class coreModul():
     """
     This class is responsible to carry out the main steps of the optimization process by
     interacting with the other modules. The main attributes are the following:
-    .. data:: data_handler: performs input operations and handles input data
-    .. data:: option_handler: stores the settings
-    .. data:: model_handler: handles the model and runs the simulations and carries out other model related tasks
-    .. data:: optimizer: carries out the optimization process
-    .. data:: optimal_params: contains the resulting parameters
-    .. data:: ffun_calc_list: contains the list of available fitness functions in a dictionary
+    
+    :attr: data_handler:
+    
+        performs input operations and handles input data
+    
+    :attr: option_handler:
+    
+        stores the settings
+    
+    :attr: model_handler:
+    
+        handles the model and runs the simulations and carries out other model related tasks
+    
+    :attr: optimizer:
+    
+        carries out the optimization process
+    
+    :attr: optimal_params:
+    
+        contains the resulting parameters
+    
+    :attr: ffun_calc_list:
+    
+        contains the list of available fitness functions in a dictionary
+    
     """
     def __init__(self):
         self.data_handler=DATA()
@@ -117,7 +136,9 @@ class coreModul():
         """
         Stores the location of the input, and the base directory in the ``option_handler`` object
         and reads the data from the file into the ``data_handler`` object.
+        
         :param args: dictionary with keys "file" and "input"
+        
         """
         self.option_handler.SetFileOptions(args.get("file"))
         self.option_handler.SetInputOptions(args.get("input"))
@@ -129,7 +150,9 @@ class coreModul():
         Stores the type of the simulator as well as the optional parameters passed to it.
         Creates the ``model_handler`` objects which can be either ``modelHandlerNeuron`` or ``externalHandler``.
         If the ``externalHandler`` is selected then the number of parameters subject to optimization is also set.
+        
         :param args: dictionary with keys "simulator" and "sim_command"
+        
         """
         self.option_handler.SetSimParam([args.get("simulator","Neuron"),args.get("sim_command"),None])
         if self.option_handler.GetSimParam()[0]=="Neuron":
@@ -141,7 +164,9 @@ class coreModul():
             self.option_handler.SetModelStimParam([[0]*self.data_handler.number_of_traces(),0,0])
     def ReturnSections(self):
         """
+        
         :return: the sections found in the model including "None" in a ``string`` ``list``.
+        
         """
         temp=self.model_handler.GetParameters()
         sections=[]
@@ -153,7 +178,9 @@ class coreModul():
            
     def ReturnMorphology(self):
         """
+        
         :return: the morphological parameters found in the model including "None" in a ``string`` ``list``.
+        
         """
         temp=self.model_handler.GetParameters()
         morphs=(string.split(temp[0][1], ", "))
@@ -164,8 +191,11 @@ class coreModul():
     def ReturnChannels(self,section):
         """
         Collects the channels from the given section.
+        
         :param section: the name of the section 
+        
         :return: the channels in the given section including "None" in a ``string`` ``list``.
+        
         """
         temp=self.model_handler.GetParameters()
         channels=[]
@@ -187,8 +217,10 @@ class coreModul():
         Collects channel parameters from the given channel
         :param channel: the name of the channel mechanism
         :return: the channel parameters in the given channel including "None" in a ``string`` ``list``.
+        
         .. note::
             This function returns everything from the channel object not only the parameters.
+        
         """    
         temp=self.model_handler.GetParameters()
         ch_param=[]
@@ -213,15 +245,20 @@ class coreModul():
         """
         Stores the selected parameter as subject to optimization in the ``option_handler`` object.
         For future use it offers a way to store initial value (not in use at the moment).
+        
         :param args: must be a string-string dictionary containing the following keys:
+        
             * section
             * channel
             * params
             * value
+            
             or:
+            
             * section
             * morph
             * values
+            
         """
         if args.get("channel")!="None":
             self.option_handler.SetObjTOOpt(args.get("section").encode("utf-8")+" "+args.get("channel").encode("utf-8")+" "+args.get("params").encode("utf-8"))
@@ -233,17 +270,19 @@ class coreModul():
     def SecondStep(self,args):
         """
         Stores the stimulation settings in the option object.
+        
         :param args: must be a dictionary with the following keys:
+        
             * stim
                 must hold a ``list`` as value, which contains:
-                * stimulus type as ``string``, must be either "IClamp" or "VClamp"
-                * position of stimulus inside the section as of real value (0-1)
-                * name of stimulated section as ``string``
+                   * stimulus type as ``string``, must be either "IClamp" or "VClamp"
+                   * position of stimulus inside the section as of real value (0-1)
+                   * name of stimulated section as ``string``
             * stimparam
                 must hold a ``list`` as value which contains:
-                * stimulus amplitudes as a ``list`` of real values
-                * delay of stimulus as real value
-                * duration of stimulus as real value
+                   * stimulus amplitudes as a ``list`` of real values
+                   * delay of stimulus as real value
+                   * duration of stimulus as real value
                 
         """    
         self.option_handler.SetModelStim(args.get("stim"))
@@ -258,7 +297,9 @@ class coreModul():
         Currently running a simulation with lower sampling rate than the input trace is not supported!
         After storing the necessary settings the ``optimizer`` object is initialized and the optimization is performed.
         The raw results are stored in the ``final_pop`` variable in the ``optimizer`` object.
+
         :param args: a dictionary containing the following keys: 
+
             * runparam
                 must be a list containing the following values:
                 * length of simulation as real value
@@ -273,12 +314,14 @@ class coreModul():
                 must be a list of real values
             * algo_options
                 must be a dictionary containing options related to the optimization algorithm
+
                 mandatory parameters:
                     * seed
                     * evo_strat
                     * pop_size
                     * num_inputs
                     * boundaries
+
                 optional parameters belonging to the different algorithms (see the optimizerHandler module for more)
                     * max_evaluation
                     * mutation_rate
@@ -358,6 +401,7 @@ class coreModul():
         The components of the fitness value is calculated on this optimal trace.
         Settings of the entire work flow are saved into a configuration file named "model name"_settings.xml.
         A report of the results is generated in the form of a html document.
+
         :param args: currently not in use
         """   
         self.final_result=[]

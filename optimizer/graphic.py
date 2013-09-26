@@ -3,14 +3,15 @@ import sys
 try:
     import matplotlib
     matplotlib.use('WXAgg')
+    from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
+    from matplotlib.figure import Figure
 except RuntimeError as re:
     print re
+    sys.exit()
 #from inspyred.ec import analysis
 from inspyred.ec.analysis import generation_plot, allele_plot
 import inspyred
 #from wxPython._controls import wxTextCtrl
-from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
-from matplotlib.figure import Figure
 import os
 from string import count, split, strip
 from copy import copy

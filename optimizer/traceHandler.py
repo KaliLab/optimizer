@@ -11,11 +11,13 @@ def real_range(start, step, end):
     """
     Not in use!
     Generates real values from the given range.
+    
     :param start: begin of range
     :param step: step between the values
     :param end: the end of the range
     
     :return: ``list`` of real values
+    
     """
     return [float(n)*step for n in range(start,end)]
 
@@ -24,7 +26,9 @@ def real_range(start, step, end):
 class sizeError(Exception):
     """
     Exception class used by the trace handling related objects.
+    
     :param message: error message to be displayed
+    
     """
     def __init__(self,message):
         print "There was an error with the size/length of an object, probably not enough element in container. "
@@ -37,8 +41,10 @@ class SpikeTimes():
     """
     Not in use!
     Stores spike times in ``dictionary`` indexed by the cell's id.
+    
     :param dictionary: the ``dictionary`` which contains the data
     :param trace_type: type of the trace (should be fixed to "spikes")
+    
     """
     def __init__(self,dictionary,trace_type="spikes"):
         self.dict=dictionary       
@@ -48,14 +54,15 @@ class SpikeTimes():
 class Trace:
     """
     Trace set object. Stores a trace set of a given type with every relevant data.
+    
     :param no_traces: number of traces held by the object
     :param scale: the unit of the data (required for conversions)
     :param t_length: length of the trace(s)
     :param freq: sampling frequency
     :param trace_type: type of the trace set
     
-    .. data:: data
-        The traces are contained in the attribute named ``data`` in the order they were in the input file.
+    :attr: data:
+        the traces are contained in the attribute named ``data`` in the order they were in the input file
     
     .. note::
         The sampling rate should be uniform in the set.
@@ -67,6 +74,7 @@ class Trace:
     .. note::
         If the type of the trace is not recognized, the program will abort.
         The recognized types are "voltage", "current" and "other" ("spike" is not available yet).
+    
     """
     def __init__(self,no_traces,scale="milli",t_length=1000,freq=100,trace_type=None):
         self.scale=scale
@@ -86,14 +94,18 @@ class Trace:
     def SetTrace(self,d):
         """
         Adds the given trace to the container.
+        
         :param d: ``list`` containing the trace
+        
         """
         self.data.append(d)
     # converts a hoc vector to python list
     def Convert(self,hoc_obj):
         """
         Converts a hoc vector into a python ``list`` and stores it in the container.
+        
         :param hoc_obj: a hoc vector object
+        
         """
         temp=[]
         for n in range(int(hoc_obj.size())):
@@ -110,12 +122,14 @@ class Trace:
         """
         Returns the trace having the index ``index`` form the container. Always use this function to get a given
         trace as they are stored in a non intuitive way and direct access would probably cause errors.
+        
         :param index: the index of the trace to get
         
         .. note::
             If the given index is out of range, a ``sizeError`` is raised.
             
         :return: the required trace
+        
         """
         if index>self.no_traces:
             raise sizeError("There is no " + index + "trace in the structure")
@@ -126,9 +140,11 @@ class Trace:
     def reScale(self,value):
         """
         Re-scales the given value based on the scale of the ``Trace`` object.
+        
         :param value: the value to be rescaled
         
         :return: the rescaled value 
+        
         """
         return value/self.curent_scale
 
@@ -136,8 +152,7 @@ class Trace:
 class DATA():
     """
     The main data container class.
-    .. data:: data
-        This attribute holds the ``Trace`` object which contains the trace set.
+    :attr: data: holds the ``Trace`` object which contains the trace set
         
     .. note::
         This class will be able to hold multiple data sets with multiple types.
@@ -151,14 +166,18 @@ class DATA():
     def number_of_traces(self):
         """
         Gets the number of traces held by the object.
+        
         :return: number of traces
+        
         """
         return int(self.data.no_traces)
     
     def get_type(self):
         """
         Gets the type of the trace set.
+        
         :return: type
+        
         """
         return self.data.type
     
@@ -168,13 +187,15 @@ class DATA():
         """
         Automatically detects the format of the file and returns a reader functions which can process it correctly.
         The recognized formats are the following:
-            *simple text file with data columns separated by "\t"
-            *simple text file, containing time trace as well and data columns separated by "\t"
-            *default recording result from pyNN with 9 line of headers
-            *spike timing file from pyNN with 9 line of headers (not used)
+            * simple text file with data columns separated by "\\t"
+            * simple text file, containing time trace as well and data columns separated by "\t"
+            * default recording result from pyNN with 9 line of headers
+            * spike timing file from pyNN with 9 line of headers (not used)
+        
         :param line: one line from the file, which the recognition is based on
         
         :return: a reader function
+        
         """
     #TODO
     #need more rule for spike timings and other
@@ -192,12 +213,14 @@ class DATA():
         """
         The main reader function. This calls the recognition function ``detect_format``
         and uses the obtained reader function to read the data.
+        
         :param path: list of data path(s) (currently only one file is handled)
         
         (see the explanation of the other parameters in the description of ``Trace``)
         
         .. note::
             The function uses the 5. line of the file for recognition.
+        
         """
         self.path_list.append(path)
         #print path
@@ -226,6 +249,7 @@ class DATA():
         .. note::
             If the number of traces in the file and the corresponding parameter is not equal,
             a ``sizeError`` is raised.
+            
         """        
         trace=Trace(no_traces, scale, t_length, freq,trace_type)
         #print "no time"
@@ -248,7 +272,7 @@ class DATA():
 
     def traceReaderTime(self,path,no_traces,scale,t_length,freq,trace_type):
         """
-        Reads a simple text file, containing time trace as well and data columns separated by "\t".
+        Reads a simple text file, containing time trace as well and data columns separated by "\\t".
         (the parameters are the same as in the ``Read`` function)
         
         :return: a ``trace`` object holding the content of the file
@@ -259,6 +283,7 @@ class DATA():
         .. note::
             If the number of traces in the file and the corresponding parameter is not equal,
             a ``sizeError`` is raised.
+        
         """ 
         trace=Trace(no_traces, scale, t_length, freq,trace_type)
         #print "time"
@@ -296,6 +321,7 @@ class DATA():
         .. note::
             If the number of traces in the file and the corresponding parameter is not equal,
             a ``sizeError`` is raised.
+        
         """ 
         trace=Trace(no_traces, scale, t_length, freq,trace_type)
         for my_file in path:
@@ -318,7 +344,7 @@ class DATA():
     def spikeTimeReader(self,path,no_traces,scale,t_length,freq,trace_type):
         """
         Not available yet!
-        Reads a spike timing file from pyNN with 9 line of headers
+        Reads a spike timing file from PyNN with 9 line of headers
         (the parameters are the same as in the ``Read`` function)
         
         :return: a ``dictionary`` object holding the content of the file
@@ -332,6 +358,7 @@ class DATA():
             
         .. note::
             In the future, it will return a ``SpikeTimes`` object instead.
+        
         """ 
         for my_file in path:
             tmp_dict={}
@@ -360,12 +387,14 @@ class traceWriter(Trace):
     """
     Not used!
     Writes the content of the given trace object to the given file(s).
+    
     :param tr_object: trace object which must have ``data`` attribute
     :param full_path: the path of the output file
     :param comment: some header information
     :param flag_write: indicates if the properties of the trace is written or not
     :param sep: data separator ``string``
     :param flag_multi: indicates if the separate traces should be written into separate files
+    
     """
     def __init__(self,tr_object,full_path,comment="",flag_write=1,sep="\n",flag_multi=0):
         Trace.__init__(self, tr_object.no_traces, tr_object.scale, tr_object.t_length, tr_object.freq)
@@ -381,6 +410,7 @@ class traceWriter(Trace):
         
         .. note::
             If ``flag_multi`` was set to true, then the traces will be written to multiple files.
+    
         """
         if self.flag_m==1:
             for f_n in self.no_traces:

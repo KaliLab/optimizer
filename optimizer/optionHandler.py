@@ -7,8 +7,11 @@ from xml.dom import minidom
 def prettify(e):
     """
     Converts the given xml tree object to human readable form.
+    
     :param e: the xml tree element
-    :return: the reformated content of the xml tree as ``string``
+    
+    :return: the reformatted content of the xml tree as ``string``
+    
     """
     r_str=ElementTree.tostring(e,'utf-8')
     repsed=minidom.parseString(r_str)
@@ -111,9 +114,11 @@ class optionHandler(object):
     def dump(self,f_mapper):
         """
         Dumps the content of the class into a string.
+        
         :param f_mapper: a ``dictionary`` that maps the fitness function objects to their names (used in the GUI)
         
         :return: the content of the class as ``string``
+        
         """
         root=e("settings")
         for m in self.class_content:
@@ -132,6 +137,7 @@ class optionHandler(object):
     def read_all(self,root):
         """
         Reads settings from an xml tree and converts them to the necessary type.
+        
         :param root: the root of the xml tree
         
         .. note::
@@ -142,6 +148,7 @@ class optionHandler(object):
             The program does not verify if every parameter which are needed to the current process is present.
             We strongly recommend that you use the GUI to create a configuration file, which will contain the needed values,
             instead of writing the xml file by hand.
+            
         """
         for child in root:
             if child.tag not in self.class_content:
@@ -178,6 +185,7 @@ class optionHandler(object):
     def GetFileOption(self):
         """
         :return: the current working directory (referred as base in modelHandler, used in traceReader )
+       
         """
         return self.base_dir
     
@@ -185,7 +193,9 @@ class optionHandler(object):
     def SetFileOptions(self,options):
         """
         Sets the current working directory
+       
         :param options: the path of the directory
+       
         """
         self.base_dir=options
     
@@ -193,15 +203,16 @@ class optionHandler(object):
     def GetInputOptions(self):
         """
         Gets the input related settings:
-            *input file
-            *number of traces in file
-            *unit of input
-            *length of the individual traces (see traceHandler)
-            *sampling frequency of the trace(s)
-            *flag indicating if file included time scale or not (will be removed, see traceHandler)
-            *the type of the trace(s)
+            * input file
+            * number of traces in file
+            * unit of input
+            * length of the individual traces (see traceHandler)
+            * sampling frequency of the trace(s)
+            * flag indicating if file included time scale or not (will be removed, see traceHandler)
+            * the type of the trace(s)
             
         :return: the parameters listed above in a ``list``
+       
         """
         return [self.input_dir,
                 self.input_size,
@@ -215,7 +226,9 @@ class optionHandler(object):
     def SetInputOptions(self,options):
         """
         Sets the options related to the input to the given values.
+        
         :param options: a ``list`` of values (order of parameter should be the same as listed in ``GetInputOptions``)
+        
         """
         self.input_dir=options[0]
         self.input_size=options[1]
@@ -228,16 +241,20 @@ class optionHandler(object):
     def GetSimParam(self):
         """
         Gets the simulator related parameters:
-            *the name of the simulator
-            *the command which should be executed to run the model (see modelHandler)
+            * the name of the simulator
+            * the command which should be executed to run the model (see modelHandler)
+        
         :return: the parameters listed above in a ``list``
+        
         """
         return [self.simulator,self.sim_command]
         
     def SetSimParam(self,options):
         """
         Sets the simulator related parameters.
+        
         :param options: a ``list`` of values
+        
         """
         self.simulator=options[0]
         self.sim_command=options[1]
@@ -246,8 +263,11 @@ class optionHandler(object):
     def GetModelOptions(self):
         """
         Gets the model related options:
-        *path to the model
-        *path to the directory containing the special files (see modelHanlder)
+            * path to the model
+            * path to the directory containing the special files (see modelHanlder)
+        
+        :return: the parameters listed above in a ``list``
+        
         """
         return [self.model_path,
         self.model_spec_dir]
@@ -255,7 +275,9 @@ class optionHandler(object):
     def SetModelOptions(self,options):
         """
         Sets the model related options.
+        
         :param options: a ``list`` of values
+        
         """
         self.model_path=options[0]
         self.model_spec_dir=options[1]
@@ -265,23 +287,28 @@ class optionHandler(object):
         Gets the user defined function.
         
         :return: the function as a ``string``
+        
         """
         return self.u_fun_string.strip("\"")
     
     def SetUFunString(self,s):
         """
         Sets the user defined function.
+        
         :param s: the function as a ``string``
+        
         """
         self.u_fun_string=s
     
     def GetModelStim(self):
         """
         Gets the parameters regarding the stimulus type:
-            *type of the stimulus
-            *position of stimulus
-            *name of the stimulated section
+            * type of the stimulus
+            * position of stimulus
+            * name of the stimulated section
+        
         :return: the parameters listed above in a ``list``
+        
         """
         return [self.stim_type,
         self.stim_pos,
@@ -290,7 +317,9 @@ class optionHandler(object):
     def SetModelStim(self,options):
         """
         Sets the parameters regarding the stimulus type to the given values.
+        
         :param options: ``list`` of values
+        
         """
         self.stim_type=options[0]
         self.stim_pos=options[1]
@@ -299,10 +328,12 @@ class optionHandler(object):
     def GetModelStimParam(self):
         """
         Gets the parameters of the stimulus:
-            *amplitude
-            *delay
-            *duration
+            * amplitude
+            * delay
+            * duration
+        
         :return: the parameters listed above in a ``list``
+        
         """
         return [self.stim_amp,
         self.stim_del,
@@ -311,11 +342,13 @@ class optionHandler(object):
     def SetModelStimParam(self,options):
         """
         Sets the parameters of the stimulus to the given values.
+        
         :param options: ``list`` of values
         
         .. note::
             Only the parameters of the IClamp are stored this way since the parameters of the
             SEClamp are obtained by combining the values here and the values regarding the simulation.
+        
         """
         self.stim_amp=options[0]
         self.stim_del=options[1]
@@ -324,18 +357,22 @@ class optionHandler(object):
     def GetObjTOOpt(self):
         """
         Gets the parameters selected to optimization.
+        
         :return: a ``list`` of ``strings``
+        
         """
         return self.adjusted_params
         
     def SetObjTOOpt(self,options):
         """
         Adds the given parameter to the list of parameters selected for optimization.
+        
         :param options: a ``string`` containing the section, a channel name and a channel parameter name,
             or a morphological parameter separated by spaces
             
         .. note::
             If a given parameter is already stored then it will not added to the list.
+        
         """
         if self.adjusted_params.count(options)==0:
             self.adjusted_params.append(options)#string list, one row contains the section, the channel, and the parameter name
@@ -347,7 +384,9 @@ class optionHandler(object):
         """
         Not in use!
         Gets the list of parameter values corresponding to the parameters subject to optimization.
+        
         :return: ``list`` of real values
+        
         """
         return self.param_vals
         
@@ -355,20 +394,24 @@ class optionHandler(object):
         """
         Not in use!
         Adds the given value to the list of parameter values corresponding to the parameters subject to optimization.
+        
         :param options: a real value
+        
         """
         self.param_vals.append(options)#float list, with all the values which selected for optimization
 
     def GetModelRun(self):
         """
         Gets the parameters corresponding to the simulation:
-            *length of simulation
-            *integration step
-            *parameter to record
-            *section name
-            *position inside the section
-            *initial voltage
+            * length of simulation
+            * integration step
+            * parameter to record
+            * section name
+            * position inside the section
+            * initial voltage
+        
         :return: the parameters above in a ``list``
+        
         """
         return [self.run_controll_tstop,
         self.run_controll_dt,
@@ -380,7 +423,9 @@ class optionHandler(object):
     def SetModelRun(self,options):
         """
         Sets the parameters regarding the simulation to the given values.
+        
         :param options:  ``list`` of parameters
+        
         """
         self.run_controll_tstop=options[0]
         self.run_controll_dt=options[1]
@@ -392,25 +437,27 @@ class optionHandler(object):
     def GetOptimizerOptions(self):
         """
         Gets the parameters regarding the optimization process:
-            *seed: random seed
-            *evo_strat: name of evolution algorithm
-            *Size of Population: size of population
-            *Number of Generations: number of generations
-            *Mutation Rate: mutation rate (0-1)
-            *Cooling Rate: cooling rate (0-1)
-            *Mean of Gaussian: mean value of gaussian
-            *Std. Deviation of Gaussian: standard deviation of gaussian
-            *Cooling Schedule: index of cooling schedule
-            *Initial Temperature: initial temperature
-            *Final Temperature: final temperature
-            *Accuracy: accuracy
-            *Dwell: number of evaluation on the given temperature level
-            *Error Tolerance for x: error tolerance for input values
-            *Error Tolerance for f: error tolerance for fitness values
-            *num_inputs: number of input parameters
-            *boundaries: bounds of the parameters
-            *starting_points: initial values to the algorithm
+            * seed: random seed
+            * evo_strat: name of evolution algorithm
+            * Size of Population: size of population
+            * Number of Generations: number of generations
+            * Mutation Rate: mutation rate (0-1)
+            * Cooling Rate: cooling rate (0-1)
+            * Mean of Gaussian: mean value of gaussian
+            * Std. Deviation of Gaussian: standard deviation of gaussian
+            * Cooling Schedule: index of cooling schedule
+            * Initial Temperature: initial temperature
+            * Final Temperature: final temperature
+            * Accuracy: accuracy
+            * Dwell: number of evaluation on the given temperature level
+            * Error Tolerance for x: error tolerance for input values
+            * Error Tolerance for f: error tolerance for fitness values
+            * num_inputs: number of input parameters
+            * boundaries: bounds of the parameters
+            * starting_points: initial values to the algorithm
+        
         :return: a ``dictionary`` containing the parameters above
+        
         """
         return {"seed" : self.seed,
                 "evo_strat" : self.evo_strat,
@@ -436,7 +483,9 @@ class optionHandler(object):
     def SetOptimizerOptions(self,options):
         """
         Sets the parameters regarding the optimization process.
+        
         :param options: a ``dictionary`` containing the parameters
+        
         """
         self.seed=options.get("seed",1234)
         self.evo_strat=options.get("evo_strat")
@@ -465,11 +514,13 @@ class optionHandler(object):
     def GetFitnessParam(self):
         """
         Gets the parameters required by the fitness functions:
-            *``list`` consisting of:
-                *a ``dictionary`` containing the spike detection threshold and the spike window
-                *a ``list`` of fitness function names
-            *``list`` of weights to combine the fitness functions
+            * ``list`` consisting of:
+                * a ``dictionary`` containing the spike detection threshold and the spike window
+                * a ``list`` of fitness function names
+            * ``list`` of weights to combine the fitness functions
+        
         :return: a ``list`` containing the structures described above
+        
         """
         return [ [{"Spike Detection Thres. (mv)" : self.spike_thres,
                 "Spike Window (ms)" : self.spike_window},self.feats],self.weights ]
@@ -477,7 +528,9 @@ class optionHandler(object):
     def SetFitnesParam(self,options):
         """
         Sets the parameters required by the fitness functions.
+        
         :param options: the required values in the structure described in ``GetFitnessParam``
+        
         """
         self.spike_thres=options[0][0].get("Spike Detection Thres. (mv)",0.0)
         self.spike_window=options[0][0].get("Spike Window (ms)",50)*self.input_freq/1000.0
