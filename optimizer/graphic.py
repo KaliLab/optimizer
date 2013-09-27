@@ -83,8 +83,9 @@ class stimuliwindow(wx.Frame):
         vstep = 35
         hoffset = 10
         voffset = 50
+        unit="nA" if self.par.dd_type.GetSelection()==0 else "mV"
         for l in range(min(10, int(self.number.GetValue()))):
-            wx.StaticText(self.panel, label="Amplitude" + str(l+1) + " (nA):", pos=(hoffset, voffset + l * vstep))
+            wx.StaticText(self.panel, label="Amplitude" + str(l+1) + " ("+unit+"):", pos=(hoffset, voffset + l * vstep))
             tmp_obj = wx.TextCtrl(self.panel, id=l, pos=(hstep / 2+25, voffset + l * vstep), size=(75, 30))
             self.temp.append(tmp_obj)
         self.accept.Enable()
@@ -938,6 +939,7 @@ class stimuliLayer(wx.Frame):
         self.dd_type = wx.Choice(self.panel, wx.ID_ANY, size=(150, 30))
         self.dd_type.AppendItems(["IClamp", "VClamp"])
         self.dd_type.Select(0)
+        self.dd_type.Bind(wx.EVT_CHOICE, self.protocolSelection)
         self.column1.Add(descr5, flag=wx.UP, border=15)
         self.column1.Add(self.dd_type, flag=wx.UP, border=5)
         
@@ -978,6 +980,7 @@ class stimuliLayer(wx.Frame):
         
         descr6 = wx.StaticText(self.panel, label='Section')
         self.dd_sec1 = wx.Choice(self.panel, wx.ID_ANY, size=(150, 30))
+        self.dd_sec1.Bind(wx.EVT_CHOICE, self.secChange)
         tmp=self.core.ReturnSections()
         self.dd_sec1.AppendItems(tmp)
         try:
@@ -994,6 +997,7 @@ class stimuliLayer(wx.Frame):
         descr10 = wx.StaticText(self.panel, label='Position inside the section')
         self.pos_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="Value")
         self.pos_ctrl.SetValue("0.5")
+        self.pos_ctrl.Bind(wx.EVT_TEXT, self.posChange)
         self.column1.Add(descr10, flag=wx.UP, border=15)
         self.column1.Add(self.pos_ctrl, flag=wx.UP, border=5)
         
@@ -1036,8 +1040,8 @@ class stimuliLayer(wx.Frame):
         
         
         descr6 = wx.StaticText(self.panel, label='Position')
-        self.pos_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="pos")
-        self.pos_ctrl.SetValue("0.5")
+        self.pos_ctrl2 = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="pos")
+        self.pos_ctrl2.SetValue("0.5")
         
         descr8 = wx.StaticText(self.panel, label='Section')
         self.dd_sec = wx.Choice(self.panel, wx.ID_ANY, size=(100, 30))
@@ -1053,7 +1057,7 @@ class stimuliLayer(wx.Frame):
         self.column2.Add(descr8, flag=wx.UP, border=15)
         self.column2.Add(self.dd_sec, flag=wx.UP, border=5)
         self.column2.Add(descr6, flag=wx.UP, border=15)
-        self.column2.Add(self.pos_ctrl, flag=wx.UP, border=5)
+        self.column2.Add(self.pos_ctrl2, flag=wx.UP, border=5)
                 
         
         self.final_sizer.Add(self.column2, flag=wx.LEFT, border=75)
@@ -1088,6 +1092,23 @@ class stimuliLayer(wx.Frame):
             self.stimuli2.Show()
             self.final_sizer.Layout()
             #hide step button
+            
+    def protocolSelection(self,e):
+        if self.dd_type.GetSelection()==1:
+            self.dd_sec.Disable()
+            self.pos_ctrl2.Disable()
+            self.dd_record.SetSelection(1)
+        else:
+            self.dd_sec.Enable()
+            self.pos_ctrl2.Enable()
+            
+    def secChange(self,e):
+        if self.dd_type.GetSelection()==1:
+            self.dd_sec.SetSelection(self.dd_sec1.GetSelection())
+        
+    def posChange(self,e):
+        if self.dd_type.GetSelection()==1:
+            self.pos_ctrl2.SetValue(self.pos_ctrl.GetValue())
         
     def Stimuli(self, e):
         self.stim_window = stimuliwindow(self)
@@ -1112,7 +1133,7 @@ class stimuliLayer(wx.Frame):
                                     float(self.dt_ctrl.GetValue()),
                                     str(self.dd_record.GetItems()[self.dd_record.GetCurrentSelection()]),
                                     str(self.dd_sec.GetItems()[self.dd_sec.GetCurrentSelection()]),
-                                    float(self.pos_ctrl.GetValue()),
+                                    float(self.pos_ctrl2.GetValue()),
                                     float(self.vrest_ctrl.GetValue())]}
             if self.core.option_handler.output_level=="1":
                 print {"stim" : [str(self.dd_type.GetItems()[self.dd_type.GetCurrentSelection()]), float(self.pos_ctrl.GetValue()), str(self.dd_sec1.GetItems()[self.dd_sec1.GetCurrentSelection()])],
