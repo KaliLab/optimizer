@@ -119,7 +119,7 @@ class coreModul():
         return tmp_str
     
     def htmlPciture(self,inp):
-        return "<img style=\"border:none;\" src=\""+inp+"\" align=\"middle\">"
+        return "<p align=\"center\"><img style=\"border:none;\" src=\""+inp+"\" ></p>"
     
     
     def Print(self):
@@ -396,7 +396,8 @@ class coreModul():
         self.optimizer.final_pop.sort(reverse=True)
         print self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)],"fitness: ",self.optimizer.final_pop[0].fitness
         print "Optimization lasted for ", stop_time-start_time, " s"
-    
+        self.feat_str=", ".join(map(lambda x: self.ffun_mapper[x.__name__],self.option_handler.feats))
+        
     def FourthStep(self,args={}):
         """
         Renormalizes the output of the ``optimizer`` (see optimizerHandler module for more), and runs
@@ -425,7 +426,8 @@ class coreModul():
             try:
                 s=self.option_handler.GetUFunString()
                 s=replace(s,"h.","self.model_handler.hoc_obj.")
-                exec(compile(replace(s,"h(","self.model_handler.hoc_obj("),'<string>','exec'))
+                s=replace(s,"h(","self.model_handler.hoc_obj(")
+                exec(compile(s,'<string>','exec'))
             except SyntaxError:
                 print "Your function contained syntax errors!! Please fix them!"
             
@@ -479,7 +481,7 @@ class coreModul():
         for k in self.option_handler.GetOptimizerOptions().keys():
             tmp_str+="<p><b>"+k+" =</b> "+str(self.option_handler.GetOptimizerOptions()[k])+"</p>\n"
             
-        tmp_str+="<p><b>feats =</b> "+ ", ".join(map(lambda x: x.__name__,self.option_handler.feats))+"</p>\n"
+        tmp_str+="<p><b>feats =</b> "+self.feat_str +"</p>\n"
         tmp_str+="<p><b>weights =</b> "+ str(self.option_handler.weights)+"</p>\n"
         tmp_str+="<p><b>user function =</b> "+ str(self.option_handler.u_fun_string)+"</p>\n"
         tmp_str+="</body>\n</html>\n"
