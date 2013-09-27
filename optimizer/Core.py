@@ -1,6 +1,7 @@
 from traceHandler import *
 from modelHandler import *
 from optimizerHandler import *
+from string import replace
 from optionHandler import optionHandler
 from string import find,count
 from scipy.interpolate import interp1d
@@ -118,7 +119,7 @@ class coreModul():
         return tmp_str
     
     def htmlPciture(self,inp):
-        return "<img style=\"border:none;\" src=\""+inp+"\" align=\"center\">"
+        return "<img style=\"border:none;\" src=\""+inp+"\" align=\"middle\">"
     
     
     def Print(self):
@@ -478,7 +479,7 @@ class coreModul():
         for k in self.option_handler.GetOptimizerOptions().keys():
             tmp_str+="<p><b>"+k+" =</b> "+str(self.option_handler.GetOptimizerOptions()[k])+"</p>\n"
             
-        tmp_str+="<p><b>feats =</b> "+ str(self.option_handler.feats)+"</p>\n"
+        tmp_str+="<p><b>feats =</b> "+ ", ".join(map(lambda x: x.__name__,self.option_handler.feats))+"</p>\n"
         tmp_str+="<p><b>weights =</b> "+ str(self.option_handler.weights)+"</p>\n"
         tmp_str+="<p><b>user function =</b> "+ str(self.option_handler.u_fun_string)+"</p>\n"
         tmp_str+="</body>\n</html>\n"

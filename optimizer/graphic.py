@@ -1255,7 +1255,11 @@ class ffunctionLayer(wx.Frame):
             self.param_list_container.append(tmp)
             self.column2.Add(self.row1, flag=wx.UP, border=1)
             tmp = []
-        self.listbox = wx.CheckListBox(self.panel, wx.ID_ANY, choices=self.my_list)
+        self.listbox = wx.CheckListBox(self.panel, wx.ID_ANY,size=(250,30*len(self.my_list)),choices=self.my_list)
+        #lb_size=self.listbox.GetSize()
+        
+        #self.listbox.SetSize((200,lb_size[1]))
+        self.listbox.SetFont(wx.Font(12,wx.FONTFAMILY_DEFAULT,wx.FONTSTYLE_NORMAL,wx.FONTWEIGHT_BOLD))
         self.listbox.Bind(wx.EVT_CHECKLISTBOX, self.FunSelect)
         self.listbox.GetChecked()
         self.column1.Add(descr0)
@@ -1565,7 +1569,7 @@ class algorithmLayer(wx.Frame):
         try:
             self.layer.Show()
             self.layer.kwargs=self.kwargs
-            #self.layer.Design()
+            self.layer.Design()
         except AttributeError:
             self.layer = resultsLayer(self, 4, self.Size, "Results", self.core, self.path,self.kwargs)
             #self.layer = ffunctionLayer(self, 4, self.Size, "Fitness Function Selection", self.core, self.path, self.kwargs)
