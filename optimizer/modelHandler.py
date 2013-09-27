@@ -10,10 +10,11 @@ class externalHandler():
     
     .. note::
         The command must consist of the following parts:
-        *the command to execute
-        *the model file
-        *options (optional)
-        *number of parameters to optimize
+           * the command to execute
+           * the model file
+           * options (optional)
+           * number of parameters to optimize
+
     """
     def __init__(self,command):
         c=command.split()
@@ -28,12 +29,13 @@ class externalHandler():
     def SetNParams(self,o):
         """
         Sets the number of parameters in the given object by calling it's ``SetObjTOOpt`` method.
+
         :param o: the object whose method will be called
         
         .. note::
-        This is necessary because the other parts expects that the option handler objects
-        knows the parameters subjects to optimization.
-        Since this is not true in the case of an external simulator, this workaround is needed. 
+
+           This is necessary because the other parts expects that the option handler objects knows the parameters subjects to optimization. Since this is not true in the case of an external simulator, this workaround is needed.
+
         """
         for n in range(self.number_of_params):
             o.SetObjTOOpt("parameter"+str(n)) 
@@ -63,11 +65,12 @@ class externalHandler():
 class modelHandlerNeuron():
     """
     Imports the necessary modules to handle Neuron models and loads the model
-    as well as the additional mechanisms.
-    Creates a container for the sections and the channels for easier handling.
+    as well as the additional mechanisms. Creates containers for the sections and the channels for easier handling.
+    
     :param model_path: the path to the model file
     :param special_path: the path to the special file (.mod files)
     :param base: the base working directory 
+    
     """
     def __init__(self,model_path,special_path,base=os.getcwd()):
         self.base_directory=base
@@ -99,11 +102,15 @@ class modelHandlerNeuron():
     def CreateStimuli(self,stims):
         """
         Creates a Neuron pointprocess which is responsible for the stimulation of the model.
-        The type of the point process is either an ``IClamp`` or a   ``SEClamp``.
+        .. note::
+            The type of the point process is either an ``IClamp`` or a   ``SEClamp``.
+        
         :param stims: a ``list`` with the following values:
-            *stimulation type as ``string``
-            *position inside section 
-            *name of the section
+           
+           * stimulation type as ``string``
+           * position inside section 
+           * name of the section
+
         """
         self.stims=stims
         #try:
@@ -119,21 +126,25 @@ class modelHandlerNeuron():
     def SetStimuli(self,params,extra_params):
         """
         Sets the parameters of the stimulating object. The parameters are the following:
-            *amplitude
-            *delay
-            *duration
-            or
-            *amplitude1
-            *amplitude2
-            *amplitude3
-            *duration1
-            *duration2
-            *duration3
+            * amplitude
+            * delay
+            * duration
+
+         or
+
+            * amplitude1
+            * amplitude2
+            * amplitude3
+            * duration1
+            * duration2
+            * duration3
+
         :param params: the ``list`` of parameters containing the first 3 values from the above list
         :param extra_params: ``list`` of parameters containing additional values to set up the ``SEClamp``
         
         .. note::
             The rs parameter of the ``SEClamp`` is set to 0.01
+
         """
         
         self.parameters=params
@@ -161,11 +172,13 @@ class modelHandlerNeuron():
         """
         Uses the vector.play method from Neuron to create a time varying stimulus.
         The stimulus is read from the given file.
+        
         :param params: ``list`` with the name of the file containing the stimulus as first element
         
         .. note::
             The delay value must be set to zero and the duration must be set to 1e9, but these are
             not the actual parameters of the stimulus. This is necessary for Neuron in order to work.
+        
         """
         self.hoc_obj.load_file("vplay.hoc")
         self.parameters=params
@@ -197,10 +210,12 @@ class modelHandlerNeuron():
         """
         Sets the given channel's parameter to the given value. If the section is not known that
         indicates a serious internal error and the program will abort.
+        
         :param section: the selected section's name as ``string``
         :param channel: the selected channel's name as ``string``
         :param params: the selected channel parameter's name as ``string``
         :param values: the value to be set
+        
         """
         try:
             self.sections[section].push()
@@ -215,15 +230,18 @@ class modelHandlerNeuron():
     # one section, but multiple parameters at one time
     def SetMorphParameters(self,section,params,values):
         """
-        Sets the given morphological parameter to the given value. If the section is not known that
-        indicates a serious internal error and the program will abort. If the section has no parameter
-        with the given name then it is interpreted as a parameter of a pointprocess and the function will
-        set the parameter assuming the pointprocess exists in the middle (0.5) at the given section and there
-        is only one other pointprocess in the section. This workaround is implemented because some mechanisms
-        are implemented as pointprocesses.
-        :param section: the name of the section as ``string``
-        :param params: the name of the parameter as ``string``
-        :param values: the value to set
+        Sets the given morphological parameter to the given value.
+        If the section is not known that indicates a serious internal error and the program will abort.
+        If the section has no parameter with the given name
+        then it is interpreted as a parameter of a pointprocess and the function will set the parameter assuming the pointprocess exists in the middle (0.5) at the given section and there is only one other pointprocess in the section. 
+
+            .. note::
+                This workaround is implemented because some mechanisms are implemented as pointprocesses.
+        
+            :param section: the name of the section as ``string``
+            :param params: the name of the parameter as ``string``
+            :param values: the value to set
+        
         """
         try:
             self.sections[section].push()
@@ -248,10 +266,12 @@ class modelHandlerNeuron():
         """
         Checks if substring is in the given ``list``
         and creates a string which contains only the matching elements separated by spaces.
+        
         :param string: ``list`` of strings
         :param ss: the substring to be matched
         
         :return: a string which contains only the matching elements separated by spaces
+        
         """
         temp=""
         
@@ -273,10 +293,12 @@ class modelHandlerNeuron():
         """
         Collects every member of every section object and filters out those that are not parameters of
         the model. The function will collect:
-            *every parameter of the the mechanisms
-            *every mechanism
-            *some default parameters that are always included in a model, and pointprocesses that are not some sort of Clampe
+            * every parameter of the the mechanisms
+            * every mechanism
+            * some default parameters that are always included in a model, and pointprocesses that are not some sort of Clampe
+        
         :return: the filtered content of the model in a string matrix
+        
         """
         matrix=[]
         temp=[]
@@ -338,14 +360,17 @@ class modelHandlerNeuron():
         #6:sampling rate
     def RunControll(self, settings):
         """
-        Sets up the recording procedure and the simulation, then runs it.
+         Sets up the recording procedure and the simulation, then runs it.
+        
         :param settings: the settings of the recording and the parameters of the simulation:
-            *length of simualtion
-            *integration step size
-            *parameter to record
-            *section to record from
-            *position insied the section
-            *
+
+            * length of simulation
+            * integration step size
+            * parameter to record
+            * section to record from
+            * position inside the section
+            * initial voltage
+            
         """
         print settings
         #self.hoc_obj.cvode_active(1)#variable time step is active
@@ -373,9 +398,11 @@ class modelHandlerNeuron():
     def Recordings(self,vector):
         """
         Converts the hoc vector obtained from the simulation and converts it into a ``Trace`` object.
+        
         :param vector: a hoc vector
         
         :return: the data trace from the created object
+        
         """
         tr=Trace(1,"",self.hoc_obj.tstop,self.hoc_obj.tstop/self.hoc_obj.dt)
         tr.Convert(vector)

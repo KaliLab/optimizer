@@ -9,9 +9,10 @@ def main(fname,param=None):
     The main function of the command line version.
     Reads the content of the .xml file into the option object,
     and creates the core object which runs the optimization process based on the .xml file.
+    
     :param fname: the configuration file which contains the settings (should be in xml format)
-    :param param: controls the level of output, 0 means minimal, 1 means maximal
-    (the Default is None which is interpreted as 1) 
+    :param param: controls the level of output, 0 means minimal, 1 means maximal (the Default is None which is interpreted as 1)
+    
     """
     try:
         f=open(fname,"r")
