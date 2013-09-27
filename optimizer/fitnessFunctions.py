@@ -710,4 +710,11 @@ class fF():
             fit_list.append([w,f,(f( model_output,self.reader.data.GetTrace(index_of_trace),args ))])
         return fit_list
     
-    
+    def pyelectro_pptd(self,t_model,v_model,t_target,v_target,dvdt_threshold=None):
+        """
+        Returns error function value from comparison of two phase
+        pptd maps as described by Van Geit 2007.
+        """
+
+        from pyelectro import analysis
+        return analysis.pptd_error(t_model,v_model,t_target,v_target,dvdt_threshold=None)
