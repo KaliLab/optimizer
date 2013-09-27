@@ -1,0 +1,10 @@
+def usr_fun(self,v):
+#4
+#weight (uS)
+#delay (ms)
+#tau_rise (ms)
+#tau_decay (ms)
+    h.nc.weight[0] = v[0]
+    h.nc.delay = v[1]
+    h.ampasyn.tau1 = v[2]
+    h.ampasyn.tau2 = v[3]
