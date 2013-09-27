@@ -215,6 +215,7 @@ class coreModul():
     def ReturnChParams(self,channel):
         """
         Collects channel parameters from the given channel
+        
         :param channel: the name of the channel mechanism
         :return: the channel parameters in the given channel including "None" in a ``string`` ``list``.
         
@@ -248,16 +249,16 @@ class coreModul():
         
         :param args: must be a string-string dictionary containing the following keys:
         
-            * section
-            * channel
-            * params
-            * value
+                * section
+                * channel
+                * params
+                * value
             
             or:
             
-            * section
-            * morph
-            * values
+                * section
+                * morph
+                * values
             
         """
         if args.get("channel")!="None":
@@ -302,12 +303,12 @@ class coreModul():
 
             * runparam
                 must be a list containing the following values:
-                * length of simulation as real value
-                * integration step as real value
-                * parameter to record as ``string``
-                * name of the section where the recording takes place as ``string``
-                * position inside the section as real value (0-1)
-                * initial voltage as a real value
+                    * length of simulation as real value
+                    * integration step as real value
+                    * parameter to record as ``string``
+                    * name of the section where the recording takes place as ``string``
+                    * position inside the section as real value (0-1)
+                    * initial voltage as a real value
             * feat
                 must be a ``list`` with the names of the selected fitness functions
             * weights

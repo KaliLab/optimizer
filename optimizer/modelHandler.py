@@ -33,8 +33,7 @@ class externalHandler():
         :param o: the object whose method will be called
         
         .. note::
-
-           This is necessary because the other parts expects that the option handler objects knows the parameters subjects to optimization. Since this is not true in the case of an external simulator, this workaround is needed.
+            This is necessary because the other parts expects that the option handler objects knows the parameters subjects to optimization. Since this is not true in the case of an external simulator, this workaround is needed.
 
         """
         for n in range(self.number_of_params):
@@ -102,8 +101,9 @@ class modelHandlerNeuron():
     def CreateStimuli(self,stims):
         """
         Creates a Neuron pointprocess which is responsible for the stimulation of the model.
+        
         .. note::
-            The type of the point process is either an ``IClamp`` or a   ``SEClamp``.
+            The type of the point process is either an ``IClamp`` or a ``SEClamp``.
         
         :param stims: a ``list`` with the following values:
            
@@ -293,9 +293,11 @@ class modelHandlerNeuron():
         """
         Collects every member of every section object and filters out those that are not parameters of
         the model. The function will collect:
+        
             * every parameter of the the mechanisms
             * every mechanism
-            * some default parameters that are always included in a model, and pointprocesses that are not some sort of Clampe
+            * some default parameters that are always included in a model,
+              and pointprocesses that are not some sort of Clamp
         
         :return: the filtered content of the model in a string matrix
         

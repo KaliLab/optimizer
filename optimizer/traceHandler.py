@@ -187,10 +187,11 @@ class DATA():
         """
         Automatically detects the format of the file and returns a reader functions which can process it correctly.
         The recognized formats are the following:
-            * simple text file with data columns separated by "\\t"
-            * simple text file, containing time trace as well and data columns separated by "\t"
-            * default recording result from pyNN with 9 line of headers
-            * spike timing file from pyNN with 9 line of headers (not used)
+        
+            * simple text file with data columns separated by "\\\\t"
+            * simple text file, containing time trace as well and data columns separated by "\\\\t"
+            * default recording result from PyNN with 9 line of headers
+            * spike timing file from PyNN with 9 line of headers (not used)
         
         :param line: one line from the file, which the recognition is based on
         
@@ -310,7 +311,7 @@ class DATA():
 
     def PyNNReader(self,path,no_traces,scale,t_length,freq,trace_type):
         """
-        Reads a default recording result from pyNN with 9 line of headers
+        Reads a default recording result from PyNN with 9 line of headers
         (the parameters are the same as in the ``Read`` function)
         
         :return: a ``trace`` object holding the content of the file
