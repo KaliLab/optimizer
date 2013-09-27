@@ -1,6 +1,5 @@
 from traceHandler import *
 from modelHandler import *
-from fitnessFunctions import *
 from optimizerHandler import *
 from optionHandler import optionHandler
 from string import find,count
@@ -64,7 +63,8 @@ class coreModul():
                         "AP Overshoot": "AP_overshoot",
                         "AHP Depth": "AHP_depth",
                         "AP Width": "AP_width",
-                        "Derivative Difference" : "calc_grad_dif"}
+                        "Derivative Difference" : "calc_grad_dif",
+                        "PPTD" : "pyelectro_pptd"}
         self.ffun_mapper=dict((v,k) for k,v in f_m.iteritems())
         self.ffun_calc_list=["Average Squared Error",
                              "Spike Count", 
@@ -75,7 +75,8 @@ class coreModul():
                              "AP Overshoot",
                              "AHP Depth",
                              "AP Width",
-                             "Derivative Difference"]
+                             "Derivative Difference",
+                             "PPTD"]
         self.grid_result=None
         
     def htmlStrBold(self,inp):

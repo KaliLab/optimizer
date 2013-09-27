@@ -1,9 +1,23 @@
 from math import fsum,sqrt
 from string import split,strip,replace
 from copy import copy
+from pyelectro import analysis
 
 
 
+def frange(start,stop,step):
+        """
+        Generates range of real values.
+        
+        :param start: beginning of range
+        :param stop: end of range
+        :param step: step size between values
+        
+        """
+        r = start
+        while r < stop:
+            yield r
+            r += step
 
 
 
@@ -71,7 +85,8 @@ class fF():
                         "AP Overshoot": self.AP_overshoot,
                         "AHP Depth": self.AHP_depth,
                         "AP Width": self.AP_width,
-                        "Derivative Difference" : self.calc_grad_dif}
+                        "Derivative Difference" : self.calc_grad_dif,
+                        "PPTD" : self.pyelectro_pptd}
         try:
             s=self.option.GetUFunString()
             s=replace(s,"h.","self.model.hoc_obj.")
@@ -625,6 +640,16 @@ class fF():
     
     
     
+    def pyelectro_pptd(self,mod_t,exp_t,args):
+        """
+        Returns error function value from comparison of two phase
+        pptd maps as described by Van Geit 2007.
+        """
+        t_gen=frange(0,self.option.run_controll_tstop,self.option.run_controll_dt)
+        t=[]
+        for n in t_gen:
+            t.append(n)
+        return analysis.pptd_error(t,mod_t,t,exp_t,dvdt_threshold=None)
     
     def combineFeatures(self,candidates,args):
         """
@@ -710,11 +735,3 @@ class fF():
             fit_list.append([w,f,(f( model_output,self.reader.data.GetTrace(index_of_trace),args ))])
         return fit_list
     
-    def pyelectro_pptd(self,t_model,v_model,t_target,v_target,dvdt_threshold=None):
-        """
-        Returns error function value from comparison of two phase
-        pptd maps as described by Van Geit 2007.
-        """
-
-        from pyelectro import analysis
-        return analysis.pptd_error(t_model,v_model,t_target,v_target,dvdt_threshold=None)

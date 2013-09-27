@@ -4,7 +4,7 @@ from inspyred import ec
 from inspyred.ec import terminators
 from inspyred.ec import variators
 from inspyred.ec import observers
-from fitnessFunctions import fF
+from fitnessFunctions import fF,frange
 #from fitnessFunctions import *
 import sys
 import inspyred
@@ -469,20 +469,7 @@ class grid(baseOptimizer):
         #print self.resolution
         self.SetBoundaries(option_obj.boundaries)
         
-    def frange(self,start,stop,step):
-        """
-        Generates range of real values.
         
-        :param start: beginning of range
-        :param stop: end of range
-        :param step: step size between values
-        
-        """
-        r = start
-        while r < stop:
-            yield r
-            r += step
-    
     
     def Optimize(self,optimals):
         """
@@ -498,7 +485,7 @@ class grid(baseOptimizer):
         tmp1=[]
         tmp2=[]
         for n in range(self.num_inputs):
-            for c in self.frange(0,1, float(1)/self.num_points_per_dim):
+            for c in frange(0,1, float(1)/self.num_points_per_dim):
                 _o[n]=c
                 tmp1.append(self.fit_obj.ReNormalize(_o))
                 tmp2.append(self.ffun([_o],{}))
