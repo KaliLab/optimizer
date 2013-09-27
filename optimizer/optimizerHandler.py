@@ -104,6 +104,12 @@ class annealing(baseOptimizer):
     :param model_obj: an instance of a model handler object, either ``externalHandler`` or ``modelHandlerNeuron``
     :param option_obj: an instance of ``optionHandler`` object
     
+    .. seealso::
+        
+        Documentation of the Simulated Annealing from 'inspyred':
+            http://inspyred.github.io/reference.html#replacers-survivor-replacement-methods
+                
+    
     """
     def __init__(self,reader_obj,model_obj,option_obj):
         self.fit_obj=fF(reader_obj,model_obj,option_obj)
@@ -200,6 +206,11 @@ class scipy_anneal(baseOptimizer):
     :param model_obj: an instance of a model handler object, either ``externalHandler`` or ``modelHandlerNeuron``
     :param option_obj: an instance of ``optionHandler`` object
     
+    .. seealso::
+        
+        Documentation of the Simulated Annealing from 'scipy':
+            http://docs.scipy.org/doc/scipy-dev/reference/generated/scipy.optimize.anneal.html
+    
     """
     def __init__(self,reader_obj,model_obj,option_obj):
         self.fit_obj=fF(reader_obj,model_obj,option_obj)
@@ -280,6 +291,11 @@ class fmin(baseOptimizer):
     :param model_obj: an instance of a model handler object, either ``externalHandler`` or ``modelHandlerNeuron``
     :param option_obj: an instance of ``optionHandler`` object
     
+    .. seealso::
+        
+        Documentation of the fmin from 'scipy':
+            http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fmin.html#scipy.optimize.fmin
+                
     """
     def __init__(self,reader_obj,model_obj,option_obj):
         self.fit_obj=fF(reader_obj,model_obj,option_obj)
@@ -356,6 +372,11 @@ class L_BFGS_B(baseOptimizer):
     :param model_obj: an instance of a model handler object, either ``externalHandler`` or ``modelHandlerNeuron``
     :param option_obj: an instance of ``optionHandler`` object
     
+    .. seealso::
+        
+        Documentation of the L-BFGS-B from 'scipy':
+            http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fmin_l_bfgs_b.html#scipy.optimize.fmin_l_bfgs_b
+        
     """
     def __init__(self,reader_obj,model_obj,option_obj):
         self.fit_obj=fF(reader_obj,model_obj,option_obj)
@@ -519,6 +540,12 @@ class simpleEO(baseOptimizer):
         The changed parameters compared to the defaults are the following:
             * replacer: genrational_replacement
             * variator: gaussian_mutation, blend_crossover
+            
+    .. seealso::
+        
+        Documentation of the options from 'inspyred':
+            http://inspyred.github.io/reference.html#module-inspyred.ec
+        
     
     """
     def __init__(self,reader_obj,model_obj,option_obj):
