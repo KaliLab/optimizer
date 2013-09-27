@@ -379,7 +379,8 @@ class modelHandlerNeuron():
         self.hoc_obj.dt=settings[1]
         vec=self.hoc_obj.Vector()
         if settings[2]=="i" and self.stims[0]=="VClamp":
-            vec.record(self.hoc_obj.ref(self.sections[settings[3]](settings[4]).point_processes()[0].i))
+            #vec.record(getattr(h.cas()(0.5).point_processes()[0],"_ref_i"))
+            vec.record(getattr(self.sections[settings[3]](settings[4]).point_processes()[0].i,"_ref_i"))
         else:
             ref='_ref_'+settings[2]
             vec.record(getattr(self.sections[settings[3]](settings[4]),ref))
