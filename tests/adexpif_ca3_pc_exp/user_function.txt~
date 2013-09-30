@@ -1,0 +1,29 @@
+def usr_fun(self,v):
+#10
+#vthres
+#vreset
+#trefrac
+#a
+#b
+#delta
+#tauw
+#cm
+#EL
+#GL
+#e_pas
+#g_pas
+
+	h.cas()(0.5).point_processes()[1].vthresh=v[0]
+	h.cas()(0.5).point_processes()[1].vreset=v[1]
+	h.cas()(0.5).point_processes()[1].trefrac=v[2]
+	h.cas()(0.5).point_processes()[1].a=v[3]
+	h.cas()(0.5).point_processes()[1].b=v[4]
+	h.cas()(0.5).point_processes()[1].delta=v[5]
+	h.cas()(0.5).point_processes()[1].tauw=v[6]
+	h.cas()(0.5).cm=v[7]/(3.141592654*0.001784*0.001784)/1000000
+	h.cas()(0.5).point_processes()[1].EL=v[8]
+	h.cas()(0.5).point_processes()[1].GL=v[9]/1000
+	h.cas()(0.5).e_pas=v[8]
+	h.cas()(0.5).g_pas=v[9]/(3.141592654*0.001784*0.001784)/1000000000
+	
+	h.cas()(0.5).point_processes()[1].vspike=h.cas()(0.5).point_processes()[1].vthresh+5*h.cas()(0.5).point_processes()[1].delta

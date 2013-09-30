@@ -6,6 +6,7 @@ stim.dur=500
 stim.amp=0.5
 
 The following model parameters were set (the others are default):
-l=23
-gnabar_hh=0.2
-g_pas=0.0001
+gnabar_hh=0.43
+gkbar_hh=0.02
+g_pas=0.001
+
