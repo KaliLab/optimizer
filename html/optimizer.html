@@ -871,7 +871,7 @@ called &#8220;trace.dat&#8221;.</p>
 
 <dl class="method">
 <dt id="optimizer.fitnessFunctions.fF.pyelectro_pptd">
-<tt class="descname">pyelectro_pptd</tt><big>(</big><em>t_model</em>, <em>v_model</em>, <em>t_target</em>, <em>v_target</em>, <em>dvdt_threshold=None</em><big>)</big><a class="headerlink" href="#optimizer.fitnessFunctions.fF.pyelectro_pptd" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">pyelectro_pptd</tt><big>(</big><em>mod_t</em>, <em>exp_t</em>, <em>args</em><big>)</big><a class="headerlink" href="#optimizer.fitnessFunctions.fF.pyelectro_pptd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns error function value from comparison of two phase
 pptd maps as described by Van Geit 2007.</p>
 </dd></dl>
@@ -923,6 +923,25 @@ the parameters are in their valid ranges.</p>
 </table>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="function">
+<dt id="optimizer.fitnessFunctions.frange">
+<tt class="descclassname">optimizer.fitnessFunctions.</tt><tt class="descname">frange</tt><big>(</big><em>start</em>, <em>stop</em>, <em>step</em><big>)</big><a class="headerlink" href="#optimizer.fitnessFunctions.frange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates range of real values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>start</strong> &#8211; beginning of range</li>
+<li><strong>stop</strong> &#8211; end of range</li>
+<li><strong>step</strong> &#8211; step size between values</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="class">
@@ -1960,25 +1979,6 @@ every parameter into the range of 0-1 since the algorithms are using normalized 
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bounds</strong> &#8211; <tt class="docutils literal"><span class="pre">list</span></tt> containing the minimum and maximum values.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="optimizer.optimizerHandler.grid.frange">
-<tt class="descname">frange</tt><big>(</big><em>start</em>, <em>stop</em>, <em>step</em><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.grid.frange" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates range of real values.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>start</strong> &#8211; beginning of range</li>
-<li><strong>stop</strong> &#8211; end of range</li>
-<li><strong>step</strong> &#8211; step size between values</li>
-</ul>
-</td>
 </tr>
 </tbody>
 </table>
