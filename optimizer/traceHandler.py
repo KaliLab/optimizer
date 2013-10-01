@@ -202,7 +202,7 @@ class DATA():
     #need more rule for spike timings and other
         pynn_rule=re.compile("# variable = [a-zA-Z]")
         neuron_rule_time=re.compile("[0-9]*(.[0-9]*)?\t-?[0-9]*(.[0-9]*)?")
-        neuron_rule=re.compile("-?[0-9]*(.[0-9]*)?$")
+        neuron_rule=re.compile("-?[0-9]*(.[0-9]*)?$|(-?[0-9]*(.[0-9]*)?\t)")
         spike_times_rule=re.compile("# variable = spikes")
         rules=[pynn_rule,neuron_rule_time,neuron_rule,spike_times_rule]
         result=[n!=None for n in [re.match(k,line) for k in rules ] ]

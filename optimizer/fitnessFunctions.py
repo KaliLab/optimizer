@@ -404,9 +404,11 @@ class fF():
         else:
             spikes[1]=self.detectSpike( exp_t)
         max_amp=max(map(lambda x: x.peak_val-self.thres,spikes[1]))
+        if max_amp==0:
+            max_amp=1e-12
         if len(spikes[0])<1 and len(spikes[1])<1:
             return 0
-        if len(spikes[0])<1 != len(spikes[1])<1:
+        if ((len(spikes[0])<1) != (len(spikes[1])<1)):
             return 1
         tmp=[pow((s1.peak_val-self.thres)-(s2.peak_val-self.thres),2) for s1,s2 in zip(spikes[0],spikes[1])]
         try:
@@ -611,7 +613,7 @@ class fF():
         :param args: optional arguments as ``dictionary``
         
         :return: the normalized absolute differences of the number of spikes, where the normalization is done
-            by the sum of the number of spikes in both traces plus one.
+            by the sum of the number of spikes in both traces plus one
         
         """
         add_data=args.get("add_data",None)
@@ -644,11 +646,20 @@ class fF():
         """
         Returns error function value from comparison of two phase
         pptd maps as described by Van Geit 2007.
+        
+        :param mod_t: the trace obtained from the model as ``list``
+        :param exp_t: the input trace as ``list``
+        :param args: optional arguments as ``dictionary``
+        
+        :return: resulting fitness value
+        
         """
         t_gen=frange(0,self.option.run_controll_tstop,self.option.run_controll_dt)
         t=[]
         for n in t_gen:
             t.append(n)
+        t=t[0:len(exp_t)]
+        mod_t=mod_t[0:len(exp_t)]
         return analysis.pptd_error(t,mod_t,t,exp_t,dvdt_threshold=None)
     
     def combineFeatures(self,candidates,args):

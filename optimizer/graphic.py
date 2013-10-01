@@ -1326,7 +1326,7 @@ class ffunctionLayer(wx.Frame):
                              [self.core.ffun_calc_list[fun[0]] for fun in filter(lambda x: x[1].IsEnabled(), enumerate(self.weights))]]
                             })
         self.kwargs.update({"weights" : [float(w.GetValue()) for w in filter(lambda x: x.IsEnabled(), self.weights)]})
-        if not(0.9999<sum(self.kwargs["weights"])<=1):
+        if not(0.999<sum(self.kwargs["weights"])<=1):
             dlg = wx.MessageDialog(self, "You did not normalize your weights!\nDo you want to continue?",'Warning', wx.YES_NO | wx.ICON_QUESTION)
             b_id=dlg.ShowModal()
             if  b_id== wx.ID_YES:
