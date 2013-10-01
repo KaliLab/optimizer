@@ -156,6 +156,8 @@ class coreModul():
         :param args: dictionary with keys "simulator" and "sim_command"
         
         """
+        self.model_handler=None
+        #print "load"
         self.option_handler.SetSimParam([args.get("simulator","Neuron"),args.get("sim_command"),None])
         if self.option_handler.GetSimParam()[0]=="Neuron":
             self.option_handler.SetModelOptions(args.get("model"))
@@ -340,7 +342,8 @@ class coreModul():
                     * f_tol
                 optional parameter shared by every algorithm
                     * starting_points
-        """        
+        """      
+        self.grid_result=None  
         if args!=None:
             self.option_handler.SetModelRun(args.get("runparam"))
             fit_par=[]
@@ -354,6 +357,7 @@ class coreModul():
             self.option_handler.SetOptimizerOptions(tmp)
             
         if self.option_handler.run_controll_dt<self.data_handler.data.step:
+            print "re-sampling"
             #we have to resample the input trace so it would match the model output
             #will use lin interpolation
             x=linspace(0,self.option_handler.run_controll_tstop,self.option_handler.run_controll_tstop*(1/self.data_handler.data.step))#x axis of data points
@@ -411,7 +415,8 @@ class coreModul():
         self.final_result=[]
         self.optimal_params=self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])
         if self.option_handler.GetUFunString()=='':
-            out_handler=open("params.param","w")
+            if isinstance(self.model_handler, externalHandler):
+                out_handler=open("params.param","w")
             for n,k in zip(self.option_handler.GetObjTOOpt(),self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])):
                 tmp=n.split(" ")
                 if isinstance(self.model_handler, externalHandler):
@@ -421,7 +426,8 @@ class coreModul():
                         self.model_handler.SetChannelParameters(tmp[0], tmp[1], tmp[2], k)
                     else:
                         self.model_handler.SetMorphParameters(tmp[0], tmp[1], k)
-            out_handler.close()
+            if isinstance(self.model_handler, externalHandler):
+                out_handler.close()
         else:
             try:
                 s=self.option_handler.GetUFunString()

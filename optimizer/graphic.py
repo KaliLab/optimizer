@@ -434,7 +434,7 @@ class inputLayer(wx.Frame):
         if dlg.ShowModal() == wx.ID_OK:
             self.base_dir_controll.Clear()
             self.base_dir = dlg.GetPath()
-            self.base_dir_controll.WriteText(self.input_file)
+            self.base_dir_controll.WriteText(self.base_dir)
         dlg.Destroy()
 
     
@@ -532,10 +532,11 @@ class modelLayer(wx.Frame):
         path = os.path.dirname(optimizer.__file__)
 
         self.path = path
+        print "path",self.path
         self.Center()
         self.ToolbarCreator()
         self.Design()
-        self.is_loaded=False
+        #self.is_loaded=False
         
         
 
@@ -823,43 +824,43 @@ class modelLayer(wx.Frame):
     def Load(self, e):
         
         
-        if not self.is_loaded:
-            self.is_loaded=True
-            self.core.LoadModel({"model" : [self.model_file, self.spec_file],
-                                 "simulator" : self.dd_type.GetItems()[self.dd_type.GetSelection()],
-                                 "sim_command" : self.sim_path.GetValue()})
-    
-            temp = self.core.model_handler.GetParameters()
-            if temp!=None:
-                out = open("model.txt", 'w')
+        self.model.DeleteAllItems()
+        self.core.LoadModel({"model" : [self.model_file, self.spec_file],
+                             "simulator" : self.dd_type.GetItems()[self.dd_type.GetSelection()],
+                             "sim_command" : self.sim_path.GetValue()})
+
+        temp = self.core.model_handler.GetParameters()
+        print temp
+        if temp!=None:
+            out = open("model.txt", 'w')
+            
+            for i in temp:
+                out.write(str(i))
+                out.write("\n")
                 
-                for i in temp:
-                    out.write(str(i))
-                    out.write("\n")
+            index = 0
+            for row in temp:
+                #self.model.InsertStringItem(index,row[0])
+                for k in split(row[1], ", "):
+                    self.model.InsertStringItem(index, row[0])
+                    self.model.SetStringItem(index, 1, k)
+                    self.model.SetStringItem(index, 2, "-")
+                    self.model.SetStringItem(index, 3, "-")
+                    index += 1
                     
-                index = 0
-                for row in temp:
-                    #self.model.InsertStringItem(index,row[0])
-                    for k in split(row[1], ", "):
+                #index+=1
+                for k in split(row[2], " "):
+                    if k != "":
                         self.model.InsertStringItem(index, row[0])
-                        self.model.SetStringItem(index, 1, k)
-                        self.model.SetStringItem(index, 2, "-")
-                        self.model.SetStringItem(index, 3, "-")
+                        self.model.SetStringItem(index, 3, k)
+                        for s in split(row[3], " "):
+                            if count(k, s) == 1 and s != "":
+                                self.model.SetStringItem(index, 2, s)
+                                self.model.SetStringItem(index, 1, "-")
                         index += 1
+        else:
+            self.toolbar.EnableTool(888, True)
                         
-                    #index+=1
-                    for k in split(row[2], " "):
-                        if k != "":
-                            self.model.InsertStringItem(index, row[0])
-                            self.model.SetStringItem(index, 3, k)
-                            for s in split(row[3], " "):
-                                if count(k, s) == 1 and s != "":
-                                    self.model.SetStringItem(index, 2, s)
-                                    self.model.SetStringItem(index, 1, "-")
-                            index += 1
-            else:
-                self.toolbar.EnableTool(888, True)
-                            
                     
             
     def selectType(self, e):
@@ -900,14 +901,14 @@ class stimuliLayer(wx.Frame):
         self.core = core
         self.panel = wx.Panel(self)
         self.parent = parent
-        self.core = core
-
+        
         #this will need to be wrapped in a try statement later:
         import optimizer
         print optimizer.__file__
         path = os.path.dirname(optimizer.__file__)
         
         self.path = path
+        print "path",self.path
         self.Center()
         self.ToolbarCreator()
         self.Design()
@@ -1637,20 +1638,22 @@ class resultsLayer(wx.Frame):
         self.panel.Fit()
         self.Show()
         canvas.Show()
-        f = self.core.option_handler.input_freq
-        t = self.core.option_handler.input_length
-        no_traces=self.core.option_handler.input_size
-        axes.set_xticks([n for n in range(0, int((t*no_traces)/(1000.0/f)), int((t*no_traces)/(1000.0/f)/5.0)) ])
-        axes.set_xticklabels([str(n) for n in range(0, t*no_traces, (t*no_traces)/5)])
-        axes.set_xlabel("time [ms]")
-        _type=self.core.data_handler.data.type
-        unit="V" if _type=="voltage" else "A" if _type=="current" else ""
-        axes.set_ylabel(_type+" [" + self.core.option_handler.input_scale+ unit + "]")
         exp_data = []
         model_data = []
         for n in range(self.core.data_handler.number_of_traces()):
             exp_data.extend(self.core.data_handler.data.GetTrace(n))
             model_data.extend(self.core.final_result[n])
+        no_traces=self.core.data_handler.number_of_traces()
+        t = self.core.option_handler.input_length
+        step = self.core.option_handler.run_controll_dt
+        axes.set_xticks([n for n in range(0, int((t*no_traces)/(step)), int((t*no_traces)/(step)/5.0)) ])
+        axes.set_xticklabels([str(n) for n in range(0, t*no_traces, (t*no_traces)/5)])
+        print t,step
+        print axes.get_xticks()
+        axes.set_xlabel("time [ms]")
+        _type=self.core.data_handler.data.type
+        unit="V" if _type=="voltage" else "A" if _type=="current" else ""
+        axes.set_ylabel(_type+" [" + self.core.option_handler.input_scale+ unit + "]")
         axes.plot(range(0, len(exp_data)), exp_data)
         axes.plot(range(0, len(model_data)), model_data, 'r')
         axes.legend(["target", "model"])

@@ -72,6 +72,7 @@ class modelHandlerNeuron():
     
     """
     def __init__(self,model_path,special_path,base=os.getcwd()):
+        #print "init"
         self.base_directory=base
         self.special=special_path
         self.model=model_path

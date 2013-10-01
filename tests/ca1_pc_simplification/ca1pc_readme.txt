@@ -1,4 +1,5 @@
 The data trace was obtained from a biophisicly accurate reconstruction of a CA1 layer piramidal cell, by stimulating the somatic section with a 200 pA current stimuli. The experiment lasted for 1000 ms and the stimuli started at 200 ms and lasted for 600 ms (ended at 800 ms). The sampling frequency was 5kHz.
+WARNING: the data is given in V not in mV
 
 The model was created by clusterizing the branches of the detailed model into 6 compartments, the parameter values of the channels were obtained by averaging the values in the detailed model.
 The somatic parameters are the subjects of optimization.
