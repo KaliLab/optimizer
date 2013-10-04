@@ -1723,11 +1723,11 @@ class analyzisLayer(wx.Frame):
         self.Buttons()
         
     def Buttons(self):
-        gen_plot = wx.Button(self.panel, label="Generation Plot", pos=(150, 300))
+        gen_plot = wx.Button(self.panel, label="Generation Plot", pos=(200, 300))
         gen_plot.Bind(wx.EVT_BUTTON, self.PlotGen)
-        allele_plot = wx.Button(self.panel, label="Allele Plot", pos=(150, 350))
+        allele_plot = wx.Button(self.panel, label="Allele Plot", pos=(200, 350))
         allele_plot.Bind(wx.EVT_BUTTON, self.PlotAllele)
-        grid_plot = wx.Button(self.panel, label="Grid Plot", pos=(150, 400))
+        grid_plot = wx.Button(self.panel, label="Grid Plot", pos=(200, 400))
         grid_plot.Bind(wx.EVT_BUTTON, self.PlotGrid)
         
         

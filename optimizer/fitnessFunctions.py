@@ -313,9 +313,9 @@ class fF():
             spikes[1]=self.detectSpike( exp_t)
         tmp=[]
         #tmp.append(abs(len(spikes[0])-len(spikes[1]))/max( float(len(spikes[0])),float(len(spikes[1])-1) ))
-        if len(spikes[0])<1 and len(spikes[1])<1:
+        if (len(spikes[0])<1) and (len(spikes[1])<1):
             return 0
-        if len(spikes[0])<1 != len(spikes[1])<1:
+        if (len(spikes[0])<1) != (len(spikes[1])<1):
             return 1
         k=0
         limit=min(4,len(spikes[1])//2)
@@ -360,9 +360,9 @@ class fF():
             spikes[1]=add_data
         else:
             spikes[1]=self.detectSpike( exp_t)
-        if len(spikes[0])<1 and len(spikes[1])<1:
+        if (len(spikes[0])<1) and (len(spikes[1])<1):
             return 0
-        if len(spikes[0])<1 != len(spikes[1])<1:
+        if (len(spikes[0])<1) != (len(spikes[1])<1):
             return 1
         if self.option.output_level=="1":            
             print "first spike"
@@ -406,7 +406,7 @@ class fF():
         max_amp=max(map(lambda x: x.peak_val-self.thres,spikes[1]))
         if max_amp==0:
             max_amp=1e-12
-        if len(spikes[0])<1 and len(spikes[1])<1:
+        if (len(spikes[0])<1) and (len(spikes[1])<1):
             return 0
         if ((len(spikes[0])<1) != (len(spikes[1])<1)):
             return 1
@@ -454,9 +454,9 @@ class fF():
             spikes[1]=add_data
         else:
             spikes[1]=self.detectSpike( exp_t)
-        if len(spikes[0])<1 and len(spikes[1])<1:
+        if (len(spikes[0])<1) and (len(spikes[1])<1):
             return 0
-        if len(spikes[0])<1 != len(spikes[1])<1:
+        if (len(spikes[0])<1) != (len(spikes[1])<1):
             return 1
         e=[]
         m=[]
@@ -512,9 +512,9 @@ class fF():
             spikes[1]=add_data
         else:
             spikes[1]=self.detectSpike( exp_t)
-        if len(spikes[0])<1 and len(spikes[1])<1:
+        if (len(spikes[0])<1) and (len(spikes[1])<1):
             return 0
-        if len(spikes[0])<1 != len(spikes[1])<1:
+        if (len(spikes[0])<1) != (len(spikes[1])<1):
             return 1
         avg1=[]
         avg2=[]
@@ -553,7 +553,7 @@ class fF():
             spikes[1]=self.detectSpike(exp_t)
         e=copy(mod_t)
         m=copy(exp_t)
-        if len(spikes[1])<1 and len(spikes[0])<1:
+        if (len(spikes[1])<1) and (len(spikes[0])<1):
             return self.calc_ase(mod_t, exp_t,args)
         for s_e in spikes[1]:
             e[int(s_e.start_pos-window):int(s_e.stop_pos+window)]=[0]*(int(s_e.stop_pos+window)-int(s_e.start_pos-window))
