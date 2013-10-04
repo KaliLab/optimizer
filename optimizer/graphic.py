@@ -1230,7 +1230,7 @@ class ffunctionLayer(wx.Frame):
         #self.my_list=["ffun1","ffun","ffun3"]
         self.param_list = [[]] * len(self.my_list)
         self.param_list[1] = [("Spike Detection Thres. (mv)",0.0)]
-        self.param_list[2] = [("Spike Detection Thres. (mv)",0.0), ("Spike Window (ms)",50.0)]
+        self.param_list[2] = [("Spike Detection Thres. (mv)",0.0), ("Spike Window (ms)",1.0)]
         self.param_list_container = []
         self.weights = []
         #self.norm_weights = []
@@ -1320,7 +1320,8 @@ class ffunctionLayer(wx.Frame):
         for fun, fun_name in zip(self.param_list_container, self.param_list):
             for f, f_n in zip(fun, fun_name):
                 if f.IsEnabled():
-                    tmp_dict.update({f_n : float(f.GetValue())})
+                    tmp_dict.update({f_n[0] : float(f.GetValue())})
+        print tmp_dict
         self.kwargs.update({"feat":
                             [tmp_dict,
                              [self.core.ffun_calc_list[fun[0]] for fun in filter(lambda x: x[1].IsEnabled(), enumerate(self.weights))]]
@@ -1653,7 +1654,7 @@ class resultsLayer(wx.Frame):
         axes.set_xlabel("time [ms]")
         _type=self.core.data_handler.data.type
         unit="V" if _type=="voltage" else "A" if _type=="current" else ""
-        axes.set_ylabel(_type+" [" + self.core.option_handler.input_scale+ unit + "]")
+        axes.set_ylabel(_type+" [" + self.core.option_handler.input_scale + "]")
         axes.plot(range(0, len(exp_data)), exp_data)
         axes.plot(range(0, len(model_data)), model_data, 'r')
         axes.legend(["target", "model"])
@@ -1722,11 +1723,11 @@ class analyzisLayer(wx.Frame):
         self.Buttons()
         
     def Buttons(self):
-        gen_plot = wx.Button(self.panel, label="Generation Plot", pos=(25, 300))
+        gen_plot = wx.Button(self.panel, label="Generation Plot", pos=(150, 300))
         gen_plot.Bind(wx.EVT_BUTTON, self.PlotGen)
-        allele_plot = wx.Button(self.panel, label="Allele Plot", pos=(25, 350))
+        allele_plot = wx.Button(self.panel, label="Allele Plot", pos=(150, 350))
         allele_plot.Bind(wx.EVT_BUTTON, self.PlotAllele)
-        grid_plot = wx.Button(self.panel, label="Grid Plot", pos=(25, 400))
+        grid_plot = wx.Button(self.panel, label="Grid Plot", pos=(150, 400))
         grid_plot.Bind(wx.EVT_BUTTON, self.PlotGrid)
         
         

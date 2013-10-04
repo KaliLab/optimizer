@@ -467,6 +467,7 @@ class coreModul():
                 self.final_result.extend(self.model_handler.record)
                 
         f_handler=open(self.option_handler.model_path.split("/")[-1].split(".")[0]+"_settings.xml","w")
+        #print self.option_handler.dump(self.ffun_mapper)
         f_handler.write(self.option_handler.dump(self.ffun_mapper))
         f_handler.close()
         

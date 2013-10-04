@@ -10,8 +10,6 @@ def usr_fun(self,v):
 #cm
 #EL
 #GL
-#e_pas
-#g_pas
 
 	h.cas()(0.5).point_processes()[1].vthresh=v[0]
 	h.cas()(0.5).point_processes()[1].vreset=v[1]

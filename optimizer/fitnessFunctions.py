@@ -556,12 +556,12 @@ class fF():
         if len(spikes[1])<1 and len(spikes[0])<1:
             return self.calc_ase(mod_t, exp_t,args)
         for s_e in spikes[1]:
-            e[s_e.start_pos-window:s_e.stop_pos+window]=0
-            m[s_e.start_pos-window:s_e.stop_pos+window]=0
+            e[int(s_e.start_pos-window):int(s_e.stop_pos+window)]=[0]*(int(s_e.stop_pos+window)-int(s_e.start_pos-window))
+            m[int(s_e.start_pos-window):int(s_e.stop_pos+window)]=[0]*(int(s_e.stop_pos+window)-int(s_e.start_pos-window))
             
         for s_m in spikes[0]:
-            m[s_m.start_pos-window:s_m.stop_pos+window]=0
-            e[s_m.start_pos-window:s_m.stop_pos+window]=0
+            m[int(s_m.start_pos-window):int(s_m.stop_pos+window)]=[0]*(int(s_m.stop_pos+window)-int(s_m.start_pos-window))
+            e[int(s_m.start_pos-window):int(s_m.stop_pos+window)]=[0]*(int(s_m.stop_pos+window)-int(s_m.start_pos-window))
 #        tmp.append(self.calc_ase(a[0:spikes[1][0].start_pos-window],
 #                                 b[0:spikes[1][0].start_pos-window],args))
 #        for i,s in enumerate(spikes[1]):
@@ -600,7 +600,11 @@ class fF():
             #    return 1
         if self.option.output_level=="1":
             print "ase"
-            print fsum(temp)/len(temp)/( pow( max(exp_t)-min(exp_t),2 ) )
+            try:
+                print fsum(temp)/len(temp)/( pow( max(exp_t)-min(exp_t),2 ) )
+            except OverflowError:
+                print 1
+                return 1
         return fsum(temp)/len(temp)/( pow( max(exp_t)-min(exp_t),2 ) )
     
     
