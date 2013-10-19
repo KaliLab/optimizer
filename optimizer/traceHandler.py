@@ -404,7 +404,7 @@ class traceWriter(Trace):
         self.flag_w=flag_write
         self.flag_m=flag_multi
         self.separator=sep
-        self.SetTrace(tr_object.data)
+        self.data=tr_object.data
     def Write(self):
         """
         Performs the writing.

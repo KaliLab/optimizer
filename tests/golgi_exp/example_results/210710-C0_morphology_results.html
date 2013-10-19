@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<body>
+<p>Mon Sep 30 14:43:19 2013</p>
+<p><span style="text-align:center;">Optimization of <b>210710-C0_morphology.hoc</b> based on: /home/fripe/workspace/git/optimizer/tests/golgi_exp/210710-C0_exp.dat</span></p>
+<center><p><span style="text-decoration:underline;font-size:200%;">Results</span></p></center>
+<table border="1" align="center">
+<th>Parameter Name</th>
+<th>Minimum</th>
+<th>Maximum</th>
+<th>Optimum</th>
+<tr>
+<td>cm</td>
+<td>1.0</td>
+<td>10.0</td>
+<td>3.25237710113</td>
+</tr>
+<tr>
+<td>Ra</td>
+<td>100.0</td>
+<td>700.0</td>
+<td>699.846625872</td>
+</tr>
+<tr>
+<td>g_pas</td>
+<td>1e-06</td>
+<td>0.01</td>
+<td>8.70114846713e-05</td>
+</tr>
+</table>
+<center><p><b>Fitnes: </b><b>0.000407899737272</b></p></center>
+<p align="center"><img style="border:none;" src="result_trace.png" ></p>
+<p><b>Error Tolerance for x: =</b> None</p>
+<p><b>Size of Population: =</b> 20.0</p>
+<p><b>Accuracy: =</b> None</p>
+<p><b>Mutation Rate: =</b> 0.25</p>
+<p><b>Cooling Rate: =</b> None</p>
+<p><b>Final Temperature: =</b> None</p>
+<p><b>Std. Deviation of Gaussian: =</b> None</p>
+<p><b>Cooling Schedule: =</b> None</p>
+<p><b>boundaries =</b> [[1.0, 100.0, 1e-06], [10.0, 700.0, 0.01]]</p>
+<p><b>Number of Generations: =</b> 20.0</p>
+<p><b>evo_strat =</b> Classical EO</p>
+<p><b>seed =</b> 1234.0</p>
+<p><b>Initial Temperature: =</b> None</p>
+<p><b>starting_points =</b> None</p>
+<p><b>Dwell: =</b> None</p>
+<p><b>Mean of Gaussian: =</b> None</p>
+<p><b>Error Tolerance for f: =</b> None</p>
+<p><b>num_inputs =</b> 3</p>
+<p><b>feats =</b> Average Squared Error</p>
+<p><b>weights =</b> [1.0]</p>
+<p><b>user function =</b> #Please define your function below in the template!
+#You may choose an arbitrary name for your function,
+#but the input parameters must be self and a vector!In the first line of the function specify the length of the vector in a comment!
+#In the second line you may specify the names of the parameters in a comment, separated by spaces.
+def usr_fun(self,v):
+#3
+#cm
+#Ra
+#g_pas
+	for sec in h.allsec():
+		sec.cm=v[0]
+		sec.Ra=v[1]
+		for seg in sec:
+			seg.g_pas=v[2]
+			seg.e_pas=0
+</p>
+</body>
+</html>

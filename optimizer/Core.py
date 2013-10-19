@@ -464,6 +464,10 @@ class coreModul():
                     self.model_handler.RunControll(s)
                 #calculate the error components
                 self.error_comps=self.optimizer.fit_obj.getErrorComponents(k, self.model_handler.record[0])
+                trace_handler=open("result_trace"+str(k)+".txt","w")
+                for l in self.model_handler.record[0]:
+                    trace_handler.write(str(l))
+                trace_handler.close()
                 self.final_result.extend(self.model_handler.record)
                 
         f_handler=open(self.option_handler.model_path.split("/")[-1].split(".")[0]+"_settings.xml","w")
@@ -501,14 +505,14 @@ class coreModul():
         tmp_list=[]
         for c in self.error_comps:
             #tmp_str.append( "*".join([str(c[0]),c[1].__name__]))
-            tmp_list.append([c[1].__name__,
+            tmp_list.append([self.ffun_mapper[c[1].__name__],
                              str(c[2])[0:5],
                              str(c[0]),
-                             str(c[0]*c[2])[0:5],
-                             str(c[0]*c[2])])
+                             str(c[0]*c[2]),""])
             tmp_w_sum +=c[0]*c[2]
-        tmp_str+=self.htmlTable(["Name","Value","Weight","Weighted Sum"], tmp_list)+"\n"
-        tmp_str+="<center><p><b>weighted sum = "+(str(tmp_w_sum)[0:5])+"</b></p></centered>"
+        tmp_list.append(["","","","",tmp_w_sum])
+        tmp_str+=self.htmlTable(["Name","Value","Weight","Weighted Value","Weighted Sum"], tmp_list)+"\n"
+        #tmp_str+="<center><p><b>weighted sum = "+(str(tmp_w_sum)[0:5])+"</b></p></centered>"
         f_handler.write(tmp_str)
         f_handler.close()
         

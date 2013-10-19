@@ -237,9 +237,12 @@ class fF():
             grad_a=((mod_t[i+1]-mod_t[i-1])/(2*dt))
             grad_b=((exp_t[i+1]-exp_t[i-1])/(2*dt))
             tmp.append((grad_a-grad_b)**2)
-        if self.option.output_level=="1":
-            print "grad dif"
-            print fsum(tmp)/len(tmp)/(pow(max(exp_t)-min(exp_t),2))
+        try:
+            if self.option.output_level=="1":
+                print "grad dif"
+                print fsum(tmp)/len(tmp)/(pow(max(exp_t)-min(exp_t),2))
+        except OverflowError:
+                return 1
             
             
         return fsum(tmp)/len(tmp)/(pow(max(exp_t)-min(exp_t),2))  
@@ -364,11 +367,14 @@ class fF():
             return 0
         if (len(spikes[0])<1) != (len(spikes[1])<1):
             return 1
-        if self.option.output_level=="1":            
-            print "first spike"
-            print "mod: ", len(spikes[0])
-            print "exp: ", len(spikes[1])
-            print pow(spikes[0][0].start_pos-spikes[1][0].start_pos,2)/len(exp_t)
+        try:
+            if self.option.output_level=="1":            
+                print "first spike"
+                print "mod: ", len(spikes[0])
+                print "exp: ", len(spikes[1])
+                print pow(spikes[0][0].start_pos-spikes[1][0].start_pos,2)/len(exp_t)
+        except OverflowError:
+                return 1
         return pow(spikes[0][0].start_pos-spikes[1][0].start_pos,2)/len(exp_t)
     
     
@@ -420,7 +426,7 @@ class fF():
             return  fsum(tmp)/len(tmp)/max_amp
         except OverflowError:
             print "overflow"
-            return 10
+            return 1
     
     
         #compares the two traces based on the after-hyperpolarization depth
@@ -471,11 +477,14 @@ class fF():
         avg_e=fsum(e)/len(e)
         avg_m=fsum(m)/len(m)
         sub_t_e=filter(lambda x: x<self.thres, exp_t)
-        if self.option.output_level=="1":
-            print "AHP depth:"
-            print "mod: ", len(spikes[0])
-            print "exp: ", len(spikes[1])
-            print pow(avg_e-avg_m,2)/pow(max(sub_t_e)-min(sub_t_e),2)
+        try:
+            if self.option.output_level=="1":
+                print "AHP depth:"
+                print "mod: ", len(spikes[0])
+                print "exp: ", len(spikes[1])
+                print pow(avg_e-avg_m,2)/pow(max(sub_t_e)-min(sub_t_e),2)
+        except OverflowError:
+                return 1
         tmp=pow(avg_e-avg_m,2)/pow(max(sub_t_e)-min(sub_t_e),2) 
         return tmp
     
@@ -521,12 +530,15 @@ class fF():
         for s1,s2 in zip(spikes[0],spikes[1]):
             avg1.append((s1.stop_pos-s1.start_pos)/2)
             avg2.append((s2.stop_pos-s2.start_pos)/2)
-
-        if self.option.output_level=="1":
-            print "AP width:"
-            print "mod: ", len(spikes[0])
-            print "exp: ", len(spikes[1])
-            print pow((fsum(avg2)/len(avg2)-fsum(avg1)/len(avg1))/(fsum(avg2)/len(avg2)),2)
+        
+        try:
+            if self.option.output_level=="1":
+                print "AP width:"
+                print "mod: ", len(spikes[0])
+                print "exp: ", len(spikes[1])
+                print pow((fsum(avg2)/len(avg2)-fsum(avg1)/len(avg1))/(fsum(avg2)/len(avg2)),2)
+        except OverflowError:
+            return 1
         return pow((fsum(avg2)/len(avg2)-fsum(avg1)/len(avg1))/(fsum(avg2)/len(avg2)),2)
 
     
@@ -598,12 +610,11 @@ class fF():
                 return 1
             #except TypeError:
             #    return 1
-        if self.option.output_level=="1":
-            print "ase"
-            try:
+        try:
+            if self.option.output_level=="1":
+                print "ase"
                 print fsum(temp)/len(temp)/( pow( max(exp_t)-min(exp_t),2 ) )
-            except OverflowError:
-                print 1
+        except OverflowError:
                 return 1
         return fsum(temp)/len(temp)/( pow( max(exp_t)-min(exp_t),2 ) )
     

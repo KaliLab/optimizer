@@ -1,8 +1,14 @@
 import sys
 import Core
 import xml.etree.ElementTree as ET
-from reportlab.lib.colors import coral
-
+try:
+    import matplotlib
+    matplotlib.use('WXAgg')
+    from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
+    from matplotlib.figure import Figure
+except RuntimeError as re:
+    print re
+    sys.exit()
 
 def main(fname,param=None):
     """
@@ -48,6 +54,30 @@ def main(fname,param=None):
     core.FourthStep()
     print core.optimizer.final_pop[0].candidate[0:len(core.optimizer.final_pop[0].candidate)/2]
     print "resulting parameters: ",core.optimal_params
+    figure = Figure(figsize=(7, 6))
+    axes = figure.add_subplot(111)
+    
+    exp_data = []
+    model_data = []
+    for n in range(core.data_handler.number_of_traces()):
+        exp_data.extend(core.data_handler.data.GetTrace(n))
+        model_data.extend(core.final_result[n])
+    no_traces=core.data_handler.number_of_traces()
+    t = core.option_handler.input_length
+    step = core.option_handler.run_controll_dt
+    axes.set_xticks([n for n in range(0, int((t*no_traces)/(step)), int((t*no_traces)/(step)/5.0)) ])
+    axes.set_xticklabels([str(n) for n in range(0, t*no_traces, (t*no_traces)/5)])
+    #print t,step
+    #print axes.get_xticks()
+    axes.set_xlabel("time [ms]")
+    _type=core.data_handler.data.type
+    axes.set_ylabel(_type+" [" + core.option_handler.input_scale + "]")
+    axes.plot(range(0, len(exp_data)), exp_data)
+    axes.plot(range(0, len(model_data)), model_data, 'r')
+    axes.legend(["target", "model"])
+    figure.savefig("result_trace.png", dpi=None, facecolor='w', edgecolor='w',
+    orientation='portrait', papertype=None, format=None,
+    transparent=False, bbox_inches=None, pad_inches=0.1)
 
     
 

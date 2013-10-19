@@ -1,0 +1,1 @@
+['soma', 'L, cm, Ra, diam, nseg, ena, ek, a, EL, vspike, b, vpeak, trefrac, spikewidth, vreset, winit, tauw, w, delta, GL, vthresh', ' e_pas g_pas i_pas ', ' pas']

@@ -150,26 +150,33 @@ class optionHandler(object):
             instead of writing the xml file by hand.
             
         """
+        def _float_or_int(val):
+            try:
+                a=int(val)
+                return a
+            except ValueError:
+                return float(val)
+            
         for child in root:
             if child.tag not in self.class_content:
                 raise AttributeError(child.tag)
             if child.tag=="adjusted_params":
                 self.__setattr__(child.tag,child.text.lstrip("['").rstrip("']").split("', '"))
             elif child.tag=="param_vals":
-                self.__setattr__(child.tag,map(float,child.text.lstrip("[").rstrip("]").split(",")))
+                self.__setattr__(child.tag,map(_float_or_int,child.text.lstrip("[").rstrip("]").split(",")))
             elif child.tag=="boundaries":
-                self.__setattr__(child.tag,map(lambda x:map(float,x.split(", ")), child.text[2:len(child.text)-2].split("], [")))
+                self.__setattr__(child.tag,map(lambda x:map(_float_or_int,x.split(", ")), child.text[2:len(child.text)-2].split("], [")))
             elif child.tag=="type":
                 self.__setattr__(child.tag,child.text.lstrip("['").rstrip("']").split(","))
             elif child.tag=="feats":
                 self.__setattr__(child.tag,child.text.split(", "))
             elif child.tag=="stim_amp":
-                self.__setattr__(child.tag,map(float,child.text.lstrip("[").rstrip("]").split(",")))
+                self.__setattr__(child.tag,map(_float_or_int,child.text.lstrip("[").rstrip("]").split(",")))
             elif child.tag=="weights":
-                self.__setattr__(child.tag,map(float,child.text.lstrip("[").rstrip("]").split(",")))
+                self.__setattr__(child.tag,map(_float_or_int,child.text.lstrip("[").rstrip("]").split(",")))
             else:
                 try:
-                    self.__setattr__(child.tag,float(child.text))
+                    self.__setattr__(child.tag,_float_or_int(child.text))
                 except ValueError:
                     self.__setattr__(child.tag,None if child.text=="None" else True if child.text=="True" else False if child.text=="false" else child.text )
                 except TypeError:

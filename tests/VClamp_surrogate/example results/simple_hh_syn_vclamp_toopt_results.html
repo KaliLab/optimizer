@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<body>
+<p>Wed Oct 16 15:16:42 2013</p>
+<p><span style="text-align:center;">Optimization of <b>simple_hh_syn_vclamp_toopt.hoc</b> based on: /home/fripe/workspace/git/optimizer/tests/VClamp_surrogate/iclamp.dat</span></p>
+<center><p><span style="text-decoration:underline;font-size:200%;">Results</span></p></center>
+<table border="1" align="center">
+<th>Parameter Name</th>
+<th>Minimum</th>
+<th>Maximum</th>
+<th>Optimum</th>
+<tr>
+<td>weight</td>
+<td>0.0001</td>
+<td>1.0</td>
+<td>0.00999982202372</td>
+</tr>
+<tr>
+<td>delay</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0131330448236</td>
+</tr>
+<tr>
+<td>tau_rise</td>
+<td>0.001</td>
+<td>1.0</td>
+<td>0.299295488949</td>
+</tr>
+<tr>
+<td>tau_decay</td>
+<td>0.1</td>
+<td>5.0</td>
+<td>3.00235143565</td>
+</tr>
+</table>
+<center><p><b>Fitnes: </b><b>2.6707703835e-09</b></p></center>
+<p align="center"><img style="border:none;" src="result_trace.png" ></p>
+<p><b>Error Tolerance for x: =</b> None</p>
+<p><b>Size of Population: =</b> 100.0</p>
+<p><b>Accuracy: =</b> None</p>
+<p><b>Mutation Rate: =</b> 0.25</p>
+<p><b>Cooling Rate: =</b> None</p>
+<p><b>Final Temperature: =</b> None</p>
+<p><b>Std. Deviation of Gaussian: =</b> None</p>
+<p><b>Cooling Schedule: =</b> None</p>
+<p><b>boundaries =</b> [[0.0001, 0.0, 0.001, 0.1], [1.0, 1.0, 1.0, 5.0]]</p>
+<p><b>Number of Generations: =</b> 100.0</p>
+<p><b>evo_strat =</b> Classical EO</p>
+<p><b>seed =</b> 1234.0</p>
+<p><b>Initial Temperature: =</b> None</p>
+<p><b>starting_points =</b> None</p>
+<p><b>Dwell: =</b> None</p>
+<p><b>Mean of Gaussian: =</b> None</p>
+<p><b>Error Tolerance for f: =</b> None</p>
+<p><b>num_inputs =</b> 4</p>
+<p><b>feats =</b> Average Squared Error</p>
+<p><b>weights =</b> [1.0]</p>
+<p><b>user function =</b></p>
+<p>def usr_fun(self,v):</p><p>#4</p><p>#weight</p><p>#delay</p><p>#tau_rise</p><p>#tau_decay</p><p>    h.nc.weight[0] = v[0]</p><p>    h.nc.delay = v[1]</p><p>    h.ampasyn.tau1 = v[2]</p><p>    h.ampasyn.tau2 = v[3]</p></body>
+</html>
+<p><b>Fitness Components:</b></p>
+<table border="1" align="center">
+<th>Name</th>
+<th>Value</th>
+<th>Weight</th>
+<th>Weighted Sum</th>
+<tr>
+<td>calc_ase</td>
+<td>2.670</td>
+<td>1.0</td>
+<td>2.670</td>
+<td>2.6707703835e-09</td>
+</tr>
+</table>
+<center><p><b>weighted sum = 2.670</b></p></centered>
