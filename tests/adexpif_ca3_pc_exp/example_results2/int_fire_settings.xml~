@@ -2,7 +2,7 @@
 <settings>
   <simulator>Neuron</simulator>
   <f_tol>None</f_tol>
-  <max_evaluation>100.0</max_evaluation>
+  <max_evaluation>100</max_evaluation>
   <spike_window>50.0</spike_window>
   <evo_strat>Classical EO</evo_strat>
   <seed>1234.0</seed>
@@ -10,7 +10,7 @@
   <run_controll_vrest>-65.0</run_controll_vrest>
   <starting_points>None</starting_points>
   <cooling_rate>None</cooling_rate>
-  <pop_size>10</pop_size>
+  <pop_size>50</pop_size>
   <adjusted_params>['vthres', 'vreset', 'trefrac', 'a', 'b', 'delta', 'tauw', 'cm', 'EL', 'GL']</adjusted_params>
   <param_vals>[0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]</param_vals>
   <run_controll_tstop>1100.0</run_controll_tstop>
@@ -23,7 +23,7 @@
   <input_size>4</input_size>
   <type>['voltage']</type>
   <x_tol>None</x_tol>
-  <feats>Spike Count, Averaged Squared Error II, Latency to 1st Spike, AP Overshoot, AHP Depth</feats>
+  <feats>Spike Count, Averaged Squared Error II, Latency to 1st Spike, AP Overshoot, AHP Depth, ISI Differences</feats>
   <input_length>1100</input_length>
   <sim_command>&quot;&quot;</sim_command>
   <init_temp>None</init_temp>
@@ -75,7 +75,7 @@ def usr_fun(self,v):
 	h.cas()(0.5).point_processes()[1].vspike=h.cas()(0.5).point_processes()[1].vthresh+5*h.cas()(0.5).point_processes()[1].delta
 </u_fun_string>
   <mutation_rate>0.25</mutation_rate>
-  <weights>[0.2, 0.2, 0.2, 0.2, 0.2]</weights>
+  <weights>[0.1666, 0.1666, 0.1666, 0.1666, 0.1666, 0.1666]</weights>
   <model_path>/home/fripe/workspace/git/optimizer/tests/adexpif_ca3_pc_exp/int&amp;fire.hoc</model_path>
   <final_temp>None</final_temp>
   <run_controll_pos>0.5</run_controll_pos>

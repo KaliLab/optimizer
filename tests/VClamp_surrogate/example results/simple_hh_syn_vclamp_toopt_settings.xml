@@ -21,9 +21,9 @@
   <stim_pos>0.5</stim_pos>
   <dwell>None</dwell>
   <input_size>1</input_size>
-  <type>['current']</type>
+  <type>['current', 'current']</type>
   <x_tol>None</x_tol>
-  <feats>Average Squared Error</feats>
+  <feats>PPTD</feats>
   <input_length>500</input_length>
   <sim_command>&quot;&quot;</sim_command>
   <init_temp>None</init_temp>

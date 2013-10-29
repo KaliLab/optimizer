@@ -1,4 +1,4 @@
-create soma 
-insert pas
+create soma
 insert hh
-soma.l=23
+
+soma diam=10

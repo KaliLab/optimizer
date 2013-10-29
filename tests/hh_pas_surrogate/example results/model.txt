@@ -1,1 +1,1 @@
-['soma', 'L, cm, Ra, diam, nseg, ena, ek', ' el_hh gk_hh gkbar_hh gl_hh gna_hh gnabar_hh h_hh il_hh m_hh n_hh  e_pas g_pas i_pas ', ' k_ion na_ion hh pas']
+['soma', 'L, cm, Ra, diam, nseg, ena, ek', ' el_hh gk_hh gkbar_hh gl_hh gna_hh gnabar_hh h_hh il_hh m_hh n_hh ', ' k_ion na_ion hh']
