@@ -675,7 +675,12 @@ class fF():
             t.append(n)
         t=t[0:len(exp_t)]
         mod_t=mod_t[0:len(exp_t)]
-        return analysis.pptd_error(t,mod_t,t,exp_t,dvdt_threshold=None)
+
+        error = analysis.pptd_error(t,mod_t,t,exp_t,dvdt_threshold=None) 
+
+        normalised_error  = analysis.normalised_cost_function(error,0)
+        
+        return normalised_error
     
     def combineFeatures(self,candidates,args):
         """
