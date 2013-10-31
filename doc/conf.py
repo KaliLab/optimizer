@@ -266,6 +266,6 @@ class Mock(object):
             return Mock()
 
 MOCK_MODULES = ['inspyred','wx','ec','inspyred.ec','pyelectro','scipy','numpy','analysis',
-                'pyelectro.analysis','interpolate','scipy.interpolate']
+                'pyelectro.analysis','interpolate','scipy.interpolate','matplotlib']
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()
