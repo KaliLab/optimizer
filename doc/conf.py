@@ -13,7 +13,7 @@
 
 import sys, os
 
-sys.path.insert(0, os.path.abspath('../neuroml'))
+sys.path.insert(0, os.path.abspath('../optimizer'))
 sys.path.insert(0, os.path.abspath('..'))
 
 # If extensions (or modules to document with autodoc) are in another directory,
