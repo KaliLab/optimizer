@@ -265,6 +265,6 @@ class Mock(object):
         else:
             return Mock()
 
-MOCK_MODULES = ['inspyred','wx','ec','inspyred.ec']
+MOCK_MODULES = ['inspyred','wx','ec','inspyred.ec','pyelectro','scipy','numpy','analysis','pyelectro.analysis']
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()
