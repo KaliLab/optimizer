@@ -12,7 +12,7 @@ This is always the latest (stable) branch corresponding to the master
 branch on github.
 
 
-Get a read only copy of libNeuroML
+Get a read only copy of optimizer
 ----------------------------------
 
 Install `git`_ and type:
