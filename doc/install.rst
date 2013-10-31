@@ -1,17 +1,6 @@
 Installation
 ============
 
-A working version is installable via pip:
-----------------------------------------
-
-::
-
-    pip install optimizer
-
-This is always the latest (stable) branch corresponding to the master
-branch on github.
-
-
 Get a read only copy of optimizer
 ----------------------------------
 
