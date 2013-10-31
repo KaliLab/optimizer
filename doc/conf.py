@@ -20,6 +20,8 @@ sys.path.insert(0, os.path.abspath('..'))
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
+
+#following line is from Peter's computer, should probably be removed
 sys.path.insert(0,os.path.abspath('/home/fripe/workspace/git/optimizer/'))
 
 # -- General configuration -----------------------------------------------------
