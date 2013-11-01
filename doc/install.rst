@@ -1,28 +1,43 @@
 Installation
 ============
 
-A working version is installable via pip:
-----------------------------------------
-
-::
-
-    pip install optimizer
-
-This is always the latest (stable) branch corresponding to the master
-branch on github.
-
-
-Get a read only copy of libNeuroML
+Get a read only copy of optimizer
 ----------------------------------
 
-Install `git`_ and type:
+Install `git` and type:
 
 ::
 
     git clone git://github.com/vellamike/optimizer.git
 
 More information on this here:
-.. _Git: http://rogerdudler.github.com/git-guide/
+.. : http://rogerdudler.github.com/git-guide/
+
+
+Dependencies:
+-------------
+
+The following python libraries and version number are required:
+
+- argparse>=1.2.1
+- matplotlib>=1.3.0
+- inspyred>=1.0
+- numpy>=1.7.1
+- pyparsing>=2.0.1
+- wx>=1.0.0
+
+You can get them with `easy_install` or `pip` with the following
+command (the following exammple is for numpy):
+
+::
+   
+   pip install numpy
+
+or
+
+::
+   
+   easy_install install numpy
 
 
 Install optimizer

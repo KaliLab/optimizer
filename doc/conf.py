@@ -13,10 +13,15 @@
 
 import sys, os
 
+sys.path.insert(0, os.path.abspath('../optimizer'))
+sys.path.insert(0, os.path.abspath('..'))
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
+
+#following line is from Peter's computer, should probably be removed
 sys.path.insert(0,os.path.abspath('/home/fripe/workspace/git/optimizer/'))
 
 # -- General configuration -----------------------------------------------------
@@ -241,3 +246,27 @@ texinfo_documents = [
 
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
 #texinfo_show_urls = 'footnote'
+
+class Mock(object):
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def __call__(self, *args, **kwargs):
+        return Mock()
+
+    @classmethod
+    def __getattr__(cls, name):
+        if name in ('__file__', '__path__'):
+            return '/dev/null'
+        elif name[0] == name[0].upper():
+            mockType = type(name, (), {})
+            mockType.__module__ = __name__
+            return mockType
+        else:
+            return Mock()
+
+MOCK_MODULES = ['inspyred','wx','ec','inspyred.ec','pyelectro','scipy','numpy','analysis',
+                'pyelectro.analysis','interpolate','scipy.interpolate','matplotlib',
+                'matplotlib.backends.backend_wxagg','backends.backend_wxagg','backend_wxagg']
+for mod_name in MOCK_MODULES:
+    sys.modules[mod_name] = Mock()
