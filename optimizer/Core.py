@@ -467,6 +467,7 @@ class coreModul():
                 trace_handler=open("result_trace"+str(k)+".txt","w")
                 for l in self.model_handler.record[0]:
                     trace_handler.write(str(l))
+                    trace_handler.write("\n")
                 trace_handler.close()
                 self.final_result.extend(self.model_handler.record)
                 

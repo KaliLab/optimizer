@@ -669,13 +669,17 @@ class fF():
         :return: resulting fitness value
         
         """
-        t_gen=frange(0,self.option.run_controll_tstop,self.option.run_controll_dt)
+        t_gen=frange(0,self.option.run_controll_tstop+self.option.run_controll_dt,self.option.run_controll_dt)
         t=[]
         for n in t_gen:
             t.append(n)
         t=t[0:len(exp_t)]
         mod_t=mod_t[0:len(exp_t)]
-        return analysis.pptd_error(t,mod_t,t,exp_t,dvdt_threshold=None)
+        print len(mod_t),len(t),len(exp_t)
+        try:
+            return analysis.pptd_error(t,mod_t,t,exp_t,dvdt_threshold=None)
+        except ValueError:
+            return 100
     
     def combineFeatures(self,candidates,args):
         """

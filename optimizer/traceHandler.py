@@ -235,6 +235,8 @@ class DATA():
             self.data=self.detect_format(tmp[4])(path,no_traces,scale,t_length,freq,trace_type)
         else:
             self.additional_data=self.spikeTimeReader(path, no_traces, scale, t_length, freq, trace_type)
+            
+        print self.data.data[0:10]
         
         
     def traceReader(self,path,no_traces,scale,t_length,freq,trace_type):
@@ -254,6 +256,7 @@ class DATA():
         """        
         trace=Trace(no_traces, scale, t_length, freq,trace_type)
         #print "no time"
+        print trace.type
         for my_file in path:
             try:
                 data_file=open(my_file,'r')
@@ -292,16 +295,19 @@ class DATA():
             try:
                 data_file=open(my_file,'r')
                 for line in data_file:
-                    temp=map(trace.reScale,map(float,line.split()))
-                    temp.reverse()
-                    temp.pop()
-                    temp.reverse()
+                    try:
+                        temp=map(trace.reScale,map(float,line.split()))
+                        temp.reverse()
+                        temp.pop()
+                        temp.reverse()
                     #print temp
-                    if len(temp)==trace.no_traces:
-                        #self.t.append(real_range(0,self.step,int(self.t_length)))
-                        trace.SetTrace(temp)
-                    else:
-                        raise sizeError("The input file probably does not contain the time. Please check the settings!\n")
+                        if len(temp)==trace.no_traces:
+                            #self.t.append(real_range(0,self.step,int(self.t_length)))
+                            trace.SetTrace(temp)
+                        else:
+                            raise sizeError("The input file probably does not contain the time. Please check the settings!\n")
+                    except ValueError:
+                        continue
                 data_file.close()     
             except IOError:
                 sys.exit("Can't open data file at " + self.full_path + " ! Exiting...")
@@ -336,7 +342,7 @@ class DATA():
                     try:
                         tmp_dict[tmp[1]].extend([trace.reScale(float(tmp[0]))])
                     except KeyError:
-                        tmp_dict[tmp[1]]=[float(tmp[0])]
+                        tmp_dict[tmp[1]]=[trace.reScale(float(tmp[0]))]
         trace.data=map(list,zip(*(tmp_dict.values())))
         #print len(self.data),len(self.data[0])
         #print self.data[0][0:10]

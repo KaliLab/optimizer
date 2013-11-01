@@ -1,14 +1,7 @@
 import sys
 import Core
 import xml.etree.ElementTree as ET
-try:
-    import matplotlib
-    matplotlib.use('WXAgg')
-    from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
-    from matplotlib.figure import Figure
-except RuntimeError as re:
-    print re
-    sys.exit()
+from pylab import *
 
 def main(fname,param=None):
     """
@@ -54,9 +47,8 @@ def main(fname,param=None):
     core.FourthStep()
     print core.optimizer.final_pop[0].candidate[0:len(core.optimizer.final_pop[0].candidate)/2]
     print "resulting parameters: ",core.optimal_params
-    figure = Figure(figsize=(7, 6))
-    axes = figure.add_subplot(111)
-    
+    fig = figure(1,figsize=(7, 6))
+    axes = fig.add_subplot(111)
     exp_data = []
     model_data = []
     for n in range(core.data_handler.number_of_traces()):
@@ -75,7 +67,7 @@ def main(fname,param=None):
     axes.plot(range(0, len(exp_data)), exp_data)
     axes.plot(range(0, len(model_data)), model_data, 'r')
     axes.legend(["target", "model"])
-    figure.savefig("result_trace.png", dpi=None, facecolor='w', edgecolor='w',
+    fig.savefig("result_trace.png", dpi=None, facecolor='w', edgecolor='w',
     orientation='portrait', papertype=None, format=None,
     transparent=False, bbox_inches=None, pad_inches=0.1)
 

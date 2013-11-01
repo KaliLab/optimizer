@@ -155,7 +155,10 @@ class optionHandler(object):
                 a=int(val)
                 return a
             except ValueError:
-                return float(val)
+                try:
+                    return float(val)
+                except ValueError:
+                    return unicode(val.strip("u").strip('\''))
             
         for child in root:
             if child.tag not in self.class_content:
@@ -167,7 +170,7 @@ class optionHandler(object):
             elif child.tag=="boundaries":
                 self.__setattr__(child.tag,map(lambda x:map(_float_or_int,x.split(", ")), child.text[2:len(child.text)-2].split("], [")))
             elif child.tag=="type":
-                self.__setattr__(child.tag,child.text.lstrip("['").rstrip("']").split(","))
+                self.__setattr__(child.tag,[map(lambda x: x.lstrip("['").rstrip("']"),child.text.split(", "))[-1]])
             elif child.tag=="feats":
                 self.__setattr__(child.tag,child.text.split(", "))
             elif child.tag=="stim_amp":
@@ -227,7 +230,7 @@ class optionHandler(object):
                 self.input_length,
                 self.input_freq,
                 self.input_cont_t,
-                self.type[0]]
+                self.type[-1]]
     
     # sets the input file options to the given values    
     def SetInputOptions(self,options):

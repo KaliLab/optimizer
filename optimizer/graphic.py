@@ -430,7 +430,7 @@ class inputLayer(wx.Frame):
         
         
     def BrowseDir(self, e):
-        dlg = wx.DirDialog(self, "Choose a directory", defaultPath=os.getcwd(), style=wx.DD_DEFAULT_STYLE)
+        dlg = wx.DirDialog(self, "Choose a directory", defaultPath=self.base_dir_controll.GetValue(), style=wx.DD_DEFAULT_STYLE)
         if dlg.ShowModal() == wx.ID_OK:
             self.base_dir_controll.Clear()
             self.base_dir = dlg.GetPath()
@@ -580,7 +580,7 @@ class modelLayer(wx.Frame):
         self.horizontal_box2.Add(descr1)
         
         self.model_file_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(300, 30), name="Model File")
-        self.model_file_ctrl.WriteText(os.getcwd())
+        self.model_file_ctrl.WriteText(self.core.option_handler.base_dir)
         self.browser1 = wx.Button(self.panel, label="Browse...")
         self.browser1.Bind(wx.EVT_BUTTON, self.BrowseFile)
         self.dd_type = wx.Choice(self.panel, wx.ID_ANY, size=(150, 30))
@@ -600,7 +600,7 @@ class modelLayer(wx.Frame):
         self.horizontal_box4.Add(descr3, flag=wx.LEFT, border=315)
         
         self.spec_file_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(300, 30), name="Special File Location")
-        self.spec_file_ctrl.WriteText(os.getcwd())
+        self.spec_file_ctrl.WriteText(self.core.option_handler.base_dir)
         self.browser2 = wx.Button(self.panel, label="Browse...")
         self.browser2.Bind(wx.EVT_BUTTON, self.BrowseDir)
         self.sim_path = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(250, 30), name="External simulator path")
@@ -704,7 +704,7 @@ class modelLayer(wx.Frame):
         
     def BrowseFile(self, e):
 
-        dlg = wx.FileDialog(self, "Choose a file", os.getcwd(), "", "*.hoc*", style=wx.OPEN)
+        dlg = wx.FileDialog(self, "Choose a file", self.core.option_handler.base_dir, "", "*.hoc*", style=wx.OPEN)
         if dlg.ShowModal() == wx.ID_OK:
             self.model_file_ctrl.Clear()
             self.model_file = dlg.GetDirectory() + "/" + dlg.GetFilename()
@@ -716,7 +716,7 @@ class modelLayer(wx.Frame):
         
     def BrowseDir(self, e):
         
-        dlg = wx.DirDialog(self, "Choose a directory", defaultPath=os.getcwd(), style=wx.DD_DEFAULT_STYLE)
+        dlg = wx.DirDialog(self, "Choose a directory", self.core.option_handler.base_dir, style=wx.DD_DEFAULT_STYLE)
         if dlg.ShowModal() == wx.ID_OK:
             self.spec_file_ctrl.Clear()
             self.spec_file = dlg.GetPath()
