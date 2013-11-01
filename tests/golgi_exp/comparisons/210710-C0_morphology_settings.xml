@@ -2,7 +2,7 @@
 <settings>
   <simulator>Neuron</simulator>
   <f_tol>None</f_tol>
-  <max_evaluation>20.0</max_evaluation>
+  <max_evaluation>100.0</max_evaluation>
   <spike_window>1000.0</spike_window>
   <evo_strat>Classical EO</evo_strat>
   <seed>1234.0</seed>
@@ -21,7 +21,7 @@
   <stim_pos>0.5</stim_pos>
   <dwell>None</dwell>
   <input_size>1</input_size>
-  <type>['voltage', 'voltage']</type>
+  <type>[&quot; 'voltage&quot;, &quot; 'voltage&quot;]</type>
   <x_tol>None</x_tol>
   <feats>PPTD</feats>
   <input_length>1200</input_length>
