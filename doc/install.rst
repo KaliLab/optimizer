@@ -59,8 +59,7 @@ The package was tested on the following systems:
   - neuron 7.2
 
 Notes
-    - Since Neuron with the python interpreter is not working perfectly on Windwos,
-    we recommend to use Ubuntu (installing and setting up a virtual os is not a big thing).
+    - Since Neuron with the python interpreter is not working perfectly on Windwos, we recommend to use Ubuntu (installing and setting up a virtual os is not a big thing).
 
 
 You can get them with `easy_install` or `pip` with the following
