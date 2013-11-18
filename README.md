@@ -47,3 +47,4 @@ The package was tested on the following systems:
 #Notes
 - Since Neuron with the python interpreter is not working perfectly on Windows,
 we recommend to use Ubuntu (installing and setting up a virtual os is not hard).
+- inspyred requires a feature which is only included in python 2.7, but ther is a workaround for this problem: https://groups.google.com/forum/#!topic/inspyred/YwJb3ABVtL8
