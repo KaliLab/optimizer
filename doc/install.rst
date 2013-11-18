@@ -35,7 +35,7 @@ The package was tested on the following systems:
   - matplotlib 1.1.1
   - wxPython 2.8.10.1
   - inspyred 1.0
-  - pyelectro (?)
+  - pyelectro
   - neuron 7.3
 
 2. CentOS 6.4 (kernel 2.6.32, glibc 2.12)
@@ -45,7 +45,7 @@ The package was tested on the following systems:
   - matplotlib 1.3.1
   - wxPython 2.8.12.0
   - inspyred 1.0
-  - pyelectro (?)
+  - pyelectro
   - neuron 7.2
 
 3. Ubuntu 12.04.3 LTS (kernel 3.2.0-54-generic, glibc 2.15)
@@ -55,11 +55,11 @@ The package was tested on the following systems:
   - matplotlib 1.1.1rc
   - wxPython 2.8.12.1
   - inspyred 1.0
-  - pyelectro (?)
+  - pyelectro
   - neuron 7.2
 
 Notes
-    - Since Neuron with the python interpreter is not working perfectly on Windwos, we recommend to use Ubuntu (installing and setting up a virtual os is not a big thing).
+    - Since Neuron with the python interpreter is not working perfectly on Windows, we recommend to use Ubuntu (installing and setting up a virtual os is not hard).
 
 
 You can get them with `easy_install` or `pip` with the following
