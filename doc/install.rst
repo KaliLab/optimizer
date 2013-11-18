@@ -10,22 +10,21 @@ Install `git` and type:
 
     git clone git://github.com/vellamike/optimizer.git
 
-More information on this here:
-.. : http://rogerdudler.github.com/git-guide/
+More information on this here: http://rogerdudler.github.com/git-guide/
 
 
 Dependencies
 -------------
 
 The following python libraries are required:
-- python
-- numpy 
-- scipy 
-- matplotlib 
-- wxPython 
-- inspyred 
-- pyelectro 
-- neuron
+    - python
+    - numpy 
+    - scipy 
+    - matplotlib 
+    - wxPython 
+    - inspyred 
+    - pyelectro 
+    - neuron
 
 The package was tested on the following systems:
 
@@ -59,8 +58,8 @@ The package was tested on the following systems:
   - pyelectro (?)
   - neuron 7.2
 
-#Notes
-- Since Neuron with the python interpreter is not working perfectly on Windwos,
+Notes
+    - Since Neuron with the python interpreter is not working perfectly on Windwos,
 we recommend to use Ubuntu (installing and setting up a virtual os is not a big thing).
 
 
