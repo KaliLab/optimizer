@@ -155,6 +155,13 @@ class fF():
             for line in in_handler:
                 self.model.record[0].append(float(line.split()[1]))
             in_handler.close()
+            try:
+                in_handler=open(self.option.base_dir+"spike.dat","r")
+                self.model.spike_times=[]
+            except OSError:
+                pass
+            for line in in_handler:
+                self.model.spike_times.append(float(line))
             
         else:
             section=self.option.GetObjTOOpt()
@@ -263,12 +270,16 @@ class fF():
         
         """
         temp_fit=0
+        window=self.option.spike_window
         stim_dur=self.option.stim_dur
         if stim_dur>=1e9:
             stim_dur=self.option.input_length
         add_data=args.get("add_data",None)
         spikes=[0,0]
-        spikes[0]=self.detectSpike( mod_t[int(self.option.stim_del*self.option.input_freq/1000):int(self.option.stim_del*self.option.input_freq/1000+stim_dur*self.option.input_freq/1000)])
+        if (self.model.spike_times==None):
+            spikes[0]=self.detectSpike( mod_t[int(self.option.stim_del*self.option.input_freq/1000):int(self.option.stim_del*self.option.input_freq/1000+stim_dur*self.option.input_freq/1000)])
+        else:
+            spikes[0]=[spike_frame(n-window,mod_t[n-window],n,mod_t[n],n+window,mod_t[n+window]) for n in self.model.spike_times]
         if add_data!=None:
             spikes[1]=add_data
         else:
@@ -308,8 +319,12 @@ class fF():
         
         """
         add_data=args.get("add_data",None)
+        window=self.option.spike_window
         spikes=[0,0]
-        spikes[0]=self.detectSpike( mod_t)
+        if (self.model.spike_times==None):
+            spikes[0]=self.detectSpike(mod_t)
+        else:
+            spikes[0]=[spike_frame(n-window,mod_t[n-window],n,mod_t[n],n+window,mod_t[n+window]) for n in self.model.spike_times]
         if add_data!=None:
             spikes[1]=add_data
         else:
@@ -358,7 +373,11 @@ class fF():
         """
         add_data=args.get("add_data",None)
         spikes=[0,0]
-        spikes[0]=self.detectSpike( mod_t)
+        window=self.option.spike_window
+        if (self.model.spike_times==None):
+            spikes[0]=self.detectSpike(mod_t)
+        else:
+            spikes[0]=[spike_frame(n-window,mod_t[n-window],n,mod_t[n],n+window,mod_t[n+window]) for n in self.model.spike_times]
         if add_data!=None:
             spikes[1]=add_data
         else:
@@ -404,7 +423,7 @@ class fF():
         """
         add_data=args.get("add_data",None)
         spikes=[0,0]
-        spikes[0]=self.detectSpike( mod_t)
+        spikes[0]=self.detectSpike(mod_t)
         if add_data!=None:
             spikes[1]=add_data
         else:
@@ -455,7 +474,11 @@ class fF():
         """
         add_data=args.get("add_data",None)
         spikes=[0,0]
-        spikes[0]=self.detectSpike( mod_t)
+        window=self.option.spike_window
+        if (self.model.spike_times==None):
+            spikes[0]=self.detectSpike(mod_t)
+        else:
+            spikes[0]=[spike_frame(n-window,mod_t[n-window],n,mod_t[n],n+window,mod_t[n+window]) for n in self.model.spike_times]
         if add_data!=None:
             spikes[1]=add_data
         else:
@@ -554,11 +577,14 @@ class fF():
         :return: the normalized average squared differences (for details, see calc_ase)
         
         """
-        window=self.option.spike_window
         add_data=args.get("add_data",None)
         tmp=[]
         spikes=[0,0]
-        spikes[0]=self.detectSpike(mod_t)
+        window=self.option.spike_window
+        if (self.model.spike_times==None):
+            spikes[0]=self.detectSpike(mod_t)
+        else:
+            spikes[0]=[spike_frame(n-window,mod_t[n-window],n,mod_t[n],n+window,mod_t[n+window]) for n in self.model.spike_times]
         if add_data!=None:
             spikes[1]=add_data
         else:
@@ -634,7 +660,12 @@ class fF():
         add_data=args.get("add_data",None)
         temp_fit=0
         spikes=[0,0]
-        spikes[0]=self.detectSpike(mod_t)
+        window=self.option.spike_window
+        if (self.model.spike_times==None):
+            spikes[0]=self.detectSpike(mod_t)
+        else:
+            #only the number of spikes is needed (e.g the length of the timing vector)
+            spikes[0]=self.model.spike_times
         print spikes[0]
         if add_data!=None:
             spikes[1]=add_data

@@ -23,6 +23,7 @@ class externalHandler():
         self.options=c[2:len(c)-1]
         self.number_of_params=int(c[-1])
         self.record=[[]]
+        self.spike_times=None
         
         os.chdir("/".join(self.model_file.split("/")[0:-1]))
         
