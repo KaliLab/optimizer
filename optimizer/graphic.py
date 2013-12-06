@@ -825,41 +825,44 @@ class modelLayer(wx.Frame):
         
         
         self.model.DeleteAllItems()
-        self.core.LoadModel({"model" : [self.model_file, self.spec_file],
-                             "simulator" : self.dd_type.GetItems()[self.dd_type.GetSelection()],
-                             "sim_command" : self.sim_path.GetValue()})
-
-        temp = self.core.model_handler.GetParameters()
-        print temp
-        if temp!=None:
-            out = open("model.txt", 'w')
-            
-            for i in temp:
-                out.write(str(i))
-                out.write("\n")
+        try:
+            self.core.LoadModel({"model" : [self.model_file, self.spec_file],
+                                 "simulator" : self.dd_type.GetItems()[self.dd_type.GetSelection()],
+                                 "sim_command" : self.sim_path.GetValue()})
+    
+            temp = self.core.model_handler.GetParameters()
+            print temp
+            if temp!=None:
+                out = open("model.txt", 'w')
                 
-            index = 0
-            for row in temp:
-                #self.model.InsertStringItem(index,row[0])
-                for k in split(row[1], ", "):
-                    self.model.InsertStringItem(index, row[0])
-                    self.model.SetStringItem(index, 1, k)
-                    self.model.SetStringItem(index, 2, "-")
-                    self.model.SetStringItem(index, 3, "-")
-                    index += 1
+                for i in temp:
+                    out.write(str(i))
+                    out.write("\n")
                     
-                #index+=1
-                for k in split(row[2], " "):
-                    if k != "":
+                index = 0
+                for row in temp:
+                    #self.model.InsertStringItem(index,row[0])
+                    for k in split(row[1], ", "):
                         self.model.InsertStringItem(index, row[0])
-                        self.model.SetStringItem(index, 3, k)
-                        for s in split(row[3], " "):
-                            if count(k, s) == 1 and s != "":
-                                self.model.SetStringItem(index, 2, s)
-                                self.model.SetStringItem(index, 1, "-")
+                        self.model.SetStringItem(index, 1, k)
+                        self.model.SetStringItem(index, 2, "-")
+                        self.model.SetStringItem(index, 3, "-")
                         index += 1
-        else:
-            self.toolbar.EnableTool(888, True)
+                        
+                    #index+=1
+                    for k in split(row[2], " "):
+                        if k != "":
+                            self.model.InsertStringItem(index, row[0])
+                            self.model.SetStringItem(index, 3, k)
+                            for s in split(row[3], " "):
+                                if count(k, s) == 1 and s != "":
+                                    self.model.SetStringItem(index, 2, s)
+                                    self.model.SetStringItem(index, 1, "-")
+                            index += 1
+            else:
+                self.toolbar.EnableTool(888, True)
+        except OSError:
+            wx.MessageBox('Path error! Please use absolute path!', 'Error', wx.OK | wx.ICON_ERROR)
                         
                     
             

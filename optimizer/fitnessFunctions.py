@@ -277,6 +277,7 @@ class fF():
         add_data=args.get("add_data",None)
         spikes=[0,0]
         if (self.model.spike_times==None):
+            print "using spike times"
             spikes[0]=self.detectSpike( mod_t[int(self.option.stim_del*self.option.input_freq/1000):int(self.option.stim_del*self.option.input_freq/1000+stim_dur*self.option.input_freq/1000)])
         else:
             spikes[0]=[spike_frame(n-window,mod_t[n-window],n,mod_t[n],n+window,mod_t[n+window]) for n in self.model.spike_times]
