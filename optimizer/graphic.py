@@ -689,7 +689,7 @@ class modelLayer(wx.Frame):
                                        "vrest"]
                         }
             if self.dd_type.GetSelection() == 1:
-                self.layer = algorithmLayer(self, 4, self.Size, "Select Algorithm", self.core, self.path, self.kwargs)  
+                self.layer = ffunctionLayer(self, 4, self.Size, "Select Algorithm", self.core, self.path, self.kwargs)  
             else:
                 self.layer = stimuliLayer(self, 2, self.Size, "Stimuli & Recording Settings", self.core, self.path)
             self.Hide()
