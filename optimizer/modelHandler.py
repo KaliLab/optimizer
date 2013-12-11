@@ -87,6 +87,7 @@ class modelHandlerNeuron():
         os.chdir(self.base_directory)
         self.stimulus=None
         self.record=[]
+        self.spike_times=None
         self.sections={}
         for n in h.allsec():
             self.sections[str(h.secname())]=n
