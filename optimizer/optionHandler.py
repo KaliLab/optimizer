@@ -164,26 +164,26 @@ class optionHandler(object):
             if child.tag not in self.class_content:
                 raise AttributeError(child.tag)
             if child.tag=="adjusted_params":
-                self.__setattr__(child.tag,child.text.lstrip("['").rstrip("']").split("', '"))
+                self.__setattr__(child.tag,child.text.strip().lstrip("['").rstrip("']").split("', '"))
             elif child.tag=="param_vals":
-                self.__setattr__(child.tag,map(_float_or_int,child.text.lstrip("[").rstrip("]").split(",")))
+                self.__setattr__(child.tag,map(_float_or_int,child.text.strip().lstrip("[").rstrip("]").split(",")))
             elif child.tag=="boundaries":
-                self.__setattr__(child.tag,map(lambda x:map(_float_or_int,x.split(", ")), child.text[2:len(child.text)-2].split("], [")))
+                self.__setattr__(child.tag,map(lambda x:map(_float_or_int,x.strip().split(", ")), child.text[2:len(child.text)-2].split("], [")))
             elif child.tag=="type":
-                self.__setattr__(child.tag,[map(lambda x: x.lstrip("['").rstrip("']"),child.text.split(", "))[-1]])
+                self.__setattr__(child.tag,[map(lambda x: x.strip().lstrip("['").rstrip("']"),child.text.split(", "))[-1]])
             elif child.tag=="feats":
-                self.__setattr__(child.tag,child.text.split(", "))
+                self.__setattr__(child.tag,child.text.strip().split(", "))
             elif child.tag=="stim_amp":
-                self.__setattr__(child.tag,map(_float_or_int,child.text.lstrip("[").rstrip("]").split(",")))
+                self.__setattr__(child.tag,map(_float_or_int,child.text.strip().lstrip("[").rstrip("]").split(",")))
             elif child.tag=="weights":
-                self.__setattr__(child.tag,map(_float_or_int,child.text.lstrip("[").rstrip("]").split(",")))
+                self.__setattr__(child.tag,map(_float_or_int,child.text.strip().lstrip("[").rstrip("]").split(",")))
             else:
                 try:
-                    self.__setattr__(child.tag,_float_or_int(child.text))
+                    self.__setattr__(child.tag,_float_or_int(child.text.strip()))
                 except ValueError:
-                    self.__setattr__(child.tag,None if child.text=="None" else True if child.text=="True" else False if child.text=="false" else child.text )
+                    self.__setattr__(child.tag,None if child.text.strip()=="None" else True if child.text.strip()=="True" else False if child.text.strip()=="false" else child.text.strip() )
                 except TypeError:
-                    print "type error",child.tag,child.text
+                    print "type error",child.tag,child.text.strip()
             
         
 
