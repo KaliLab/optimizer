@@ -8,7 +8,7 @@ Install `git` and type:
 
 ::
 
-    git clone git://github.com/vellamike/optimizer.git
+    git clone https://github.com/pfriedrich/optimizer.git
 
 More information on this here: http://rogerdudler.github.com/git-guide/
 
