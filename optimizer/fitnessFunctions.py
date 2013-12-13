@@ -145,13 +145,13 @@ class fF():
         from modelHandler import externalHandler
         if isinstance(self.model,externalHandler):
             self.model.record[0]=[]
-            out_handler=open(self.option.base_dir+"params.param","w")
+            out_handler=open(self.option.base_dir+"/params.param","w")
             for c in candidates:
                 out_handler.write(str(c)+"\n")
             out_handler.close()
             from subprocess import call
             call(self.model.GetExec())
-            in_handler=open(self.option.base_dir+"trace.dat","r")
+            in_handler=open(self.option.base_dir+"/trace.dat","r")
             for line in in_handler:
                 self.model.record[0].append(float(line.split()[1]))
             in_handler.close()
