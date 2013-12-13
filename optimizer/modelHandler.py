@@ -57,7 +57,7 @@ class externalHandler():
     def CreateStimuli(self,s):
         pass
     
-    def SetStimuli(self,p):
+    def SetStimuli(self,p,e):
         pass
 
     
