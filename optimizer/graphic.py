@@ -1,5 +1,6 @@
 import wx
 import sys
+from traceHandler import sizeError
 try:
     import matplotlib
     matplotlib.use('WXAgg')
@@ -47,11 +48,13 @@ class boundarywindow(wx.Frame):
         self.Show()
         
     def Set(self, e):
+        try:
             self.par.core.option_handler.boundaries[0] = [float(n.GetValue()) for n in self.min]
             self.par.core.option_handler.boundaries[1] = [float(n.GetValue()) for n in self.max]
-            
+        except ValueError as ve:
+            wx.MessageBox(str(ve), "Invalid Value", wx.OK | wx.ICON_ERROR)
             #self.boundaries_window.Destroy()
-            self.Close()
+        self.Close()
             
     def my_close(self, e):
         wx.Exit()
@@ -682,7 +685,7 @@ class modelLayer(wx.Frame):
 #        self.run_controll_pos = options[4]
 #        self.run_controll_vrest = options[5]
             self.kwargs={"runparam" : [self.core.data_handler.data.t_length,
-                                       self.core.data_handler.data.data,
+                                       self.core.data_handler.data.step,
                                        "record",
                                        "sec",
                                        "pos",
@@ -1194,7 +1197,7 @@ class ffunctionLayer(wx.Frame):
         self.seed = None
         self.kwargs = kwargs
         
-        
+        #print "ffun",kwargs
         self.layer = None
 
     def ToolbarCreator(self):
@@ -1383,7 +1386,7 @@ class algorithmLayer(wx.Frame):
         self.seed=None
         self.num_of_ctrl=None
         self.kwargs=kwargs
-        
+        #print "algo",kwargs
         
         
         self.layer=None
@@ -1559,13 +1562,17 @@ class algorithmLayer(wx.Frame):
         
         if self.core.option_handler.output_level=="1":
             print self.kwargs
-        self.core.ThirdStep(self.kwargs)
-
-        wx.MessageBox('Optimization finished. Press the Next button for the results!', 'Done', wx.OK | wx.ICON_EXCLAMATION)
+        try:
+            self.core.ThirdStep(self.kwargs)
+            wx.MessageBox('Optimization finished. Press the Next button for the results!', 'Done', wx.OK | wx.ICON_EXCLAMATION)
     
-        self.core.Print()
-        self.toolbar.EnableTool(wx.ID_FORWARD, True)
-        self.seed = None
+            self.core.Print()
+            self.toolbar.EnableTool(wx.ID_FORWARD, True)
+            self.seed = None
+        except sizeError as sE:
+            wx.MessageBox("There was an error during the optimization: "+sE.m, 'Error', wx.OK | wx.ICON_EXCLAMATION)
+
+        
             #except ValueError:
             #wx.MessageBox('Some of the cells are empty. Please fill out all of them!', 'Error', wx.OK|wx.ICON_ERROR)
 

@@ -345,6 +345,7 @@ class coreModul():
         """      
         self.grid_result=None  
         if args!=None:
+            #print "args: ",args
             self.option_handler.SetModelRun(args.get("runparam"))
             fit_par=[]
             #fit_par.append(args.get("ffun",[]))
