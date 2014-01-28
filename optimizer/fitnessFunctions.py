@@ -277,10 +277,10 @@ class fF():
         if stim_dur >= 1e9 or stim_dur==0:
             stim_dur = self.option.input_length
         add_data = args.get("add_data", None)
-        spikes = [0, 0]
+        spikes = [[], []]
         if (self.model.spike_times == None):
             spikes[0] = self.detectSpike(mod_t[int(self.option.stim_del * self.option.input_freq / 1000):int(self.option.stim_del * self.option.input_freq / 1000 + stim_dur * self.option.input_freq / 1000)])
-        else:
+        elif len(self.model.spike_times)!=0:
             print "using spike times"
             spikes[0]=[]
             first_sp=self.model.spike_times[0]
@@ -334,10 +334,10 @@ class fF():
         """
         add_data = args.get("add_data", None)
         window = int(self.option.spike_window)
-        spikes = [0, 0]
+        spikes = [[], []]
         if (self.model.spike_times == None):
             spikes[0] = self.detectSpike(mod_t)
-        else:
+        elif len(self.model.spike_times)!=0:
             spikes[0]=[]
             first_sp=self.model.spike_times[0]
             last_sp=self.model.spike_times[-1]
@@ -397,11 +397,11 @@ class fF():
             
         """
         add_data = args.get("add_data", None)
-        spikes = [0, 0]
+        spikes = [[], []]
         window = int(self.option.spike_window)
         if (self.model.spike_times == None):
             spikes[0] = self.detectSpike(mod_t)
-        else:
+        elif len(self.model.spike_times)!=0:
             spikes[0]=[]
             first_sp=self.model.spike_times[0]
             last_sp=self.model.spike_times[-1]
@@ -458,11 +458,11 @@ class fF():
 
         """
         add_data = args.get("add_data", None)
-        spikes = [0, 0]
+        spikes = [[], []]
         window = int(self.option.spike_window)
         if (self.model.spike_times == None):
             spikes[0] = self.detectSpike(mod_t)
-        else:
+        elif len(self.model.spike_times)!=0:
             spikes[0]=[]
             first_sp=self.model.spike_times[0]
             last_sp=self.model.spike_times[-1]
@@ -524,11 +524,11 @@ class fF():
             
         """
         add_data = args.get("add_data", None)
-        spikes = [0, 0]
+        spikes = [[], []]
         window = int(self.option.spike_window)
         if (self.model.spike_times == None):
             spikes[0] = self.detectSpike(mod_t)
-        else:
+        elif len(self.model.spike_times)!=0:
             spikes[0]=[]
             first_sp=self.model.spike_times[0]
             last_sp=self.model.spike_times[-1]
@@ -600,7 +600,7 @@ class fF():
         
         """
         add_data = args.get("add_data", None)
-        spikes = [0, 0]
+        spikes = [[], []]
         spikes[0] = self.detectSpike(mod_t)
         if add_data != None:
             spikes[1] = add_data
@@ -641,11 +641,11 @@ class fF():
         """
         add_data = args.get("add_data", None)
         #tmp=[]
-        spikes = [0, 0]
+        spikes = [[], []]
         window = int(self.option.spike_window)
         if (self.model.spike_times == None):
             spikes[0] = self.detectSpike(mod_t)
-        else:
+        elif len(self.model.spike_times)!=0:
             spikes[0]=[]
             first_sp=self.model.spike_times[0]
             last_sp=self.model.spike_times[-1]
@@ -732,7 +732,7 @@ class fF():
         """
         add_data = args.get("add_data", None)
         temp_fit = 0
-        spikes = [0, 0]
+        spikes = [[], []]
         #window = self.option.spike_window
         if (self.model.spike_times == None):
             spikes[0] = self.detectSpike(mod_t)
