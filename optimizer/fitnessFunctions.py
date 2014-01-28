@@ -272,9 +272,9 @@ class fF():
         
         """
         temp_fit = 0
-        window = self.option.spike_window
+        window = int(self.option.spike_window)
         stim_dur = self.option.stim_dur
-        if stim_dur >= 1e9:
+        if stim_dur >= 1e9 or stim_dur==0:
             stim_dur = self.option.input_length
         add_data = args.get("add_data", None)
         spikes = [0, 0]
@@ -322,7 +322,7 @@ class fF():
         
         """
         add_data = args.get("add_data", None)
-        window = self.option.spike_window
+        window = int(self.option.spike_window)
         spikes = [0, 0]
         if (self.model.spike_times == None):
             spikes[0] = self.detectSpike(mod_t)
@@ -376,7 +376,7 @@ class fF():
         """
         add_data = args.get("add_data", None)
         spikes = [0, 0]
-        window = self.option.spike_window
+        window = int(self.option.spike_window)
         if (self.model.spike_times == None):
             spikes[0] = self.detectSpike(mod_t)
         else:
@@ -477,7 +477,7 @@ class fF():
         """
         add_data = args.get("add_data", None)
         spikes = [0, 0]
-        window = self.option.spike_window
+        window = int(self.option.spike_window)
         if (self.model.spike_times == None):
             spikes[0] = self.detectSpike(mod_t)
         else:
@@ -663,7 +663,7 @@ class fF():
         add_data = args.get("add_data", None)
         temp_fit = 0
         spikes = [0, 0]
-        window = self.option.spike_window
+        #window = self.option.spike_window
         if (self.model.spike_times == None):
             spikes[0] = self.detectSpike(mod_t)
         else:
@@ -740,7 +740,7 @@ class fF():
         features = self.option.feats
         weigths = self.option.weights
         temp_fit = 0
-        window = self.option.spike_window
+        window = int(self.option.spike_window)
         self.model.CreateStimuli(self.option.GetModelStim())
         for l in candidates:
             if self.option.output_level == "1":
