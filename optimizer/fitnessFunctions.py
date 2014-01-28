@@ -767,7 +767,7 @@ class fF():
                 if self.option.output_level == "1":
                     print features, weigths
                 for f, w in zip(features, weigths):
-                    if len(self.model.record[0])!=len(self.reader.data.GetTrace(k)):
+                    if abs(len(self.model.record[0])-len(self.reader.data.GetTrace(k)))>1:
                         raise sizeError("model: " + str(len(self.model.record[0])) + ", target: " + str(len(self.reader.data.GetTrace(k))))
                     temp_fit += w * (f(self.model.record[0],
                                                     self.reader.data.GetTrace(k), args))
