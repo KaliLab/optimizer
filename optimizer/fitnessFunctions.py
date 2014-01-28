@@ -163,7 +163,7 @@ class fF():
                 pass
             for line in in_handler:
                 self.model.spike_times.append(int(float(line) / (1000.0 / self.option.input_freq)))
-                print self.model.spike_times[1:10]
+                #print self.model.spike_times[1:10]
             
         else:
             section = self.option.GetObjTOOpt()
