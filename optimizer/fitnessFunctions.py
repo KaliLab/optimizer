@@ -292,7 +292,7 @@ class fF():
             spikes[0].extend([spike_frame(n - window, mod_t[n - window], n, mod_t[n], n + window, mod_t[n + window]) for n in self.model.spike_times[1:-1]])
             idx=last_sp+window
             if idx>len(mod_t):
-                idx=(len(mod_t)-last_sp)/2
+                idx=last_sp+(len(mod_t)-last_sp)/2
             spikes[0].append(spike_frame(last_sp - window, mod_t[last_sp - window], last_sp, mod_t[last_sp], idx, mod_t[idx]))
         if add_data != None:
             spikes[1] = add_data
@@ -348,7 +348,7 @@ class fF():
             spikes[0].extend([spike_frame(n - window, mod_t[n - window], n, mod_t[n], n + window, mod_t[n + window]) for n in self.model.spike_times[1:-1]])
             idx=last_sp+window
             if idx>len(mod_t):
-                idx=(len(mod_t)-last_sp)/2
+                idx=last_sp+(len(mod_t)-last_sp)/2
             spikes[0].append(spike_frame(last_sp - window, mod_t[last_sp - window], last_sp, mod_t[last_sp], idx, mod_t[idx]))
         if add_data != None:
             spikes[1] = add_data
@@ -412,7 +412,7 @@ class fF():
             spikes[0].extend([spike_frame(n - window, mod_t[n - window], n, mod_t[n], n + window, mod_t[n + window]) for n in self.model.spike_times[1:-1]])
             idx=last_sp+window
             if idx>len(mod_t):
-                idx=(len(mod_t)-last_sp)/2
+                idx=last_sp+(len(mod_t)-last_sp)/2
             spikes[0].append(spike_frame(last_sp - window, mod_t[last_sp - window], last_sp, mod_t[last_sp], idx, mod_t[idx]))
         if add_data != None:
             spikes[1] = add_data
@@ -473,7 +473,7 @@ class fF():
             spikes[0].extend([spike_frame(n - window, mod_t[n - window], n, mod_t[n], n + window, mod_t[n + window]) for n in self.model.spike_times[1:-1]])
             idx=last_sp+window
             if idx>len(mod_t):
-                idx=(len(mod_t)-last_sp)/2
+                idx=last_sp+(len(mod_t)-last_sp)/2
             spikes[0].append(spike_frame(last_sp - window, mod_t[last_sp - window], last_sp, mod_t[last_sp], idx, mod_t[idx]))
         if add_data != None:
             spikes[1] = add_data
@@ -539,7 +539,7 @@ class fF():
             spikes[0].extend([spike_frame(n - window, mod_t[n - window], n, mod_t[n], n + window, mod_t[n + window]) for n in self.model.spike_times[1:-1]])
             idx=last_sp+window
             if idx>len(mod_t):
-                idx=(len(mod_t)-last_sp)/2
+                idx=last_sp+(len(mod_t)-last_sp)/2
             spikes[0].append(spike_frame(last_sp - window, mod_t[last_sp - window], last_sp, mod_t[last_sp], idx, mod_t[idx]))
         if add_data != None:
             spikes[1] = add_data
@@ -656,7 +656,7 @@ class fF():
             spikes[0].extend([spike_frame(n - window, mod_t[n - window], n, mod_t[n], n + window, mod_t[n + window]) for n in self.model.spike_times[1:-1]])
             idx=last_sp+window
             if idx>len(mod_t):
-                idx=(len(mod_t)-last_sp)/2
+                idx=last_sp+(len(mod_t)-last_sp)/2
             spikes[0].append(spike_frame(last_sp - window, mod_t[last_sp - window], last_sp, mod_t[last_sp], idx, mod_t[idx]))
         if add_data != None:
             spikes[1] = add_data
