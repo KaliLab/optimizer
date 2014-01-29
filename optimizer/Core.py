@@ -456,6 +456,7 @@ class coreModul():
                     from subprocess import call
                     call(self.model_handler.GetExec())
                     in_handler=open("trace.dat","r")
+                    self.model_handler.record[0]=[]
                     for line in in_handler:
                         self.model_handler.record[0].append(float(line.split()[1]))
                     in_handler.close()
