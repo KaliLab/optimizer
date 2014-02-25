@@ -9,6 +9,12 @@ Welcome to optimizer's documentation!
 Optimizer is a GUI-based application for the optimization of
 conductance based neuron models.
 
+This is the developer's guide. For use instructions please refer to `the user manual`__.
+
+.. __: https://github.com/vellamike/optimizer/raw/master/User_Manual.pdf/
+
+
+
 .. toctree::
    :maxdepth: 2
 
