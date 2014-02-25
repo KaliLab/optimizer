@@ -14,6 +14,7 @@ conductance based neuron models.
 
    install
    optimizer
+   test
 
 
 Indices and tables
