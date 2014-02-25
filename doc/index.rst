@@ -11,8 +11,8 @@ conductance based neuron models.
 
 This is the developer's guide. 
 
-For a user guide_ please refer to `the user manual
-programming language`.
+For a user guide_ please refer to `the user manual`.
+
 .. _guide: https://github.com/vellamike/optimizer/raw/master/User_Manual.pdf/
 
 
