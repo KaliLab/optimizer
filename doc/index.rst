@@ -18,10 +18,9 @@ This is the developer's guide. For use instructions please refer to `the user ma
 .. toctree::
    :maxdepth: 2
 
+   tutorial
    install
    optimizer
-   tutorial
-
 
 Indices and tables
 ==================
