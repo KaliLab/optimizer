@@ -117,24 +117,24 @@ where the measurement takes place.
 .. figure:: um006.png
    :align: center
 
-= ======================================
-A Stimulation protocol (Vclamp or Iclamp).
-B Type of the stimulus (Step protocol or Custom
- Waveform).
-C Opens the window for specifying step amplitudes
- or loading custom waveform (depending on the
-previous options).
-D Delay of stimulus onset.
-E Duration of stimulus.
-F Section which receives stimulus.
-G Point of stimulation inside the section.
-H Initial membrane potential.
-I Length of the recording.
-J Integration step size.
-K The parameter to be recorded.
-L The section where the recordings takes place.
-M Position inside the recording section.
-= ======================================
+=     ======================================
+A     Stimulation protocol (Vclamp or Iclamp).
+B     Type of the stimulus (Step protocol or Custom
+      Waveform).
+C     Opens the window for specifying step amplitudes
+      or loading custom waveform (depending on the
+p     revious options).
+D     Delay of stimulus onset.
+E     Duration of stimulus.
+F     Section which receives stimulus.
+G     Point of stimulation inside the section.
+H     Initial membrane potential.
+I     Length of the recording.
+J     Integration step size.
+K     The parameter to be recorded.
+L     The section where the recordings takes place.
+M     Position inside the recording section.
+=     ======================================
 
 Layer 4
 -------
