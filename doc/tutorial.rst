@@ -147,6 +147,13 @@ acceptable as well. The user can fine tune the behavior of the functions by givi
 .. figure:: um008.png
    :align: center
 
+=     ==================================
+A     List of available fitness function.
+B     Weight assigned to the selected function.
+C     Parameters passed to the fitness functions.
+D     Normalizes the weights (not necessary).
+=     ==================================
+
 Layer 5
 -------
 
@@ -160,6 +167,16 @@ local algorithms the algorithm will start form the point specified by the parame
 .. figure:: um009.png
    :align: center
 
+=     ========================================
+A     Seed for the random generator.
+B     Selected algorithm.
+C     Boundaries of the parameters subject to
+      optimization.
+D     Starting points
+E     Run the optimization.
+F     Depending on the selected algorithm, different
+      settings will appear here.
+=     ========================================
 
 Layer 6
 -------
@@ -167,11 +184,34 @@ Layer 6
 .. figure:: um011.png
    :align: center
 
+=     ===========================================
+A     The resulting parameters.
+B     The trace(s) obtained with the resulting
+      parameters.
+=     ===========================================
+
 Layer 7
 -------
 
 .. figure:: um012.png
    :align: center
+
+=     =============================================
+A     The obtained parameters.
+B     Fitness statistics (only in case of inspyred
+      algorithms: Classical EO, SA)
+C     Fitness components: name of fitness function;
+      fitness value, calculated by the function; weight
+      assigned to the function; the weighted fitness
+      value;
+      the resulting cumulated fitness value.
+D     Displays the “state” of the population during the
+      evolution. (only for inspyred algorithms)
+E     Displays the alleles (only for inspyred
+      algorithms ), only useful for single parameter
+      tasks.
+F     Displays the given proximity of the optimum
+=     =============================================
 
 Other windows and layers
 ------------------------
@@ -179,8 +219,28 @@ Other windows and layers
 .. figure:: um014.png
    :align: cente
 
+=     ===============================================
+A     Entry field for function definition.
+B     Load a previously defined function from a txt.
+C     Done editing, save function and continue.
+D     Discard function and go back.
+=     ===============================================
+
 .. figure:: um015.png
    :align: center
 
+=     ===============================================
+A     Number of stimuli.
+B     Create the specified number of stimuli.
+C     Specify the amplitude of the stimuli.
+=     ===============================================
+
 .. figure:: um016.png
    :align: center
+
+=     ===============================================
+A     The list of selected parameters.
+B     Lower bounds.
+C     Upper bounds.
+D     Boundaries are set, continue.
+=     ===============================================
