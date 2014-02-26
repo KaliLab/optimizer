@@ -73,8 +73,7 @@ G         Here you can give the command which invokes
           - the command that calls the simulator
           - the name of the model
           - options to the simulator (optional)
-          - as the last parameter, the number of parameters
-            subject to optimization
+          - as the last parameter, the number of parameters subject to optimization
 H        Displays the recognized parameters. These can be
          selected for optimization. If the parameters you
          need, are missing, you can create a user defined
