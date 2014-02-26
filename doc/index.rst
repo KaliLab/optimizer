@@ -20,7 +20,7 @@ This is the developer's guide. For use instructions please refer to `the user ma
 
    install
    optimizer
-   test
+   tutorial
 
 
 Indices and tables
