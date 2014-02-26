@@ -1,5 +1,5 @@
 Optimizer tutorial
-=================
+==================
 
 Layer 1
 -------
@@ -198,18 +198,21 @@ Layer 7
 
 =     =============================================
 A     The obtained parameters.
+
 B     Fitness statistics (only in case of inspyred
       algorithms: Classical EO, SA)
-C     Fitness components: name of fitness function,
-      fitness value, calculated by the function, weight
-      assigned to the function, the weighted fitness
-      value, the resulting cumulated fitness value.
+
+
+C     Fitness components: name of fitness function, fitness value,calculated by the function, weight assigned to the function, the weighted fitness value, the resulting cumulated fitness value.
+
 D     Displays the “state” of the population during the
       evolution. (only for inspyred algorithms)
+
 E     Displays the alleles (only for inspyred
       algorithms ), only useful for single parameter
       tasks.
-F     Displays the given proximity of the optimum
+
+F     Displays the given proximity of the optimum.
 =     =============================================
 
 Other windows and layers
