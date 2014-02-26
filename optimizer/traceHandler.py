@@ -31,10 +31,10 @@ class sizeError(Exception):
     
     """
     def __init__(self,message):
+        self.m=message
         print "There was an error with the size/length of an object, probably not enough element in container. "
-        print "Check the no_traces variable!"
         print message
-        sys.exit("Exiting...")
+        
         
 
 class SpikeTimes():

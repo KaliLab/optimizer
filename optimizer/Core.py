@@ -345,6 +345,7 @@ class coreModul():
         """      
         self.grid_result=None  
         if args!=None:
+            #print "args: ",args
             self.option_handler.SetModelRun(args.get("runparam"))
             fit_par=[]
             #fit_par.append(args.get("ffun",[]))
@@ -455,6 +456,7 @@ class coreModul():
                     from subprocess import call
                     call(self.model_handler.GetExec())
                     in_handler=open("trace.dat","r")
+                    self.model_handler.record[0]=[]
                     for line in in_handler:
                         self.model_handler.record[0].append(float(line.split()[1]))
                     in_handler.close()
@@ -470,6 +472,9 @@ class coreModul():
                     trace_handler.write("\n")
                 trace_handler.close()
                 self.final_result.extend(self.model_handler.record)
+        
+        if isinstance(self.model_handler, externalHandler):
+            self.model_handler.record[0]=[]
                 
         f_handler=open(self.option_handler.model_path.split("/")[-1].split(".")[0]+"_settings.xml","w")
         #print self.option_handler.dump(self.ffun_mapper)

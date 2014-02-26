@@ -1,5 +1,6 @@
 import wx
 import sys
+from traceHandler import sizeError
 try:
     import matplotlib
     matplotlib.use('WXAgg')
@@ -22,6 +23,7 @@ import Core
 
 class boundarywindow(wx.Frame):
     def __init__(self, par):
+        
         wx.Frame.__init__(self,par, wx.ID_PROPERTIES, "Boundaries", size=(400, 700))
         panel = wx.Panel(self)
         #self.Bind(wx.EVT_CLOSE, self.my_close)
@@ -43,15 +45,50 @@ class boundarywindow(wx.Frame):
                 tmp_min.SetValue(str(self.par.core.option_handler.boundaries[0][l]))
                 tmp_max.SetValue(str(self.par.core.option_handler.boundaries[1][l]))
         Setbutton = wx.Button(panel, label="Set", pos=(hstep, 650))
-        Setbutton.Bind(wx.EVT_BUTTON, self.Set)    
+        Setbutton.Bind(wx.EVT_BUTTON, self.Set)
+        Savebutton = wx.Button(panel, label="Save", pos=(100, 650))
+        Savebutton.Bind(wx.EVT_BUTTON, self.Save)
+        Loadbutton = wx.Button(panel, label="Load", pos=(300, 650))
+        Loadbutton.Bind(wx.EVT_BUTTON, self.Load)
         self.Show()
+        self.save_file_name="boundaries.txt"
         
     def Set(self, e):
+        try:
             self.par.core.option_handler.boundaries[0] = [float(n.GetValue()) for n in self.min]
             self.par.core.option_handler.boundaries[1] = [float(n.GetValue()) for n in self.max]
-            
+        except ValueError as ve:
+            wx.MessageBox(str(ve), "Invalid Value", wx.OK | wx.ICON_ERROR)
             #self.boundaries_window.Destroy()
-            self.Close()
+        self.Close()
+        
+    def Save(self,e):
+        dlg = wx.FileDialog(self, "Type a filename", os.getcwd(), "", "*.*", style=wx.FD_SAVE)
+        if dlg.ShowModal() == wx.ID_OK:
+            self.save_file_name=dlg.GetFilename()
+            f=open(self.save_file_name,"w")
+            for _min,_max in zip(self.min,self.max):
+                f.write(str(_min.GetValue()))
+                f.write("\t")
+                f.write(str(_max.GetValue()))
+                f.write("\n")
+            dlg.Destroy()
+        
+    def Load(self,e):
+        dlg = wx.FileDialog(self, "Select a file", os.getcwd(), "", "*.*", style=wx.OPEN)
+        if dlg.ShowModal() == wx.ID_OK:
+            load_file_name=dlg.GetDirectory()+"/"+dlg.GetFilename()
+            print load_file_name
+            try:
+                f=open(load_file_name,"r")
+                for idx,l in enumerate(f):
+                    bounds=l.split()
+                    self.min[idx].SetValue(bounds[0])
+                    self.max[idx].SetValue(bounds[1])
+            except IOError:
+                wx.MessageBox('Error reading the file', 'Error', wx.OK | wx.ICON_ERROR)
+            dlg.Destroy()
+        
             
     def my_close(self, e):
         wx.Exit()
@@ -190,6 +227,7 @@ class MyDialog(wx.Dialog):
         
 class MyDialog2(wx.Dialog):
     def __init__(self,parent,*args,**kwargs):
+        
         super(MyDialog2,self).__init__(parent)
         self.parent = parent
         self.Bind(wx.EVT_CLOSE,self.OnClose)
@@ -682,7 +720,7 @@ class modelLayer(wx.Frame):
 #        self.run_controll_pos = options[4]
 #        self.run_controll_vrest = options[5]
             self.kwargs={"runparam" : [self.core.data_handler.data.t_length,
-                                       self.core.data_handler.data.data,
+                                       self.core.data_handler.data.step,
                                        "record",
                                        "sec",
                                        "pos",
@@ -1194,7 +1232,7 @@ class ffunctionLayer(wx.Frame):
         self.seed = None
         self.kwargs = kwargs
         
-        
+        #print "ffun",kwargs
         self.layer = None
 
     def ToolbarCreator(self):
@@ -1383,7 +1421,7 @@ class algorithmLayer(wx.Frame):
         self.seed=None
         self.num_of_ctrl=None
         self.kwargs=kwargs
-        
+        #print "algo",kwargs
         
         
         self.layer=None
@@ -1559,13 +1597,17 @@ class algorithmLayer(wx.Frame):
         
         if self.core.option_handler.output_level=="1":
             print self.kwargs
-        self.core.ThirdStep(self.kwargs)
-
-        wx.MessageBox('Optimization finished. Press the Next button for the results!', 'Done', wx.OK | wx.ICON_EXCLAMATION)
+        try:
+            self.core.ThirdStep(self.kwargs)
+            wx.MessageBox('Optimization finished. Press the Next button for the results!', 'Done', wx.OK | wx.ICON_EXCLAMATION)
     
-        self.core.Print()
-        self.toolbar.EnableTool(wx.ID_FORWARD, True)
-        self.seed = None
+            self.core.Print()
+            self.toolbar.EnableTool(wx.ID_FORWARD, True)
+            self.seed = None
+        except sizeError as sE:
+            wx.MessageBox("There was an error during the optimization: "+sE.m, 'Error', wx.OK | wx.ICON_EXCLAMATION)
+
+        
             #except ValueError:
             #wx.MessageBox('Some of the cells are empty. Please fill out all of them!', 'Error', wx.OK|wx.ICON_ERROR)
 
@@ -1608,14 +1650,18 @@ class resultsLayer(wx.Frame):
         self.panel = wx.Panel(self)
         self.parent = parent
         self.kwargs=kwargs
-        try:
-            self.core.FourthStep()
-            self.Center()
-            self.ToolbarCreator()
-            self.Design()
-        except AttributeError:
-            wx.MessageBox("No optimization result to display!","Erro",wx.OK | wx.ICON_ERROR)
-            self.Prev(None)
+#        try:
+#            self.core.FourthStep()
+#            self.Center()
+#            self.ToolbarCreator()
+#            self.Design()
+#        except AttributeError:
+#            wx.MessageBox("No optimization result to display!","Error",wx.OK | wx.ICON_ERROR)
+#            self.Prev(None)
+        self.core.FourthStep()
+        self.Center()
+        self.ToolbarCreator()
+        self.Design()
             
         
 
@@ -1652,8 +1698,7 @@ class resultsLayer(wx.Frame):
         step = self.core.option_handler.run_controll_dt
         axes.set_xticks([n for n in range(0, int((t*no_traces)/(step)), int((t*no_traces)/(step)/5.0)) ])
         axes.set_xticklabels([str(n) for n in range(0, t*no_traces, (t*no_traces)/5)])
-        #print t,step
-        #print axes.get_xticks()
+
         axes.set_xlabel("time [ms]")
         _type=self.core.data_handler.data.type
         unit="V" if _type=="voltage" else "A" if _type=="current" else ""
@@ -1664,6 +1709,8 @@ class resultsLayer(wx.Frame):
         figure.savefig("result_trace.png", dpi=None, facecolor='w', edgecolor='w',
         orientation='portrait', papertype=None, format=None,
         transparent=False, bbox_inches=None, pad_inches=0.1)
+        figure.savefig("result_trace.eps", dpi=None, facecolor='w', edgecolor='w')
+        figure.savefig("result_trace.svg", dpi=None, facecolor='w', edgecolor='w')
 
         
         
