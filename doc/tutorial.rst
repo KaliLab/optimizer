@@ -203,7 +203,7 @@ B     Fitness statistics (only in case of inspyred
       algorithms: Classical EO, SA)
 
 
-C     Fitness components: name of fitness function, fitness value,calculated by the function, weight assigned to the function, the weighted fitness value, the resulting cumulated fitness value.
+C     Fitness components: name of fitness function; fitness value;calculated by the function; weight assigned to the function; the weighted fitness value; the resulting cumulated fitness value.
 
 D     Displays the “state” of the population during the
       evolution. (only for inspyred algorithms)
