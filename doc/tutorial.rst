@@ -1,5 +1,5 @@
 Optimizer tutorial
-=================
+==================
 
 Layer 1
 -------
@@ -18,7 +18,7 @@ but with arbitrary number of traces.
    :align: center
 
 =       ========================================= 
-A	Path to input data.
+A    	Path to input data.
 B	Browse the location of the input data.
 C	Input contains time or not.
 D	Type of input (voltage or current trace).
@@ -57,6 +57,34 @@ optimization.
 .. figure:: um003.png
    :align: center
 
+=       ========================================= 
+A         Path to model file.
+B         Browser for model file.
+C         Loads the specified model.
+D         Simulator type selection (Neuron or external)
+E         Path to special files (the compiled mod files for
+          Neuron), this should point to a folder, which
+          contains the folder of the compiled files (e.g.: to a
+          folder which has an x86-64 directory)
+F         Browser for special file location.
+G         Here you can give the command which invokes
+          the external simulator. The given command must
+          consists of the following:
+          - the command that calls the simulator
+          - the name of the model
+          - options to the simulator (optional)
+          - as the last parameter, the number of parameters subject to optimization
+H        Displays the recognized parameters. These can be
+         selected for optimization. If the parameters you
+         need, are missing, you can create a user defined
+         function.
+I        Opens the window to define/load your own
+         function for the optimization.
+J        Adds the currently selected parameter to the list of
+         parameters subject to optimization.
+K        Removes the parameter from the aforementioned list.
+=       ========================================= 
+
 Layer 3
 -------
 
@@ -89,6 +117,25 @@ where the measurement takes place.
 .. figure:: um006.png
    :align: center
 
+=     ======================================
+A     Stimulation protocol (Vclamp or Iclamp).
+B     Type of the stimulus (Step protocol or Custom
+      Waveform).
+C     Opens the window for specifying step amplitudes
+      or loading custom waveform (depending on the
+p     revious options).
+D     Delay of stimulus onset.
+E     Duration of stimulus.
+F     Section which receives stimulus.
+G     Point of stimulation inside the section.
+H     Initial membrane potential.
+I     Length of the recording.
+J     Integration step size.
+K     The parameter to be recorded.
+L     The section where the recordings takes place.
+M     Position inside the recording section.
+=     ======================================
+
 Layer 4
 -------
 
@@ -99,6 +146,13 @@ acceptable as well. The user can fine tune the behavior of the functions by givi
 
 .. figure:: um008.png
    :align: center
+
+=     ==================================
+A     List of available fitness function.
+B     Weight assigned to the selected function.
+C     Parameters passed to the fitness functions.
+D     Normalizes the weights (not necessary).
+=     ==================================
 
 Layer 5
 -------
@@ -113,6 +167,16 @@ local algorithms the algorithm will start form the point specified by the parame
 .. figure:: um009.png
    :align: center
 
+=     ========================================
+A     Seed for the random generator.
+B     Selected algorithm.
+C     Boundaries of the parameters subject to
+      optimization.
+D     Starting points
+E     Run the optimization.
+F     Depending on the selected algorithm, different
+      settings will appear here.
+=     ========================================
 
 Layer 6
 -------
@@ -120,20 +184,65 @@ Layer 6
 .. figure:: um011.png
    :align: center
 
+=     ===========================================
+A     The resulting parameters.
+B     The trace(s) obtained with the resulting
+      parameters.
+=     ===========================================
+
 Layer 7
 -------
 
 .. figure:: um012.png
    :align: center
 
+=     =============================================
+A     The obtained parameters.
+
+B     Fitness statistics (only in case of inspyred
+      algorithms: Classical EO, SA)
+
+
+C     Fitness components: name of fitness function; fitness value;calculated by the function; weight assigned to the function; the weighted fitness value; the resulting cumulated fitness value.
+
+D     Displays the “state” of the population during the
+      evolution. (only for inspyred algorithms)
+
+E     Displays the alleles (only for inspyred
+      algorithms ), only useful for single parameter
+      tasks.
+
+F     Displays the given proximity of the optimum.
+=     =============================================
+
 Other windows and layers
 ------------------------
 
 .. figure:: um014.png
-   :align: cente
+   :align: center
+
+=     ===============================================
+A     Entry field for function definition.
+B     Load a previously defined function from a txt.
+C     Done editing, save function and continue.
+D     Discard function and go back.
+=     ===============================================
 
 .. figure:: um015.png
    :align: center
 
+=     ===============================================
+A     Number of stimuli.
+B     Create the specified number of stimuli.
+C     Specify the amplitude of the stimuli.
+=     ===============================================
+
 .. figure:: um016.png
    :align: center
+
+=     ===============================================
+A     The list of selected parameters.
+B     Lower bounds.
+C     Upper bounds.
+D     Boundaries are set, continue.
+=     ===============================================
