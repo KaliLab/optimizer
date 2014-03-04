@@ -512,7 +512,7 @@ class coreModul():
         for c in self.error_comps:
             #tmp_str.append( "*".join([str(c[0]),c[1].__name__]))
             tmp_list.append([self.ffun_mapper[c[1].__name__],
-                             str(c[2])[0:5],
+                             str(c[2]),
                              str(c[0]),
                              str(c[0]*c[2]),""])
             tmp_w_sum +=c[0]*c[2]

@@ -215,8 +215,7 @@ class fF():
                 stop_pos = n
                 start = 0
                 s = spike_frame(start_pos, vect[start_pos], vect.index(max(vect[start_pos:stop_pos])), max(vect[start_pos:stop_pos]), stop_pos, vect[stop_pos])
-                temp1.append(s)
-            
+                temp1.append(s) 
         return temp1
 
 
@@ -424,6 +423,7 @@ class fF():
             spikes[1] = add_data
         else:
             spikes[1] = self.detectSpike(exp_t)
+        
         if (len(spikes[0]) < 1) and (len(spikes[1]) < 1):
             return 0
         if (len(spikes[0]) < 1) != (len(spikes[1]) < 1):
@@ -433,10 +433,11 @@ class fF():
                 print "first spike"
                 print "mod: ", len(spikes[0])
                 print "exp: ", len(spikes[1])
-                print pow(spikes[0][0].start_pos - spikes[1][0].start_pos, 2) / len(exp_t)
+                print float(pow(spikes[0][0].start_pos - spikes[1][0].start_pos, 2)) / len(exp_t)
         except OverflowError:
-                return 1
-        return pow(spikes[0][0].start_pos - spikes[1][0].start_pos, 2) / len(exp_t)
+            print "overflow"
+            return 1
+        return float(pow(spikes[0][0].start_pos - spikes[1][0].start_pos, 2)) / len(exp_t)
     
     
         #compares the traces based on the spike heights (heights calculated as the following:
@@ -501,8 +502,8 @@ class fF():
                 print "AP oveshoot:"
                 print "mod: ", len(spikes[0])
                 print "exp: ", len(spikes[1])
-                print fsum(tmp) / len(tmp) / max_amp
-            return  fsum(tmp) / len(tmp) / max_amp
+                print fsum(tmp) / len(tmp) / (max_amp**2)
+            return  fsum(tmp) / len(tmp) / (max_amp**2)
         except OverflowError:
             print "overflow"
             return 1
