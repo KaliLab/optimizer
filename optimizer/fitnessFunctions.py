@@ -248,12 +248,12 @@ class fF():
         try:
             if self.option.output_level == "1":
                 print "grad dif"
-                print fsum(tmp) / len(tmp) / (pow(max(exp_t) - min(exp_t), 2))
+                print fsum(tmp) / len(tmp) / (pow(max(grad_b) - min(grad_b), 2))
         except OverflowError:
                 return 1
             
             
-        return fsum(tmp) / len(tmp) / (pow(max(exp_t) - min(exp_t), 2))  
+        return fsum(tmp) / len(tmp) / (pow(max(grad_b) - min(grad_b), 2))  
            
             
         

@@ -228,14 +228,14 @@ class MyDialog(wx.Dialog):
 class MyDialog2(wx.Dialog):
     def __init__(self,parent,*args,**kwargs):
         
-        super(MyDialog2,self).__init__(parent)
+        super(MyDialog2,self).__init__(parent,style=wx.RESIZE_BORDER|wx.CLOSE_BOX)
         self.parent = parent
         self.Bind(wx.EVT_CLOSE,self.OnClose)
         n_o_params=args[0]
         self.container=[]
         self.vals=args[1]
-        self.SetSize((400,100*n_o_params+1))
-        _sizer=wx.GridSizer(n_o_params+1,2,40,10)
+        self.SetSize((400,min(100*n_o_params+1,600)))
+        _sizer=wx.GridSizer(n_o_params+1,2,20,5)
 #        row_sizer=wx.BoxSizer(wx.HORIZONTAL)
 #        col_sizer1=wx.BoxSizer(wx.VERTICAL)
 #        col_sizer2=wx.BoxSizer(wx.VERTICAL)
@@ -246,20 +246,26 @@ class MyDialog2(wx.Dialog):
             self.container.append(ctrl)
             #col_sizer1.Add(p_name_txt,flag=wx.UP,border=15)
             #col_sizer2.Add(ctrl,flag=wx.UP,border=15)
-            _sizer.Add(p_name_txt,flag=wx.LEFT | wx.UP,border=15)
-            _sizer.Add(ctrl,flag=wx.LEFT | wx.UP,border=15)
+            _sizer.Add(p_name_txt,flag=wx.LEFT | wx.UP,border=5)
+            _sizer.Add(ctrl,flag=wx.LEFT | wx.UP,border=5)
             
         b_ok=wx.Button(self,label="Ok")
         b_close=wx.Button(self,label="Cancel")
         b_ok.Bind(wx.EVT_BUTTON, self.OnOk)
         b_close.Bind(wx.EVT_BUTTON, self.OnClose)
+        b_load=wx.Button(self,label="Load Point")
+        b_load.Bind(wx.EVT_BUTTON, self.OnLoad)
+        b_load_pop=wx.Button(self,label="Load Population")
+        b_load_pop.Bind(wx.EVT_BUTTON, self.OnLoadPop)
 #        col_sizer1.Add(b_ok,flag=wx.UP,border=15)
 #        col_sizer2.Add(b_close,flag=wx.UP,border=15)
 #        row_sizer.Add(col_sizer1,flag=wx.LEFT,border=20)
 #        row_sizer.Add(col_sizer2,flag=wx.LEFT,border=50)
 #        self.SetSizer(row_sizer)
-        _sizer.Add(b_ok,flag=wx.LEFT | wx.UP,border=15)
-        _sizer.Add(b_close,flag=wx.LEFT | wx.UP,border=15)
+        _sizer.Add(b_ok,flag=wx.LEFT | wx.UP,border=5)
+        _sizer.Add(b_close,flag=wx.LEFT | wx.UP,border=5)
+        _sizer.Add(b_load,flag=wx.LEFT | wx.UP,border=5)
+        _sizer.Add(b_load_pop,flag=wx.LEFT | wx.UP,border=5)
         self.SetSizer(_sizer)
         
         
@@ -276,8 +282,83 @@ class MyDialog2(wx.Dialog):
         self.vals=None
         self.Destroy()
             
-        
-        
+    def OnLoad(self, e):
+        file_path = ""
+        dlg = wx.FileDialog(self, "Choose a file", os.getcwd(), "", "*.*", style=wx.OPEN)
+        if dlg.ShowModal() == wx.ID_OK:
+            file_path = dlg.GetDirectory() + "/" + dlg.GetFilename()
+        dlg.Destroy()
+        f = open(file_path, "r")
+        for idx, l in enumerate(f):
+            self.container[idx].SetValue(str(l))		
+
+    def OnLoadPop(self, e):
+        self.size_of_pop = 0
+        file_path = ""
+        dlg1 = wx.MessageDialog(self, "This function is only supported by the algorithms from inspyred!", style=wx.OK | wx.CANCEL)
+        if dlg1.ShowModal() == wx.ID_OK:
+            dlg2 = wx.TextEntryDialog(self, "Enter size of population", caption="Replace this with an arbitrary number", style=wx.OK | wx.CANCEL)
+            if dlg2.ShowModal() == wx.ID_OK:
+                self.size_of_pop = int(dlg2.GetValue())
+                dlg3 = wx.FileDialog(self, "Choose a file", os.getcwd(), "", "*.*", style=wx.OPEN)
+                if dlg3.ShowModal() == wx.ID_OK:
+                    file_path = dlg3.GetDirectory() + "/" + dlg3.GetFilename()
+                    dlg3.Destroy()
+                dlg2.Destroy()
+                dlg1.Destroy()
+            else:
+                dlg2.Destroy()
+                dlg1.Destroy()
+        else:
+            dlg1.Destroy()
+
+        def lastlines(hugefile, n, bsize=2048):
+            import errno
+            hfile = open(hugefile, 'rU')
+            if not hfile.readline():
+                return
+            sep = hfile.newlines
+            hfile.close()
+
+            hfile = open(hugefile, 'rb')
+            hfile.seek(0, os.SEEK_END)
+            linecount = 0
+            pos = 0
+
+            while linecount <= n:
+
+                try:
+                    hfile.seek(-bsize, os.SEEK_CUR)
+                    linecount += hfile.read(bsize).count(sep) 
+                    hfile.seek(-bsize, os.SEEK_CUR)
+                except IOError, e:
+                    if e.errno == errno.EINVAL:
+                        # Attempted to seek past the start, can't go further
+                        bsize = hfile.tell()
+                        hfile.seek(0, os.SEEK_SET)
+                        linecount += hfile.read(bsize).count(sep)
+                pos = hfile.tell()
+                
+            hfile.close()
+            hfile = open(hugefile, 'r')
+            hfile.seek(pos, os.SEEK_SET)  # our file position from above
+
+
+            for line in hfile:
+            # We've located n lines *or more*, so skip if needed
+                if linecount > n:
+                    linecount -= 1
+                    continue
+            # The rest we yield
+                yield line
+                
+        for l in lastlines(file_path, self.size_of_pop, 1):
+            s=l.strip()
+            print s
+            params = map(lambda x: float(x.lstrip("[").rstrip("]")), s.split(", "))[3:-1]
+            params = params[0:len(params) / 2 + 1]
+            self.vals.append(params)
+        self.Destroy()
         
 
 
@@ -727,7 +808,7 @@ class modelLayer(wx.Frame):
                                        "vrest"]
                         }
             if self.dd_type.GetSelection() == 1:
-                self.layer = ffunctionLayer(self, 4, self.Size, "Select Algorithm", self.core, self.path, self.kwargs)  
+                self.layer = ffunctionLayer(self, 4, self.Size, "Select Fitness Function", self.core, self.path, self.kwargs)  
             else:
                 self.layer = stimuliLayer(self, 2, self.Size, "Stimuli & Recording Settings", self.core, self.path)
             self.Hide()
@@ -1563,9 +1644,12 @@ class algorithmLayer(wx.Frame):
 #            print "cancel"
 #            seeds=None
 #            dlg.Destroy()
-        if len(seeds)!=num_o_params:
+        print len(seeds)
+        print seeds
+        if len(seeds)!=num_o_params or len(seeds[0])!=num_o_params:
             seeds=None
         self.seed = seeds
+        print self.seed
             
 
             
@@ -1711,6 +1795,8 @@ class resultsLayer(wx.Frame):
         transparent=False, bbox_inches=None, pad_inches=0.1)
         figure.savefig("result_trace.eps", dpi=None, facecolor='w', edgecolor='w')
         figure.savefig("result_trace.svg", dpi=None, facecolor='w', edgecolor='w')
+        param_save=wx.Button(self.panel,id=wx.ID_ANY,label="Save Parameters",pos=(110,5),size=(100,30))
+        param_save.Bind(wx.EVT_BUTTON,self.SaveParam)
 
         
         
@@ -1746,6 +1832,14 @@ class resultsLayer(wx.Frame):
             self.layer.Design()
             self.layer.Show()
             
+    def SaveParam(self, e):
+        dlg = wx.FileDialog(self, "Type a filename", os.getcwd(), "", "*.*", style=wx.FD_SAVE)
+        if dlg.ShowModal() == wx.ID_OK:
+            self.save_file_name=dlg.GetFilename()
+            f=open(self.save_file_name,"w")
+            params=self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)]
+            f.write("\n".join(map(str,params)))
+            dlg.Destroy()
         
     def my_close(self, e):
         wx.Exit()
@@ -1802,15 +1896,6 @@ class analyzisLayer(wx.Frame):
         except AttributeError:
             stats={'best' : "unkown",'worst' : "unkown",'mean' : "unkown",'median' : "unkown", 'std' : "unkown"}
         string = "Best: " + str(stats['best']) + "\nWorst: " + str(stats['worst']) + "\nMean: " + str(stats['mean']) + "\nMedian: " + str(stats['median']) + "\nStd:" + str(stats['std'])
-        string += "\n\nFitness Components:\n\t"
-        string += "\nname\tvalue\tweight\tweighted value\n"
-        tmp_w_sum=0
-        for c in self.core.error_comps:
-            #tmp_str.append( "*".join([str(c[0]),c[1].__name__]))
-            string += c[1].__name__+"\t"+(str(c[2])[0:5])+"\t"+str(c[0])+"\t"+(str(c[0]*c[2])[0:5])
-            string += "\n"
-            tmp_w_sum +=c[0]*c[2]
-        string +="weighted sum: "+(str(tmp_w_sum)[0:5])
         wx.StaticText(self.panel, label=string, pos=(410, 55))
         
         
@@ -1845,32 +1930,34 @@ class analyzisLayer(wx.Frame):
             self.bw.Bind(wx.EVT_CLOSE, self.DisplayGrid)
     
     def DisplayGrid(self,e):
+        dlg=wx.MessageDialog(self,"Start calculating grid?\nThe calculation might take several minutes depending your machine's performance.",style=wx.OK|wx.CANCEL)
         self.bw.Destroy()
-        act_bounds=self.core.option_handler.boundaries
-        if self.core.grid_result == None or act_bounds!=self.prev_bounds:
-            self.core.callGrid()
-        no_dims = len(self.core.option_handler.GetObjTOOpt()) / 2 + 1
-        import matplotlib.pyplot as plt
-        f, axes = plt.subplots(no_dims, no_dims)
-        a = []
-        for i in axes:
-            for j in i:
-                a.append(j)     
-
-        #,marker='o', color='r', ls=''
-        for i in range(len(self.core.option_handler.GetObjTOOpt())):
-            for points, fitness in zip(self.core.optimizer.final_pop[0][i],self.core.optimizer.final_pop[1][i]):
-                a[i].plot(points[i],
-                                       fitness[0], marker='o', color='r', ls='')
-            a[i].set_title(self.core.option_handler.GetObjTOOpt()[i])
-            a[i].relim()
-            a[i].autoscale(True,'both',False)
-        
-        #hide unused subplots
-        for i in range(len(self.core.option_handler.GetObjTOOpt()),no_dims**2):
-            a[i].axis('off')
-        
-        matplotlib.pyplot.show()
+        if dlg.ShowModal()==wx.ID_OK:
+            act_bounds=self.core.option_handler.boundaries
+            if self.core.grid_result == None or act_bounds!=self.prev_bounds:
+                self.core.callGrid()
+            no_dims = len(self.core.option_handler.GetObjTOOpt()) / 2 + 1
+            import matplotlib.pyplot as plt
+            f, axes = plt.subplots(no_dims, no_dims)
+            a = []
+            for i in axes:
+                for j in i:
+                    a.append(j)     
+    
+            #,marker='o', color='r', ls=''
+            for i in range(len(self.core.option_handler.GetObjTOOpt())):
+                for points, fitness in zip(self.core.optimizer.final_pop[0][i],self.core.optimizer.final_pop[1][i]):
+                    a[i].plot(points[i],
+                                           fitness[0], marker='o', color='r', ls='')
+                a[i].set_title(self.core.option_handler.GetObjTOOpt()[i])
+                a[i].relim()
+                a[i].autoscale(True,'both',False)
+            
+            #hide unused subplots
+            for i in range(len(self.core.option_handler.GetObjTOOpt()),no_dims**2):
+                a[i].axis('off')
+            
+            matplotlib.pyplot.show()
         
         
         

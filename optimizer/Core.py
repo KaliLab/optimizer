@@ -414,6 +414,7 @@ class coreModul():
         :param args: currently not in use
         """   
         self.final_result=[]
+        self.error_comps=[]
         self.optimal_params=self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])
         if self.option_handler.GetUFunString()=='':
             if isinstance(self.model_handler, externalHandler):
@@ -465,7 +466,7 @@ class coreModul():
                     s.append(self.data_handler.data.step)
                     self.model_handler.RunControll(s)
                 #calculate the error components
-                self.error_comps=self.optimizer.fit_obj.getErrorComponents(k, self.model_handler.record[0])
+                self.error_comps.append(self.optimizer.fit_obj.getErrorComponents(k, self.model_handler.record[0]))
                 trace_handler=open("result_trace"+str(k)+".txt","w")
                 for l in self.model_handler.record[0]:
                     trace_handler.write(str(l))
@@ -509,14 +510,15 @@ class coreModul():
         tmp_str+="<p><b>Fitness Components:</b></p>\n"
         tmp_w_sum=0
         tmp_list=[]
-        for c in self.error_comps:
-            #tmp_str.append( "*".join([str(c[0]),c[1].__name__]))
-            tmp_list.append([self.ffun_mapper[c[1].__name__],
-                             str(c[2]),
-                             str(c[0]),
-                             str(c[0]*c[2]),""])
-            tmp_w_sum +=c[0]*c[2]
-        tmp_list.append(["","","","",tmp_w_sum])
+        for t in self.error_comps:
+            for c in t:
+                #tmp_str.append( "*".join([str(c[0]),c[1].__name__]))
+                tmp_list.append([self.ffun_mapper[c[1].__name__],
+                                 str(c[2]),
+                                 str(c[0]),
+                                 str(c[0]*c[2]),""])
+                tmp_w_sum +=c[0]*c[2]
+            tmp_list.append(["","","","",tmp_w_sum])
         tmp_str+=self.htmlTable(["Name","Value","Weight","Weighted Value","Weighted Sum"], tmp_list)+"\n"
         #tmp_str+="<center><p><b>weighted sum = "+(str(tmp_w_sum)[0:5])+"</b></p></centered>"
         f_handler.write(tmp_str)
