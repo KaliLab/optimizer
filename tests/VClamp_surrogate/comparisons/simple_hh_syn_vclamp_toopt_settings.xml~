@@ -10,7 +10,7 @@
   <run_controll_vrest>-70.0</run_controll_vrest>
   <starting_points>None</starting_points>
   <cooling_rate>None</cooling_rate>
-  <pop_size>100.0</pop_size>
+  <pop_size>10</pop_size>
   <adjusted_params>['weight', 'delay', 'tau_rise', 'tau_decay']</adjusted_params>
   <param_vals>[0.1, 0.1, 0.1, 0.1]</param_vals>
   <run_controll_tstop>500.0</run_controll_tstop>
@@ -23,7 +23,7 @@
   <input_size>1</input_size>
   <type>['current']</type>
   <x_tol>None</x_tol>
-  <feats>Average Squared Error</feats>
+  <feats>PPTD</feats>
   <input_length>500</input_length>
   <sim_command>&quot;&quot;</sim_command>
   <init_temp>None</init_temp>
@@ -60,7 +60,7 @@ def usr_fun(self,v):
 </u_fun_string>
   <mutation_rate>0.25</mutation_rate>
   <weights>[1.0]</weights>
-  <model_path>/home/fripe/workspace/git/optimizer/tests/VClamp_surrogate/simple_hh_syn_vclamp_toopt.hoc</model_path>
+  <model_path>/home/fripe/workspace/git/optimizer/tests/VClamp_surrogate/simple_hh_syn_vclamp_toopt2.hoc</model_path>
   <final_temp>None</final_temp>
   <run_controll_pos>0.5</run_controll_pos>
   <base_dir>/home/fripe/workspace/git/optimizer/tests/VClamp_surrogate/example results</base_dir>

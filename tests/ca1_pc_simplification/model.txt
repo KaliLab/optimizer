@@ -1,6 +1,0 @@
-['soma', 'L, cm, Ra, diam, nseg, ena, ek, eca', '', '']
-['dend2', 'L, cm, Ra, diam, nseg, ena, ek, eca', '', '']
-['dend2a', 'L, cm, Ra, diam, nseg, ena, ek, eca', '', '']
-['dend3', 'L, cm, Ra, diam, nseg, ena, ek, eca', '', '']
-['dend4', 'L, cm, Ra, diam, nseg, ena, ek, eca', '', '']
-['dend5', 'L, cm, Ra, diam, nseg, ena, ek, eca', '', '']
