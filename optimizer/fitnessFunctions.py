@@ -489,13 +489,13 @@ class fF():
             spikes[1] = add_data
         else:
             spikes[1] = self.detectSpike(exp_t)
-        max_amp = max(map(lambda x: x.peak_val - self.thres, spikes[1]))
         if max_amp == 0:
             max_amp = 1e-12
         if (len(spikes[0]) < 1) and (len(spikes[1]) < 1):
             return 0
         if ((len(spikes[0]) < 1) != (len(spikes[1]) < 1)):
             return 1
+        max_amp = max(map(lambda x: x.peak_val - self.thres, spikes[1]))
         tmp = [pow((s1.peak_val - self.thres) - (s2.peak_val - self.thres), 2) for s1, s2 in zip(spikes[0], spikes[1])]
         try:
             if self.option.output_level == "1":
