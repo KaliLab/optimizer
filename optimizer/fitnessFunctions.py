@@ -631,11 +631,12 @@ class fF():
         
         try:
             if self.option.output_level == "1":
-                print "AP width:"
                 print "mod: ", len(spikes[0])
                 print "exp: ", len(spikes[1])
+                print "AP width:"
                 print pow((fsum(avg2) / len(avg2) - fsum(avg1) / len(avg1)) / (fsum(avg2) / len(avg2)), 2)
         except OverflowError:
+            print "overflow"
             return 1
         return pow((fsum(avg2) / len(avg2) - fsum(avg1) / len(avg1)) / (fsum(avg2) / len(avg2)), 2)
 

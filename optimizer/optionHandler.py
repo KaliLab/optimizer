@@ -168,7 +168,8 @@ class optionHandler(object):
             elif child.tag=="param_vals":
                 self.__setattr__(child.tag,map(_float_or_int,child.text.strip().lstrip("[").rstrip("]").split(",")))
             elif child.tag=="boundaries":
-                self.__setattr__(child.tag,map(lambda x:map(_float_or_int,x.strip().split(", ")), child.text[2:len(child.text)-2].split("], [")))
+                #print child.text.strip()[2:len(child.text.strip())-2]#.strip().split("], [")
+                self.__setattr__(child.tag,map(lambda x:map(_float_or_int,x.strip().split(", ")), child.text.strip()[2:len(child.text.strip())-2].split("], [")))
             elif child.tag=="type":
                 self.__setattr__(child.tag,[map(lambda x: x.strip().lstrip("['").rstrip("']"),child.text.split(", "))[-1]])
             elif child.tag=="feats":
