@@ -519,6 +519,7 @@ class coreModul():
                                  str(c[0]*c[2]),""])
                 tmp_w_sum +=c[0]*c[2]
             tmp_list.append(["","","","",tmp_w_sum])
+            tmp_w_sum=0
         tmp_str+=self.htmlTable(["Name","Value","Weight","Weighted Value","Weighted Sum"], tmp_list)+"\n"
         #tmp_str+="<center><p><b>weighted sum = "+(str(tmp_w_sum)[0:5])+"</b></p></centered>"
         f_handler.write(tmp_str)

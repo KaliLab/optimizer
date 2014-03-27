@@ -433,11 +433,11 @@ class fF():
                 print "first spike"
                 print "mod: ", len(spikes[0])
                 print "exp: ", len(spikes[1])
-                print float(pow(spikes[0][0].start_pos - spikes[1][0].start_pos, 2)) / len(exp_t)
+                print float(pow(spikes[0][0].start_pos - spikes[1][0].start_pos, 2)) / (len(exp_t)**2)
         except OverflowError:
             print "overflow"
             return 1
-        return float(pow(spikes[0][0].start_pos - spikes[1][0].start_pos, 2)) / len(exp_t)
+        return float(pow(spikes[0][0].start_pos - spikes[1][0].start_pos, 2)) / (len(exp_t)**2)
     
     
         #compares the traces based on the spike heights (heights calculated as the following:
