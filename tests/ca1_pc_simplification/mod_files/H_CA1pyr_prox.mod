@@ -77,6 +77,9 @@ NEURON {
       
 
     SUFFIX H_CA1pyr_prox
+    RANGE e
+    NONSPECIFIC_CURRENT i
+
     RANGE gmax, gion
     
     RANGE Xinf, Xtau
@@ -87,7 +90,7 @@ PARAMETER {
       
 
     gmax = 0.000035 (S/cm2)  ? default value, should be overwritten when conductance placed on cell
-    
+    e = -30 (mV) ? default value, should be overwritten when conductance placed on cell
 }
 
 
@@ -96,6 +99,8 @@ ASSIGNED {
       
 
     v (mV)
+
+    i (mA/cm2)
     
     celsius (degC)
     
@@ -112,6 +117,7 @@ BREAKPOINT {
          
 
     gion = gmax*((X)^1)
+    i = gion*(v - e)
 
 }
 

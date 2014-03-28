@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <body>
-<p>Mon Mar 10 20:58:43 2014</p>
-<p><span style="text-align:center;">Optimization of <b>ca1pc_model.hoc</b> based on: /home/fripe/workspace/git/optimizer/tests/ca1_pc_simplification/Vinj48_2c_1.dat</span></p>
+<p>Fri Mar 28 11:30:20 2014</p>
+<p><span style="text-align:center;">Optimization of <b>ca1pc_model.hoc</b> based on: /home/kali/neuron/optimizer/szabolcsnak/ca1pc_simple/Vinj48_2c_1.dat</span></p>
 <center><p><span style="text-decoration:underline;font-size:200%;">Results</span></p></center>
 <table border="1" align="center">
 <th>Parameter Name</th>
@@ -10,71 +10,71 @@
 <th>Maximum</th>
 <th>Optimum</th>
 <tr>
-<td>soma Na_soma gmax_Na_soma</td>
-<td>0.001</td>
-<td>1.0</td>
-<td>0.0314373190792</td>
-</tr>
-<tr>
-<td>soma K_DR gmax_K_DR</td>
+<td>soma H_CA1pyr_prox gmax_H_CA1pyr_prox</td>
 <td>0.0001</td>
-<td>0.1</td>
-<td>0.0876103386008</td>
-</tr>
-<tr>
-<td>soma K_A_prox gmax_K_A_prox</td>
-<td>0.0001</td>
-<td>0.1</td>
-<td>0.0998353143815</td>
-</tr>
-<tr>
-<td>soma K_M gmax_K_M</td>
-<td>0.0001</td>
-<td>0.1</td>
-<td>0.000927260944666</td>
-</tr>
-<tr>
-<td>soma K_C_1D gmax_K_C_1D</td>
-<td>0.0001</td>
-<td>0.1</td>
-<td>0.1</td>
-</tr>
-<tr>
-<td>soma K_AHP gmax_K_AHP</td>
-<td>0.0001</td>
-<td>0.1</td>
-<td>0.000100074584209</td>
-</tr>
-<tr>
-<td>soma CaL gmax_CaL</td>
-<td>0.0001</td>
-<td>0.1</td>
-<td>0.0592377929626</td>
+<td>0.01</td>
+<td>0.00607832146398</td>
 </tr>
 <tr>
 <td>soma CaN gmax_CaN</td>
 <td>0.0001</td>
 <td>0.1</td>
-<td>0.0988284326323</td>
+<td>0.0368085208901</td>
 </tr>
 <tr>
-<td>soma H_CA1pyr_prox gmax_H_CA1pyr_prox</td>
-<td>1e-05</td>
+<td>soma CaL gmax_CaL</td>
+<td>0.0001</td>
+<td>0.1</td>
+<td>0.0203778015495</td>
+</tr>
+<tr>
+<td>soma K_AHP gmax_K_AHP</td>
+<td>1e-06</td>
 <td>0.01</td>
-<td>0.00628491036874</td>
+<td>1.68476020459e-06</td>
+</tr>
+<tr>
+<td>soma K_C_1D gmax_K_C_1D</td>
+<td>0.0001</td>
+<td>0.1</td>
+<td>0.0001</td>
+</tr>
+<tr>
+<td>soma K_M gmax_K_M</td>
+<td>0.0001</td>
+<td>0.1</td>
+<td>0.000194808783842</td>
+</tr>
+<tr>
+<td>soma K_A_prox gmax_K_A_prox</td>
+<td>0.001</td>
+<td>1.0</td>
+<td>0.00103177662602</td>
+</tr>
+<tr>
+<td>soma K_DR gmax_K_DR</td>
+<td>0.001</td>
+<td>1.0</td>
+<td>0.046343123872</td>
+</tr>
+<tr>
+<td>soma Na_soma gmax_Na_soma</td>
+<td>0.001</td>
+<td>1.0</td>
+<td>0.0332737786213</td>
 </tr>
 </table>
-<center><p><b>Fitnes: </b><b>0.156799075925</b></p></center>
+<center><p><b>Fitnes: </b><b>0.00190498756823</b></p></center>
 <p align="center"><img style="border:none;" src="result_trace.png" ></p>
 <p><b>Error Tolerance for x: =</b> None</p>
-<p><b>Size of Population: =</b> 100.0</p>
+<p><b>Size of Population: =</b> 200.0</p>
 <p><b>Accuracy: =</b> None</p>
 <p><b>Mutation Rate: =</b> 0.25</p>
 <p><b>Cooling Rate: =</b> None</p>
 <p><b>Final Temperature: =</b> None</p>
 <p><b>Std. Deviation of Gaussian: =</b> None</p>
 <p><b>Cooling Schedule: =</b> None</p>
-<p><b>boundaries =</b> [[0.001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 0.0001, 1e-05], [1.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.01]]</p>
+<p><b>boundaries =</b> [[0.0001, 0.0001, 0.0001, 9.9999999999999995e-07, 0.0001, 0.0001, 0.001, 0.001, 0.001], [0.01, 0.10000000000000001, 0.10000000000000001, 0.01, 0.10000000000000001, 0.10000000000000001, 1.0, 1.0, 1.0]]</p>
 <p><b>Number of Generations: =</b> 100.0</p>
 <p><b>evo_strat =</b> Classical EO</p>
 <p><b>seed =</b> 1234.0</p>
@@ -84,8 +84,8 @@
 <p><b>Mean of Gaussian: =</b> None</p>
 <p><b>Error Tolerance for f: =</b> None</p>
 <p><b>num_inputs =</b> 9</p>
-<p><b>feats =</b> Average Squared Error, Spike Count, ISI Differences, AP Overshoot, Latency to 1st Spike, AHP Depth</p>
-<p><b>weights =</b> [0.166667, 0.166667, 0.166667, 0.166667, 0.166667, 0.166667]</p>
+<p><b>feats =</b> Spike Count, Averaged Squared Error II, Latency to 1st Spike, AP Overshoot, AHP Depth, AP Width</p>
+<p><b>weights =</b> [0.40000000000000002, 0.20000000000000001, 0.10000000000000001, 0.10000000000000001, 0.10000000000000001, 0.10000000000000001]</p>
 <p><b>user function =</b></p>
 </body>
 </html>
@@ -97,45 +97,45 @@
 <th>Weighted Value</th>
 <th>Weighted Sum</th>
 <tr>
-<td>Average Squared Error</td>
-<td>0.0105644013772</td>
-<td>0.166667</td>
-<td>0.00176073708434</td>
-<td></td>
-</tr>
-<tr>
 <td>Spike Count</td>
 <td>0.0</td>
-<td>0.166667</td>
+<td>0.4</td>
 <td>0.0</td>
 <td></td>
 </tr>
 <tr>
-<td>ISI Differences</td>
-<td>0.0044</td>
-<td>0.166667</td>
-<td>0.0007333348</td>
-<td></td>
-</tr>
-<tr>
-<td>AP Overshoot</td>
-<td>0.400484082897</td>
-<td>0.166667</td>
-<td>0.0667474806442</td>
+<td>Averaged Squared Error II</td>
+<td>0.00203013569901</td>
+<td>0.2</td>
+<td>0.000406027139801</td>
 <td></td>
 </tr>
 <tr>
 <td>Latency to 1st Spike</td>
-<td>0.5202</td>
-<td>0.166667</td>
-<td>0.0867001734</td>
+<td>0.0001113025</td>
+<td>0.1</td>
+<td>1.113025e-05</td>
+<td></td>
+</tr>
+<tr>
+<td>AP Overshoot</td>
+<td>0.00652270952715</td>
+<td>0.1</td>
+<td>0.000652270952715</td>
 <td></td>
 </tr>
 <tr>
 <td>AHP Depth</td>
-<td>0.00514408968908</td>
-<td>0.166667</td>
-<td>0.00085734999621</td>
+<td>0.00203567488877</td>
+<td>0.1</td>
+<td>0.000203567488877</td>
+<td></td>
+</tr>
+<tr>
+<td>AP Width</td>
+<td>0.00631991736839</td>
+<td>0.1</td>
+<td>0.000631991736839</td>
 <td></td>
 </tr>
 <tr>
@@ -143,6 +143,6 @@
 <td></td>
 <td></td>
 <td></td>
-<td>0.156799075925</td>
+<td>0.00190498756823</td>
 </tr>
 </table>

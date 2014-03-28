@@ -1,0 +1,1 @@
+Best fit found: { 0.0284674 0.561821 0.64709 2.74221 } with error value: 0.0040992
