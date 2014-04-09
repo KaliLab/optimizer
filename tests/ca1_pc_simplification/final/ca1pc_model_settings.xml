@@ -7,7 +7,7 @@
     None
   </f_tol>
   <max_evaluation>
-    100.0
+    200.0
   </max_evaluation>
   <spike_window>
     5.0
@@ -31,7 +31,7 @@
     None
   </cooling_rate>
   <pop_size>
-    200.0
+    300.0
   </pop_size>
   <adjusted_params>
     ['soma H_CA1pyr_prox gmax_H_CA1pyr_prox', 'soma CaN gmax_CaN', 'soma CaL gmax_CaL', 'soma K_AHP gmax_K_AHP', 'soma K_C_1D gmax_K_C_1D', 'soma K_M gmax_K_M', 'soma K_A_prox gmax_K_A_prox', 'soma K_DR gmax_K_DR', 'soma Na_soma gmax_Na_soma']

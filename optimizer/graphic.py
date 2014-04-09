@@ -1646,8 +1646,8 @@ class algorithmLayer(wx.Frame):
 #            dlg.Destroy()
         print len(seeds)
         print seeds
-        if len(seeds)!=num_o_params or len(seeds[0])!=num_o_params:
-            seeds=None
+        #if len(seeds)!=num_o_params or len(seeds[0])!=num_o_params:
+         #   seeds=None
         self.seed = seeds
         print self.seed
             

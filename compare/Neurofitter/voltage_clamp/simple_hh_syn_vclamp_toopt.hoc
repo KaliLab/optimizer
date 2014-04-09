@@ -32,7 +32,7 @@ ns.interval = 100
 
 nc = new NetCon(ns, ampasyn)
 nc.weight = 0.01
-nc.delay = 0.0
+nc.delay = 2.0
 
 vc = new SEClamp(0.5)
 vc.rs = 0.01
