@@ -278,7 +278,7 @@ objref stim
 
 stim=new IClamp(0.5) 
 stim.del=200 
-stim.amp=0.25 
+stim.amp=0.20 
 stim.dur=tstop-400 
 
 
