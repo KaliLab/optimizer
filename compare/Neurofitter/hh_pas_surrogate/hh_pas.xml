@@ -28,14 +28,14 @@
 <FitterType>EO</FitterType> 
 <FitterParameters>
   <popSize>30</popSize> <!-- Number of individuals in population -->
-  <nbOffspring>1000</nbOffspring> <!-- Number of offspring -->
+  <nbOffspring>100</nbOffspring> <!-- Number of offspring -->
   <replacement>Plus</replacement> <!-- Replacement strategy -->
   <maxGen>100</maxGen> <!-- Maximal number of generations -->
   <minGen>0</minGen> <!-- Minimal number of generations -->
   <maxEval>3000</maxEval> <!-- Maximal number of evaluation -->
-  <targetFitness>0.01</targetFitness> <!-- Target fitness below -->
+  <targetFitness>0.00001</targetFitness> <!-- Target fitness below -->
 	<!-- which ES stops -->
-  <steadyGen>10</steadyGen> <!-- Maximal number of generations -->
+  <steadyGen>100</steadyGen> <!-- Maximal number of generations -->
 	<!-- without improvement -->
   <crossType>global</crossType> <!-- number of parents for -->
 	<!-- cross-over (global or local) -->
@@ -79,13 +79,13 @@
   <!--Settings: The location of the Neuron special file--> 
   <SpecialLocation>nrniv</SpecialLocation> 
   <!--The directory that contains the Neuron model files--> 
-  <ModelDirectory>/home/fripe/Desktop/Onlab/test_neuron/</ModelDirectory> 
+  <ModelDirectory>/home/kali/neuron/optimizer/szabolcsnak/neurofitter/hh</ModelDirectory> 
   <!--The directory that will contain the output files of the model--> 
-  <OutputDirectory>/home/fripe/Desktop/Onlab/test_neuron</OutputDirectory> 
+  <OutputDirectory>/home/kali/neuron/optimizer/szabolcsnak/neurofitter/hh/model</OutputDirectory> 
   <!--The root source file (.hoc) of the model--> 
-  <ModelSource>/home/fripe/Desktop/Onlab/test_neuron/test_mod.hoc</ModelSource> 
+  <ModelSource>/home/kali/neuron/optimizer/szabolcsnak/neurofitter/hh/test_mod.hoc</ModelSource> 
   <!--The filename that Neurofitter has to use to write the file that contains the information for Neuron--> 
-  <ParameterFile>/home/fripe/Desktop/Onlab/test_neuron/params.dat</ParameterFile> 
+  <ParameterFile>/home/kali/neuron/optimizer/szabolcsnak/neurofitter/hh/params.dat</ParameterFile> 
   <!--Set to 1 if you want to see Neuron stdout output (handy for debugging), 0 if not.--> 
   <ShowExecuteOutput>1</ShowExecuteOutput>
 </ModelParameters> 
@@ -96,7 +96,7 @@
 <!-- the model with a preset set of parameters --> 
 <ExperimentType>Fake</ExperimentType> 
 <ExperimentParameters>
-  <Parameters> 0.1 0.03 0.0001 </Parameters>
+  <Parameters> 0.12 0.036 0.0003 </Parameters>
 </ExperimentParameters> 
 <!-- Type of error function used --> 
 <!-- Only 1 possible value: Matrix --> 
@@ -111,8 +111,8 @@
      <vLength>100</vLength> 
      <!-- Numbers of bins in the V direction of the matrix --> 
      <dVdtLength>100</dVdtLength> <!-- Minimal value of V --> 
-     <minimalV>-80</minimalV> <!-- Maximal value of V --> 
-     <maximalV>120</maximalV> 
+     <minimalV>-100</minimalV> <!-- Maximal value of V --> 
+     <maximalV>100</maximalV> 
      <!-- Values below comparePrecision are supposed to --> 
      <!-- be equal --> 
      <comparePrecision>1e-15</comparePrecision> 
@@ -128,7 +128,7 @@
   <!-- 1=True, 0=False --> 
   <enableFileExport>1</enableFileExport> 
   <!-- Name of the file to store the error values to --> 
-  <exportFile>/home/fripe/Desktop/Onlab/test_neuron/errorValues.dat</exportFile> 
+  <exportFile>/home/kali/neuron/optimizer/szabolcsnak/neurofitter/hh/errorValues.dat</exportFile> 
   </ErrorValueCalculatorParameters>
 </TestProgram>
 

@@ -84,13 +84,13 @@
   <!--Settings: The location of the Neuron special file-->
   <SpecialLocation>nrniv</SpecialLocation>
   <!--The directory that contains the Neuron model files-->
-  <ModelDirectory>/home/fripe/Desktop/opt_testek/comparisons/ca1pc_anat/cell2</ModelDirectory>
+  <ModelDirectory>/home/kali/neuron/optimizer/szabolcsnak/neurofitter/ca1pc_anat</ModelDirectory>
   <!--The directory that will contain the output files of the model-->
-  <OutputDirectory>/home/fripe/Desktop/opt_testek/comparisons/ca1pc_anat/cell2</OutputDirectory>
+  <OutputDirectory>/home/kali/neuron/optimizer/szabolcsnak/neurofitter/ca1pc_anat/model</OutputDirectory>
   <!--The root source file (.hoc) of the model-->
-  <ModelSource>/home/fripe/Desktop/opt_testek/comparisons/ca1pc_anat/cell2/morphology_131117-C2.hoc</ModelSource>
+  <ModelSource>/home/kali/neuron/optimizer/szabolcsnak/neurofitter/ca1pc_anat/morphology_131117-C2.hoc</ModelSource>
   <!--The filename that Neurofitter has to use to write the file that contains the information for Neuron-->
-  <ParameterFile>/home/fripe/Desktop/opt_testek/comparisons/ca1pc_anat/cell2/params.dat</ParameterFile>
+  <ParameterFile>/home/kali/neuron/optimizer/szabolcsnak/neurofitter/ca1pc_anat/params.dat</ParameterFile>
   <!--Set to 1 if you want to see Neuron stdout output (handy for debugging), 0 if not.-->
   <ShowExecuteOutput>1</ShowExecuteOutput>
 </ModelParameters> 
@@ -101,7 +101,7 @@
 <!-- the model with a preset set of parameters --> 
 <ExperimentType>File</ExperimentType>
 <ExperimentParameters>
-	<FilesDirectory>/home/fripe/Desktop/opt_testek/comparisons/ca1pc_anat/cell2/</FilesDirectory>
+	<FilesDirectory>/home/kali/neuron/optimizer/szabolcsnak/neurofitter/ca1pc_anat/data</FilesDirectory>
 </ExperimentParameters> 
 <!-- Type of error function used --> 
 <!-- Only 1 possible value: Matrix --> 
@@ -116,8 +116,8 @@
      <vLength>100</vLength> 
      <!-- Numbers of bins in the V direction of the matrix --> 
      <dVdtLength>100</dVdtLength> <!-- Minimal value of V --> 
-     <minimalV>-80</minimalV> <!-- Maximal value of V --> 
-     <maximalV>120</maximalV> 
+     <minimalV>-5</minimalV> <!-- Maximal value of V --> 
+     <maximalV>15</maximalV> 
      <!-- Values below comparePrecision are supposed to --> 
      <!-- be equal --> 
      <comparePrecision>1e-15</comparePrecision> 
@@ -135,6 +135,6 @@
   <!-- 1=True, 0=False --> 
   <enableFileExport>1</enableFileExport> 
   <!-- Name of the file to store the error values to --> 
-  <exportFile>/home/fripe/Desktop/opt_testek/comparisons/ca1pc_anat/cell2/errorValues.dat</exportFile> 
+  <exportFile>/home/kali/neuron/optimizer/szabolcsnak/neurofitter/ca1pc_anat/errorValues.dat</exportFile> 
   </ErrorValueCalculatorParameters>
 </TestProgram>
