@@ -5,3 +5,10 @@ The model was created by clusterizing the branches of the detailed model into 6 
 The somatic parameters are the subjects of optimization.
 
 The additional mechanisms required by the model are in the mod_files folder. You must run the nrnivmodl command to optain the necessary files (you should select the folder containing the files obtained by nrnivmodl as the special folder in the program)
+
+To run the example, you must edit the "ca1pc_model_settings.xml" file:
+set the "model_spec_dir" tag to the directory, where you store the files obtained bí the nrnivmodl command
+set the "input_dir" tag to the path of the input file (not the directory, where the file is!) (input file:Vinj48_2c_1.dat)
+set the "model_path" tag to the path "ca1pc_model.hoc" file
+set the "base_dir" datg to a directory where you want the results to be stored
+After these modifications type "python optimizer.py -c ca1pc_model_settings.xml.xml" into the terminal and press enter.
