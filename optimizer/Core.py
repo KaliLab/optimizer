@@ -55,29 +55,29 @@ class coreModul():
         self.option_handler=optionHandler()
         self.model_handler=None
         self.optimizer=None
-        f_m={"Average Squared Error": "calc_ase",
-                        "Spike Count": "calc_spike", 
-                        "Averaged Squared Error II": "calc_spike_ase",
-                        "Spike Rate": "spike_rate",
-                        "ISI Differences": "isi_differ",
-                        "Latency to 1st Spike": "first_spike",
-                        "AP Overshoot": "AP_overshoot",
-                        "AHP Depth": "AHP_depth",
-                        "AP Width": "AP_width",
-                        "Derivative Difference" : "calc_grad_dif",
+        f_m={"MSE": "calc_ase",
+                        "Spike count": "calc_spike", 
+                        "MSE (excl. spikes)": "calc_spike_ase",
+                        "Spike count (stim.)": "spike_rate",
+                        "ISI differences": "isi_differ",
+                        "Latency to 1st spike": "first_spike",
+                        "AP amplitude": "AP_overshoot",
+                        "AHP depth": "AHP_depth",
+                        "AP width": "AP_width",
+                        "Derivative difference" : "calc_grad_dif",
                         "PPTD" : "pyelectro_pptd"}
         self.ffun_mapper=dict((v,k) for k,v in f_m.iteritems())
-        self.ffun_calc_list=["Average Squared Error",
-                             "Spike Count", 
-                             "Averaged Squared Error II",
-                             "Spike Rate",
-                             "ISI Differences",
-                             "Latency to 1st Spike",
-                             "AP Overshoot",
-                             "AHP Depth",
-                             "AP Width",
-                             "Derivative Difference",
-                             "PPTD"]
+        self.ffun_calc_list=["MSE",
+                        "MSE (excl. spikes)",
+                        "Spike count",
+                        "Spike count (stim.)",
+                        "ISI differences",
+                        "Latency to 1st spike",
+                        "AP amplitude",
+                        "AHP depth",
+                        "AP width",
+                        "Derivative difference",
+                        "PPTD" ]
         self.grid_result=None
         
     def htmlStrBold(self,inp):
@@ -354,6 +354,8 @@ class coreModul():
             print fit_par
             self.option_handler.SetFitnesParam(fit_par)
             tmp=args.get("algo_options")
+            if len(tmp.get("boundaries")[0])<1:
+                raise sizeError("No boundaries were given!")
             #tmp.append(args.get("starting_points"))
             self.option_handler.SetOptimizerOptions(tmp)
             
@@ -388,8 +390,8 @@ class coreModul():
             self.optimizer=simpleEO(self.data_handler,self.model_handler,self.option_handler)
         if self.option_handler.evo_strat=="Simulated Annealing":
             self.optimizer=annealing(self.data_handler,self.model_handler,self.option_handler)        
-        if self.option_handler.evo_strat=="SA Scipy":
-            self.optimizer=scipy_anneal(self.data_handler,self.model_handler,self.option_handler)
+        if self.option_handler.evo_strat=="Basinhopping":
+            self.optimizer=basinHopping(self.data_handler,self.model_handler,self.option_handler)
         if self.option_handler.evo_strat=="Nelder-Mead":
             self.optimizer=fmin(self.data_handler,self.model_handler,self.option_handler)
         if self.option_handler.evo_strat=="L-BFGS-B":
@@ -454,6 +456,15 @@ class coreModul():
                     extra_param=self.option_handler.GetModelRun()
                     self.model_handler.SetStimuli(parameter,extra_param)
                 if isinstance(self.model_handler, externalHandler):
+                    readFile = open("params.param","r")
+                    lines = readFile.readlines()
+                    readFile.close()
+                    w = open("params.param",'w')
+                    w.writelines([item for item in lines[0:len(self.option_handler.GetObjTOOpt())]])
+                    w.close()
+                    out_handler=open("params.param","a")
+                    out_handler.write(str(k))
+                    out_handler.close()
                     from subprocess import call
                     call(self.model_handler.GetExec())
                     in_handler=open("trace.dat","r")
@@ -526,14 +537,17 @@ class coreModul():
         f_handler.close()
         
                 
-    def callGrid(self):
+    def callGrid(self,resolution):
         """
         Calculates fitness values on a defined grid (see optimizerHandler module for more).
         This tool is purely for analyzing results, and we do not recommend to use it to obtain parameter values.
         """
-        self.optimizer=grid(self.data_handler,self.model_handler,self.option_handler)
+        
+        self.prev_result=self.optimizer.final_pop
+        self.optimizer=grid(self.data_handler,self.model_handler,self.option_handler,resolution)
         self.optimizer.Optimize(self.optimal_params)
         self.grid_result=self.optimizer.final_pop
+        self.optimizer.final_pop=self.prev_result
         
 
              

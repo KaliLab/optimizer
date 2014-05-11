@@ -93,6 +93,51 @@ class boundarywindow(wx.Frame):
     def my_close(self, e):
         wx.Exit()
         
+class gridwindow(wx.Frame):
+    def __init__(self, par):
+        
+        wx.Frame.__init__(self,par, wx.ID_PROPERTIES, "Grid Boundaries", size=(400, 700))
+        panel = wx.Panel(self)
+        #self.Bind(wx.EVT_CLOSE, self.my_close)
+        self.par = par
+        hstep = 200
+        vstep = 35
+        hoffset = 10
+        voffset = 15
+        self.min = []
+        self.max = []
+        
+        for l in range(len(self.par.core.option_handler.GetObjTOOpt())):
+            wx.StaticText(panel, label=self.par.core.option_handler.GetObjTOOpt()[l].split()[-1], pos=(hoffset, voffset + l * vstep))
+            tmp_min = wx.TextCtrl(panel, id=l, pos=(hstep, voffset + l * vstep), size=(75, 30))
+            self.min.append(tmp_min)
+            tmp_max = wx.TextCtrl(panel, id=l + len(self.par.core.option_handler.GetOptParam()), pos=(hstep / 2 + hstep, voffset + l * vstep), size=(75, 30))
+            self.max.append(tmp_max)
+            if len(self.par.core.option_handler.boundaries[1]) == len(self.par.core.option_handler.GetObjTOOpt()):
+                tmp_min.SetValue(str(self.par.core.option_handler.boundaries[0][l]))
+                tmp_max.SetValue(str(self.par.core.option_handler.boundaries[1][l]))
+        
+        wx.StaticText(panel,label="Resolution:", pos=(hoffset,600))
+        self.resolution_ctrl=wx.TextCtrl(panel,id=wx.ID_ANY,pos=(hstep,600),size=(75,30))
+        self.resolution_ctrl.SetValue(str(self.par.resolution))
+        Setbutton = wx.Button(panel, label="Set", pos=(hstep, 650))
+        Setbutton.Bind(wx.EVT_BUTTON, self.Set)
+        
+        
+    def Set(self, e):
+        try:
+            self.par.core.option_handler.boundaries[0] = [float(n.GetValue()) for n in self.min]
+            self.par.core.option_handler.boundaries[1] = [float(n.GetValue()) for n in self.max]
+            self.par.resolution=int(self.resolution_ctrl.GetValue())
+        except ValueError as ve:
+            wx.MessageBox(str(ve), "Invalid Value", wx.OK | wx.ICON_ERROR)
+            #self.boundaries_window.Destroy()
+        self.par.DisplayGrid()
+                
+            
+    def my_close(self, e):
+        wx.Exit()
+        
 class stimuliwindow2(wx.Frame):
     def __init__(self, par):
         self.container=[]
@@ -1351,8 +1396,8 @@ class ffunctionLayer(wx.Frame):
         self.my_list = copy(self.core.ffun_calc_list)
         #self.my_list=["ffun1","ffun","ffun3"]
         self.param_list = [[]] * len(self.my_list)
-        self.param_list[1] = [("Spike Detection Thres. (mv)",0.0)]
-        self.param_list[2] = [("Spike Detection Thres. (mv)",0.0), ("Spike Window (ms)",1.0)]
+        self.param_list[2] = [("Spike Detection Thres. (mv)",0.0)]
+        self.param_list[1] = [("Spike Detection Thres. (mv)",0.0), ("Spike Window (ms)",1.0)]
         self.param_list_container = []
         self.weights = []
         #self.norm_weights = []
@@ -1539,7 +1584,7 @@ class algorithmLayer(wx.Frame):
         self.dd_evo=wx.Choice(self.panel,wx.ID_ANY,size=(175,30))
         self.dd_evo.Append("Classical EO")
         self.dd_evo.Append("Simulated Annealing")
-        self.dd_evo.Append("SA Scipy")
+        self.dd_evo.Append("Basinhopping")
         self.dd_evo.Append("Nelder-Mead")
         self.dd_evo.Append("L-BFGS-B")
         #self.dd_evo.Select(0)
@@ -1582,11 +1627,13 @@ class algorithmLayer(wx.Frame):
         descr22 = ('Cooling Rate:',0.5)
         descr23 = ('Mean of Gaussian:',0)
         descr24 = ('Std. Deviation of Gaussian:',1)
-        descr25 = ('Cooling Schedule:',1)
         descr26 = ('Initial Temperature:',1.2)
-        descr27 = ('Final Temperature:',1e-12)
         descr28 = ('Accuracy:',1e-06)
-        descr29 = ('Dwell:', 50)
+        descr25 = ('Update Frequency:',50)
+        descr27 = ('Temperature:',0.1)
+        descr29 = ('Step Size:', 0.1)
+        descr32 = ('Number of Iterations:',100)
+        descr33 = ('Number of Repetition:',100)
         descr30 = ('Error Tolerance for x:',0.0001)
         descr31 = ('Error Tolerance for f:',0.0001)
         
@@ -1607,8 +1654,8 @@ class algorithmLayer(wx.Frame):
             alg=[descr19,descr20,descr21]
         elif selected_algo=="Simulated Annealing":
             alg=[descr20,descr21,descr22,descr23,descr24,descr26]
-        elif selected_algo=="SA Scipy":
-            alg=[descr20,descr25,descr26,descr27,descr21,descr31,descr29]
+        elif selected_algo=="Basinhopping":
+            alg=[descr32,descr33,descr25,descr27,descr29]
         elif selected_algo=="Nelder-Mead":
             alg=[descr20,descr30,descr31]
         elif selected_algo=="L-BFGS-B":
@@ -1683,11 +1730,12 @@ class algorithmLayer(wx.Frame):
             print self.kwargs
         try:
             self.core.ThirdStep(self.kwargs)
-            wx.MessageBox('Optimization finished. Press the Next button for the results!', 'Done', wx.OK | wx.ICON_EXCLAMATION)
+            #wx.MessageBox('Optimization finished. Press the Next button for the results!', 'Done', wx.OK | wx.ICON_EXCLAMATION)
     
             self.core.Print()
             self.toolbar.EnableTool(wx.ID_FORWARD, True)
             self.seed = None
+            self.Next(None)
         except sizeError as sE:
             wx.MessageBox("There was an error during the optimization: "+sE.m, 'Error', wx.OK | wx.ICON_EXCLAMATION)
 
@@ -1785,8 +1833,8 @@ class resultsLayer(wx.Frame):
 
         axes.set_xlabel("time [ms]")
         _type=self.core.data_handler.data.type
-        unit="V" if _type=="voltage" else "A" if _type=="current" else ""
-        axes.set_ylabel(_type+" [" + self.core.option_handler.input_scale + "]")
+        unit="mV" if _type=="voltage" else "nA" if _type=="current" else ""
+        axes.set_ylabel(_type+" [" + unit + "]")
         axes.plot(range(0, len(exp_data)), exp_data)
         axes.plot(range(0, len(model_data)), model_data, 'r')
         axes.legend(["target", "model"])
@@ -1795,7 +1843,7 @@ class resultsLayer(wx.Frame):
         transparent=False, bbox_inches=None, pad_inches=0.1)
         figure.savefig("result_trace.eps", dpi=None, facecolor='w', edgecolor='w')
         figure.savefig("result_trace.svg", dpi=None, facecolor='w', edgecolor='w')
-        param_save=wx.Button(self.panel,id=wx.ID_ANY,label="Save Parameters",pos=(110,5),size=(100,30))
+        param_save=wx.Button(self.panel,id=wx.ID_ANY,label="Save\nParameters",pos=(105,5),size=(90,50))
         param_save.Bind(wx.EVT_BUTTON,self.SaveParam)
 
         
@@ -1898,6 +1946,25 @@ class analyzisLayer(wx.Frame):
         string = "Best: " + str(stats['best']) + "\nWorst: " + str(stats['worst']) + "\nMean: " + str(stats['mean']) + "\nMedian: " + str(stats['median']) + "\nStd:" + str(stats['std'])
         wx.StaticText(self.panel, label=string, pos=(410, 55))
         
+        #insert table with error components: 410,200
+        self.error_comp_table = wx.ListCtrl(self.panel, pos=(410, 200),size=(300,200),style=wx.LC_REPORT | wx.BORDER_SUNKEN)
+        self.error_comp_table.InsertColumn(0, 'Error Function', width=200)
+        self.error_comp_table.InsertColumn(1, 'Weighted Sum', width=200)
+        tmp_w_sum=[0]*len(self.core.error_comps[0])
+        for t in self.core.error_comps:
+            for c_idx,c in enumerate(t):
+                #0:weight
+                #1:name
+                #2:value
+                tmp_w_sum[c_idx]+=c[0]*c[2]
+                self.error_comp_table.InsertStringItem(c_idx,self.core.ffun_mapper[c[1].__name__])
+                self.error_comp_table.SetStringItem(c_idx,1,str(tmp_w_sum[c_idx]))
+                
+                
+                
+        
+        
+        
         
     def ToolbarCreator(self):
         self.toolbar = self.CreateToolBar()
@@ -1923,20 +1990,20 @@ class analyzisLayer(wx.Frame):
         
     def PlotGrid(self, e):
         self.prev_bounds=copy(self.core.option_handler.boundaries)
-        try:
-            self.bw.Close()
-        except AttributeError:
-            self.bw=boundarywindow(self)
-            self.bw.Bind(wx.EVT_CLOSE, self.DisplayGrid)
+        self.resolution=10
+        self.bw=gridwindow(self)
+        self.bw.Show()
     
-    def DisplayGrid(self,e):
+    def DisplayGrid(self):
+        self.bw.Hide()
+        from math import sqrt,ceil
         dlg=wx.MessageDialog(self,"Start calculating grid?\nThe calculation might take several minutes depending your machine's performance.",style=wx.OK|wx.CANCEL)
-        self.bw.Destroy()
         if dlg.ShowModal()==wx.ID_OK:
+            self.bw.Destroy()
             act_bounds=self.core.option_handler.boundaries
             if self.core.grid_result == None or act_bounds!=self.prev_bounds:
-                self.core.callGrid()
-            no_dims = len(self.core.option_handler.GetObjTOOpt()) / 2 + 1
+                self.core.callGrid(self.resolution)
+            no_dims = int(ceil(sqrt(len(self.core.option_handler.GetObjTOOpt()))))
             import matplotlib.pyplot as plt
             f, axes = plt.subplots(no_dims, no_dims)
             a = []
@@ -1949,7 +2016,7 @@ class analyzisLayer(wx.Frame):
                 for points, fitness in zip(self.core.optimizer.final_pop[0][i],self.core.optimizer.final_pop[1][i]):
                     a[i].plot(points[i],
                                            fitness[0], marker='o', color='r', ls='')
-                a[i].set_title(self.core.option_handler.GetObjTOOpt()[i])
+                a[i].set_title(self.core.option_handler.GetObjTOOpt()[i].split()[-1])
                 a[i].relim()
                 a[i].autoscale(True,'both',False)
             

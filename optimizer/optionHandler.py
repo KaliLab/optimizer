@@ -78,12 +78,14 @@ class optionHandler(object):
         self.cooling_rate=None
         self.m_gauss=None
         self.std_gauss=None
-        self.schedule=None
+        self.step_size=None
         self.init_temp=None
-        self.final_temp=None
+        self.temperature=None
         
         self.acc=None
-        self.dwell=None
+        self.update_freq=None
+        self.num_iter=None
+        self.num_repet=None
         
         self.x_tol=None
         self.f_tol=None
@@ -478,11 +480,12 @@ class optionHandler(object):
                 "Cooling Rate:" : self.cooling_rate,
                 "Mean of Gaussian:" : self.m_gauss,
                 "Std. Deviation of Gaussian:" : self.std_gauss,
-                "Cooling Schedule:" : self.schedule,
                 "Initial Temperature:" : self.init_temp,
-                "Final Temperature:" : self.final_temp,
-                "Accuracy:" : self.acc,
-                "Dwell:" : self.dwell,
+                "Step Size:" : self.step_size,
+                "Temperature:" : self.temperature,
+                "Update Frequency:" : self.update_freq,
+                "Number of Iterations:" : self.num_iter,
+                "Number of Repetition:" : self.num_repet,
                 "Error Tolerance for x:" : self.x_tol,
                 "Error Tolerance for f:" : self.f_tol,
                 "num_inputs" : self.num_inputs,
@@ -508,12 +511,14 @@ class optionHandler(object):
         self.cooling_rate=options.get("Cooling Rate:",None)
         self.m_gauss=options.get("Mean of Gaussian:",None)
         self.std_gauss=options.get("Std. Deviation of Gaussian:",None)
-        self.schedule=options.get("Cooling Schedule:",None)
         self.init_temp=options.get("Initial Temperature:",None)
-        self.final_temp=options.get("Final Temperature:",None)
+        self.step_size=options.get("Step Size:",None)
+        self.temperature=options.get("Temperature:",None)
         
         self.acc=options.get("Accuracy:",None)
-        self.dwell=options.get("Dwell:",None)
+        self.update_freq=options.get("Update Frequency:",None)
+        self.num_iter=options.get('Number of Iterations:',None)
+        self.num_repet=options.get('Number of Repetition:',None)
         
         self.x_tol=options.get("Error Tolerance for x:",None)
         self.f_tol=options.get("Error Tolerance for f:",None)
