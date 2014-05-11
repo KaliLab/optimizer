@@ -19,3 +19,10 @@ GL
 e_pas(=EL)
 g_pas(obtained from GL)
 This model has some special requirements to work (i.e be stable), so the optimization process must use a function (see the provided one). As the passive parameters are derived from the EL and GL parameters this optimization has 10 parameters.
+
+To run the example, you must edit the "int&fire_settings.xml" file:
+set the "model_spec_dir" tag to a directory, which contains the adexp.mod file
+set the "input_dir" tag to the path of the input file (not the directory, where the file is!) (input file:ca3_sort.txt.csv)
+set the "model_path" tag to the path "int&fire.hoc" file
+set the "base_dir" datg to a directory where you want the results to be stored
+After these modifications type "python optimizer.py -c int&fire_settings.xml" into the terminal and press enter.

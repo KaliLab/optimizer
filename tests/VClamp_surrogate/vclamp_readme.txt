@@ -5,3 +5,10 @@ The model file (simple_hh_syn_vclamp_toopt.hoc) contains the neuronal model (inc
 As we need to set the parameters of the synapse and those of the NetCon, and Optimizer cannot discover these parameters automatically, we use a simple user function (ufun.txt) to adjust the parameters (maximal conductance (in microsiemens), synaptic delay, rise time constant, decay time constant (all in milliseconds)).
 We need voltage clamp at a constant level (-70 mV); one way to accomplish this is to use a step protocol in voltage clamp with a single amplitude of -70 mV (and arbitrary delay and duration), and an initial voltage of -70 mV.
 The optimization should be done using the mean square error cost function. Evolutionary optimization for 100 generations with a population of 100 restores the original parameters with high precision.
+
+To run the example, you must edit the "simple_hh_syn_vclamp_toopt2_settings.xml" file:
+set the "model_spec_dir" tag to any existing directory
+set the "input_dir" tag to the path of the input file (not the directory, where the file is!) (input file:"iclamp_new.dat")
+set the "model_path" tag to the path "simple_hh_syn_vclamp_toopt2.hoc" file
+set the "base_dir" datg to a directory where you want the results to be stored
+After these modifications type "python optimizer.py -c simple_hh_syn_vclamp_toopt2_settings.xml" into the terminal and press enter.

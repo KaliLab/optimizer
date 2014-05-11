@@ -1,2 +1,0 @@
-The data file contains one trace obtained from a golgi cell by using current clamp. The file contains the time as well. The cell was excited by a short(0.5ms,250pA) and by a long(500ms,12pA) pulse, so you have to use the provided stimuli file (for this, select the "Custom Waveform" option from the dropdown menu on the stimuli layer and then load the file).
-The data trace is 1200ms long and the sampling frequency was 20kHz.

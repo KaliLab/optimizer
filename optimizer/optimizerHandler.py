@@ -138,7 +138,10 @@ class annealing(baseOptimizer):
         #inspyred needs sequence of seeds
         #self.starting_points=[normalize(args.get("starting_points",uniform(self.rand,{"num_inputs" : self.num_inputs,"self": self})),self)]
         try:
-            self.starting_points=[normalize(option_obj.starting_points,self)]
+            if isinstance(option_obj.starting_points[0],list):
+                self.starting_points=option_obj.starting_points
+            else:
+                self.starting_points=[normalize(option_obj.starting_points,self)]
         except TypeError:
             self.starting_points=None
         if option_obj.output_level=="1":
@@ -228,7 +231,10 @@ class scipy_anneal(baseOptimizer):
         self.num_inputs=option_obj.num_inputs
         self.SetBoundaries(option_obj.boundaries)
         try:
-            self.starting_points=[normalize(option_obj.starting_points,self)]
+            if isinstance(option_obj.starting_points[0],list):
+                self.starting_points=option_obj.starting_points
+            else:
+                self.starting_points=[normalize(option_obj.starting_points,self)]
         except TypeError:
             self.starting_points=uniform(self.rand,{"num_inputs" : self.num_inputs,"self": self})
         if option_obj.output_level=="1":
@@ -309,7 +315,10 @@ class fmin(baseOptimizer):
         self.num_inputs=option_obj.num_inputs
         self.SetBoundaries(option_obj.boundaries)
         try:
-            self.starting_points=[normalize(option_obj.starting_points,self)]
+            if isinstance(option_obj.starting_points[0],list):
+                raise TypeError
+            else:
+                self.starting_points=[normalize(option_obj.starting_points,self)]
         except TypeError:
             self.starting_points=uniform(self.rand,{"num_inputs" : self.num_inputs,"self": self})
         if option_obj.output_level=="1":
@@ -389,7 +398,10 @@ class L_BFGS_B(baseOptimizer):
         self.num_inputs=option_obj.num_inputs
         self.SetBoundaries(option_obj.boundaries)
         try:
-            self.starting_points=[normalize(option_obj.starting_points,self)]
+            if isinstance(option_obj.starting_points[0],list):
+                raise TypeError
+            else:
+                self.starting_points=[normalize(option_obj.starting_points,self)]
         except TypeError:
             self.starting_points=uniform(self.rand,{"num_inputs" : self.num_inputs,"self": self})
             
@@ -562,7 +574,11 @@ class simpleEO(baseOptimizer):
         #inspyred needs sequence of seeds
         #self.starting_points=[normalize(args.get("starting_points",uniform(self.rand,{"num_inputs" : self.num_inputs,"self": self})),self)]
         try:
-            self.starting_points=[normalize(option_obj.starting_points,self)]
+            print type(option_obj.starting_points)
+            if isinstance(option_obj.starting_points[0],list):
+                self.starting_points=option_obj.starting_points
+            else:
+                self.starting_points=[normalize(option_obj.starting_points,self)]
         except TypeError:
             self.starting_points=None
         print "optimizer",self.starting_points
