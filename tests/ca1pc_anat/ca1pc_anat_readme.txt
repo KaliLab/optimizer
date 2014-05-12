@@ -7,7 +7,7 @@ Because we had to set the e_pas parameter to 0 and we wanted to optimize the pre
 To run the example, you must edit the "morphology_131117-C2_settings.xml" file:
 set the "model_spec_dir" tag to a valid directory (this can be any existing directory since this model doesn't require additional mod files)
 set the "stim_amp" tag to the path of the stimuli file ("cell2_stim.dat") in the following fashion: "[path_to_file/cell2_stim.dat]"
-set the "input_dir" tag to the path of the input file (not the directory, where the file is!)
+set the "input_dir" tag to the path of the input file (including the file name itself!)
 set the "model_path" tag to the path "morphology_131117-C2.hoc" file
-set the "base_dir" datg to a directory where you want the results to be stored
+set the "base_dir" tag to a directory where you want the results to be stored
 After these modifications type "python optimizer.py -c morphology_131117-C2_settings.xml" into the terminal and press enter.

@@ -8,7 +8,7 @@ The optimization should be done using the mean square error cost function. Evolu
 
 To run the example, you must edit the "simple_hh_syn_vclamp_toopt2_settings.xml" file:
 set the "model_spec_dir" tag to any existing directory
-set the "input_dir" tag to the path of the input file (not the directory, where the file is!) (input file:"iclamp_new.dat")
+set the "input_dir" tag to the path of the input file (including the file name itself!) (input file:"iclamp_new.dat")
 set the "model_path" tag to the path "simple_hh_syn_vclamp_toopt2.hoc" file
-set the "base_dir" datg to a directory where you want the results to be stored
+set the "base_dir" tag to a directory where you want the results to be stored
 After these modifications type "python optimizer.py -c simple_hh_syn_vclamp_toopt2_settings.xml" into the terminal and press enter.
