@@ -144,6 +144,7 @@ class fF():
         
         """
         #params=candidates
+        error=0
         from modelHandler import externalHandler
         if isinstance(self.model, externalHandler):
             self.model.record[0] = []
@@ -153,7 +154,7 @@ class fF():
             out_handler.write(str(act_trace_idx))
             out_handler.close()
             from subprocess import call
-            call(self.model.GetExec())
+            error=call(self.model.GetExec())
             in_handler = open(self.option.base_dir + "/trace.dat", "r")
             for line in in_handler:
                 self.model.record[0].append(float(line.split()[1]))
@@ -174,6 +175,7 @@ class fF():
             self.setParameters(section, candidates)
             self.model.RunControll(settings)
 
+        return error
 
     def ReNormalize(self, l):
         """
@@ -853,15 +855,17 @@ class fF():
                 else:
                     extra_param = self.option.GetModelRun()
                     self.model.SetStimuli(parameter, extra_param)
-                self.modelRunner(l,k)
-                if self.option.output_level == "1":
-                    print features, weigths
-                for f, w in zip(features, weigths):
-                    if abs(len(self.model.record[0])-len(self.reader.data.GetTrace(k)))>1:
-                        raise sizeError("model: " + str(len(self.model.record[0])) + ", target: " + str(len(self.reader.data.GetTrace(k))))
-                    temp_fit += w * (f(self.model.record[0],
-                                                    self.reader.data.GetTrace(k), args))
+                if (not self.modelRunner(l,k)):
+                        if self.option.output_level == "1":
+                            print features, weigths
+                        for f, w in zip(features, weigths):
+                            if abs(len(self.model.record[0])-len(self.reader.data.GetTrace(k)))>1:
+                                raise sizeError("model: " + str(len(self.model.record[0])) + ", target: " + str(len(self.reader.data.GetTrace(k))))
+                            temp_fit += w * (f(self.model.record[0],
+                                                            self.reader.data.GetTrace(k), args))
                             
+                else:
+                        temp_fit=100
             self.fitnes.append(temp_fit)
             if self.option.output_level == "1":
                 print temp_fit
