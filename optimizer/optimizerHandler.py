@@ -11,6 +11,7 @@ import inspyred
 import logging
 from scipy import optimize, array, ndarray
 from numpy import random
+import numpy as np
 import copy
 #from Image import NONE
 #from jinja2._stringdefs import No
@@ -40,7 +41,7 @@ class baseOptimizer():
             option_obj.feats=map(lambda x:self.fit_obj.calc_dict[x],option_obj.feats)
         except KeyError:
             print "error with fitness function: ",option_obj.feats," not in: ",self.fit_obj.calc_dict.keys()
-            pass
+
         
     
 
@@ -77,7 +78,6 @@ def uniform(random,args):
     candidate=[]
     for n in range(int(size)):
         candidate.append(random.uniform(bounds.lower_bound[n],bounds.upper_bound[n]))
-    #print "uni",candidate
     return candidate
 
 class my_candidate():
@@ -93,7 +93,29 @@ class my_candidate():
         self.candidate=ndarray.tolist(vals)
         self.candidate.extend(vals)
         self.fitness=fitn
-       
+        
+        
+class bounderObject(object):
+    """
+    Creates a callable to perform the bounding of the parameters.
+    :param xmax: list of maxima
+    :param xmin: list of minima
+    """
+    def __init__(self, xmax, xmin ):
+            self.lower_bound = np.array(xmax)
+            self.upper_bound = np.array(xmin)
+    def __call__(self, **kwargs):
+        """
+        Performs the bounding by deciding if the given point is in the defined region of the parameter space.
+        This is required by some algorithms as part of their acceptance tests.
+        
+        :return: `True` if the point is inside the given bounds.
+        """
+        x = kwargs["x_new"]
+        tmax = bool(np.all(x <= self.lower_bound))
+        tmin = bool(np.all(x >= self.upper_bound))
+        return tmax and tmin
+   
        
 
 class annealing(baseOptimizer):
@@ -201,9 +223,9 @@ class annealing(baseOptimizer):
             
             
         
-class scipy_anneal(baseOptimizer):
+class basinHopping(baseOptimizer):
     """
-    Implements the ``Simulated Annealing`` algorithm for minimization from the ``scipy`` package.
+    Implements the ``Basinhopping`` algorithm for minimization from the ``scipy`` package.
     
     :param reader_obj: an instance of ``DATA`` object
     :param model_obj: an instance of a model handler object, either ``externalHandler`` or ``modelHandlerNeuron``
@@ -212,7 +234,7 @@ class scipy_anneal(baseOptimizer):
     .. seealso::
         
         Documentation of the Simulated Annealing from 'scipy':
-            http://docs.scipy.org/doc/scipy-dev/reference/generated/scipy.optimize.anneal.html
+            http://docs.scipy.org/doc/scipy-dev/reference/generated/scipy.optimize.basinhopping.html
     
     """
     def __init__(self,reader_obj,model_obj,option_obj):
@@ -221,13 +243,11 @@ class scipy_anneal(baseOptimizer):
         self.rand=random
         self.seed=option_obj.seed
         self.rand.seed([self.seed])
-        self.init_temp=option_obj.init_temp
-        self.final_temp=option_obj.final_temp
-        self.max_evaluation=option_obj.max_evaluation
-        self.mutation_rate=option_obj.mutation_rate
-        self.schedule={'1' : 'fast', '2' : 'cauchy', '3' : 'boltzmann'}[str(int(option_obj.schedule))]
-        self.dwell=option_obj.dwell
-        self.feps=option_obj.f_tol
+        self.temp=option_obj.temperature
+        self.num_iter=option_obj.num_iter
+        self.num_repet=option_obj.num_repet
+        self.step_size=option_obj.step_size
+        self.freq=option_obj.update_freq
         self.num_inputs=option_obj.num_inputs
         self.SetBoundaries(option_obj.boundaries)
         try:
@@ -239,6 +259,16 @@ class scipy_anneal(baseOptimizer):
             self.starting_points=uniform(self.rand,{"num_inputs" : self.num_inputs,"self": self})
         if option_obj.output_level=="1":
             print "starting points: ",self.starting_points
+      
+    def logger(self,x,f,accepted):
+        self.log_file.write(np.array_str(x))
+        self.log_file.write("\t")
+        self.log_file.write(str(f))
+        self.log_file.write("\t")
+        self.log_file.write("accepted: "+str(accepted))
+        self.log_file.write("\n")
+        self.log_file.flush()
+              
         
 
     def wrapper(self,candidates,args):
@@ -252,7 +282,8 @@ class scipy_anneal(baseOptimizer):
         
         """
         tmp=ndarray.tolist(candidates)
-        candidates=self.bounder(tmp,args) 
+        ec_bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
+        candidates=ec_bounder(tmp,args) 
         return self.ffun([candidates],args)[0]
     
         
@@ -261,21 +292,40 @@ class scipy_anneal(baseOptimizer):
         """
         Performs the optimization.
         """
-        self.result=optimize.anneal(self.wrapper, 
-                                      x0=ndarray((self.num_inputs,),buffer=array(self.starting_points),offset=0,dtype=float), 
-                                      args=[[]],  
-                                      maxiter= self.max_evaluation,
-                                      schedule= self.schedule, 
-                                      T0= self.init_temp,
-                                      Tf= self.final_temp, 
-                                      learn_rate= self.mutation_rate,
-                                      feps= self.feps,
-                                      dwell= self.dwell,
-                                      lower= [0]*len(self.min_max[0]),
-                                      upper= [1]*len(self.min_max[0])
-                                      )
-        print self.result[-1]
-        self.final_pop=[my_candidate(self.result[0],self.result[1])]
+        
+        self.log_file=open("basinhopping.log","w")
+        list_of_results=[0]*int(self.num_repet)
+        for points in range(int(self.num_repet)):
+            self.log_file.write(str(points+1)+". starting point: ["+", ".join(map(str,self.starting_points))+"]")
+            self.log_file.write("\n")
+            list_of_results[points]=optimize.basinhopping(self.wrapper,
+                         x0=ndarray((self.num_inputs,),buffer=array(self.starting_points),offset=0,dtype=float),
+                         niter=int(self.num_iter),
+                         T=self.temp,
+                         stepsize=self.step_size,
+                         minimizer_kwargs={"method":"L-BFGS-B",
+                                           "jac":False,
+                                           "args":[[]],
+                                           "bounds": [(0,1)]*len(self.min_max[0]),
+                                           "options": {"fprime": None,
+                                                       "approx_grad": True,
+                                                       "factr":100,
+                                                       "iprint": 2,
+                                                       "pgtol": 1e-06,
+                                                       "maxfun" : 1000}},
+                         take_step=None,
+                         accept_test=self.bounder,
+                         callback=self.logger,
+                         interval=int(self.freq),
+                         disp=False,
+                         niter_success=None)
+            self.starting_points=uniform(self.rand,{"num_inputs" : self.num_inputs,"self": self})
+            self.log_file.write("".join(["-"]*200))
+        self.log_file.close()
+        
+        self.result=min(list_of_results,key=lambda x:x.fun)
+        #print self.result.x
+        self.final_pop=[my_candidate(self.result.x,self.result.fun)]
         
     def SetBoundaries(self,bounds):
         """
@@ -286,7 +336,7 @@ class scipy_anneal(baseOptimizer):
         
         """
         self.min_max=bounds
-        self.bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
+        self.bounder=bounderObject([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
         
         
 class fmin(baseOptimizer):
@@ -470,13 +520,14 @@ class grid(baseOptimizer):
     :param reader_obj: an instance of ``DATA`` object
     :param model_obj: an instance of a model handler object, either ``externalHandler`` or ``modelHandlerNeuron``
     :param option_obj: an instance of ``optionHandler`` object
+    :param resolution: number of sample points along each dimensions (default: 10)
     
     """
-    def __init__(self,reader_obj,model_obj,option_obj):
+    def __init__(self,reader_obj,model_obj,option_obj,resolution):
         self.fit_obj=fF(reader_obj,model_obj,option_obj)
         self.SetFFun(option_obj)
         self.num_inputs=option_obj.num_inputs
-        self.num_points_per_dim=2000**(1.0/(self.num_inputs-1))
+        self.num_points_per_dim=resolution
         #self.resolution=5
         #print self.resolution
         self.SetBoundaries(option_obj.boundaries)
@@ -574,14 +625,15 @@ class simpleEO(baseOptimizer):
         #inspyred needs sequence of seeds
         #self.starting_points=[normalize(args.get("starting_points",uniform(self.rand,{"num_inputs" : self.num_inputs,"self": self})),self)]
         try:
-            print type(option_obj.starting_points)
+            #print type(option_obj.starting_points)
             if isinstance(option_obj.starting_points[0],list):
                 self.starting_points=option_obj.starting_points
             else:
                 self.starting_points=[normalize(option_obj.starting_points,self)]
         except TypeError:
             self.starting_points=None
-        print "optimizer",self.starting_points
+        if option_obj.output_level=="1":
+            print "starting points: ",self.starting_points
                 
         # generator comes from the class
         # evaluator comes from fitnessFunctions
@@ -624,6 +676,180 @@ class simpleEO(baseOptimizer):
     
         
 
+class DEA(baseOptimizer):
+    """
+    Implements the ``Differential Evolution Algorithm`` algorithm for minimization from the ``inspyred`` package.
+    :param reader_obj: an instance of ``DATA`` object
+    :param model_obj: an instance of a model handler object, either ``externalHandler`` or ``modelHandlerNeuron``
+    :param option_obj: an instance of ``optionHandler`` object
+    
+            
+    .. seealso::
+        
+        Documentation of the options from 'inspyred':
+            http://inspyred.github.io/reference.html#module-inspyred.ec
+        
+    
+    """
+    def __init__(self,reader_obj,model_obj,option_obj):
+        self.fit_obj=fF(reader_obj,model_obj,option_obj)
+        self.SetFFun(option_obj)
+        self.rand=Random()
+        self.seed=option_obj.seed
+        self.rand.seed(self.seed)
+        self.evo_strat=ec.DEA(self.rand)
+#    - *num_selected* -- the number of individuals to be selected (default 2)
+#    - *tournament_size* -- the tournament size (default 2)
+#    - *crossover_rate* -- the rate at which crossover is performed 
+#    (default 1.0)
+#    - *mutation_rate* -- the rate at which mutation is performed (default 0.1)
+#    - *gaussian_mean* -- the mean used in the Gaussian function (default 0)
+#    - *gaussian_stdev* -- the standard deviation used in the Gaussian function
+#   (default 1)
+        self.evo_strat.terminator=terminators.generation_termination
+
+        if option_obj.output_level=="1":
+            self.evo_strat.observer=[observers.population_observer,observers.file_observer]
+        else:
+            self.evo_strat.observer=[observers.file_observer]
+        self.pop_size=option_obj.pop_size
+        self.max_evaluation=option_obj.max_evaluation
+        self.mutation_rate=option_obj.mutation_rate
+        self.num_inputs=option_obj.num_inputs
+        self.SetBoundaries(option_obj.boundaries)
+        self.maximize=False #hard wired, always minimize
+        self.stat_file=open("stat_file.txt","w")
+        self.ind_file=open("ind_file.txt","w")
+        #inspyred needs sequence of seeds
+        #self.starting_points=[normalize(args.get("starting_points",uniform(self.rand,{"num_inputs" : self.num_inputs,"self": self})),self)]
+        try:
+            #print type(option_obj.starting_points)
+            if isinstance(option_obj.starting_points[0],list):
+                self.starting_points=option_obj.starting_points
+            else:
+                self.starting_points=[normalize(option_obj.starting_points,self)]
+        except TypeError:
+            self.starting_points=None
+        if option_obj.output_level=="1":
+            print "starting points: ",self.starting_points
+                
+        # generator comes from the class
+        # evaluator comes from fitnessFunctions
+        # bounder comes from the class, should be callable
+        
+    def Optimize(self):
+        """
+        Performs the optimization.
+        """
+        logger = logging.getLogger('inspyred.ec')
+        logger.setLevel(logging.DEBUG)
+        file_handler = logging.FileHandler('inspyred.log', mode='w')
+        file_handler.setLevel(logging.DEBUG)
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        file_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
+        self.final_pop=self.evo_strat.evolve(generator=uniform,
+                                             evaluator=self.ffun, 
+                                             pop_size=self.pop_size,
+                                             tournament_size=int(self.pop_size),
+                                             num_selected=int(self.pop_size/10),
+                                             seeds=self.starting_points, 
+                                             max_generations=self.max_evaluation, 
+                                             mutation_rate=self.mutation_rate, 
+                                             num_inputs=self.num_inputs, 
+                                             maximize=self.maximize,
+                                             bounder=self.bounder,
+                                             boundaries=self.min_max,
+                                             statistics_file=self.stat_file,
+                                             individuals_file=self.ind_file,
+                                             )
+        
+    def SetBoundaries(self,bounds):
+        """
+        Stores the bounds of the parameters and creates a ``bounder`` object which bounds
+        every parameter into the range of 0-1 since the algorithms are using normalized values.
+        
+        :param bounds: ``list`` containing the minimum and maximum values.
+        
+        """
+        self.min_max=bounds
+        self.bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
+    
+        
+   
+class RandomSearch(baseOptimizer):
+    """
+    Implements the ``Differential Evolution Algorithm`` algorithm for minimization from the ``inspyred`` package.
+    :param reader_obj: an instance of ``DATA`` object
+    :param model_obj: an instance of a model handler object, either ``externalHandler`` or ``modelHandlerNeuron``
+    :param option_obj: an instance of ``optionHandler`` object
+    
+            
+    .. seealso::
+        
+        Documentation of the options from 'inspyred':
+            http://inspyred.github.io/reference.html#module-inspyred.ec
+        
+    
+    """
+    def __init__(self,reader_obj,model_obj,option_obj):
+        self.fit_obj=fF(reader_obj,model_obj,option_obj)
+        self.SetFFun(option_obj)
+        self.rand=Random()
+        self.seed=option_obj.seed
+        self.rand.seed(self.seed)
+        self.pop_size=option_obj.pop_size
+        self.num_inputs=option_obj.num_inputs
+        self.SetBoundaries(option_obj.boundaries)
+
+        try:
+            #print type(option_obj.starting_points)
+            if isinstance(option_obj.starting_points[0],list):
+                self.starting_points=option_obj.starting_points
+            else:
+                self.starting_points=[normalize(option_obj.starting_points,self)]
+        except TypeError:
+            self.starting_points=None
+        if option_obj.output_level=="1":
+            print "starting points: ",self.starting_points
+                
+        
+    def Optimize(self):
+        """
+        Performs the optimization.
+        """
+        log_f=open("random.txt","w")
+        init_candidate=uniform(self.rand, {"self":self,"num_inputs":self.num_inputs})
+        self.act_min=my_candidate(array(init_candidate),self.ffun([init_candidate],{}))
+        log_f.write(str(self.act_min.candidate))
+        log_f.write("\t")
+        log_f.write(str(self.act_min.fitness))
+        log_f.write("\n")
+        for i in range(int(self.pop_size)):
+            act_candidate=uniform(self.rand, {"self":self,"num_inputs":self.num_inputs})
+            act_fitess=self.ffun([act_candidate],{})
+            log_f.write(str(act_candidate))
+            log_f.write("\t")
+            log_f.write(str(act_fitess))
+            log_f.write("\n")
+            if (act_fitess<self.act_min.fitness):
+                self.act_min=my_candidate(array(act_candidate),act_fitess)
+            
+            
+        self.final_pop=[self.act_min]         
+    def SetBoundaries(self,bounds):
+        """
+        Stores the bounds of the parameters and creates a ``bounder`` object which bounds
+        every parameter into the range of 0-1 since the algorithms are using normalized values.
+        
+        :param bounds: ``list`` containing the minimum and maximum values.
+        
+        """
+        self.min_max=bounds
+        self.bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
+    
+        
+        
 
         
         

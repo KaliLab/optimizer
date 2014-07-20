@@ -55,29 +55,29 @@ class coreModul():
         self.option_handler=optionHandler()
         self.model_handler=None
         self.optimizer=None
-        f_m={"Average Squared Error": "calc_ase",
-                        "Spike Count": "calc_spike", 
-                        "Averaged Squared Error II": "calc_spike_ase",
-                        "Spike Rate": "spike_rate",
-                        "ISI Differences": "isi_differ",
-                        "Latency to 1st Spike": "first_spike",
-                        "AP Overshoot": "AP_overshoot",
-                        "AHP Depth": "AHP_depth",
-                        "AP Width": "AP_width",
-                        "Derivative Difference" : "calc_grad_dif",
+        f_m={"MSE": "calc_ase",
+                        "Spike count": "calc_spike", 
+                        "MSE (excl. spikes)": "calc_spike_ase",
+                        "Spike count (stim.)": "spike_rate",
+                        "ISI differences": "isi_differ",
+                        "Latency to 1st spike": "first_spike",
+                        "AP amplitude": "AP_overshoot",
+                        "AHP depth": "AHP_depth",
+                        "AP width": "AP_width",
+                        "Derivative difference" : "calc_grad_dif",
                         "PPTD" : "pyelectro_pptd"}
         self.ffun_mapper=dict((v,k) for k,v in f_m.iteritems())
-        self.ffun_calc_list=["Average Squared Error",
-                             "Spike Count", 
-                             "Averaged Squared Error II",
-                             "Spike Rate",
-                             "ISI Differences",
-                             "Latency to 1st Spike",
-                             "AP Overshoot",
-                             "AHP Depth",
-                             "AP Width",
-                             "Derivative Difference",
-                             "PPTD"]
+        self.ffun_calc_list=["MSE",
+                        "MSE (excl. spikes)",
+                        "Spike count",
+                        "Spike count (stim.)",
+                        "ISI differences",
+                        "Latency to 1st spike",
+                        "AP amplitude",
+                        "AHP depth",
+                        "AP width",
+                        "Derivative difference",
+                        "PPTD" ]
         self.grid_result=None
         
     def htmlStrBold(self,inp):
@@ -354,6 +354,8 @@ class coreModul():
             print fit_par
             self.option_handler.SetFitnesParam(fit_par)
             tmp=args.get("algo_options")
+            if len(tmp.get("boundaries")[0])<1:
+                raise sizeError("No boundaries were given!")
             #tmp.append(args.get("starting_points"))
             self.option_handler.SetOptimizerOptions(tmp)
             
@@ -388,12 +390,16 @@ class coreModul():
             self.optimizer=simpleEO(self.data_handler,self.model_handler,self.option_handler)
         if self.option_handler.evo_strat=="Simulated Annealing":
             self.optimizer=annealing(self.data_handler,self.model_handler,self.option_handler)        
-        if self.option_handler.evo_strat=="SA Scipy":
-            self.optimizer=scipy_anneal(self.data_handler,self.model_handler,self.option_handler)
+        if self.option_handler.evo_strat=="Basinhopping":
+            self.optimizer=basinHopping(self.data_handler,self.model_handler,self.option_handler)
         if self.option_handler.evo_strat=="Nelder-Mead":
             self.optimizer=fmin(self.data_handler,self.model_handler,self.option_handler)
         if self.option_handler.evo_strat=="L-BFGS-B":
             self.optimizer=L_BFGS_B(self.data_handler,self.model_handler,self.option_handler)
+        if self.option_handler.evo_strat=="Differential Evolution":
+            self.optimizer=DEA(self.data_handler,self.model_handler,self.option_handler)
+        if self.option_handler.evo_strat=="Random Search":
+            self.optimizer=RandomSearch(self.data_handler,self.model_handler,self.option_handler)
 
         start_time=time.time()
         self.optimizer.Optimize()
@@ -454,13 +460,34 @@ class coreModul():
                     extra_param=self.option_handler.GetModelRun()
                     self.model_handler.SetStimuli(parameter,extra_param)
                 if isinstance(self.model_handler, externalHandler):
+                    readFile = open("params.param","r")
+                    lines = readFile.readlines()
+                    readFile.close()
+                    w = open("params.param",'w')
+                    w.writelines([item for item in lines[0:len(self.option_handler.GetObjTOOpt())]])
+                    w.close()
+                    out_handler=open("params.param","a")
+                    out_handler.write(str(k))
+                    out_handler.close()
                     from subprocess import call
+                    print self.model_handler.GetExec()
                     call(self.model_handler.GetExec())
                     in_handler=open("trace.dat","r")
                     self.model_handler.record[0]=[]
                     for line in in_handler:
-                        self.model_handler.record[0].append(float(line.split()[1]))
+                        self.model_handler.record[0].append(float(line.split()[-1]))
                     in_handler.close()
+                    
+                    try:
+                        in_handler = open(self.option_handler.base_dir + "/spike.dat", "r")
+                        self.model_handler.spike_times = []
+                        for line in in_handler:
+                            self.model_handler.spike_times.append(int(float(line) / (1000.0 / self.option_handler.input_freq)))
+                        in_handler.close();
+                    except OSError:
+                        pass
+                    
+                    
                 else:
                     s=self.option_handler.GetModelRun()
                     s.append(self.data_handler.data.step)
@@ -520,20 +547,41 @@ class coreModul():
                 tmp_w_sum +=c[0]*c[2]
             tmp_list.append(["","","","",tmp_w_sum])
             tmp_w_sum=0
+        #print tmp_list
         tmp_str+=self.htmlTable(["Name","Value","Weight","Weighted Value","Weighted Sum"], tmp_list)+"\n"
+        print tmp_str
+        #transpose the error comps
+        tmp_list=[]
+        for c in zip(*self.error_comps):
+            tmp=[0]*4
+            for t_idx in range(len(c)):
+                #print c[t_idx]
+                tmp[1]+=c[t_idx][2]
+                tmp[2]=c[t_idx][0]
+                tmp[3]+=c[t_idx][2]*c[t_idx][0]
+            
+            tmp[0]=self.ffun_mapper[c[t_idx][1].__name__]
+            tmp=map(str,tmp)
+            tmp_list.append(tmp)
+        #print tmp_list
+        tmp_str+=self.htmlTable(["Name","Value","Weight","Weighted Value"], tmp_list)+"\n"
         #tmp_str+="<center><p><b>weighted sum = "+(str(tmp_w_sum)[0:5])+"</b></p></centered>"
+        print tmp_str
         f_handler.write(tmp_str)
         f_handler.close()
         
                 
-    def callGrid(self):
+    def callGrid(self,resolution):
         """
         Calculates fitness values on a defined grid (see optimizerHandler module for more).
         This tool is purely for analyzing results, and we do not recommend to use it to obtain parameter values.
         """
-        self.optimizer=grid(self.data_handler,self.model_handler,self.option_handler)
+        
+        self.prev_result=self.optimizer.final_pop
+        self.optimizer=grid(self.data_handler,self.model_handler,self.option_handler,resolution)
         self.optimizer.Optimize(self.optimal_params)
         self.grid_result=self.optimizer.final_pop
+        self.optimizer.final_pop=self.prev_result
         
 
              
