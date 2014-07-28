@@ -210,10 +210,11 @@ class ErrorDialog(wx.Frame):
                 tmp_w_sum +=c[0]*c[2]
             c_idx+=1
             self.error_comp_table.InsertStringItem(c_idx,"Weighted Sum")
-            self.error_comp_table.SetStringItem(c_idx,1,"")
-            self.error_comp_table.SetStringItem(c_idx,2,"")
+            self.error_comp_table.SetStringItem(c_idx,1,"-")
+            self.error_comp_table.SetStringItem(c_idx,2,"-")
             self.error_comp_table.SetStringItem(c_idx,3,str(tmp_w_sum))
-            c_idx=0
+            #c_idx=0
+            print str(tmp_w_sum)
             tmp_w_sum=0
         
             
@@ -1923,7 +1924,8 @@ class resultsLayer(wx.Frame):
         if dlg.ShowModal() == wx.ID_OK:
             self.save_file_name=dlg.GetFilename()
             f=open(self.save_file_name,"w")
-            params=self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)]
+            params=self.core.optimizer.fit_obj.ReNormalize(self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)])
+            #params=self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)]
             f.write("\n".join(map(str,params)))
             dlg.Destroy()
         
