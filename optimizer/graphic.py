@@ -188,7 +188,7 @@ class stimuliwindow(wx.Frame):
         
 class ErrorDialog(wx.Frame):
     def __init__(self, par):
-        wx.Frame.__init__(self,par, wx.ID_PROPERTIES, "Grid Boundaries", size=(700, 400))
+        wx.Frame.__init__(self,par, wx.ID_PROPERTIES, "Detailed Error", size=(700, 400))
         panel = wx.Panel(self)
         self.parent = par
         self.error_comp_table = wx.ListCtrl(panel,pos=(10,10),size=(600,300),style=wx.LC_REPORT | wx.BORDER_SUNKEN)
