@@ -218,7 +218,7 @@ class fF():
             elif vect[n] < self.thres and start == 1:
                 stop_pos = n
                 start = 0
-                s = spike_frame(start_pos, vect[start_pos], vect.index(max(vect[start_pos:stop_pos])), max(vect[start_pos:stop_pos]), stop_pos, vect[stop_pos])
+                s = spike_frame(start_pos, vect[start_pos], start_pos+vect[start_pos:stop_pos].index(max(vect[start_pos:stop_pos])), max(vect[start_pos:stop_pos]), stop_pos, vect[stop_pos])
                 temp1.append(s) 
         return temp1
 
@@ -363,26 +363,23 @@ class fF():
             spikes[1] = self.detectSpike(exp_t)
         tmp = []
         #tmp.append(abs(len(spikes[0])-len(spikes[1]))/max( float(len(spikes[0])),float(len(spikes[1])-1) ))
-        if (len(spikes[0]) < 1) and (len(spikes[1]) < 1):
+        if (len(spikes[0]) < 2) and (len(spikes[1]) < 2):
             return 0
-        if (len(spikes[0]) < 1) != (len(spikes[1]) < 1):
+        if (len(spikes[0]) < 2) != (len(spikes[1]) < 2):
             return 1
-        k = 0
-        limit = min(4, len(spikes[1]) // 2)
-        for s1, s2 in zip(range(len(spikes[0])), range(len(spikes[1]))):
-            try:
-                k += 1
-                if k > limit:
-                    tmp.append(abs((spikes[0][s1 + 1].peak - spikes[0][s1].peak)
-                        - (spikes[1][s2 + 1].peak - spikes[1][s2].peak)))
-                
-            except IndexError:
-                pass
+        for s in range(min(len(spikes[0]), len(spikes[1])) - 1):
+            tmp.append(abs((spikes[0][s + 1].peak - spikes[0][s].peak)
+                        - (spikes[1][s + 1].peak - spikes[1][s].peak)))
+        if len(spikes[0]) > len(spikes[1]):
+            tmp.append((spikes[0][-1].peak - spikes[0][len(spikes[1])-1].peak))
+        elif len(spikes[0]) < len(spikes[1]):
+            tmp.append((spikes[1][-1].peak - spikes[1][len(spikes[0])-1].peak))
+
         if self.option.output_level == "1":
             print "isi difference:"
             print "mod: ", len(spikes[0])
             print "exp: ", len(spikes[1])
-            print fsum(tmp) / len(exp_t)
+            print fsum(tmp), " / ", len(exp_t), " = ", fsum(tmp) / len(exp_t)
         return fsum(tmp) / len(exp_t)
     
     
