@@ -25,7 +25,7 @@ class optionHandler(object):
     Object to store the settings required by the optimization work flow.
     """
     def __init__(self):
-        self.output_level="1"
+        self.output_level="0"
         prev=dir(self)
         self.start_time_stamp=time.time()
         #exp data settings
