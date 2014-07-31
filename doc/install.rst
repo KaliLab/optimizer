@@ -58,7 +58,7 @@ You can get `wxpython` with the following command:
 
     apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n
     
-This command might not work if your OS has an earlier version in the standard software repository.If so, please follow the instructions at:
+This command might not work if your OS has an earlier version in the standard software repository. If so, please follow the instructions at:
     
     http://wiki.wxpython.org/InstallingOnUbuntuOrDebian
     
