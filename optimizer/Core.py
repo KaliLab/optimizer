@@ -351,7 +351,7 @@ class coreModul():
             #fit_par.append(args.get("ffun",[]))
             fit_par.append(args.get("feat",[]))
             fit_par.append(args.get("weights",[]))
-            print fit_par
+            #print fit_par
             self.option_handler.SetFitnesParam(fit_par)
             tmp=args.get("algo_options")
             if len(tmp.get("boundaries")[0])<1:
@@ -470,7 +470,7 @@ class coreModul():
                     out_handler.write(str(k))
                     out_handler.close()
                     from subprocess import call
-                    print self.model_handler.GetExec()
+                    #print self.model_handler.GetExec()
                     call(self.model_handler.GetExec())
                     in_handler=open("trace.dat","r")
                     self.model_handler.record[0]=[]
