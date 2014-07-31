@@ -1,5 +1,5 @@
 import sys
-import os
+import traceback
 
 
 def main(parameters):
@@ -31,6 +31,7 @@ def main(parameters):
             
         except IndexError as IE:
             print IE
+            traceback.print_exc()
             sys.exit("Missing filename!")
     else:
         sys.exit("Unknown arguments!\nPlease run the program with either -h, -g,-c arguments!")         
