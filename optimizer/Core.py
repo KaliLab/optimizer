@@ -549,7 +549,7 @@ class coreModul():
             tmp_w_sum=0
         #print tmp_list
         tmp_str+=self.htmlTable(["Name","Value","Weight","Weighted Value","Weighted Sum"], tmp_list)+"\n"
-        print tmp_str
+        #print tmp_str
         #transpose the error comps
         tmp_list=[]
         for c in zip(*self.error_comps):
@@ -566,7 +566,7 @@ class coreModul():
         #print tmp_list
         tmp_str+=self.htmlTable(["Name","Value","Weight","Weighted Value"], tmp_list)+"\n"
         #tmp_str+="<center><p><b>weighted sum = "+(str(tmp_w_sum)[0:5])+"</b></p></centered>"
-        print tmp_str
+        #print tmp_str
         f_handler.write(tmp_str)
         f_handler.close()
         
