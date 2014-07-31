@@ -236,7 +236,7 @@ class DATA():
         else:
             self.additional_data=self.spikeTimeReader(path, no_traces, scale, t_length, freq, trace_type)
             
-        print self.data.data[0:10]
+        #print self.data.data[0:10]
         
         
     def traceReader(self,path,no_traces,scale,t_length,freq,trace_type):
@@ -256,7 +256,7 @@ class DATA():
         """        
         trace=Trace(no_traces, scale, t_length, freq,trace_type)
         #print "no time"
-        print trace.type
+        #print trace.type
         for my_file in path:
             try:
                 data_file=open(my_file,'r')
