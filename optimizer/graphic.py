@@ -202,19 +202,18 @@ class ErrorDialog(wx.Frame):
         for t in self.parent.core.error_comps:
             for c in t:
                 #tmp_str.append( "*".join([str(c[0]),c[1].__name__]))
-                self.error_comp_table.InsertStringItem(c_idx,self.parent.core.ffun_mapper[c[1].__name__])
-                self.error_comp_table.SetStringItem(c_idx,1,str(c[2]))
-                self.error_comp_table.SetStringItem(c_idx,2,str(c[0]))
-                self.error_comp_table.SetStringItem(c_idx,3,str(c[0]*c[2]))
+                idx=self.error_comp_table.InsertStringItem(c_idx,self.parent.core.ffun_mapper[c[1].__name__])
+                self.error_comp_table.SetStringItem(idx,1,str(c[2]))
+                self.error_comp_table.SetStringItem(idx,2,str(c[0]))
+                self.error_comp_table.SetStringItem(idx,3,str(c[0]*c[2]))
                 c_idx+=1
                 tmp_w_sum +=c[0]*c[2]
             c_idx+=1
-            self.error_comp_table.InsertStringItem(c_idx,"Weighted Sum")
-            self.error_comp_table.SetStringItem(c_idx,1,"-")
-            self.error_comp_table.SetStringItem(c_idx,2,"-")
-            self.error_comp_table.SetStringItem(c_idx,3,str(tmp_w_sum))
-            #c_idx=0
-            print str(tmp_w_sum)
+            idx=self.error_comp_table.InsertStringItem(c_idx,"Weighted Sum")
+            self.error_comp_table.SetStringItem(idx,1,"-")
+            self.error_comp_table.SetStringItem(idx,2,"-")
+            self.error_comp_table.SetStringItem(idx,3,str(tmp_w_sum))
+            #print str(tmp_w_sum)
             tmp_w_sum=0
         
             
@@ -456,7 +455,6 @@ class inputLayer(wx.Frame):
         self.Center()
         self.ToolbarCreator()
         self.Design()
-
         self.Show(True)
         
         
@@ -597,8 +595,8 @@ class inputLayer(wx.Frame):
 
 #event functions
     def Next(self, e):
-        
-            self.core.Print()
+            if self.core.option_handler.output_level=="1":
+                self.core.Print()
             try:
                 self.layer.Show()
             except AttributeError:
@@ -724,7 +722,7 @@ class modelLayer(wx.Frame):
 
         #this will need to be wrapped in a try statement later:
         import optimizer
-        print optimizer.__file__
+        #print optimizer.__file__
         path = os.path.dirname(optimizer.__file__)
 
         self.path = path
@@ -890,8 +888,8 @@ class modelLayer(wx.Frame):
                 self.layer = stimuliLayer(self, 2, self.Size, "Stimuli & Recording Settings", self.core, self.path)
             self.Hide()
             self.layer.Show()
-        
-        self.core.Print()
+        if self.core.option_handler.output_level=="1":
+            self.core.Print()
     
     def Prev(self, e):
        
@@ -1073,6 +1071,7 @@ class modelLayer(wx.Frame):
             self.user_function.Disable()
             self.setter.Disable()
             self.sim_path.Enable()
+            self.load.SetLabel("Set")
             
         else:
             self.spec_file_ctrl.Enable()
@@ -1083,6 +1082,7 @@ class modelLayer(wx.Frame):
             self.user_function.Enable()
             self.setter.Enable() 
             self.sim_path.Disable()
+            self.load.SetLabel("Load")
         
     
     def UF(self, e):
@@ -1103,7 +1103,7 @@ class stimuliLayer(wx.Frame):
         
         #this will need to be wrapped in a try statement later:
         import optimizer
-        print optimizer.__file__
+        #print optimizer.__file__
         path = os.path.dirname(optimizer.__file__)
         
         self.path = path
@@ -1204,38 +1204,11 @@ class stimuliLayer(wx.Frame):
         self.final_sizer.Add(self.column1, flag=wx.LEFT, border=15)
         
         
-        
-        
-        
-        descr1 = wx.StaticText(self.panel, label='Run Control')
-        descr1.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
-        self.column2.Add(descr1)
-               
-        descr3 = wx.StaticText(self.panel, label='Initial Voltage (mV)')
-        self.vrest_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="vrest")        
-        self.vrest_ctrl.SetValue("-65")
-        self.column2.Add(descr3, flag=wx.UP, border=15)
-        self.column2.Add(self.vrest_ctrl, flag=wx.UP, border=5)
-        
-        
-        descr4 = wx.StaticText(self.panel, label='tstop (ms)')
-        self.tstop_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="tstop")
-        self.tstop_ctrl.SetValue(str(self.core.data_handler.data.t_length))
-        self.column2.Add(descr4, flag=wx.UP, border=15)
-        self.column2.Add(self.tstop_ctrl, flag=wx.UP, border=5)
-        
-        descr5 = wx.StaticText(self.panel, label='dt')
-        self.dt_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="dt")
-        self.dt_ctrl.SetValue(str(0.05))
-        self.column2.Add(descr5, flag=wx.UP, border=15)
-        self.column2.Add(self.dt_ctrl, flag=wx.UP, border=5)
-
-        
         descr7 = wx.StaticText(self.panel, label='Parameter to record')
         self.dd_record = wx.Choice(self.panel, wx.ID_ANY, size=(100, 30))
         self.dd_record.AppendItems(["v", "i"])
         self.dd_record.Select(0)
-        self.column2.Add(descr7, flag=wx.UP, border=15)
+        self.column2.Add(descr7, flag=wx.UP, border=35)
         self.column2.Add(self.dd_record, flag=wx.UP, border=5)
         
         
@@ -1258,6 +1231,33 @@ class stimuliLayer(wx.Frame):
         self.column2.Add(self.dd_sec, flag=wx.UP, border=5)
         self.column2.Add(descr6, flag=wx.UP, border=15)
         self.column2.Add(self.pos_ctrl2, flag=wx.UP, border=5)
+        
+        
+        
+        descr1 = wx.StaticText(self.panel, label='Run Control')
+        descr1.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
+        self.column2.Add(descr1,flag=wx.UP, border=25)
+               
+        descr3 = wx.StaticText(self.panel, label='Initial Voltage (mV)')
+        self.vrest_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="vrest")        
+        self.vrest_ctrl.SetValue("-65")
+        self.column2.Add(descr3, flag=wx.UP, border=15)
+        self.column2.Add(self.vrest_ctrl, flag=wx.UP, border=5)
+        
+        
+        descr4 = wx.StaticText(self.panel, label='tstop (ms)')
+        self.tstop_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="tstop")
+        self.tstop_ctrl.SetValue(str(self.core.data_handler.data.t_length))
+        self.column2.Add(descr4, flag=wx.UP, border=15)
+        self.column2.Add(self.tstop_ctrl, flag=wx.UP, border=5)
+        
+        descr5 = wx.StaticText(self.panel, label='dt')
+        self.dt_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="dt")
+        self.dt_ctrl.SetValue(str(0.05))
+        self.column2.Add(descr5, flag=wx.UP, border=15)
+        self.column2.Add(self.dt_ctrl, flag=wx.UP, border=5)
+
+        
                 
         
         self.final_sizer.Add(self.column2, flag=wx.LEFT, border=75)
@@ -1380,7 +1380,7 @@ class ffunctionLayer(wx.Frame):
 
         #this will need to be wrapped in a try statement later:
         import optimizer
-        print optimizer.__file__        
+        #print optimizer.__file__        
         path = os.path.dirname(optimizer.__file__)
         
         self.path = path
@@ -1735,7 +1735,7 @@ class algorithmLayer(wx.Frame):
         #if len(seeds)!=num_o_params or len(seeds[0])!=num_o_params:
         #   seeds=None
         self.seed = seeds
-        print self.seed
+        #print self.seed
             
 
             
@@ -1762,7 +1762,8 @@ class algorithmLayer(wx.Frame):
             dlg = wx.MessageBox( "You forget to select an algorithm!",'Error', wx.OK | wx.ICON_ERROR)
             if dlg.ShowModal() == wx.ID_OK:
                 dlg.Destroy()
-        self.core.Print()
+        if self.core.option_handler.output_level=="1":
+            self.core.Print()
         #[map(float,map(wxTextCtrl.GetValue,fun)) for fun in self.param_list_container]
         
         if self.core.option_handler.output_level=="1":
@@ -1770,8 +1771,8 @@ class algorithmLayer(wx.Frame):
         try:
             self.core.ThirdStep(self.kwargs)
             #wx.MessageBox('Optimization finished. Press the Next button for the results!', 'Done', wx.OK | wx.ICON_EXCLAMATION)
-    
-            self.core.Print()
+            if self.core.option_handler.output_level=="1":
+                self.core.Print()
             self.toolbar.EnableTool(wx.ID_FORWARD, True)
             self.seed = None
             self.Next(None)
@@ -1814,7 +1815,7 @@ class resultsLayer(wx.Frame):
 
         #this will need to be wrapped in a try statement later:
         import optimizer
-        print optimizer.__file__        
+        #print optimizer.__file__        
         path = os.path.dirname(optimizer.__file__)
 
         self.path = path
@@ -1944,7 +1945,7 @@ class analyzisLayer(wx.Frame):
        
         #this will need to be wrapped in a try statement later:
         import optimizer
-        print optimizer.__file__
+        #print optimizer.__file__
         path = os.path.dirname(optimizer.__file__)
 
         self.path = path
