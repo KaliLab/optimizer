@@ -81,6 +81,19 @@ Use the standard install method for Python packages:
     sudo python setup.py install
 
 
+Run optimizer
+-------------------
+
+To start optimizer, please run the provided neuraloptimizer script, which will start the GUI.
+Alternatively you can run optimizer directly from its installation folder with:
+
+    python optimizer.py -g
+    
+Or for the command line version (you must specify a configuration file as well):
+
+    python optimizer.py -c example.xml
+    
+    
 Build documentation
 -------------------
 
