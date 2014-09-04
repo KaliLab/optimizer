@@ -1,3 +1,4 @@
+
 Installation
 ============
 
@@ -6,7 +7,6 @@ Get a read only copy of optimizer
 
 Install `git` and type:
 
-::
 
     git clone https://github.com/pfriedrich/optimizer.git
 
@@ -17,34 +17,28 @@ Dependencies
 -------------
 
 The following python libraries are required:
-    - python
-    - numpy 
-    - scipy 
-    - matplotlib 
-    - wxPython 
-    - inspyred 
-    - pyelectro
+  - python
+  - numpy 
+  - scipy 
+  - matplotlib 
+  - wxPython 
+  - inspyred 
+  - pyelectro
+
 The following libraries are recommended:
-    - neuron
+  - neuron
 
+You can get `numpy`, `scipy` and `inspyred` with `easy_install` or `pip` with the following command (for numpy):
 
-
-You can get `numpy`, `scipy` and `inspyred` with `easy_install` or `pip` with the following
-command (for numpy):
-
-::
-   
-   pip install numpy
+  
+    pip install numpy
 
 or
 
-::
-   
-   easy_install install numpy
+    easy_install install numpy
    
 You can get `matplotlib` with the following command:
 
-::
 
     apt-get install python-matplotlib
 
@@ -54,7 +48,6 @@ If you encounter any difficulties you can find a more detailed description at:
 
 You can get `wxpython` with the following command:
 
-::
 
     apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n
     
@@ -68,7 +61,6 @@ You can get `pyelectro` from:
     
 After cloning the repository you can install it by the standard installation method:
 
-::
 
     python setup.py install
     
@@ -84,17 +76,28 @@ Install optimizer
 Use the standard install method for Python packages:
 
 
-::
-
     sudo python setup.py install
 
+
+Run optimizer
+-------------------
+
+To start optimizer, please run the provided neuraloptimizer script, which will start the GUI.
+Alternatively you can run optimizer directly from its installation folder with:
+
+    python optimizer.py -g
+    
+Or for the command line version (you must specify a configuration file as well):
+
+    python optimizer.py -c example.xml
+    
+    
 Build documentation
 -------------------
 
 To build a local copy of documentation you need a working install of
 Sphinx, then run the command:
 
-::
 
     sphinx-build ./doc <local build directory>
 
