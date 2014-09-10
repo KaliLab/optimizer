@@ -82,8 +82,7 @@ Use the standard install method for Python packages:
 Run optimizer
 -------------------
 
-To start optimizer, please run the provided neuraloptimizer script, which will start the GUI.
-Alternatively you can run optimizer directly from its installation folder with:
+You can run optimizer directly from its installation folder with:
 
     python optimizer.py -g
     
