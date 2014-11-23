@@ -81,6 +81,18 @@ Use the standard install method for Python packages:
     sudo python setup.py install
 
 
+Run optimizer
+-------------------
+
+You can run optimizer directly from its installation folder with:
+
+    python optimizer.py -g
+    
+Or for the command line version (you must specify a configuration file as well):
+
+    python optimizer.py -c example.xml
+    
+    
 Build documentation
 -------------------
 
@@ -129,5 +141,24 @@ The package was tested on the following systems:
       - neuron 7.2
 
 Notes
+
     - Since Neuron with the python interpreter is not working perfectly on Windows, we recommend to use Ubuntu (installing and setting up a virtual os is not hard).
     - inspyred requires a feature which is only included in python 2.7, but ther is a workaround for this problem: https://groups.google.com/forum/#!topic/inspyred/YwJb3ABVtL8
+    
+Developers
+----------
+
+Project Leader:
+
+    - Szabolcs Káli:
+        kali@koki.hu
+
+Lead Developer:
+
+    - Peter Friedrich:
+        p.friedrich.m@gmail.com
+    
+Contributors:
+
+    - Mike Vella
+
