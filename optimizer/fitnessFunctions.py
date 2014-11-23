@@ -707,6 +707,12 @@ class fF():
             print "exp: ", len(spikes[1])
             print self.calc_ase(m, e, args)
         return self.calc_ase(m, e, args)
+    
+    def calc_ase_cov(self, mod_t, exp_t, args):
+        import numpy as np
+        diff = np.array(exp_t).__sub__(np.array(mod_t))
+        result=diff.dot(np.matrix(args["cov_m"])).dot(diff).tolist()[0][0]
+        return result
         
     def calc_ase(self, mod_t, exp_t, args):
         """
@@ -720,6 +726,8 @@ class fF():
             the squared range of the input trace
             
         """
+        if (args.get("cov_m")!=None):
+            return self.calc_ase_cov(mod_t,exp_t,args)
         temp = []
         for n in range(min([len(exp_t), len(mod_t)])):
             try:
