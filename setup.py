@@ -29,4 +29,3 @@ setup(
 
 if os.name == 'posix':
     script_dir = '/usr/bin'
-    shutil.copyfile('neuraloptimizer',os.path.join(script_dir,'neuraloptimizer'))
