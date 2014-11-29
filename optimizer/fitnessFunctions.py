@@ -711,8 +711,8 @@ class fF():
     def calc_ase_cov(self, mod_t, exp_t, args):
         import numpy as np
         diff = np.array(exp_t).__sub__(np.array(mod_t))
-        result=diff.dot(np.matrix(args["cov_m"])).dot(diff).tolist()[0][0]
-        return result
+        result = diff.dot(np.matrix(args["cov_m"])).dot(diff).tolist()[0][0]
+        return result / len(exp_t) / (pow(max(exp_t) - min(exp_t), 2))
         
     def calc_ase(self, mod_t, exp_t, args):
         """
