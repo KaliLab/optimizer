@@ -98,6 +98,15 @@ class fF():
             print "Your function contained syntax errors!! Please fix them!"
         except IndexError:
             pass
+        
+        self.cov_m = None
+        if (self.option.covariance_flag):
+            try:
+                cov_handler=open("cov_m.dat","r")
+                import numpy as np
+                self.cov_m = np.matrix("".join(cov_handler.readlines()))
+            except IOError:
+                pass
             
         
         
@@ -815,7 +824,7 @@ class fF():
         except ValueError:
             return 1
     
-    def combineFeatures(self, candidates, args):
+    def combineFeatures(self, candidates, args={}):
         """
         Creates the weighted combination of fitness functions and calculates the combined fitness for every
         set of parameters created during the optimization proccess by seting the model parameters,
@@ -852,6 +861,7 @@ class fF():
                     add_data = None
                 args = {}
                 args["add_data"] = add_data
+                args["cov_m"] = self.cov_m
                 param = self.option.GetModelStimParam()
                 parameter = param
                 parameter[0] = param[0][k]

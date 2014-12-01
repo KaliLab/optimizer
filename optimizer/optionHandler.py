@@ -96,6 +96,7 @@ class optionHandler(object):
         
         self.spike_thres=0
         self.spike_window=50
+        self.covariance_flag=0
         #self.ffunction=None #other parameters might be necessary
         self.feats=[]
         self.weights=[]

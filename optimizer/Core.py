@@ -360,7 +360,8 @@ class coreModul():
             self.option_handler.SetOptimizerOptions(tmp)
             
         if self.option_handler.run_controll_dt<self.data_handler.data.step:
-            print "re-sampling"
+            print "re-sampling because integration step is smaller then data step"
+            print self.option_handler.run_controll_dt,self.data_handler.data.step
             #we have to resample the input trace so it would match the model output
             #will use lin interpolation
             x=linspace(0,self.option_handler.run_controll_tstop,self.option_handler.run_controll_tstop*(1/self.data_handler.data.step))#x axis of data points

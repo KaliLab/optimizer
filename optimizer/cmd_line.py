@@ -61,7 +61,7 @@ def main(fname, param=None):
         exp_data.extend(core.data_handler.data.GetTrace(n))
         model_data.extend(core.final_result[n])
     no_traces = core.data_handler.number_of_traces()
-    t = core.option_handler.input_length
+    t = int(ceil(core.option_handler.input_length))
     step = core.option_handler.run_controll_dt
     axes.set_xticks([n for n in range(0, int((t * no_traces) / (step)), int((t * no_traces) / (step) / 5.0)) ])
     axes.set_xticklabels([str(n) for n in range(0, t * no_traces, (t * no_traces) / 5)])
