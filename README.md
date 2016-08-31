@@ -1,5 +1,5 @@
 #Optimizer
-Optimizer is a graphical tool for the optimization of Neuronal Models
+Optimizer is a graphical tool for fitting the parameters of neuronal models
 
 Installation
 ============
@@ -10,7 +10,7 @@ Get a read only copy of optimizer
 Install `git` and type:
 
 
-    git clone https://github.com/pfriedrich/optimizer.git
+    git clone https://github.com/vellamike/optimizer.git
 
 More information on this here: http://rogerdudler.github.com/git-guide/
 
@@ -42,7 +42,8 @@ or
 You can get `matplotlib` with the following command:
 
 
-    apt-get install python-matplotlib
+    Debian / Ubuntu : sudo apt-get install python-matplotlib
+    Fedora / Redhat : sudo yum install python-matplotlib
 
 If you encounter any difficulties you can find a more detailed description at:
     
@@ -56,6 +57,8 @@ You can get `wxpython` with the following command:
 This command might not work if your OS has an earlier version in the standard software repository. If so, please follow the instructions at:
     
     http://wiki.wxpython.org/InstallingOnUbuntuOrDebian
+
+Currently, Optimizer works properly only with version 2.8 of wxpython. Some distributions (e.g., Ubuntu 16.04) may install version 3.0 instead (or in addition to) 2.8. In this case, please remove version 3.0 and make sure to install only version 2.8. Support for later versions of wxpython will be added to Optimizer in the future.
     
 You can get `pyelectro` from:
     
@@ -67,7 +70,8 @@ After cloning the repository you can install it by the standard installation met
     python setup.py install
     
 Installing Neuron as a python package is optional since Optimizer can use any executable to run the simulations.
-WARNING: Optimizer was built around Neuron so we reccomend to install it!
+WARNING: Many features of Optimizer are designed to work with Neuron, so we recommend that you install it!
+
 Installing Neuron as a python package is beyond the scope of this tutorial as it is somewhat complicated, but you can find a step-by-step guide at:
 
     http://www.davison.webfactional.com/notes/accessing-hoc-python/
@@ -84,7 +88,7 @@ Use the standard install method for Python packages:
 Run optimizer
 -------------------
 
-You can run optimizer directly from its installation folder with:
+You can run Optimizer (with a GUI) directly from its installation folder with:
 
     python optimizer.py -g
     
@@ -96,7 +100,7 @@ Or for the command line version (you must specify a configuration file as well):
 Build documentation
 -------------------
 
-To build a local copy of documentation you need a working install of
+If you should require a local copy of the Optimizer documentation, you need a working install of
 Sphinx, then run the command:
 
 
@@ -140,10 +144,21 @@ The package was tested on the following systems:
       - pyelectro
       - neuron 7.2
 
+    4. Ubuntu 14.04.4 LTS 
+      - Python 2.7.6
+      - numpy 1.8.2
+      - scipy 0.13.3
+      - matplotlib 1.3.1
+      - wxPython 2.8.12.1
+      - inspyred 1.0
+      - pyelectro 0.1.6
+      - neuron 7.4
+
 Notes
 
-    - Since Neuron with the python interpreter is not working perfectly on Windows, we recommend to use Ubuntu (installing and setting up a virtual os is not hard).
-    - inspyred requires a feature which is only included in python 2.7, but ther is a workaround for this problem: https://groups.google.com/forum/#!topic/inspyred/YwJb3ABVtL8
+    - Since Neuron with the python interpreter is not working perfectly on Windows, we recommend to use Ubuntu, Mint, or another common Linux distribution (installing and setting up a virtual os is not hard).
+    - inspyred requires a feature which is only included in python 2.7 (not in python 2.6 or earlier), but there is a workaround for this problem: https://groups.google.com/forum/#!topic/inspyred/YwJb3ABVtL8
+
     
 Developers
 ----------
@@ -153,11 +168,14 @@ Project Leader:
     - Szabolcs Káli:
         kali@koki.hu
 
-Lead Developer:
+Lead Developers:
 
     - Peter Friedrich:
         p.friedrich.m@gmail.com
-    
+
+    - Sára Sáray
+	saraysari@gmail.com
+	
 Contributors:
 
     - Mike Vella

@@ -24,31 +24,31 @@ class coreModul():
     """
     This class is responsible to carry out the main steps of the optimization process by
     interacting with the other modules. The main attributes are the following:
-    
+
     :attr: data_handler:
-    
+
         performs input operations and handles input data
-    
+
     :attr: option_handler:
-    
+
         stores the settings
-    
+
     :attr: model_handler:
-    
+
         handles the model and runs the simulations and carries out other model related tasks
-    
+
     :attr: optimizer:
-    
+
         carries out the optimization process
-    
+
     :attr: optimal_params:
-    
+
         contains the resulting parameters
-    
+
     :attr: ffun_calc_list:
-    
+
         contains the list of available fitness functions in a dictionary
-    
+
     """
     def __init__(self):
         self.data_handler=DATA()
@@ -56,7 +56,7 @@ class coreModul():
         self.model_handler=None
         self.optimizer=None
         f_m={"MSE": "calc_ase",
-                        "Spike count": "calc_spike", 
+                        "Spike count": "calc_spike",
                         "MSE (excl. spikes)": "calc_spike_ase",
                         "Spike count (stim.)": "spike_rate",
                         "ISI differences": "isi_differ",
@@ -77,51 +77,51 @@ class coreModul():
                         "AHP depth",
                         "AP width",
                         "Derivative difference",
-                        "PPTD" ]
+                        "PPTD"]
         self.grid_result=None
-        
+
     def htmlStrBold(self,inp):
         return "<b>"+str(inp)+"</b>"
-    
+
     def htmlStr(self,inp):
         return "<p>"+str(inp)+"</p>"
-    
+
     def htmlUnderline(self):
         return "text-decoration:underline"
-    
+
     def htmlResize(self,size):
-        return "font-size:"+str(int(size))+"%"  
-    
+        return "font-size:"+str(int(size))+"%"
+
     def htmlAlign(self,align_to):
         if align_to not in ["left","right","center"]:
             raise ValueError
-        return  "text-align:"+align_to  
-    
+        return  "text-align:"+align_to
+
     def htmlStyle(self,inp,*args):
         tmp_str="<span style=\""
         for n in args:
             tmp_str+=n+";"
         tmp_str+="\">"+str(inp)+"</span>"
         return tmp_str
-    
+
     def htmlTable(self,header_list,data):
         tmp_str="<table border=\"1\" align=\"center\">"
         for h in header_list:
             tmp_str+="\n<th>"+str(h)+"</th>"
-            
+
         for r in data:
             tmp_str+="\n<tr>"
             for c in r:
                 tmp_str+="\n<td>"+str(c)+"</td>"
             tmp_str+="\n</tr>"
-            
+
         tmp_str+="\n</table>"
         return tmp_str
-    
+
     def htmlPciture(self,inp):
         return "<p align=\"center\"><img style=\"border:none;\" src=\""+inp+"\" ></p>"
-    
-    
+
+
     def Print(self):
         print [self.option_handler.GetFileOption(),
                self.option_handler.GetInputOptions(),
@@ -133,28 +133,32 @@ class coreModul():
                self.option_handler.GetFitnessParam(),
                self.option_handler.GetOptimizerOptions()]
         print "\n"
-        
+
     def FirstStep(self,args):
         """
         Stores the location of the input, and the base directory in the ``option_handler`` object
         and reads the data from the file into the ``data_handler`` object.
-        
+
         :param args: dictionary with keys "file" and "input"
-        
+
         """
         self.option_handler.SetFileOptions(args.get("file"))
         self.option_handler.SetInputOptions(args.get("input"))
 
         self.data_handler.Read([self.option_handler.input_dir],self.option_handler.input_size,self.option_handler.input_scale,self.option_handler.input_length,self.option_handler.input_freq,self.option_handler.type[-1])
 
+
+        if self.option_handler.type[-1]=='features':
+            self.option_handler.input_size= len(self.data_handler.features_data['stim_amp'])
+
     def LoadModel(self,args):
         """
         Stores the type of the simulator as well as the optional parameters passed to it.
         Creates the ``model_handler`` objects which can be either ``modelHandlerNeuron`` or ``externalHandler``.
         If the ``externalHandler`` is selected then the number of parameters subject to optimization is also set.
-        
+
         :param args: dictionary with keys "simulator" and "sim_command"
-        
+
         """
         self.model_handler=None
         #print "load"
@@ -168,9 +172,9 @@ class coreModul():
             self.option_handler.SetModelStimParam([[0]*self.data_handler.number_of_traces(),0,0])
     def ReturnSections(self):
         """
-        
+
         :return: the sections found in the model including "None" in a ``string`` ``list``.
-        
+
         """
         temp=self.model_handler.GetParameters()
         sections=[]
@@ -179,27 +183,27 @@ class coreModul():
         sections=list(set(sections))
         sections.append("None")
         return sections
-           
+
     def ReturnMorphology(self):
         """
-        
+
         :return: the morphological parameters found in the model including "None" in a ``string`` ``list``.
-        
+
         """
         temp=self.model_handler.GetParameters()
         morphs=(string.split(temp[0][1], ", "))
         morphs=list(set(morphs))
         morphs.append("None")
         return morphs
-        
+
     def ReturnChannels(self,section):
         """
         Collects the channels from the given section.
-        
-        :param section: the name of the section 
-        
+
+        :param section: the name of the section
+
         :return: the channels in the given section including "None" in a ``string`` ``list``.
-        
+
         """
         temp=self.model_handler.GetParameters()
         channels=[]
@@ -210,7 +214,7 @@ class coreModul():
                             for s in split(n[3]," "):
                                 if count(k,s)==1 and s!="":
                                     channels.append(s)
-            
+
 
         channels=list(set(channels))
         channels.append("None")
@@ -219,14 +223,14 @@ class coreModul():
     def ReturnChParams(self,channel):
         """
         Collects channel parameters from the given channel
-        
+
         :param channel: the name of the channel mechanism
         :return: the channel parameters in the given channel including "None" in a ``string`` ``list``.
-        
+
         .. note::
             This function returns everything from the channel object not only the parameters.
-        
-        """    
+
+        """
         temp=self.model_handler.GetParameters()
         ch_param=[]
         for n in temp:
@@ -236,37 +240,38 @@ class coreModul():
                         ch_param.append(p)
         ch_param=list(set(ch_param))
         ch_param.append("None")
+
         return ch_param
-    
+
     #not in use
     def SetModel(self,args):
-        
+
         if args.get("channel")!="None":
-            self.model_handler.SetChannelParameters(args.get("section"), args.get("channel"), args.get("params"), args.get("values"))
+            self.model_handler.SetChannelParameters(args.get("section"), args.get("segment"), args.get("channel"), args.get("params"), args.get("values"))
         else:
-            self.model_handler.SetMorphParameters(args.get("section"), args.get("morph"), args.get("values"))      
+            self.model_handler.SetMorphParameters(args.get("section"), args.get("morph"), args.get("values"))
 
     def SetModel2(self,args):
         """
         Stores the selected parameter as subject to optimization in the ``option_handler`` object.
         For future use it offers a way to store initial value (not in use at the moment).
-        
+
         :param args: must be a string-string dictionary containing the following keys:
-        
+
                 * section
                 * channel
                 * params
                 * value
-            
+
             or:
-            
+
                 * section
                 * morph
                 * values
-            
+
         """
         if args.get("channel")!="None":
-            self.option_handler.SetObjTOOpt(args.get("section").encode("utf-8")+" "+args.get("channel").encode("utf-8")+" "+args.get("params").encode("utf-8"))
+            self.option_handler.SetObjTOOpt(args.get("section").encode("utf-8")+" "+args.get("segment").encode("utf-8")+" "+args.get("channel").encode("utf-8")+" "+args.get("params").encode("utf-8"))
             self.option_handler.SetOptParam(args.get("values"))
         else:
             self.option_handler.SetObjTOOpt(args.get("section").encode("utf-8")+" "+args.get("morph").encode("utf-8"))
@@ -275,9 +280,9 @@ class coreModul():
     def SecondStep(self,args):
         """
         Stores the stimulation settings in the option object.
-        
+
         :param args: must be a dictionary with the following keys:
-        
+
             * stim
                 must hold a ``list`` as value, which contains:
                    * stimulus type as ``string``, must be either "IClamp" or "VClamp"
@@ -288,12 +293,12 @@ class coreModul():
                    * stimulus amplitudes as a ``list`` of real values
                    * delay of stimulus as real value
                    * duration of stimulus as real value
-                
-        """    
+
+        """
         self.option_handler.SetModelStim(args.get("stim"))
         self.option_handler.SetModelStimParam(args.get("stimparam"))
-        
-        
+
+
     def ThirdStep(self,args):
         """
         Stores the parameters in the ``option_handler`` object regarding the optimization process.
@@ -303,7 +308,7 @@ class coreModul():
         After storing the necessary settings the ``optimizer`` object is initialized and the optimization is performed.
         The raw results are stored in the ``final_pop`` variable in the ``optimizer`` object.
 
-        :param args: a dictionary containing the following keys: 
+        :param args: a dictionary containing the following keys:
 
             * runparam
                 must be a list containing the following values:
@@ -324,7 +329,7 @@ class coreModul():
                     * seed
                     * evo_strat
                     * pop_size
-                    * num_inputs
+                    * num_params
                     * boundaries
 
                 optional parameters belonging to the different algorithms (see the optimizerHandler module for more)
@@ -340,10 +345,14 @@ class coreModul():
                     * dwell
                     * x_tol
                     * f_tol
+		    * inertia
+		    * social_rate
+		    * cognitive_rate
+		    * neighoborhood_size
                 optional parameter shared by every algorithm
                     * starting_points
-        """      
-        self.grid_result=None  
+        """
+        self.grid_result=None
         if args!=None:
             #print "args: ",args
             self.option_handler.SetModelRun(args.get("runparam"))
@@ -354,43 +363,51 @@ class coreModul():
             #print fit_par
             self.option_handler.SetFitnesParam(fit_par)
             tmp=args.get("algo_options")
+
+            '''
+            if self.option_handler.type[-1]=='features':
+                tmp.update({"num_params" : len(self.data_handler.features_data['stim_amp'])})
+            '''
             if len(tmp.get("boundaries")[0])<1:
                 raise sizeError("No boundaries were given!")
             #tmp.append(args.get("starting_points"))
             self.option_handler.SetOptimizerOptions(tmp)
-            
-        if self.option_handler.run_controll_dt<self.data_handler.data.step:
-            print "re-sampling because integration step is smaller then data step"
-            print self.option_handler.run_controll_dt,self.data_handler.data.step
-            #we have to resample the input trace so it would match the model output
-            #will use lin interpolation
-            x=linspace(0,self.option_handler.run_controll_tstop,self.option_handler.run_controll_tstop*(1/self.data_handler.data.step))#x axis of data points
-            
-            tmp=[]
-            for i in range(self.data_handler.number_of_traces()):
-                y=self.data_handler.data.GetTrace(i)#y axis, the values from the input traces, corresponding to x
-                f=interp1d(x,y)
-                #we have the continuous trace, we could re-sample it now
-                new_x=linspace(0,self.option_handler.run_controll_tstop,self.option_handler.run_controll_tstop/self.option_handler.run_controll_dt)
-                #self.trace_reader.SetColumn(i,f(new_x)) the resampled vector replaces the original in the trace reader object
-                tmp.append(f(new_x))
-            self.data_handler.data.t_length=len(tmp[0])
-            self.data_handler.data.freq=self.option_handler.run_controll_tstop/self.option_handler.run_controll_dt
-            self.data_handler.data.step=self.option_handler.run_controll_dt
-            transp=map(list,zip(*tmp))
-            self.data_handler.data.data=[]
-            for n in transp:
-                self.data_handler.data.SetTrace(n)
-        #running simulation with smaller resolution is not supported
-        if self.option_handler.run_controll_dt>self.data_handler.data.step:
-            self.option_handler.run_controll_dt=self.data_handler.data.step
-            
-                
-                
+
+        if self.option_handler.type[-1]!='features':
+            if self.option_handler.run_controll_dt<self.data_handler.data.step:
+                print "re-sampling because integration step is smaller then data step"
+                print self.option_handler.run_controll_dt,self.data_handler.data.step
+                #we have to resample the input trace so it would match the model output
+                #will use lin interpolation
+                x=linspace(0,self.option_handler.run_controll_tstop,self.option_handler.run_controll_tstop*(1/self.data_handler.data.step))#x axis of data points
+
+                tmp=[]
+                for i in range(self.data_handler.number_of_traces()):
+                    y=self.data_handler.data.GetTrace(i)#y axis, the values from the input traces, corresponding to x
+                    f=interp1d(x,y)
+                    #we have the continuous trace, we could re-sample it now
+                    new_x=linspace(0,self.option_handler.run_controll_tstop,self.option_handler.run_controll_tstop/self.option_handler.run_controll_dt)
+                    #self.trace_reader.SetColumn(i,f(new_x)) the resampled vector replaces the original in the trace reader object
+                    tmp.append(f(new_x))
+                self.data_handler.data.t_length=len(tmp[0])
+                self.data_handler.data.freq=self.option_handler.run_controll_tstop/self.option_handler.run_controll_dt
+                self.data_handler.data.step=self.option_handler.run_controll_dt
+                transp=map(list,zip(*tmp))
+                self.data_handler.data.data=[]
+                for n in transp:
+                    self.data_handler.data.SetTrace(n)
+            #running simulation with smaller resolution is not supported
+            if self.option_handler.run_controll_dt>self.data_handler.data.step:
+                self.option_handler.run_controll_dt=self.data_handler.data.step
+
+
+
         if self.option_handler.evo_strat=="Classical EO":
             self.optimizer=simpleEO(self.data_handler,self.model_handler,self.option_handler)
         if self.option_handler.evo_strat=="Simulated Annealing":
-            self.optimizer=annealing(self.data_handler,self.model_handler,self.option_handler)        
+            self.optimizer=annealing(self.data_handler,self.model_handler,self.option_handler)
+	if self.option_handler.evo_strat=="Particle Swarm":
+            self.optimizer=PSO(self.data_handler,self.model_handler,self.option_handler)
         if self.option_handler.evo_strat=="Basinhopping":
             self.optimizer=basinHopping(self.data_handler,self.model_handler,self.option_handler)
         if self.option_handler.evo_strat=="Nelder-Mead":
@@ -408,8 +425,11 @@ class coreModul():
         self.optimizer.final_pop.sort(reverse=True)
         print self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)],"fitness: ",self.optimizer.final_pop[0].fitness
         print "Optimization lasted for ", stop_time-start_time, " s"
-        self.feat_str=", ".join(map(lambda x: self.ffun_mapper[x.__name__],self.option_handler.feats))
-        
+        if self.option_handler.type[-1]!= 'features':
+            self.feat_str=", ".join(map(lambda x: self.ffun_mapper[x.__name__],self.option_handler.feats))
+        else:
+            self.feat_str=", ".join(self.option_handler.feats)
+
     def FourthStep(self,args={}):
         """
         Renormalizes the output of the ``optimizer`` (see optimizerHandler module for more), and runs
@@ -419,7 +439,7 @@ class coreModul():
         A report of the results is generated in the form of a html document.
 
         :param args: currently not in use
-        """   
+        """
         self.final_result=[]
         self.error_comps=[]
         self.optimal_params=self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])
@@ -431,8 +451,8 @@ class coreModul():
                 if isinstance(self.model_handler, externalHandler):
                     out_handler.write(str(k)+"\n")
                 else:
-                    if len(tmp)==3:
-                        self.model_handler.SetChannelParameters(tmp[0], tmp[1], tmp[2], k)
+                    if len(tmp)==4:
+                        self.model_handler.SetChannelParameters(tmp[0], tmp[1], tmp[2], tmp[3], k)
                     else:
                         self.model_handler.SetMorphParameters(tmp[0], tmp[1], k)
             if isinstance(self.model_handler, externalHandler):
@@ -445,13 +465,19 @@ class coreModul():
                 exec(compile(s,'<string>','exec'))
             except SyntaxError:
                 print "Your function contained syntax errors!! Please fix them!"
-            
+
             self.usr_fun_name=self.option_handler.GetUFunString().split("\n")[4][self.option_handler.GetUFunString().split("\n")[4].find(" ")+1:self.option_handler.GetUFunString().split("\n")[4].find("(")]
             self.usr_fun=locals()[self.usr_fun_name]
             self.usr_fun(self,self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)]))
         #the first cell is a vector with all the stimuli in the simulation
         #the first cell is the current stimulus
-        for k in range(self.data_handler.number_of_traces()):
+
+        if self.option_handler.type[-1]!= 'features':
+            k_range=self.data_handler.number_of_traces()
+        else:
+            k_range=len(self.data_handler.features_data["stim_amp"])
+
+        for k in range(k_range):
                 param=self.option_handler.GetModelStimParam()
                 parameter=param
                 parameter[0]=param[0][k]
@@ -478,7 +504,7 @@ class coreModul():
                     for line in in_handler:
                         self.model_handler.record[0].append(float(line.split()[-1]))
                     in_handler.close()
-                    
+
                     try:
                         in_handler = open(self.option_handler.base_dir + "/spike.dat", "r")
                         self.model_handler.spike_times = []
@@ -487,11 +513,15 @@ class coreModul():
                         in_handler.close();
                     except OSError:
                         pass
-                    
-                    
+
+
                 else:
                     s=self.option_handler.GetModelRun()
-                    s.append(self.data_handler.data.step)
+                    if self.option_handler.type[-1]!= 'features':
+                        s.append(self.data_handler.data.step)
+                    else:
+                        s.append(0.05)
+
                     self.model_handler.RunControll(s)
                 #calculate the error components
                 self.error_comps.append(self.optimizer.fit_obj.getErrorComponents(k, self.model_handler.record[0]))
@@ -501,15 +531,15 @@ class coreModul():
                     trace_handler.write("\n")
                 trace_handler.close()
                 self.final_result.extend(self.model_handler.record)
-        
+
         if isinstance(self.model_handler, externalHandler):
             self.model_handler.record[0]=[]
-                
+
         f_handler=open(self.option_handler.model_path.split("/")[-1].split(".")[0]+"_settings.xml","w")
         #print self.option_handler.dump(self.ffun_mapper)
         f_handler.write(self.option_handler.dump(self.ffun_mapper))
         f_handler.close()
-        
+
         name=self.option_handler.model_path.split("/")[-1].split(".")[0]
         f_handler=open(name+"_results.html","w")
         tmp_str="<!DOCTYPE html>\n<html>\n<body>\n"
@@ -526,26 +556,33 @@ class coreModul():
         tmp_str+=self.htmlPciture("result_trace.png")+"\n"
         for k in self.option_handler.GetOptimizerOptions().keys():
             tmp_str+="<p><b>"+k+" =</b> "+str(self.option_handler.GetOptimizerOptions()[k])+"</p>\n"
-            
+
         tmp_str+="<p><b>feats =</b> "+self.feat_str +"</p>\n"
         tmp_str+="<p><b>weights =</b> "+ str(self.option_handler.weights)+"</p>\n"
         tmp_str+="<p><b>user function =</b></p>\n"
         for l in (self.option_handler.u_fun_string.split("\n")[4:-1]):
             tmp_str+="<p>"+l+"</p>"
         tmp_str+="</body>\n</html>\n"
-        
+
         #error components
         tmp_str+="<p><b>Fitness Components:</b></p>\n"
         tmp_w_sum=0
         tmp_list=[]
         for t in self.error_comps:
             for c in t:
+                if self.option_handler.type[-1]!='features':
                 #tmp_str.append( "*".join([str(c[0]),c[1].__name__]))
-                tmp_list.append([self.ffun_mapper[c[1].__name__],
-                                 str(c[2]),
-                                 str(c[0]),
-                                 str(c[0]*c[2]),""])
-                tmp_w_sum +=c[0]*c[2]
+                    tmp_list.append([self.ffun_mapper[c[1].__name__],
+                                     str(c[2]),
+                                     str(c[0]),
+                                     str(c[0]*c[2]),""])
+                    tmp_w_sum +=c[0]*c[2]
+                else:
+                    tmp_list.append([c[1],
+                                     str(c[2]),
+                                     str(c[0]),
+                                     str(c[0]*c[2]),""])
+                    tmp_w_sum +=c[0]*c[2]
             tmp_list.append(["","","","",tmp_w_sum])
             tmp_w_sum=0
         #print tmp_list
@@ -555,45 +592,36 @@ class coreModul():
         tmp_list=[]
         for c in zip(*self.error_comps):
             tmp=[0]*4
+
             for t_idx in range(len(c)):
                 #print c[t_idx]
                 tmp[1]+=c[t_idx][2]
                 tmp[2]=c[t_idx][0]
                 tmp[3]+=c[t_idx][2]*c[t_idx][0]
-            
-            tmp[0]=self.ffun_mapper[c[t_idx][1].__name__]
+
+            if self.option_handler.type[-1]!='features':
+                tmp[0]=self.ffun_mapper[c[t_idx][1].__name__]
+            else:
+                tmp[0]=(c[t_idx][1])
             tmp=map(str,tmp)
             tmp_list.append(tmp)
+
         #print tmp_list
         tmp_str+=self.htmlTable(["Name","Value","Weight","Weighted Value"], tmp_list)+"\n"
         #tmp_str+="<center><p><b>weighted sum = "+(str(tmp_w_sum)[0:5])+"</b></p></centered>"
         #print tmp_str
         f_handler.write(tmp_str)
         f_handler.close()
-        
-                
+
+
     def callGrid(self,resolution):
         """
         Calculates fitness values on a defined grid (see optimizerHandler module for more).
         This tool is purely for analyzing results, and we do not recommend to use it to obtain parameter values.
         """
-        
-        self.prev_result=self.optimizer.final_pop
+        import copy
+        self.prev_result=copy.copy(self.optimizer.final_pop)
         self.optimizer=grid(self.data_handler,self.model_handler,self.option_handler,resolution)
         self.optimizer.Optimize(self.optimal_params)
-        self.grid_result=self.optimizer.final_pop
+        self.grid_result=copy.copy(self.optimizer.final_pop)
         self.optimizer.final_pop=self.prev_result
-        
-
-             
-        
-                  
-               
-               
-               
-               
-               
-               
-        
-        
-        
