@@ -267,6 +267,6 @@ class Mock(object):
 
 MOCK_MODULES = ['inspyred','wx','ec','inspyred.ec','pyelectro','scipy','numpy','analysis',
                 'pyelectro.analysis','interpolate','scipy.interpolate','matplotlib',
-                'matplotlib.backends.backend_wxagg','backends.backend_wxagg','backend_wxagg']
+                'matplotlib.backends.backend_wxagg','backends.backend_wxagg','backend_wxagg','gtk']
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()

@@ -15,6 +15,7 @@ conductance based neuron models.
    install
    tutorial
    optimizer
+   modules
 
 Indices and tables
 ==================
