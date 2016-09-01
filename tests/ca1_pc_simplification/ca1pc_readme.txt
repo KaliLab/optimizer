@@ -12,3 +12,6 @@ set the "input_dir" tag to the path of the input file (including the file name i
 set the "model_path" tag to the path "ca1pc_model.hoc" file
 set the "base_dir" tag to a directory where you want the results to be stored
 After these modifications type "python optimizer.py -c ca1pc_model_settings.xml" into the terminal and press enter.
+
+
+For step-by-step instructions to run the example from the Optimizer GUI please refer to 'ca1_pc_simplification_GUI.pdf'.

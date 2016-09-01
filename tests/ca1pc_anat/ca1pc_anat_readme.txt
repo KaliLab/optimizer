@@ -11,3 +11,6 @@ set the "input_dir" tag to the path of the input file (including the file name i
 set the "model_path" tag to the path "morphology_131117-C2.hoc" file
 set the "base_dir" tag to a directory where you want the results to be stored
 After these modifications type "python optimizer.py -c morphology_131117-C2_settings.xml" into the terminal and press enter.
+
+
+For step-by-step instructions to run the example from the Optimizer GUI please refer to 'ca1pc_anat_GUI.pdf'.
