@@ -10,7 +10,7 @@ except RuntimeError as re:
     print re
     sys.exit()
 #from inspyred.ec import analysis
-from inspyred.ec.analysis import generation_plot, allele_plot
+from inspyred.ec.analysis import generation_plot
 import inspyred
 #from wxPython._controls import wxTextCtrl
 import os
@@ -18,28 +18,37 @@ from string import count, split, strip
 from copy import copy
 import Core
 
-        
-        
+
+
 
 class boundarywindow(wx.Frame):
     def __init__(self, par):
-        
-        wx.Frame.__init__(self,par, wx.ID_PROPERTIES, "Boundaries", size=(400, 700))
+
+        wx.Frame.__init__(self,par, wx.ID_PROPERTIES, "Boundaries", size=(600, 700))
         panel = wx.Panel(self)
         #self.Bind(wx.EVT_CLOSE, self.my_close)
         self.par = par
-        hstep = 200
+        hstep = 400
         vstep = 35
         hoffset = 10
         voffset = 15
         self.min = []
         self.max = []
-        
+
         for l in range(len(self.par.core.option_handler.GetObjTOOpt())):
-            wx.StaticText(panel, label=self.par.core.option_handler.GetObjTOOpt()[l].split()[-1], pos=(hoffset, voffset + l * vstep))
+            param=self.par.core.option_handler.GetObjTOOpt()[l].split()
+            if len(param)==4:
+                label=param[0] + " " + param[1] + " " + param[3]
+            else:
+                if param[0]!=param[-1]:
+                    label=param[0] + " " + param[-1]
+                else:
+                    label=param[-1]
+            #wx.StaticText(panel, label=self.par.core.option_handler.GetObjTOOpt()[l].split()[-1], pos=(hoffset, voffset + l * vstep))
+            wx.StaticText(panel, label=label, pos=(hoffset, voffset + l * vstep))
             tmp_min = wx.TextCtrl(panel, id=l, pos=(hstep, voffset + l * vstep), size=(75, 30))
             self.min.append(tmp_min)
-            tmp_max = wx.TextCtrl(panel, id=l + len(self.par.core.option_handler.GetOptParam()), pos=(hstep / 2 + hstep, voffset + l * vstep), size=(75, 30))
+            tmp_max = wx.TextCtrl(panel, id=l + len(self.par.core.option_handler.GetOptParam()), pos=(hstep / 4 + hstep, voffset + l * vstep), size=(75, 30))
             self.max.append(tmp_max)
             if len(self.par.core.option_handler.boundaries[1]) == len(self.par.core.option_handler.GetObjTOOpt()):
                 tmp_min.SetValue(str(self.par.core.option_handler.boundaries[0][l]))
@@ -52,16 +61,23 @@ class boundarywindow(wx.Frame):
         Loadbutton.Bind(wx.EVT_BUTTON, self.Load)
         self.Show()
         self.save_file_name="boundaries.txt"
-        
+
     def Set(self, e):
         try:
             self.par.core.option_handler.boundaries[0] = [float(n.GetValue()) for n in self.min]
             self.par.core.option_handler.boundaries[1] = [float(n.GetValue()) for n in self.max]
         except ValueError as ve:
             wx.MessageBox(str(ve), "Invalid Value", wx.OK | wx.ICON_ERROR)
+
+        else:
+            for i in range(len(self.par.core.option_handler.boundaries[0])):
+                if self.par.core.option_handler.boundaries[0][i] >= self.par.core.option_handler.boundaries[1][i] :
+                    wx.MessageBox("Min boundary must be lower than max", "Invalid Values", wx.OK | wx.ICON_ERROR)
+                    break
+
             #self.boundaries_window.Destroy()
         self.Close()
-        
+
     def Save(self,e):
         dlg = wx.FileDialog(self, "Type a filename", os.getcwd(), "", "*.*", style=wx.FD_SAVE)
         if dlg.ShowModal() == wx.ID_OK:
@@ -73,7 +89,7 @@ class boundarywindow(wx.Frame):
                 f.write(str(_max.GetValue()))
                 f.write("\n")
             dlg.Destroy()
-        
+
     def Load(self,e):
         dlg = wx.FileDialog(self, "Select a file", os.getcwd(), "", "*.*", style=wx.OPEN)
         if dlg.ShowModal() == wx.ID_OK:
@@ -88,14 +104,14 @@ class boundarywindow(wx.Frame):
             except IOError:
                 wx.MessageBox('Error reading the file', 'Error', wx.OK | wx.ICON_ERROR)
             dlg.Destroy()
-        
-            
+
+
     def my_close(self, e):
         wx.Exit()
-        
+
 class gridwindow(wx.Frame):
     def __init__(self, par):
-        
+
         wx.Frame.__init__(self,par, wx.ID_PROPERTIES, "Grid Boundaries", size=(400, 700))
         panel = wx.Panel(self)
         #self.Bind(wx.EVT_CLOSE, self.my_close)
@@ -106,7 +122,7 @@ class gridwindow(wx.Frame):
         voffset = 15
         self.min = []
         self.max = []
-        
+
         for l in range(len(self.par.core.option_handler.GetObjTOOpt())):
             wx.StaticText(panel, label=self.par.core.option_handler.GetObjTOOpt()[l].split()[-1], pos=(hoffset, voffset + l * vstep))
             tmp_min = wx.TextCtrl(panel, id=l, pos=(hstep, voffset + l * vstep), size=(75, 30))
@@ -116,14 +132,14 @@ class gridwindow(wx.Frame):
             if len(self.par.core.option_handler.boundaries[1]) == len(self.par.core.option_handler.GetObjTOOpt()):
                 tmp_min.SetValue(str(self.par.core.option_handler.boundaries[0][l]))
                 tmp_max.SetValue(str(self.par.core.option_handler.boundaries[1][l]))
-        
+
         wx.StaticText(panel,label="Resolution:", pos=(hoffset,600))
         self.resolution_ctrl=wx.TextCtrl(panel,id=wx.ID_ANY,pos=(hstep,600),size=(75,30))
         self.resolution_ctrl.SetValue(str(self.par.resolution))
         Setbutton = wx.Button(panel, label="Set", pos=(hstep, 650))
         Setbutton.Bind(wx.EVT_BUTTON, self.Set)
-        
-        
+
+
     def Set(self, e):
         try:
             self.par.core.option_handler.boundaries[0] = [float(n.GetValue()) for n in self.min]
@@ -133,17 +149,18 @@ class gridwindow(wx.Frame):
             wx.MessageBox(str(ve), "Invalid Value", wx.OK | wx.ICON_ERROR)
             #self.boundaries_window.Destroy()
         self.par.DisplayGrid()
-                
-            
+
+
     def my_close(self, e):
         wx.Exit()
-        
+
 class stimuliwindow2(wx.Frame):
     def __init__(self, par):
         self.container=[]
-            
+
 class stimuliwindow(wx.Frame):
-    def __init__(self, par):
+    def __init__(self, par, core):
+        self.core =core
         self.stimuli_window = wx.Frame(par.panel, wx.ID_ANY, "Set Amplitude(s)", size=(400, 500))
         self.panel = wx.Panel(self.stimuli_window)
         self.par = par
@@ -157,8 +174,11 @@ class stimuliwindow(wx.Frame):
         self.accept = wx.Button(self.panel, label="Accept", pos=(200, 450))
         self.accept.Disable()
         self.accept.Bind(wx.EVT_BUTTON, self.Accept)
+        if self.core.option_handler.type[-1]=="features":
+            self.number.SetValue((str(len(self.core.data_handler.features_data["stim_amp"]))))
+            self.Set(self)
         self.stimuli_window.Show()
-        
+
     def Set(self, e):
         self.temp = []
         hstep = 200
@@ -169,23 +189,25 @@ class stimuliwindow(wx.Frame):
         for l in range(min(10, int(self.number.GetValue()))):
             wx.StaticText(self.panel, label="Amplitude" + str(l+1) + " ("+unit+"):", pos=(hoffset, voffset + l * vstep))
             tmp_obj = wx.TextCtrl(self.panel, id=l, pos=(hstep / 2+25, voffset + l * vstep), size=(75, 30))
+            if self.core.option_handler.type[-1]=="features":
+                tmp_obj.SetValue(str(self.core.data_handler.features_data["stim_amp"][l]))
+
             self.temp.append(tmp_obj)
         self.accept.Enable()
         self.stimuli_window.Show()
-        
-            
-            
+
+
     def Accept(self, e):
         for n in range(len(self.temp)):
             self.container.append(float(self.temp[n].GetValue()))
         self.stimuli_window.Hide()
-    
+
     #def Load(self, e):
-        
-        
+
+
     def my_close(self, e):
         wx.Exit()
-        
+
 class ErrorDialog(wx.Frame):
     def __init__(self, par):
         wx.Frame.__init__(self,par, wx.ID_PROPERTIES, "Detailed Error", size=(700, 400))
@@ -196,13 +218,16 @@ class ErrorDialog(wx.Frame):
         self.error_comp_table.InsertColumn(1, 'Value', width=200)
         self.error_comp_table.InsertColumn(2, 'Weight', width=200)
         self.error_comp_table.InsertColumn(3, 'Weighted Value', width=200)
-        
+
         tmp_w_sum=0
         c_idx=0
         for t in self.parent.core.error_comps:
             for c in t:
                 #tmp_str.append( "*".join([str(c[0]),c[1].__name__]))
-                idx=self.error_comp_table.InsertStringItem(c_idx,self.parent.core.ffun_mapper[c[1].__name__])
+                if self.parent.core.option_handler.type[-1]!="features":
+                    idx=self.error_comp_table.InsertStringItem(c_idx,self.parent.core.ffun_mapper[c[1].__name__])
+                else:
+                    idx=self.error_comp_table.InsertStringItem(c_idx,c[1])
                 self.error_comp_table.SetStringItem(idx,1,str(c[2]))
                 self.error_comp_table.SetStringItem(idx,2,str(c[0]))
                 self.error_comp_table.SetStringItem(idx,3,str(c[0]*c[2]))
@@ -215,8 +240,8 @@ class ErrorDialog(wx.Frame):
             self.error_comp_table.SetStringItem(idx,3,str(tmp_w_sum))
             #print str(tmp_w_sum)
             tmp_w_sum=0
-        
-            
+
+
 class MyDialog(wx.Dialog):
     def __init__(self, parent, *args, **kw):
         super(MyDialog, self).__init__(*args, **kw)
@@ -235,10 +260,10 @@ class MyDialog(wx.Dialog):
         closeButton.Bind(wx.EVT_BUTTON, self.OnClose)
         loadButton = wx.Button(self, label="Load", pos=(470, 20))
         loadButton.Bind(wx.EVT_BUTTON, self.OnLoad)
-        
-    
-        
-        
+
+
+
+
     def OnOk(self, e):
         try:
             #print self.string.GetValue()
@@ -279,14 +304,14 @@ class MyDialog(wx.Dialog):
             wx.MessageBox("Your function doesn't have any input parameters!", "Error", wx.OK | wx.ICON_ERROR)
         except SyntaxError as syn_err:
             wx.MessageBox(str(syn_err), "Syntax Error", wx.OK | wx.ICON_ERROR)
-            
-            
-        
-        
+
+
+
+
     def OnClose(self, e):
-        
+
         self.Destroy()
-        
+
     def OnLoad(self, e):
         dlg = wx.FileDialog(self, "Choose a file", os.getcwd(), "", "*.*", style=wx.OPEN)
         if dlg.ShowModal() == wx.ID_OK:
@@ -300,23 +325,31 @@ class MyDialog(wx.Dialog):
         for l in f:
             fun = fun + l
         self.string.SetValue(fun)
-        
+
 class MyDialog2(wx.Dialog):
     def __init__(self,parent,*args,**kwargs):
-        
-        super(MyDialog2,self).__init__(parent,style=wx.RESIZE_BORDER|wx.CLOSE_BOX)
+
+        super(MyDialog2,self).__init__(parent,title="Starting Points")
         self.parent = parent
         self.Bind(wx.EVT_CLOSE,self.OnClose)
         n_o_params=args[0]
         self.container=[]
         self.vals=args[1]
-        self.SetSize((400,min(100*n_o_params+1,600)))
-        _sizer=wx.GridSizer(n_o_params+1,2,20,5)
+        self.SetSize((500,min(150*n_o_params+1,600)))
+        _sizer=wx.GridSizer(n_o_params+1,2,20,200)
 #        row_sizer=wx.BoxSizer(wx.HORIZONTAL)
 #        col_sizer1=wx.BoxSizer(wx.VERTICAL)
 #        col_sizer2=wx.BoxSizer(wx.VERTICAL)
         for n in range(n_o_params):
-            p_name=self.parent.core.option_handler.GetObjTOOpt()[n].split()[-1]
+            param=self.parent.core.option_handler.GetObjTOOpt()[n].split()
+            if len(param)==4:
+                p_name=param[0] + " " + param[1] + " " + param[3]
+            else:
+                if param[0]!=param[-1]:
+                    p_name=param[0] + " " + param[-1]
+                else:
+                    p_name=param[-1]
+            #p_name=self.parent.core.option_handler.GetObjTOOpt()[n].split()[-1]
             p_name_txt=wx.StaticText(self,label=p_name)
             ctrl=wx.TextCtrl(self,wx.ID_ANY,size=(100,30))
             self.container.append(ctrl)
@@ -324,7 +357,7 @@ class MyDialog2(wx.Dialog):
             #col_sizer2.Add(ctrl,flag=wx.UP,border=15)
             _sizer.Add(p_name_txt,flag=wx.LEFT | wx.UP,border=5)
             _sizer.Add(ctrl,flag=wx.LEFT | wx.UP,border=5)
-            
+
         b_ok=wx.Button(self,label="Ok")
         b_close=wx.Button(self,label="Cancel")
         b_ok.Bind(wx.EVT_BUTTON, self.OnOk)
@@ -338,13 +371,14 @@ class MyDialog2(wx.Dialog):
 #        row_sizer.Add(col_sizer1,flag=wx.LEFT,border=20)
 #        row_sizer.Add(col_sizer2,flag=wx.LEFT,border=50)
 #        self.SetSizer(row_sizer)
+
         _sizer.Add(b_ok,flag=wx.LEFT | wx.UP,border=5)
         _sizer.Add(b_close,flag=wx.LEFT | wx.UP,border=5)
         _sizer.Add(b_load,flag=wx.LEFT | wx.UP,border=5)
         _sizer.Add(b_load_pop,flag=wx.LEFT | wx.UP,border=5)
         self.SetSizer(_sizer)
-        
-        
+
+
     def OnOk(self,e):
         try:
             for n in self.container:
@@ -352,12 +386,12 @@ class MyDialog2(wx.Dialog):
             self.Destroy()
         except ValueError:
             wx.MessageBox("You must give every parameter an initial value!", "Error", wx.OK | wx.ICON_ERROR)
-        
-        
+
+
     def OnClose(self,e):
         self.vals=None
         self.Destroy()
-            
+
     def OnLoad(self, e):
         file_path = ""
         dlg = wx.FileDialog(self, "Choose a file", os.getcwd(), "", "*.*", style=wx.OPEN)
@@ -366,7 +400,7 @@ class MyDialog2(wx.Dialog):
         dlg.Destroy()
         f = open(file_path, "r")
         for idx, l in enumerate(f):
-            self.container[idx].SetValue(str(l))		
+            self.container[idx].SetValue(str(l))
 
     def OnLoadPop(self, e):
         self.size_of_pop = 0
@@ -405,7 +439,7 @@ class MyDialog2(wx.Dialog):
 
                 try:
                     hfile.seek(-bsize, os.SEEK_CUR)
-                    linecount += hfile.read(bsize).count(sep) 
+                    linecount += hfile.read(bsize).count(sep)
                     hfile.seek(-bsize, os.SEEK_CUR)
                 except IOError, e:
                     if e.errno == errno.EINVAL:
@@ -414,7 +448,7 @@ class MyDialog2(wx.Dialog):
                         hfile.seek(0, os.SEEK_SET)
                         linecount += hfile.read(bsize).count(sep)
                 pos = hfile.tell()
-                
+
             hfile.close()
             hfile = open(hugefile, 'r')
             hfile.seek(pos, os.SEEK_SET)  # our file position from above
@@ -427,7 +461,7 @@ class MyDialog2(wx.Dialog):
                     continue
             # The rest we yield
                 yield line
-                
+
         for l in lastlines(file_path, self.size_of_pop, 1):
             s=l.strip()
             #print s
@@ -435,12 +469,12 @@ class MyDialog2(wx.Dialog):
             params = params[0:len(params) / 2 + 1]
             self.vals.append(params)
         self.Destroy()
-        
+
 
 
 class inputLayer(wx.Frame):
     def __init__(self, parent, ID, size, title, core, path):
-        
+
         wx.Frame.__init__(self, parent, ID, title=title, size=size)
         self.Bind(wx.EVT_CLOSE, self.my_close)
         self.core = core
@@ -456,18 +490,18 @@ class inputLayer(wx.Frame):
         self.ToolbarCreator()
         self.Design()
         self.Show(True)
-        
-        
-        
+
+
+
     def ToolbarCreator(self):
-        
+
         self.toolbar = self.CreateToolBar()
         button_toolbar_fward = self.toolbar.AddLabelTool(887, 'NextLayer', wx.Bitmap(self.path + "/2rightarrow.png"))
         self.toolbar.Realize()
         self.Bind(wx.EVT_TOOL, self.Next, button_toolbar_fward)
         self.toolbar.EnableTool(button_toolbar_fward.GetId(), False)
-        
-        
+
+
     def Design(self):
         self.horizontal_box1 = wx.BoxSizer(wx.HORIZONTAL)
         self.horizontal_box2 = wx.BoxSizer(wx.HORIZONTAL)
@@ -486,96 +520,98 @@ class inputLayer(wx.Frame):
         #self.horizontal_box15 = wx.BoxSizer(wx.HORIZONTAL)
         self.vertical_box1 = wx.BoxSizer(wx.VERTICAL)
         self.vertical_box2 = wx.BoxSizer(wx.VERTICAL)
-        
+
         heading = wx.StaticText(self.panel, label='File Options')
         heading.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
         self.horizontal_box1.Add(heading, flag=wx.BOTTOM, border=10)
 #        wx.StaticLine(self.panel, pos=(1, 0), size=(self.Size[0],1))
 #        wx.StaticLine(self.panel, pos=(1, 215), size=(self.Size[0],1))
-        
+
         descr1 = wx.StaticText(self.panel, label='Input File')
         self.horizontal_box2.Add(descr1)
-        
+
         self.input_file_controll = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(300, 30), name="Input Location")
         self.input_file_controll.SetHelpText("Location of input trace")
         self.horizontal_box3.Add(self.input_file_controll)
-        
+
         browser1 = wx.Button(self.panel, label="Browse...")
         browser1.Bind(wx.EVT_BUTTON, self.BrowseFile)
         self.horizontal_box3.Add(browser1, flag=wx.LEFT, border=10)
-        
+
         self.time_checker = wx.CheckBox(self.panel, wx.ID_ANY, label="Contains time")
         self.horizontal_box3.Add(self.time_checker, flag=wx.LEFT, border=10)
-        
+
         self.type_selector = wx.Choice(self.panel, wx.ID_ANY)
         #enable this later
         #self.type_selector.AppendItems(["Voltage trace", "Current trace", "Spike times", "Other"])
-        self.type_selector.AppendItems(["Voltage trace", "Current trace", "Other"])
+        self.type_selector.AppendItems(["Voltage trace", "Current trace", "Features", "Other"])
         self.type_selector.SetSelection(0)
         self.type_selector.Bind(wx.EVT_CHOICE, self.typeChanged)
         self.horizontal_box3.Add(self.type_selector, flag=wx.LEFT, border=10)
-        
+
         descr2 = wx.StaticText(self.panel, label='Base Directory')
         self.horizontal_box4.Add(descr2)
-        
+
         self.input_file_controll.WriteText(os.getcwd())
         self.base_dir_controll = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(300, 30), name="Base Location")
         self.horizontal_box5.Add(self.base_dir_controll)
         self.base_dir_controll.WriteText(os.getcwd())
-        
+
         browser2 = wx.Button(self.panel, label="Browse...")
         browser2.Bind(wx.EVT_BUTTON, self.BrowseDir)
         self.horizontal_box5.Add(browser2, flag=wx.LEFT, border=10)
-        
+
         self.input_tree=wx.TreeCtrl(self.panel,wx.ID_ANY,pos=(425,155),size=(250,100),style=wx.TR_HAS_BUTTONS | wx.TR_EXTENDED)
         self.troot=self.input_tree.AddRoot("Input data")
         self.tvoltage=None
         self.tcurrent=None
         self.tspike_t=None
         self.tother=None
+        self.tfeatures=None
         #enable this later
-        self.loaded_input_types=[self.tvoltage , 
+        self.loaded_input_types=[self.tvoltage ,
                                  self.tcurrent ,
 #                                 self.tspike_t ,
-                                 self.tother ]
-        
-        
+#                                 self.tother,
+                                  self.tfeatures]
+
+
         descr3 = wx.StaticText(self.panel, label='Number of traces')
         self.horizontal_box6.Add(descr3, flag=wx.UP, border=30)
-        
+
         descr6 = wx.StaticText(self.panel, label='Units')
         self.horizontal_box6.Add(descr6, flag=wx.UP | wx.LEFT, border=30)
-        
+
         self.size_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, pos=(10, 245), size=(100, 30), name="NO traces")
         self.horizontal_box7.Add(self.size_ctrl)
-        
+
         self.dropdown = wx.Choice(self.panel, wx.ID_ANY, (150, 245))
         self.dropdown.SetSize((100, 30))
         self.dropdown.AppendItems(Core.scales[str(self.type_selector.GetItems()[self.type_selector.GetCurrentSelection()]).split()[0].lower()].keys())
         self.dropdown.Select(1)
         self.horizontal_box7.Add(self.dropdown, flag=wx.LEFT, border=50)
-        
+
         descr4 = wx.StaticText(self.panel, label='Length of traces (ms)')
         self.horizontal_box8.Add(descr4)
-        
+
         self.length_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, pos=(10, 325), size=(100, 30), name="Length")
         self.horizontal_box9.Add(self.length_ctrl)
-        
+
         descr5 = wx.StaticText(self.panel, label='Sampling frequency (Hz)')
         self.horizontal_box10.Add(descr5)
 
         self.freq_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, pos=(10, 405), size=(100, 30), name="Frequency")
         self.horizontal_box11.Add(self.freq_ctrl)
-          
-        
+
+
         self.load = wx.Button(self.panel, label="Load trace", pos=(10, 445))
         self.load.Disable()
         self.load.Bind(wx.EVT_BUTTON, self.Load)
         self.horizontal_box12.Add(self.load)
 
 
-        
-        
+
+
         self.vertical_box1.Add(self.horizontal_box1, flag=wx.ALL, border=10)
         self.vertical_box1.Add(self.horizontal_box2, flag=wx.ALL, border=5)
         self.vertical_box1.Add(self.horizontal_box3, flag=wx.ALL, border=5)
@@ -603,13 +639,13 @@ class inputLayer(wx.Frame):
                 self.layer = modelLayer(self, 1, self.Size, "Model & Parameter Selection", self.core, self.path)
                 self.layer.Show()
             self.Hide()
-            
-            
+
+
     def typeChanged(self,e):
         self.dropdown.Clear()
         self.dropdown.AppendItems(Core.scales[str(self.type_selector.GetItems()[self.type_selector.GetCurrentSelection()]).split()[0].lower()].keys())
         self.dropdown.Select(1)
-                    
+
     def BrowseFile(self, e):
 
         dlg = wx.FileDialog(self, "Choose a file", os.getcwd(), "", "*.*", style=wx.OPEN)
@@ -621,8 +657,8 @@ class inputLayer(wx.Frame):
             self.base_dir_controll.WriteText(dlg.GetDirectory())
         dlg.Destroy()
         self.load.Enable()
-        
-        
+
+
     def BrowseDir(self, e):
         dlg = wx.DirDialog(self, "Choose a directory", defaultPath=self.base_dir_controll.GetValue(), style=wx.DD_DEFAULT_STYLE)
         if dlg.ShowModal() == wx.ID_OK:
@@ -631,26 +667,43 @@ class inputLayer(wx.Frame):
             self.base_dir_controll.WriteText(self.base_dir)
         dlg.Destroy()
 
-    
+
     def my_close(self, e):
         wx.Exit()
-        
+
     def Load(self, e):
         self.toolbar.EnableTool(887, True)
-        try:
-            
-            kwargs = {"file" : str(self.base_dir_controll.GetValue()),
-                    "input" : [str(self.input_file_controll.GetValue()),
-                               int(self.size_ctrl.GetValue()),
-                               str(self.dropdown.GetItems()[self.dropdown.GetCurrentSelection()]),
-                               int(self.length_ctrl.GetValue()),
-                               int(self.freq_ctrl.GetValue()),
-                               self.time_checker.IsChecked(),
-                               str(self.type_selector.GetItems()[self.type_selector.GetCurrentSelection()]).split()[0].lower()]}
-        except ValueError as ve:
-            wx.MessageBox('Some of the cells are empty. Please fill out all of them!', 'Error', wx.OK | wx.ICON_ERROR)
-            print ve
-            
+
+        if (str(self.type_selector.GetItems()[self.type_selector.GetCurrentSelection()]).split()[0].lower() == 'features'):
+            try:
+
+                kwargs = {"file" : str(self.base_dir_controll.GetValue()),
+                        "input" : [str(self.input_file_controll.GetValue()),
+                                   None,
+                                   str(self.dropdown.GetItems()[self.dropdown.GetCurrentSelection()]),
+                                   None,
+                                   None,
+                                   None,
+                                   str(self.type_selector.GetItems()[self.type_selector.GetCurrentSelection()]).split()[0].lower()]}
+            except ValueError as ve:
+                wx.MessageBox('The input file or the type is missing. Please give them', 'Error', wx.OK | wx.ICON_ERROR)
+                print ve
+
+        else:
+            try:
+
+                kwargs = {"file" : str(self.base_dir_controll.GetValue()),
+                        "input" : [str(self.input_file_controll.GetValue()),
+                                   int(self.size_ctrl.GetValue()),
+                                   str(self.dropdown.GetItems()[self.dropdown.GetCurrentSelection()]),
+                                   int(self.length_ctrl.GetValue()),
+                                   int(self.freq_ctrl.GetValue()),
+                                   self.time_checker.IsChecked(),
+                                   str(self.type_selector.GetItems()[self.type_selector.GetCurrentSelection()]).split()[0].lower()]}
+            except ValueError as ve:
+                wx.MessageBox('Some of the cells are empty. Please fill out all of them!', 'Error', wx.OK | wx.ICON_ERROR)
+                print ve
+
         self.core.FirstStep(kwargs)
         if self.type_selector.GetSelection()==0 or self.type_selector.GetSelection()==1 or self.type_selector.GetSelection()==3:
             canvas = wx.Panel(self.panel, pos=(300, 270), size=(400, self.GetSize()[1]))
@@ -675,44 +728,59 @@ class inputLayer(wx.Frame):
             for k in range(self.core.data_handler.number_of_traces()):
                 exp_data.extend(self.core.data_handler.data.GetTrace(k))
             axes.plot(range(0, len(exp_data)), exp_data)
-            
+
             if self.type_selector.GetSelection()==0:
-                for n in filter(lambda x: x[1]!=None and x[0]!=2,enumerate(self.loaded_input_types)):  
+                for n in filter(lambda x: x[1]!=None and x[0]!=2,enumerate(self.loaded_input_types)):
                     self.input_tree.Delete(n[1])
                     self.loaded_input_types[n[0]]=None
                 self.tvoltage=self.input_tree.AppendItem(self.troot,"Voltage trace")
                 self.loaded_input_types[0]=self.tvoltage
                 self.input_tree.AppendItem(self.tvoltage,self.input_file_controll.GetValue().split("/")[-1])
             elif self.type_selector.GetSelection()==1:
-                for n in filter(lambda x: x[1]!=None and x[0]!=2,enumerate(self.loaded_input_types)):  
+                for n in filter(lambda x: x[1]!=None and x[0]!=2,enumerate(self.loaded_input_types)):
                     self.input_tree.Delete(n[1])
                     self.loaded_input_types[n[0]]=None
                 self.tcurrent=self.input_tree.AppendItem(self.troot,"Current trace")
                 self.loaded_input_types[1]=self.tcurrent
                 self.input_tree.AppendItem(self.tcurrent,self.input_file_controll.GetValue().split("/")[-1])
-            elif self.type_selector.GetSelection()==2:
+
+            '''
+            elif self.type_selector.GetSelection()==3:
                 try:
                     self.input_tree.Delete(self.tspike_t)
                 except ValueError:
                     pass
                 self.tspike_t=self.input_tree.AppendItem(self.troot,"Spike times")
                 self.input_tree.AppendItem(self.tspike_t,self.input_file_controll.GetValue().split("/")[-1])
-            elif self.type_selector.GetSelection()==3:
-                for n in filter(lambda x: x[1]!=None and x[0]!=2,enumerate(self.loaded_input_types)):  
-                    self.input_tree.Delete(n[1])
-                    self.loaded_input_types[n[0]]=None
-                self.tother=self.input_tree.AppendItem(self.troot,"Other data")
-                self.loaded_input_types[3]=self.tother
-                self.input_tree.AppendItem(self.tother,self.input_file_controll.GetValue().split("/")[-1])
+                '''
+
+        elif self.type_selector.GetSelection()==2:
+            for n in filter(lambda x: x[1]!=None and x[0]!=2,enumerate(self.loaded_input_types)):
+                self.input_tree.Delete(n[1])
+                self.loaded_input_types[n[0]]=None
+            self.tfeatures=self.input_tree.AppendItem(self.troot,"Features")
+            self.loaded_input_types[2]=self.tfeatures
+            features_file=self.input_tree.AppendItem(self.tfeatures,self.input_file_controll.GetValue().split("/")[-1])
+            self.add_data_dict(self.core.data_handler.features_dict, features_file)
+
+        else:
+            pass
+
+    def add_data_dict(self,data_dict, root):
+        stack = data_dict.items()
+        while stack:
+            key, value = stack.pop()
+            if isinstance(value, dict):
+                self.input_tree.AppendItem(root, "{0} : ".format(key))
+                stack.extend(value.iteritems())
             else:
-                pass
-    
+                self.input_tree.AppendItem(root, "  {0} : {1}".format(key, value))
 
 
 
 class modelLayer(wx.Frame):
     def __init__(self, parent, ID, size, title, core, path):
-        
+
         wx.Frame.__init__(self, parent, ID, title=title, size=size)
         self.Bind(wx.EVT_CLOSE, self.my_close)
         self.panel = wx.Panel(self)
@@ -731,23 +799,20 @@ class modelLayer(wx.Frame):
         self.ToolbarCreator()
         self.Design()
         #self.is_loaded=False
-        
-        
 
-        
 
-       
     def ToolbarCreator(self):
-        
+
         self.toolbar = self.CreateToolBar()
         button_toolbar_bward = self.toolbar.AddLabelTool(wx.ID_ANY, 'PrevLayer', wx.Bitmap(self.path + "/2leftarrow.png"))
         button_toolbar_fward = self.toolbar.AddLabelTool(888, 'NextLayer', wx.Bitmap(self.path + "/2rightarrow.png"))
         self.toolbar.Realize()
         self.Bind(wx.EVT_TOOL, self.Next, button_toolbar_fward)
         self.Bind(wx.EVT_TOOL, self.Prev, button_toolbar_bward)
-        self.toolbar.EnableTool(button_toolbar_fward.GetId(), False)     
+        self.toolbar.EnableTool(button_toolbar_fward.GetId(), False)
+
     def Design(self):
-        
+
         self.horizontal_box1 = wx.BoxSizer(wx.HORIZONTAL)
         self.horizontal_box2 = wx.BoxSizer(wx.HORIZONTAL)
         self.horizontal_box3 = wx.BoxSizer(wx.HORIZONTAL)
@@ -755,13 +820,13 @@ class modelLayer(wx.Frame):
         self.horizontal_box5 = wx.BoxSizer(wx.HORIZONTAL)
         self.horizontal_box6 = wx.BoxSizer(wx.HORIZONTAL)
         self.horizontal_box7 = wx.BoxSizer(wx.HORIZONTAL)
-        
-        
+
+
         self.vertical_box1 = wx.BoxSizer(wx.VERTICAL)
         self.vertical_box2 = wx.BoxSizer(wx.VERTICAL)
         self.vertical_box3 = wx.BoxSizer(wx.VERTICAL)
-        
-        
+
+
         heading = wx.StaticText(self.panel, label='Model Options')
         heading.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
         self.horizontal_box1.Add(heading)
@@ -769,10 +834,10 @@ class modelLayer(wx.Frame):
 #        wx.StaticLine(self.panel, pos=(400, 215), size=(self.Size[0],1))
 #        wx.StaticLine(self.panel, pos=(1, 175), size=(self.Size[0]/2,1))
 #        wx.StaticLine(self.panel, pos=(400, 0), size=(1,215),style=wx.LI_VERTICAL)
-        
+
         descr1 = wx.StaticText(self.panel, label='Model File')
         self.horizontal_box2.Add(descr1)
-        
+
         self.model_file_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(300, 30), name="Model File")
         self.model_file_ctrl.WriteText(self.core.option_handler.base_dir)
         self.browser1 = wx.Button(self.panel, label="Browse...")
@@ -787,12 +852,12 @@ class modelLayer(wx.Frame):
         self.horizontal_box3.Add(self.browser1, flag=wx.RIGHT, border=15)
         self.horizontal_box3.Add(self.load, flag=wx.RIGHT, border=15)
         self.horizontal_box3.Add(self.dd_type, flag=wx.RIGHT, border=15)
-        
+
         descr2 = wx.StaticText(self.panel, label='Special File Location')
         self.horizontal_box4.Add(descr2)
         descr3 = wx.StaticText(self.panel, label='Command to external simulator')
         self.horizontal_box4.Add(descr3, flag=wx.LEFT, border=315)
-        
+
         self.spec_file_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(300, 30), name="Special File Location")
         self.spec_file_ctrl.WriteText(self.core.option_handler.base_dir)
         self.browser2 = wx.Button(self.panel, label="Browse...")
@@ -802,34 +867,34 @@ class modelLayer(wx.Frame):
         self.horizontal_box5.Add(self.spec_file_ctrl, flag=wx.RIGHT, border=50)
         self.horizontal_box5.Add(self.browser2, flag=wx.RIGHT, border=15)
         self.horizontal_box5.Add(self.sim_path, flag=wx.RIGHT, border=15)
-        
-        
-        
-        
+
+
+
+
         self.model_file = self.model_file_ctrl.GetValue()
         self.spec_file = self.spec_file_ctrl.GetValue()
-        
-        
+
+
         self.vertical_box1.Add(self.horizontal_box1, flag=wx.BOTTOM, border=15)
         self.vertical_box1.Add(self.horizontal_box2, flag=wx.BOTTOM, border=5)
         self.vertical_box1.Add(self.horizontal_box3, flag=wx.BOTTOM, border=5)
         self.vertical_box1.Add(self.horizontal_box4, flag=wx.BOTTOM, border=5)
         self.vertical_box1.Add(self.horizontal_box5, flag=wx.BOTTOM, border=15)
         self.vertical_box1.Add(self.horizontal_box6, flag=wx.BOTTOM, border=5)
-        
-        
-        
+
+
+
         descr4 = wx.StaticText(self.panel, label='Model & Parameter adjustment', pos=(10, 185))
         descr4.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
         self.horizontal_box6.Add(descr4)
-        
+
         self.model = wx.ListCtrl(self.panel, pos=(20, 220), size=(600, 300), style=wx.LC_REPORT | wx.BORDER_SUNKEN)
         self.model.InsertColumn(0, 'Section', width=125)
-        self.model.InsertColumn(1, 'Morphology', width=100)
-        self.model.InsertColumn(2, 'Channel', width=150)
-        self.model.InsertColumn(3, 'Channel Parameter', width=200)
+        self.model.InsertColumn(1, 'Segment', width=100)
+        self.model.InsertColumn(2, 'Mechanism', width=150)
+        self.model.InsertColumn(3, 'Parameter', width=200)
         self.horizontal_box7.Add(self.model)
-                
+
         self.user_function = wx.Button(self.panel, label="Define Function", pos=(175, 25))
         self.user_function.Bind(wx.EVT_BUTTON, self.UF)
         self.setter = wx.Button(self.panel, label="Set", pos=(650, 385))
@@ -840,29 +905,23 @@ class modelLayer(wx.Frame):
         self.vertical_box2.Add(self.user_function, flag=wx.BOTTOM, border=50)
         self.vertical_box2.Add(self.setter, flag=wx.BOTTOM, border=10)
         self.vertical_box2.Add(self.remover, flag=wx.BOTTOM, border=15)
-        
+
         self.horizontal_box7.Add(self.vertical_box2, flag=wx.LEFT, border=25)
-        
-        self.vertical_box1.Add(self.horizontal_box7) 
-        self.vertical_box3.Add(self.vertical_box1, flag=wx.ALL, border=10)      
+
+        self.vertical_box1.Add(self.horizontal_box7)
+        self.vertical_box3.Add(self.vertical_box1, flag=wx.ALL, border=10)
         self.panel.SetSizer(self.vertical_box3)
-        
-        
-        
-        
-        
-        
-#event functions    
+
+
+#event functions
     def Next(self, e):
-        
-        
-        
+
         try:
-            
+
             #self.core.SecondStep({"stim" : [str(self.dd_type.GetItems()[self.dd_type.GetCurrentSelection()]),float(self.pos_ctrl.GetValue()),str(self.dd_sec1.GetItems()[self.dd_sec1.GetCurrentSelection()])],"stimparam" : [self.stim_window.container,float(self.del_ctrl.GetValue()),float(self.dur_ctrl.GetValue())]})
             self.Hide()
             self.layer.Show()
-            
+
         except ValueError:
             wx.MessageBox('Some of the cells are empty. Please fill out all of them!', 'Error', wx.OK | wx.ICON_ERROR)
             self.Show()
@@ -875,27 +934,38 @@ class modelLayer(wx.Frame):
 #        self.run_controll_sec = options[3]
 #        self.run_controll_pos = options[4]
 #        self.run_controll_vrest = options[5]
-            self.kwargs={"runparam" : [self.core.data_handler.data.t_length,
-                                       self.core.data_handler.data.step,
-                                       "record",
-                                       "sec",
-                                       "pos",
-                                       "vrest"]
-                        }
+
+            if self.core.option_handler.type[-1]!="features":
+                self.kwargs={"runparam" : [self.core.data_handler.data.t_length,
+                                           self.core.data_handler.data.step,
+                                           "record",
+                                           "sec",
+                                           "pos",
+                                           "vrest"]
+                            }
+            else:
+                self.kwargs={"runparam" : [self.core.data_handler.features_data["stim_delay"] + self.core.data_handler.features_data["stim_duration"]+100,
+                                           0.05,
+                                           "record",
+                                           "sec",
+                                           "pos",
+                                           "vrest"]
+                            }
+
             if self.dd_type.GetSelection() == 1:
-                self.layer = ffunctionLayer(self, 4, self.Size, "Select Fitness Function", self.core, self.path, self.kwargs)  
+                self.layer = ffunctionLayer(self, 4, self.Size, "Select Fitness Function", self.core, self.path, self.kwargs)
             else:
                 self.layer = stimuliLayer(self, 2, self.Size, "Stimuli & Recording Settings", self.core, self.path)
             self.Hide()
             self.layer.Show()
         if self.core.option_handler.output_level=="1":
             self.core.Print()
-    
+
     def Prev(self, e):
-       
+
         self.Hide()
         self.parent.Show()
-        
+
     def BrowseFile(self, e):
 
         dlg = wx.FileDialog(self, "Choose a file", self.core.option_handler.base_dir, "", "*.hoc*", style=wx.OPEN)
@@ -907,162 +977,154 @@ class modelLayer(wx.Frame):
             self.spec_file_ctrl.Clear()
             self.spec_file_ctrl.WriteText(self.spec_file)
         dlg.Destroy()
-        
+
     def BrowseDir(self, e):
-        
+
         dlg = wx.DirDialog(self, "Choose a directory", self.core.option_handler.base_dir, style=wx.DD_DEFAULT_STYLE)
         if dlg.ShowModal() == wx.ID_OK:
             self.spec_file_ctrl.Clear()
             self.spec_file = dlg.GetPath()
             self.spec_file_ctrl.WriteText(self.spec_file)
         dlg.Destroy()
-        
+
     def Set(self, e):
         item_selected = self.model.GetFirstSelected()
         if item_selected != -1:
             self.remover.Enable()
             #try to use the table for selection
-            
+
             section = str(self.model.GetItem(item_selected, 0).GetText())
             #
+            segment = str(self.model.GetItem(item_selected, 1).GetText())
             chan = str(self.model.GetItem(item_selected, 2).GetText())
-            if chan == "-":
-                chan = "None"
-            morph = str(self.model.GetItem(item_selected, 1).GetText())
-            if morph == "-":
-                morph = "None"
+            morph=""
             par = str(self.model.GetItem(item_selected, 3).GetText())
-            if par == "-":
-                par = "None"
-    
-            
-              
+            if chan == "morphology":
+                chan = "None"
+                par= "None"
+                morph = str(self.model.GetItem(item_selected, 3).GetText())
+
+
+
             kwargs = {"section" : section,
+                    "segment" : segment,
                     "channel" : chan,
                     "morph" : morph,
                     "params" : par,
                     "values" : 0}
-            
-            searchValue = [kwargs["section"], kwargs["params"], kwargs["morph"]]
-            
-        
+
+            searchValue = [kwargs["section"], kwargs["segment"], kwargs["params"], kwargs["morph"]]
+
+
             if True:
-                
-                for idx in range(self.model.GetItemCount()): 
+
+                for idx in range(self.model.GetItemCount()):
                     item = self.model.GetItem(idx, 3)
-                    item2 = self.model.GetItem(idx, 1)
+                    item1 = self.model.GetItem(idx, 1)
+                    item2 = self.model.GetItem(idx, 2)
                     item0 = self.model.GetItem(idx, 0)
-                    if (item0.GetText() == searchValue[0])and(item.GetText() == searchValue[1] or item2.GetText() == searchValue[2]):
+                    if (item0.GetText() == searchValue[0] and item1.GetText() == searchValue[1])and(item.GetText() == searchValue[2] or item2.GetText() == searchValue[3]):
                         self.model.SetItemBackgroundColour(idx, "red")
-                         
-                        
+
+
                 self.core.SetModel2(kwargs)
             else:
-                for idx in range(self.model.GetItemCount()): 
+                for idx in range(self.model.GetItemCount()):
                     item = self.model.GetItem(idx, 3)
-                    item2 = self.model.GetItem(idx, 1)
+                    item1 = self.model.GetItem(idx, 1)
+                    item2 = self.model.GetItem(idx, 2)
                     item0 = self.model.GetItem(idx, 0)
-                    if (item0.GetText() == searchValue[0])and(item.GetText() == searchValue[1] or item2.GetText() == searchValue[2]):
-                        
-                        self.model.SetItemBackgroundColour(idx, "green") 
-                    
+                    if (item0.GetText() == searchValue[0] and item1.GetText() == searchValue[1])and(item.GetText() == searchValue[2] or item2.GetText() == searchValue[3]):
+
+                        self.model.SetItemBackgroundColour(idx, "green")
+
                 self.core.SetModel(kwargs)
-            
+
             self.toolbar.EnableTool(888, True)
-        
+
     def Remove(self, e):
         item_selected = self.model.GetFirstSelected()
         if item_selected != -1:
             #try to use the table for selection
-            
+
             section = str(self.model.GetItem(item_selected, 0).GetText())
-            
+            #
+            segment = str(self.model.GetItem(item_selected, 1).GetText())
             chan = str(self.model.GetItem(item_selected, 2).GetText())
-            if chan == "-":
-                chan = "None"
-            morph = str(self.model.GetItem(item_selected, 1).GetText())
-            if morph == "-":
-                morph = "None"
+            morph=""
             par = str(self.model.GetItem(item_selected, 3).GetText())
-            if par == "-":
-                par = "None"
-              
+            if chan == "morphology":
+                chan= "None"
+                par= "None"
+                morph = str(self.model.GetItem(item_selected, 3).GetText())
+
             kwargs = {"section" : section,
-                "channel" : chan,
-                "morph" : morph,
-                "params" : par,
-                }
+                    "segment" : segment,
+                    "channel" : chan,
+                    "morph" : morph,
+                    "params" : par}
+
             if kwargs["channel"] == "None":
                 temp = kwargs["section"] + " " + kwargs["morph"]
             else:
-                temp = kwargs["section"] + " " + kwargs["channel"] + " " + kwargs["params"]
+                temp = kwargs["section"] + " " + kwargs["segment"] +  " " + kwargs["channel"] + " " + kwargs["params"]
             self.core.option_handler.param_vals.pop(self.core.option_handler.GetObjTOOpt().index(temp))
             self.core.option_handler.adjusted_params.remove(temp)
             if len(self.core.option_handler.GetObjTOOpt()) == 0:
                 self.remover.Disable()
-            searchValue = [kwargs["section"], kwargs["params"], kwargs["morph"]]
-            for idx in range(self.model.GetItemCount()): 
+            searchValue = [kwargs["section"], kwargs["segment"], kwargs["params"], kwargs["morph"]]
+            for idx in range(self.model.GetItemCount()):
                 item = self.model.GetItem(idx, 3)
-                item2 = self.model.GetItem(idx, 1)
+                item1 = self.model.GetItem(idx, 1)
+                item2 = self.model.GetItem(idx, 2)
                 item0 = self.model.GetItem(idx, 0)
-                if (item0.GetText() == searchValue[0])and(item.GetText() == searchValue[1] or item2.GetText() == searchValue[2]):
-                    
-                    self.model.SetItemBackgroundColour(idx, "white") 
-        
-                
-                        
-        
-        
-    
-                
+                if (item0.GetText() == searchValue[0] and item1.GetText() == searchValue[1])and(item.GetText() == searchValue[2] or item2.GetText() == searchValue[3]):
+
+                    self.model.SetItemBackgroundColour(idx, "white")
+
+
     def Load(self, e):
-        
-        
+
+
         self.model.DeleteAllItems()
         try:
             self.core.LoadModel({"model" : [self.model_file, self.spec_file],
                                  "simulator" : self.dd_type.GetItems()[self.dd_type.GetSelection()],
                                  "sim_command" : self.sim_path.GetValue()})
-    
+
             temp = self.core.model_handler.GetParameters()
             #print temp
             if temp!=None:
                 out = open("model.txt", 'w')
-                
+
                 for i in temp:
                     out.write(str(i))
                     out.write("\n")
-                    
+
                 index = 0
                 for row in temp:
                     #self.model.InsertStringItem(index,row[0])
-                    for k in split(row[1], ", "):
-                        self.model.InsertStringItem(index, row[0])
-                        self.model.SetStringItem(index, 1, k)
-                        self.model.SetStringItem(index, 2, "-")
-                        self.model.SetStringItem(index, 3, "-")
-                        index += 1
-                        
-                    #index+=1
-                    for k in split(row[2], " "):
-                        if k != "":
-                            self.model.InsertStringItem(index, row[0])
-                            self.model.SetStringItem(index, 3, k)
-                            for s in split(row[3], " "):
-                                if count(k, s) == 1 and s != "":
-                                    self.model.SetStringItem(index, 2, s)
-                                    self.model.SetStringItem(index, 1, "-")
-                            index += 1
+                    #print row[1]
+                    for k in (row[1]):
+                        if k != []:
+                            #.model.InsertStringItem(index, row[0])
+                            #self.model.SetStringItem(index, 2, k[0])
+                            for s in (k[2]):
+                                self.model.InsertStringItem(index, row[0])
+                                self.model.SetStringItem(index, 1, str(k[0]))
+                                self.model.SetStringItem(index, 2, k[1])
+                                self.model.SetStringItem(index, 3, s)
+
+                                index += 1
             else:
                 self.toolbar.EnableTool(888, True)
         except OSError:
             wx.MessageBox('Path error! Please use absolute path!', 'Error', wx.OK | wx.ICON_ERROR)
-                        
-                    
-            
+
+
     def selectType(self, e):
         #edit number according the number of options in the construction of dd_type
-        if self.dd_type.GetSelection() == 1:        
+        if self.dd_type.GetSelection() == 1:
             self.spec_file_ctrl.Disable()
             self.model_file_ctrl.Disable()
             #self.load.Disable()
@@ -1072,7 +1134,7 @@ class modelLayer(wx.Frame):
             self.setter.Disable()
             self.sim_path.Enable()
             self.load.SetLabel("Set")
-            
+
         else:
             self.spec_file_ctrl.Enable()
             self.model_file_ctrl.Enable()
@@ -1080,16 +1142,16 @@ class modelLayer(wx.Frame):
             self.browser1.Enable()
             self.browser2.Enable()
             self.user_function.Enable()
-            self.setter.Enable() 
+            self.setter.Enable()
             self.sim_path.Disable()
             self.load.SetLabel("Load")
-        
-    
+
+
     def UF(self, e):
-        
+
         dlg = MyDialog(self, self.parent, size=(600, 450), title="User Defined Function")
         dlg.ShowModal()
-            
+
     def my_close(self, e):
         wx.Exit()
 
@@ -1100,19 +1162,19 @@ class stimuliLayer(wx.Frame):
         self.core = core
         self.panel = wx.Panel(self)
         self.parent = parent
-        
+
         #this will need to be wrapped in a try statement later:
         import optimizer
         #print optimizer.__file__
         path = os.path.dirname(optimizer.__file__)
-        
+
         self.path = path
         #print "path",self.path
         self.Center()
         self.ToolbarCreator()
         self.Design()
         self.seed = None
-        
+
         self.toolbar.EnableTool(wx.ID_FORWARD, True)
         self.layer = None
 
@@ -1124,17 +1186,17 @@ class stimuliLayer(wx.Frame):
         self.Bind(wx.EVT_TOOL, self.Next, button_toolbar_fward)
         self.Bind(wx.EVT_TOOL, self.Prev, button_toolbar_bward)
         self.toolbar.EnableTool(wx.ID_FORWARD, False)
-    
+
     def Design(self):
         self.column1 = wx.BoxSizer(wx.VERTICAL)
         self.column2 = wx.BoxSizer(wx.VERTICAL)
         self.final_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        
+
         descr3 = wx.StaticText(self.panel, label='Stimulation Settings')
         descr3.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
         self.column1.Add(descr3)
-        
-        
+
+
         descr5 = wx.StaticText(self.panel, label='Stimulation protocol')
         self.dd_type = wx.Choice(self.panel, wx.ID_ANY, size=(150, 30))
         self.dd_type.AppendItems(["IClamp", "VClamp"])
@@ -1142,9 +1204,9 @@ class stimuliLayer(wx.Frame):
         self.dd_type.Bind(wx.EVT_CHOICE, self.protocolSelection)
         self.column1.Add(descr5, flag=wx.UP, border=15)
         self.column1.Add(self.dd_type, flag=wx.UP, border=5)
-        
-        
-        
+
+
+
         self.stimuli_type=wx.Choice(self.panel,wx.ID_ANY,size=(150,30))
         self.stimuli_type.AppendItems(["Step Protocol", "Custom Waveform"])
         self.stimuli_type.Bind(wx.EVT_CHOICE, self.typeChange)
@@ -1152,13 +1214,13 @@ class stimuliLayer(wx.Frame):
         descr7 = wx.StaticText(self.panel, label='Stimulus Type')
         self.column1.Add(descr7, flag=wx.UP, border=15)
         self.column1.Add(self.stimuli_type, flag=wx.UP, border=5)
-        
+
         #remove this label
         #descr7 = wx.StaticText(self.panel, label='Amplitude')
         self.stimuli = wx.Button(self.panel, label="Amplitude(s)")
         self.stimuli.Bind(wx.EVT_BUTTON, self.Stimuli)
-        
-        
+
+
         tmp_sizer2=wx.BoxSizer(wx.HORIZONTAL)
         tmp_sizer2.Add(self.stimuli)
         self.stimuli2 = wx.Button(self.panel, label="Load Waveform")
@@ -1167,17 +1229,22 @@ class stimuliLayer(wx.Frame):
         self.stimuli2.Hide()
         tmp_sizer2.Add(self.stimuli2)
         self.column1.Add(tmp_sizer2, flag=wx.UP, border=15)
-        
+
         descr8 = wx.StaticText(self.panel, label='Delay (ms)')
         self.del_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="Value")
         self.column1.Add(descr8, flag=wx.UP, border=15)
         self.column1.Add(self.del_ctrl, flag=wx.UP, border=5)
-        
+        if self.core.option_handler.type[-1]=="features":
+            self.del_ctrl.SetValue(str(self.core.data_handler.features_data["stim_delay"]))
+
+
         descr9 = wx.StaticText(self.panel, label='Duration (ms)')
         self.dur_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="Value")
         self.column1.Add(descr9, flag=wx.UP, border=15)
         self.column1.Add(self.dur_ctrl, flag=wx.UP, border=5)
-        
+        if self.core.option_handler.type[-1]=="features":
+            self.dur_ctrl.SetValue(str(self.core.data_handler.features_data["stim_duration"]))
+
         descr6 = wx.StaticText(self.panel, label='Section')
         self.dd_sec1 = wx.Choice(self.panel, wx.ID_ANY, size=(150, 30))
         self.dd_sec1.Bind(wx.EVT_CHOICE, self.secChange)
@@ -1190,36 +1257,36 @@ class stimuliLayer(wx.Frame):
                 self.dd_sec1.Select(tmp.index("soma"))
             except ValueError:
                 self.dd_sec1.Select(0)
-        
+
         self.column1.Add(descr6, flag=wx.UP, border=15)
         self.column1.Add(self.dd_sec1, flag=wx.UP, border=5)
-        
+
         descr10 = wx.StaticText(self.panel, label='Position inside the section')
         self.pos_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="Value")
         self.pos_ctrl.SetValue("0.5")
         self.pos_ctrl.Bind(wx.EVT_TEXT, self.posChange)
         self.column1.Add(descr10, flag=wx.UP, border=15)
         self.column1.Add(self.pos_ctrl, flag=wx.UP, border=5)
-        
+
         self.final_sizer.Add(self.column1, flag=wx.LEFT, border=15)
-        
-        
+
+
         descr7 = wx.StaticText(self.panel, label='Parameter to record')
         self.dd_record = wx.Choice(self.panel, wx.ID_ANY, size=(100, 30))
         self.dd_record.AppendItems(["v", "i"])
         self.dd_record.Select(0)
         self.column2.Add(descr7, flag=wx.UP, border=35)
         self.column2.Add(self.dd_record, flag=wx.UP, border=5)
-        
-        
+
+
         descr6 = wx.StaticText(self.panel, label='Position')
         self.pos_ctrl2 = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="pos")
         self.pos_ctrl2.SetValue("0.5")
-        
+
         descr8 = wx.StaticText(self.panel, label='Section')
         self.dd_sec = wx.Choice(self.panel, wx.ID_ANY, size=(100, 30))
         self.dd_sec.AppendItems(tmp)
-        
+
         try:
             self.dd_sec.Select(tmp.index("Soma"))
         except ValueError:
@@ -1231,46 +1298,49 @@ class stimuliLayer(wx.Frame):
         self.column2.Add(self.dd_sec, flag=wx.UP, border=5)
         self.column2.Add(descr6, flag=wx.UP, border=15)
         self.column2.Add(self.pos_ctrl2, flag=wx.UP, border=5)
-        
-        
-        
+
+
+
         descr1 = wx.StaticText(self.panel, label='Run Control')
         descr1.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
         self.column2.Add(descr1,flag=wx.UP, border=25)
-               
+
         descr3 = wx.StaticText(self.panel, label='Initial Voltage (mV)')
-        self.vrest_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="vrest")        
+        self.vrest_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="vrest")
         self.vrest_ctrl.SetValue("-65")
         self.column2.Add(descr3, flag=wx.UP, border=15)
         self.column2.Add(self.vrest_ctrl, flag=wx.UP, border=5)
-        
-        
+
+
         descr4 = wx.StaticText(self.panel, label='tstop (ms)')
         self.tstop_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="tstop")
-        self.tstop_ctrl.SetValue(str(self.core.data_handler.data.t_length))
+        if self.core.option_handler.type[-1]!="features":
+            self.tstop_ctrl.SetValue(str(self.core.data_handler.data.t_length))
+        else:
+            self.tstop_ctrl.SetValue(str(self.core.data_handler.features_data["stim_delay"] + self.core.data_handler.features_data["stim_duration"]+100))
         self.column2.Add(descr4, flag=wx.UP, border=15)
         self.column2.Add(self.tstop_ctrl, flag=wx.UP, border=5)
-        
+
         descr5 = wx.StaticText(self.panel, label='dt')
         self.dt_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="dt")
         self.dt_ctrl.SetValue(str(0.05))
         self.column2.Add(descr5, flag=wx.UP, border=15)
         self.column2.Add(self.dt_ctrl, flag=wx.UP, border=5)
 
-        
-                
-        
+
+
+
         self.final_sizer.Add(self.column2, flag=wx.LEFT, border=75)
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
         self.panel.SetSizer(self.final_sizer)
 
-     
-        
+
+
     def typeChange(self,e):
         if self.stimuli_type.GetSelection()==0:#step prot
             self.stimuli.Enable()
@@ -1292,7 +1362,7 @@ class stimuliLayer(wx.Frame):
             self.stimuli2.Show()
             self.final_sizer.Layout()
             #hide step button
-            
+
     def protocolSelection(self,e):
         if self.dd_type.GetSelection()==1:
             self.dd_sec.Disable()
@@ -1301,20 +1371,20 @@ class stimuliLayer(wx.Frame):
         else:
             self.dd_sec.Enable()
             self.pos_ctrl2.Enable()
-            
+
     def secChange(self,e):
         if self.dd_type.GetSelection()==1:
             self.dd_sec.SetSelection(self.dd_sec1.GetSelection())
-        
+
     def posChange(self,e):
         if self.dd_type.GetSelection()==1:
             self.pos_ctrl2.SetValue(self.pos_ctrl.GetValue())
-        
+
     def Stimuli(self, e):
-        self.stim_window = stimuliwindow(self)
-           
+        self.stim_window = stimuliwindow(self, self.core)
+
     def Stimuli2(self,e):
-        self.stim_window = stimuliwindow2(self) 
+        self.stim_window = stimuliwindow2(self)
         dlg = wx.FileDialog(self, "Choose a file", os.getcwd(), "", "*.*", style=wx.OPEN)
         if dlg.ShowModal() == wx.ID_OK:
             input_file = dlg.GetDirectory() + "/" + dlg.GetFilename()
@@ -1324,7 +1394,7 @@ class stimuliLayer(wx.Frame):
 #        self.del_ctrl.Disable()
 #        self.dur_ctrl.SetValue("0")
 #        self.dur_ctrl.Disable()
-    
+
     def Next(self, e):
         try:
             self.core.SecondStep({"stim" : [str(self.dd_type.GetItems()[self.dd_type.GetCurrentSelection()]), float(self.pos_ctrl.GetValue()), str(self.dd_sec1.GetItems()[self.dd_sec1.GetCurrentSelection()])],
@@ -1353,11 +1423,11 @@ class stimuliLayer(wx.Frame):
             #self.layer.Design()
             self.layer.Show()
         self.Hide()
-        
+
     def Prev(self, e):
         self.Hide()
         self.parent.Show()
-        
+
     def my_close(self, e):
         wx.Exit()
 
@@ -1369,7 +1439,7 @@ class stimuliLayer(wx.Frame):
 
 #optimizer settings
 #fittnes function settings
-#might need new interface        
+#might need new interface
 class ffunctionLayer(wx.Frame):
     def __init__(self, parent, ID, size, title, core, path, kwargs):
         wx.Frame.__init__(self, parent, ID, title=title, size=size)
@@ -1380,16 +1450,16 @@ class ffunctionLayer(wx.Frame):
 
         #this will need to be wrapped in a try statement later:
         import optimizer
-        #print optimizer.__file__        
+        #print optimizer.__file__
         path = os.path.dirname(optimizer.__file__)
-        
+
         self.path = path
         self.Center()
         self.ToolbarCreator()
         self.Design()
         self.seed = None
         self.kwargs = kwargs
-        
+
         #print "ffun",kwargs
         self.layer = None
 
@@ -1401,42 +1471,52 @@ class ffunctionLayer(wx.Frame):
         self.Bind(wx.EVT_TOOL, self.Next, button_toolbar_fward)
         self.Bind(wx.EVT_TOOL, self.Prev, button_toolbar_bward)
         self.toolbar.EnableTool(wx.ID_FORWARD, True)
-    
+
     def Design(self):
-        
+
         self.column1 = wx.BoxSizer(wx.VERTICAL)
         self.column2 = wx.BoxSizer(wx.VERTICAL)
         self.row0 = wx.BoxSizer(wx.HORIZONTAL)
 
         descr0 = wx.StaticText(self.panel, label='Fitness Functions')
         descr0.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
-        
+
         descr1 = wx.StaticText(self.panel, label='Weights')
-        
+
         self.row0.Add(descr1)
-        
+
         #descr2 = wx.StaticText(self.panel, label='Normalized Weights')
 
-        
+
         #self.row0.Add(descr2, flag=wx.LEFT, border=10)
-        
+
         descr3 = wx.StaticText(self.panel, label='Function Parameters')
         descr3.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
-        
+
         self.row0.Add(descr3, flag=wx.LEFT, border=10)
         self.column2.Add(self.row0, flag=wx.BOTTOM, border=8)
-        self.my_list = copy(self.core.ffun_calc_list)
-        #self.my_list=["ffun1","ffun","ffun3"]
+
+        if self.core.option_handler.type[-1]!="features":
+            self.my_list = copy(self.core.ffun_calc_list)
+            #self.my_list=["ffun1","ffun","ffun3"]
+        else:
+            self.my_list=self.core.data_handler.features_data.keys()[3:-1]
         self.param_list = [[]] * len(self.my_list)
-        self.param_list[2] = [("Spike Detection Thres. (mv)",0.0)]
-        self.param_list[1] = [("Spike Detection Thres. (mv)",0.0), ("Spike Window (ms)",1.0)]
+        if self.core.option_handler.type[-1]!="features":
+            self.param_list[2] = [("Spike Detection Thres. (mv)",0.0)]
+            self.param_list[1] = [("Spike Detection Thres. (mv)",0.0), ("Spike Window (ms)",1.0)]
+        else:
+            self.param_list[0] = [("Spike Detection Thres. (mv)",0.0)]
         self.param_list_container = []
         self.weights = []
         #self.norm_weights = []
         tmp = []
-        for f in self.param_list:
+        #for f in self.param_list:
+        for i, f in enumerate(self.param_list):
             self.row1 = wx.BoxSizer(wx.HORIZONTAL)
             tmp_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(50, 25))
+            if self.core.option_handler.type[-1]=="features":
+                tmp_ctrl.SetValue(str(self.core.data_handler.features_data[self.my_list[i]]["weight"]))
             tmp_ctrl.Disable()
             self.weights.append(tmp_ctrl)
             self.row1.Add(tmp_ctrl)
@@ -1447,7 +1527,8 @@ class ffunctionLayer(wx.Frame):
             for p in f:
                 tmp_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(50, 25))
                 tmp_ctrl.SetValue(str(p[1]))
-                tmp_ctrl.Disable()
+                if self.core.option_handler.type[-1]!="features":
+                    tmp_ctrl.Disable()
                 tmp.append(tmp_ctrl)
                 descr4 = wx.StaticText(self.panel, label=p[0])
                 self.row1.Add(descr4, flag=wx.LEFT, border=20)
@@ -1457,7 +1538,7 @@ class ffunctionLayer(wx.Frame):
             tmp = []
         self.listbox = wx.CheckListBox(self.panel, wx.ID_ANY,size=(250,30*len(self.my_list)),choices=self.my_list)
         #lb_size=self.listbox.GetSize()
-        
+
         #self.listbox.SetSize((200,lb_size[1]))
         self.listbox.SetFont(wx.Font(12,wx.FONTFAMILY_DEFAULT,wx.FONTSTYLE_NORMAL,wx.FONTWEIGHT_BOLD))
         self.listbox.Bind(wx.EVT_CHECKLISTBOX, self.FunSelect)
@@ -1472,10 +1553,10 @@ class ffunctionLayer(wx.Frame):
         self.final_sizer = wx.BoxSizer(wx.HORIZONTAL)
         self.final_sizer.Add(self.column1, flag=wx.LEFT, border=10)
         self.final_sizer.Add(self.column2, flag=wx.LEFT, border=10)
-        
+
         self.SetSizer(self.final_sizer)
 
-            
+
     def Normalize(self, e):
         is_enabled = filter(lambda x: x[1].IsEnabled(), enumerate(self.weights))
         tmp = []
@@ -1490,43 +1571,54 @@ class ffunctionLayer(wx.Frame):
                 self.weights[n[0]].SetValue(str(float(n[1].GetValue()) / float(sum_o_weights)))
             except ValueError:
                 continue
-        
+
     def FunSelect(self, e):
-        
+
         for i, n in enumerate(self.listbox.GetItems()):
             if i in self.listbox.Checked:
                 try:
-                    for p in self.param_list_container[i]:
-                        p.Enable()
+                    if self.core.option_handler.type[-1]!="features":
+                        for p in self.param_list_container[i]:
+                            p.Enable()
                     self.weights[i].Enable()
                     #self.norm_weights[i].Enable()
                 except IndexError:
                     break
             else:
                 try:
-                    for p in self.param_list_container[i]:
-                        p.Disable()
+                    if self.core.option_handler.type[-1]!="features":
+                        for p in self.param_list_container[i]:
+                            p.Disable()
                     self.weights[i].Disable()
                     #self.norm_weights[i].Disable()
                 except IndexError:
                     break
-                
-            
-           
+
+
+
     def Next(self, e):
-            
+
         tmp_dict = {}
         for fun, fun_name in zip(self.param_list_container, self.param_list):
             for f, f_n in zip(fun, fun_name):
                 if f.IsEnabled():
                     tmp_dict.update({f_n[0] : float(f.GetValue())})
         #print tmp_dict
-        self.kwargs.update({"feat":
-                            [tmp_dict,
-                             [self.core.ffun_calc_list[fun[0]] for fun in filter(lambda x: x[1].IsEnabled(), enumerate(self.weights))]]
-                            })
-        self.kwargs.update({"weights" : [float(w.GetValue()) for w in filter(lambda x: x.IsEnabled(), self.weights)]})
-        if not(0.99<sum(self.kwargs["weights"])<=1):
+        if self.core.option_handler.type[-1]!="features":
+            self.kwargs.update({"feat":
+                                [tmp_dict,
+                                 [self.core.ffun_calc_list[fun[0]] for fun in filter(lambda x: x[1].IsEnabled(), enumerate(self.weights))]]
+                                })
+            self.kwargs.update({"weights" : [float(w.GetValue()) for w in filter(lambda x: x.IsEnabled(), self.weights)]})
+        else:
+            #self.my_list=self.core.data_handler.features_data.keys()[3:-1]
+            self.kwargs.update({"feat":
+                                [tmp_dict,
+                                 [self.my_list[fun[0]] for fun in filter(lambda x: x[1].IsEnabled(), enumerate(self.weights))]]
+                                })
+            self.kwargs.update({"weights" : [float(w.GetValue()) for w in filter(lambda x: x.IsEnabled(), self.weights)]})
+
+        if not(0.99<sum(self.kwargs["weights"])<=1.01):
             dlg = wx.MessageDialog(self, "You did not normalize your weights!\nDo you want to continue?",'Warning', wx.YES_NO | wx.ICON_QUESTION)
             b_id=dlg.ShowModal()
             if  b_id== wx.ID_YES:
@@ -1546,7 +1638,7 @@ class ffunctionLayer(wx.Frame):
             self.layer.Show()
             self.layer.Design()
         self.Hide()
-        
+
     def Prev(self, e):
 #        self.Hide()
 #        tmp=self.parent
@@ -1558,8 +1650,9 @@ class ffunctionLayer(wx.Frame):
 #        self.parent.Show()
         self.parent.Show()
         self.Hide()
-        
-        
+        self.Destroy()
+
+
     def my_close(self, e):
         wx.Exit()
 
@@ -1580,8 +1673,8 @@ class algorithmLayer(wx.Frame):
         self.num_of_ctrl=None
         self.kwargs=kwargs
         #print "algo",kwargs
-        
-        
+
+
         self.layer=None
 
     def ToolbarCreator(self):
@@ -1592,7 +1685,7 @@ class algorithmLayer(wx.Frame):
         self.Bind(wx.EVT_TOOL, self.Next, button_toolbar_fward)
         self.Bind(wx.EVT_TOOL, self.Prev, button_toolbar_bward)
         self.toolbar.EnableTool(wx.ID_FORWARD,True)
-    
+
     def Design(self):
         self.column1=wx.BoxSizer(wx.VERTICAL)
         self.column2=wx.BoxSizer(wx.VERTICAL)
@@ -1600,22 +1693,23 @@ class algorithmLayer(wx.Frame):
         self.sub_row=wx.BoxSizer(wx.HORIZONTAL)
         self.sub_row2=wx.BoxSizer(wx.HORIZONTAL)
         self.final_sizer=wx.BoxSizer(wx.HORIZONTAL)
-        
+
         descr2 = wx.StaticText(self.panel, label='Optimizer Settings')
         descr2.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
         self.column1.Add(descr2)
-        
-        
+
+
         descr18 = wx.StaticText(self.panel, label='Random seed:')
         self.seed_ctrl=wx.TextCtrl(self.panel,id=wx.ID_ANY,size=(100,30),name="seed")
         self.seed_ctrl.SetValue("1234")
         self.column1.Add(descr18,flag=wx.UP,border=15)
         self.column1.Add(self.seed_ctrl,flag=wx.UP,border=5)
-        
+
         descr22 = wx.StaticText(self.panel, label='Algorithm:')
         self.dd_evo=wx.Choice(self.panel,wx.ID_ANY,size=(175,30))
         self.dd_evo.Append("Classical EO")
         self.dd_evo.Append("Simulated Annealing")
+	self.dd_evo.Append("Particle Swarm")
         self.dd_evo.Append("Basinhopping")
         self.dd_evo.Append("Nelder-Mead")
         self.dd_evo.Append("L-BFGS-B")
@@ -1631,29 +1725,29 @@ class algorithmLayer(wx.Frame):
         self.run.Disable()
         self.run.Bind(wx.EVT_BUTTON, self.Run)
         self.sub_row2.Add(self.run)
-        
+
         self.boundaries=wx.Button(self.panel,label="Boundaries")
         self.boundaries.Bind(wx.EVT_BUTTON, self.Boundaries)
         self.sub_row.Add(self.boundaries)
-        
+
         self.starting_points=wx.Button(self.panel,label="Starting Points")
         self.starting_points.Bind(wx.EVT_BUTTON, self.Seed)
         self.sub_row.Add(self.starting_points,flag=wx.LEFT,border=15)
-        
-        
+
+
         self.column1.Add(self.sub_row,flag=wx.UP,border=15)
         self.column1.Add(self.sub_row2,flag=wx.UP,border=15)
-        
-        descr24 = wx.StaticText(self.panel, label='Number of parameters to optimize:'+str(len(self.core.option_handler.GetObjTOOpt())))      
+
+        descr24 = wx.StaticText(self.panel, label='Number of parameters to optimize:'+str(len(self.core.option_handler.GetObjTOOpt())))
         self.column1.Add(descr24,flag=wx.UP,border=15)
-        
+
         #self.column2.Add(self.sub_panel,flag=wx.EXPAND)
         self.final_sizer.Add(self.column1,flag=wx.LEFT,border=5)
-        
+
         self.SetSizer(self.final_sizer)
         self.final_sizer.Layout()
-        
-    
+
+
     def Algo_Select(self,e):
         descr19 = ('Size of Population:',100)
         descr20 = ('Number of Generations:',100)
@@ -1670,24 +1764,34 @@ class algorithmLayer(wx.Frame):
         descr33 = ('Number of Repetition:',100)
         descr30 = ('Error Tolerance for x:',0.0001)
         descr31 = ('Error Tolerance for f:',0.0001)
-        
+	descr34 = ('Inertia:', 0.5)
+	descr35 = ('Cognitive Rate:', 2.1)
+	descr36 = ("Social Rate:",2.1)
+	descr37 = ('Neighborhood Size:', 5)
+	descr38 = ('Topology:')
+
+
         while(self.num_of_ctrl>0):
             self.column2.Hide(self.num_of_ctrl-1)
             self.column2.Remove(self.num_of_ctrl-1)
             self.num_of_ctrl-=1
             self.SetSizer(self.final_sizer)
             self.final_sizer.Layout()
+
         self.final_sizer.Hide(1)
         self.final_sizer.Remove(1)
+
         self.SetSizer(self.final_sizer)
         self.final_sizer.Layout()
 
         self.column2=wx.BoxSizer(wx.VERTICAL)
         selected_algo=self.dd_evo.GetItems()[self.dd_evo.GetSelection()]
-        if selected_algo=="Classical EO":                             
+        if selected_algo=="Classical EO":
             alg=[descr19,descr20,descr21]
         elif selected_algo=="Simulated Annealing":
             alg=[descr20,descr21,descr22,descr23,descr24,descr26]
+	elif selected_algo=="Particle Swarm":
+            alg=[descr19,descr20,descr34,descr35,descr36,descr37]
         elif selected_algo=="Basinhopping":
             alg=[descr32,descr33,descr25,descr27,descr29]
         elif selected_algo=="Nelder-Mead":
@@ -1698,12 +1802,16 @@ class algorithmLayer(wx.Frame):
             alg=[descr19,descr20,descr21]
         elif selected_algo=="Random Search":
             alg=[descr19]
-            
-        
+
+
         self.algo_param=[]
         for i in range(len(alg)):
-            tmp=wx.TextCtrl(self.panel,id=wx.ID_ANY,size=(100,30))
-            tmp.SetValue(str(alg[i][1]))
+	    if alg[i]==descr38:
+		tmp=wx.Choice(self.panel,wx.ID_ANY,size=(100,30),choices=["Ring","Star"])
+
+	    else:
+            	tmp=wx.TextCtrl(self.panel,id=wx.ID_ANY,size=(100,30))
+            	tmp.SetValue(str(alg[i][1]))
             self.algo_param.append((tmp,alg[i][0]))
             self.column2.Add(wx.StaticText(self.panel,label=alg[i][0]),flag=wx.UP,border=15)
             self.column2.Add(tmp,flag=wx.UP,border=5)
@@ -1712,15 +1820,15 @@ class algorithmLayer(wx.Frame):
                 tmp.SetValue(str(value))
             elif self.kwargs.get("algo_options",{}).get(alg[i][0],None)!=None:
                 tmp.SetValue(str(self.kwargs.get("algo_options",{}).get(alg[i][0],None)))
-        
-        
+
+
         self.final_sizer.Add(self.column2,flag=wx.LEFT,border=100)
         self.SetSizer(self.final_sizer)
         self.final_sizer.Layout()
         self.run.Enable()
-        
-        
-        
+
+
+
     def Seed(self, e):
         num_o_params=len(self.core.option_handler.GetObjTOOpt())
         seeds = []
@@ -1736,15 +1844,15 @@ class algorithmLayer(wx.Frame):
         #   seeds=None
         self.seed = seeds
         #print self.seed
-            
 
-            
-            
+
+
+
     def Boundaries(self, e):
         boundarywindow(self)
-        #self.run.Enable()     
-              
-    
+        #self.run.Enable()
+
+
     def Run(self, e):
         try:
             tmp = {"seed" : float(self.seed_ctrl.GetValue()),
@@ -1753,7 +1861,7 @@ class algorithmLayer(wx.Frame):
             for n in self.algo_param:
                 tmp.update({str(n[1]) : float(n[0].GetValue())})
             tmp.update({
-                "num_inputs" : len(self.core.option_handler.GetObjTOOpt()),
+                "num_params" : len(self.core.option_handler.GetObjTOOpt()),
                 "boundaries" : self.core.option_handler.boundaries ,
                 "starting_points" : self.seed
                 })
@@ -1765,7 +1873,7 @@ class algorithmLayer(wx.Frame):
         if self.core.option_handler.output_level=="1":
             self.core.Print()
         #[map(float,map(wxTextCtrl.GetValue,fun)) for fun in self.param_list_container]
-        
+
         if self.core.option_handler.output_level=="1":
             print self.kwargs
         try:
@@ -1779,11 +1887,11 @@ class algorithmLayer(wx.Frame):
         except sizeError as sE:
             wx.MessageBox("There was an error during the optimization: "+sE.m, 'Error', wx.OK | wx.ICON_EXCLAMATION)
 
-        
+
             #except ValueError:
             #wx.MessageBox('Some of the cells are empty. Please fill out all of them!', 'Error', wx.OK|wx.ICON_ERROR)
 
-           
+
     def Next(self, e):
         try:
             self.layer.Show()
@@ -1795,12 +1903,13 @@ class algorithmLayer(wx.Frame):
             self.layer.Show()
             #self.layer.Design()
         self.Hide()
-        
+
     def Prev(self, e):
+
         self.Hide()
         self.parent.Show()
         self.Destroy()
-        
+
     def my_close(self, e):
         wx.Exit()
 
@@ -1815,7 +1924,7 @@ class resultsLayer(wx.Frame):
 
         #this will need to be wrapped in a try statement later:
         import optimizer
-        #print optimizer.__file__        
+        #print optimizer.__file__
         path = os.path.dirname(optimizer.__file__)
 
         self.path = path
@@ -1834,22 +1943,27 @@ class resultsLayer(wx.Frame):
         self.Center()
         self.ToolbarCreator()
         self.Design()
-            
-        
 
-        
+
+
+
     def Design(self):
         heading = wx.StaticText(self.panel, label='Final Result', pos=(10, 15))
         heading.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
         text = "Results:"
         for n, k in zip(self.core.option_handler.GetObjTOOpt(), self.core.optimizer.fit_obj.ReNormalize(self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)])):
-            param=[n.split()[0], n.split()[-1]]
-            if param[0]!=param[1]:
-                text += "\n" + ": ".join(param) + "\n" + "\t" + str(k)
-            else:
+            if n.split()[0]==n.split()[-1]:
+                param=[n.split()[0], n.split()[-1]]
                 text += "\n" + param[0] + "\n" + "\t" + str(k)
+            else:
+                param=[n.split()[0], "segment: " + n.split()[1], n.split()[-1]]
+                #print param
+                if n.split()[1]!=n.split()[-1]:
+                    text += "\n" + ": \n".join(param) + ":" + "\n" + "\t" + str(k)
+                else:
+                    text += "\n" + param[0] + ": " + param[-1] + "\n" + "\t" + str(k)
         text += "\n" + "fitness:\n" + "\t" + str(self.core.optimizer.final_pop[0].fitness)
-        
+
         wx.StaticText(self.panel, label=text, pos=(10, 40))
         wx.StaticLine(self.panel, pos=(1, 0), size=(self.Size[0], 1))
         wx.StaticLine(self.panel, pos=(200, 0), size=(1, self.GetSize()[1]), style=wx.LI_VERTICAL)
@@ -1862,32 +1976,58 @@ class resultsLayer(wx.Frame):
         canvas.Show()
         exp_data = []
         model_data = []
-        for n in range(self.core.data_handler.number_of_traces()):
-            exp_data.extend(self.core.data_handler.data.GetTrace(n))
-            model_data.extend(self.core.final_result[n])
-        no_traces=self.core.data_handler.number_of_traces()
-        t = self.core.option_handler.input_length
-        step = self.core.option_handler.run_controll_dt
-        axes.set_xticks([n for n in range(0, int((t*no_traces)/(step)), int((t*no_traces)/(step)/5.0)) ])
-        axes.set_xticklabels([str(n) for n in range(0, t*no_traces, (t*no_traces)/5)])
 
-        axes.set_xlabel("time [ms]")
-        _type=self.core.data_handler.data.type
-        unit="mV" if _type=="voltage" else "nA" if _type=="current" else ""
-        axes.set_ylabel(_type+" [" + unit + "]")
-        axes.plot(range(0, len(exp_data)), exp_data)
-        axes.plot(range(0, len(model_data)), model_data, 'r')
-        axes.legend(["target", "model"])
-        figure.savefig("result_trace.png", dpi=None, facecolor='w', edgecolor='w',
-        orientation='portrait', papertype=None, format=None,
-        transparent=False, bbox_inches=None, pad_inches=0.1)
-        figure.savefig("result_trace.eps", dpi=None, facecolor='w', edgecolor='w')
-        figure.savefig("result_trace.svg", dpi=None, facecolor='w', edgecolor='w')
-        param_save=wx.Button(self.panel,id=wx.ID_ANY,label="Save\nParameters",pos=(105,5),size=(90,50))
-        param_save.Bind(wx.EVT_BUTTON,self.SaveParam)
+        if self.core.option_handler.type[-1]!="features":
+            for n in range(self.core.data_handler.number_of_traces()):
+                exp_data.extend(self.core.data_handler.data.GetTrace(n))
+                model_data.extend(self.core.final_result[n])
+            no_traces=self.core.data_handler.number_of_traces()
+            t = self.core.option_handler.input_length
+            step = self.core.option_handler.run_controll_dt
+            axes.set_xticks([n for n in range(0, int((t*no_traces)/(step)), int((t*no_traces)/(step)/5.0)) ])
+            axes.set_xticklabels([str(n) for n in range(0, t*no_traces, (t*no_traces)/5)])
 
-        
-        
+            axes.set_xlabel("time [ms]")
+            _type=self.core.data_handler.data.type
+            unit="mV" if _type=="voltage" else "nA" if _type=="current" else ""
+            axes.set_ylabel(_type+" [" + unit + "]")
+            axes.plot(range(0, len(exp_data)), exp_data)
+            axes.plot(range(0, len(model_data)), model_data, 'r')
+            axes.legend(["target", "model"])
+            figure.savefig("result_trace.png", dpi=None, facecolor='w', edgecolor='w',
+            orientation='portrait', papertype=None, format=None,
+            transparent=False, bbox_inches=None, pad_inches=0.1)
+            figure.savefig("result_trace.eps", dpi=None, facecolor='w', edgecolor='w')
+            figure.savefig("result_trace.svg", dpi=None, facecolor='w', edgecolor='w')
+            param_save=wx.Button(self.panel,id=wx.ID_ANY,label="Save\nParameters",pos=(105,5),size=(90,50))
+            param_save.Bind(wx.EVT_BUTTON,self.SaveParam)
+
+        else:
+            for n in range(len(self.core.data_handler.features_data["stim_amp"])):
+                model_data.extend(self.core.final_result[n])
+            no_traces=len(self.core.data_handler.features_data["stim_amp"])
+            t = int(self.core.option_handler.run_controll_tstop)         # instead of input_length
+            step = self.core.option_handler.run_controll_dt
+            axes.set_xticks([n for n in range(0, int((t*no_traces)/(step)), int((t*no_traces)/(step)/5.0)) ])
+            axes.set_xticklabels([str(n) for n in range(0, t*no_traces, (t*no_traces)/5)])
+
+            axes.set_xlabel("time [ms]")
+            _type=str(self.kwargs["runparam"][2])       #parameter to record
+            _type_ = "Voltage" if _type =="v" else "Current" if _type=="c" else ""
+            unit="mV" if _type=="v" else "nA" if _type=="c" else ""
+            axes.set_ylabel(_type_+" [" + unit + "]")
+            #axes.plot(range(0, len(exp_data)), exp_data)
+            axes.plot(range(0, len(model_data)), model_data, 'r')
+            axes.legend(["model"])
+            figure.savefig("result_trace.png", dpi=None, facecolor='w', edgecolor='w',
+            orientation='portrait', papertype=None, format=None,
+            transparent=False, bbox_inches=None, pad_inches=0.1)
+            figure.savefig("result_trace.eps", dpi=None, facecolor='w', edgecolor='w')
+            figure.savefig("result_trace.svg", dpi=None, facecolor='w', edgecolor='w')
+            param_save=wx.Button(self.panel,id=wx.ID_ANY,label="Save\nParameters",pos=(105,5),size=(90,50))
+            param_save.Bind(wx.EVT_BUTTON,self.SaveParam)
+
+
     def ToolbarCreator(self):
         self.toolbar = self.CreateToolBar()
         button_toolbar_bward = self.toolbar.AddLabelTool(wx.ID_ANY, 'PrevLayer', wx.Bitmap(self.path + "/2leftarrow.png"))
@@ -1896,8 +2036,8 @@ class resultsLayer(wx.Frame):
         self.Bind(wx.EVT_TOOL, self.Next, button_toolbar_fward)
         self.Bind(wx.EVT_TOOL, self.Prev, button_toolbar_bward)
         #self.toolbar.EnableTool(wx.ID_FORWARD,False)
-    
-    
+
+
     def Prev(self, e):
         self.Hide()
         tmp=self.parent
@@ -1909,7 +2049,7 @@ class resultsLayer(wx.Frame):
         self.parent.Show()
 #        self.Destroy()
 #        self.parent.Show()
-        
+
     def Next(self, e):
         self.Hide()
         try:
@@ -1919,7 +2059,7 @@ class resultsLayer(wx.Frame):
             self.layer = analyzisLayer(self, 5, self.Size, "Analysis", self.core, self.path)
             self.layer.Design()
             self.layer.Show()
-            
+
     def SaveParam(self, e):
         dlg = wx.FileDialog(self, "Type a filename", os.getcwd(), "", "*.*", style=wx.FD_SAVE)
         if dlg.ShowModal() == wx.ID_OK:
@@ -1929,12 +2069,12 @@ class resultsLayer(wx.Frame):
             #params=self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)]
             f.write("\n".join(map(str,params)))
             dlg.Destroy()
-        
+
     def my_close(self, e):
         wx.Exit()
-        
-     
-     
+
+
+
 class analyzisLayer(wx.Frame):
     def __init__(self, parent, ID, size, title, core, path):
         wx.Frame.__init__(self, parent, ID, title=title, size=size)
@@ -1942,7 +2082,7 @@ class analyzisLayer(wx.Frame):
         self.panel = wx.Panel(self)
         self.parent = parent
         self.core = core
-       
+
         #this will need to be wrapped in a try statement later:
         import optimizer
         #print optimizer.__file__
@@ -1954,46 +2094,49 @@ class analyzisLayer(wx.Frame):
         self.Design()
         #self.Text()
         self.Buttons()
-        
+
     def Buttons(self):
         gen_plot = wx.Button(self.panel, label="Generation Plot", pos=(200, 300))
         gen_plot.Bind(wx.EVT_BUTTON, self.PlotGen)
-        allele_plot = wx.Button(self.panel, label="Allele Plot", pos=(200, 350))
-        allele_plot.Bind(wx.EVT_BUTTON, self.PlotAllele)
         grid_plot = wx.Button(self.panel, label="Grid Plot", pos=(200, 400))
         grid_plot.Bind(wx.EVT_BUTTON, self.PlotGrid)
-        
-        
+
+
     def Design(self):
         heading = wx.StaticText(self.panel, label='Analysis', pos=(10, 15))
         heading.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
         text = "Results:"
         for n, k in zip(self.core.option_handler.GetObjTOOpt(), self.core.optimizer.fit_obj.ReNormalize(self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)])):
-            param=[n.split()[0], n.split()[-1]]
-            if param[0]!=param[1]:
-                text += "\n" + ": ".join(param) + "\n" + "\t" + str(k)
-            else:
+            if n.split()[0]==n.split()[-1]:
+                param=[n.split()[0], n.split()[-1]]
                 text += "\n" + param[0] + "\n" + "\t" + str(k)
+            else:
+                param=[n.split()[0], "segment: " + n.split()[1], n.split()[-1]]
+                #print param
+                if n.split()[1]!=n.split()[-1]:
+                    text += "\n" + ": \n".join(param) + ":" + "\n" + "\t" + str(k)
+                else:
+                    text += "\n" + param[0] + ": " + param[-1] + "\n" + "\t" + str(k)
         text += "\n" + "fitness:\n" + "\t" + str(self.core.optimizer.final_pop[0].fitness)
         wx.StaticText(self.panel, label=text, pos=(10, 35))
         wx.StaticText(self.panel, label='Fitness statistics', pos=(410, 35))
-        
+
         wx.StaticLine(self.panel, pos=(400, 0), size=(1, 600), style=wx.LI_VERTICAL)
-        
+
         try:
             stats = inspyred.ec.analysis.fitness_statistics(self.core.optimizer.final_pop)
         except AttributeError:
             stats={'best' : "unkown",'worst' : "unkown",'mean' : "unkown",'median' : "unkown", 'std' : "unkown"}
         string = "Best: " + str(stats['best']) + "\nWorst: " + str(stats['worst']) + "\nMean: " + str(stats['mean']) + "\nMedian: " + str(stats['median']) + "\nStd:" + str(stats['std'])
         wx.StaticText(self.panel, label=string, pos=(410, 55))
-        
+
         #insert table with error components: 410,200
         self.error_comp_table = wx.ListCtrl(self.panel, pos=(410, 200),size=(350,150),style=wx.LC_REPORT | wx.BORDER_SUNKEN)
         self.error_comp_table.InsertColumn(0, 'Error Function', width=200)
         self.error_comp_table.InsertColumn(1, 'Value', width=200)
         self.error_comp_table.InsertColumn(2, 'Weight', width=200)
         self.error_comp_table.InsertColumn(3, 'Weighted Value', width=200)
-        
+
         #tmp_list=[]
         for c_idx,c in enumerate(zip(*self.core.error_comps)):
             tmp=[0]*4
@@ -2002,56 +2145,51 @@ class analyzisLayer(wx.Frame):
                 tmp[1]+=c[t_idx][2]
                 tmp[2]=c[t_idx][0]
                 tmp[3]+=c[t_idx][2]*c[t_idx][0]
-            
-            tmp[0]=self.core.ffun_mapper[c[t_idx][1].__name__]
+            if self.core.option_handler.type[-1]!='features':
+                tmp[0]=self.core.ffun_mapper[c[t_idx][1].__name__]
+            else:
+                tmp[0]=(c[t_idx][1])
+
             tmp=map(str,tmp)
             #tmp_list.append(tmp)
             self.error_comp_table.InsertStringItem(c_idx,tmp[0])
             self.error_comp_table.SetStringItem(c_idx,1,tmp[1])
             self.error_comp_table.SetStringItem(c_idx,2,tmp[2])
             self.error_comp_table.SetStringItem(c_idx,3,tmp[3])
-        
+
         self.error_button=wx.Button(self.panel,pos=(410,410),label="Error Details")
         self.error_button.Bind(wx.EVT_BUTTON,self.ShowErrorDialog)
-                
-                
-                
-        
-        
-        
-        
+
+
+
     def ToolbarCreator(self):
         self.toolbar = self.CreateToolBar()
         button_toolbar_bward = self.toolbar.AddLabelTool(wx.ID_ANY, 'PrevLayer', wx.Bitmap(self.path + "/2leftarrow.png"))
         self.toolbar.Realize()
         self.Bind(wx.EVT_TOOL, self.Prev, button_toolbar_bward)
-    
+
     def PlotGen(self, e):
         import os.path
         if os.path.getmtime("stat_file.txt") <= self.core.option_handler.start_time_stamp:
             wx.MessageBox('Generation plot is not available for this algorithm.', 'Error', wx.OK | wx.ICON_ERROR)
         else:
-            generation_plot("stat_file.txt")
+            try:
+                generation_plot("stat_file.txt")
+            except ValueError:
+                stat_file=open("stat_file.txt","rb")
+                generation_plot(stat_file)
         self.Show()
-        
-    def PlotAllele(self, e):
-        import os.path
-        if os.path.getmtime("ind_file.txt") <= self.core.option_handler.start_time_stamp:
-            wx.MessageBox('Allele plot is not available for this algorithm.', 'Error', wx.OK | wx.ICON_ERROR)
-        else:
-            allele_plot("ind_file.txt")
-            self.Show()
-        
+
     def PlotGrid(self, e):
         self.prev_bounds=copy(self.core.option_handler.boundaries)
         self.resolution=10
         self.bw=gridwindow(self)
         self.bw.Show()
-        
+
     def ShowErrorDialog(self,e):
         self.extra_error_dialog=ErrorDialog(self)
         self.extra_error_dialog.Show()
-    
+
     def DisplayGrid(self):
         self.bw.Hide()
         from math import sqrt,ceil
@@ -2063,43 +2201,45 @@ class analyzisLayer(wx.Frame):
                 self.core.callGrid(self.resolution)
             no_dims = int(ceil(sqrt(len(self.core.option_handler.GetObjTOOpt()))))
             import matplotlib.pyplot as plt
-            f, axes = plt.subplots(no_dims, no_dims)
+            f, axes = plt.subplots(no_dims, no_dims, squeeze=False)
             a = []
             for i in axes:
                 for j in i:
-                    a.append(j)     
-    
+                    a.append(j)
+
             #,marker='o', color='r', ls=''
             for i in range(len(self.core.option_handler.GetObjTOOpt())):
-                for points, fitness in zip(self.core.optimizer.final_pop[0][i],self.core.optimizer.final_pop[1][i]):
+                #for points, fitness in zip(self.core.optimizer.final_pop[0][i],self.core.optimizer.final_pop[1][i]):
+                for points, fitness in zip(self.core.grid_result[0][i],self.core.grid_result[1][i]):
                     a[i].plot(points[i],
                                            fitness[0], marker='o', color='r', ls='')
                 a[i].set_title(self.core.option_handler.GetObjTOOpt()[i].split()[-1])
+                a[i].set_ylabel("Error Value")
                 a[i].relim()
                 a[i].autoscale(True,'both',False)
-            
+
             #hide unused subplots
             for i in range(len(self.core.option_handler.GetObjTOOpt()),no_dims**2):
                 a[i].axis('off')
-            
+
             matplotlib.pyplot.show()
-        
-        
-        
-        
+
+
+
+
     def Prev(self, e):
         self.Destroy()
         self.parent.Show()
-        
+
     def my_close(self, e):
         wx.Exit()
 
 
-def main(param=None):         
-    app = wx.App(False)  
+def main(param=None):
+    app = wx.App(False)
     core = Core.coreModul()
     if param!=None:
-        core.option_handler.output_level=param.lstrip("-v_level=")   
+        core.option_handler.output_level=param.lstrip("-v_level=")
     layer = inputLayer(None, 0, (800, 600), "Input Trace Selection", core, os.getcwd())
     #layer=modelLayer(None,0,(800,600),"Input Trace Selection",None,"/".join(os.getcwd().split("/")[0:-1]))
     #layer=stimuliLayer(None,0,(800,600),"Input Trace Selection",None,"/".join(os.getcwd().split("/")[0:-1]))
@@ -2116,6 +2256,3 @@ def main(param=None):
 
 if __name__ == "__main__":
     main()
-    
-    
-    
