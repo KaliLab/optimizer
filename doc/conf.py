@@ -22,7 +22,7 @@ sys.path.insert(0, os.path.abspath('..'))
 #sys.path.insert(0, os.path.abspath('.'))
 
 #following line is from Peter's computer, should probably be removed
-sys.path.insert(0,os.path.abspath('/home/fripe/workspace/git/optimizer/'))
+sys.path.insert(0,os.path.abspath('/home/osboxes/Optimizer_sasaray/optimizer/'))
 
 # -- General configuration -----------------------------------------------------
 

@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -15,7 +13,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '0.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -26,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="optimizer 0.0.1 documentation" href="index.html" />
-    <link rel="prev" title="Installation" href="install.html" /> 
+    <link rel="prev" title="Optimizer tutorial" href="tutorial.html" /> 
   </head>
   <body>
     <div class="related">
@@ -39,7 +37,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="install.html" title="Installation"
+          <a href="tutorial.html" title="Optimizer tutorial"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">optimizer 0.0.1 documentation</a> &raquo;</li> 
       </ul>
@@ -63,27 +61,27 @@ interacting with the other modules. The main attributes are the following:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attr :</th><td class="field-body"><p class="first">data_handler:</p>
+<tr class="field-odd field"><th class="field-name">Attr:</th><td class="field-body"><p class="first">data_handler:</p>
 <p>performs input operations and handles input data</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Attr :</th><td class="field-body"><p class="first">option_handler:</p>
+<tr class="field-even field"><th class="field-name">Attr:</th><td class="field-body"><p class="first">option_handler:</p>
 <p>stores the settings</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Attr :</th><td class="field-body"><p class="first">model_handler:</p>
+<tr class="field-odd field"><th class="field-name">Attr:</th><td class="field-body"><p class="first">model_handler:</p>
 <p>handles the model and runs the simulations and carries out other model related tasks</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Attr :</th><td class="field-body"><p class="first">optimizer:</p>
+<tr class="field-even field"><th class="field-name">Attr:</th><td class="field-body"><p class="first">optimizer:</p>
 <p>carries out the optimization process</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Attr :</th><td class="field-body"><p class="first">optimal_params:</p>
+<tr class="field-odd field"><th class="field-name">Attr:</th><td class="field-body"><p class="first">optimal_params:</p>
 <p>contains the resulting parameters</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Attr :</th><td class="field-body"><p class="first">ffun_calc_list:</p>
+<tr class="field-even field"><th class="field-name">Attr:</th><td class="field-body"><p class="first">ffun_calc_list:</p>
 <p class="last">contains the list of available fitness functions in a dictionary</p>
 </td>
 </tr>
@@ -337,7 +335,7 @@ The raw results are stored in the <tt class="docutils literal"><span class="pre"
 <li>seed</li>
 <li>evo_strat</li>
 <li>pop_size</li>
-<li>num_inputs</li>
+<li>num_params</li>
 <li>boundaries</li>
 </ul>
 </dd>
@@ -355,6 +353,10 @@ The raw results are stored in the <tt class="docutils literal"><span class="pre"
 <li>dwell</li>
 <li>x_tol</li>
 <li>f_tol</li>
+<li>inertia</li>
+<li>social_rate</li>
+<li>cognitive_rate</li>
+<li>neighoborhood_size</li>
 </ul>
 </dd>
 <dt>optional parameter shared by every algorithm</dt>
@@ -375,7 +377,7 @@ The raw results are stored in the <tt class="docutils literal"><span class="pre"
 
 <dl class="method">
 <dt id="optimizer.Core.coreModul.callGrid">
-<tt class="descname">callGrid</tt><big>(</big><big>)</big><a class="headerlink" href="#optimizer.Core.coreModul.callGrid" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">callGrid</tt><big>(</big><em>resolution</em><big>)</big><a class="headerlink" href="#optimizer.Core.coreModul.callGrid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates fitness values on a defined grid (see optimizerHandler module for more).
 This tool is purely for analyzing results, and we do not recommend to use it to obtain parameter values.</p>
 </dd></dl>
@@ -428,28 +430,8 @@ This tool is purely for analyzing results, and we do not recommend to use it to 
 <dd></dd></dl>
 
 </div>
-<div class="section" id="module-optimizer.cmd_line">
-<span id="cmd-line-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">cmd_line</span></tt> Module<a class="headerlink" href="#module-optimizer.cmd_line" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="optimizer.cmd_line.main">
-<tt class="descclassname">optimizer.cmd_line.</tt><tt class="descname">main</tt><big>(</big><em>fname</em>, <em>param=None</em><big>)</big><a class="headerlink" href="#optimizer.cmd_line.main" title="Permalink to this definition">¶</a></dt>
-<dd><p>The main function of the command line version.
-Reads the content of the .xml file into the option object,
-and creates the core object which runs the optimization process based on the .xml file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>fname</strong> &#8211; the configuration file which contains the settings (should be in xml format)</li>
-<li><strong>param</strong> &#8211; controls the level of output, 0 means minimal, 1 means maximal (the Default is None which is interpreted as 1)</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
+<div class="section" id="cmd-line-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">cmd_line</span></tt> Module<a class="headerlink" href="#cmd-line-module" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-optimizer.fitnessFunctions">
 <span id="fitnessfunctions-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">fitnessFunctions</span></tt> Module<a class="headerlink" href="#module-optimizer.fitnessFunctions" title="Permalink to this headline">¶</a></h2>
@@ -552,7 +534,7 @@ If one traces has no spikes, but the other has the function returns one.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the normalized average squared differences of AP overshoots where the normalization is 
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the normalized average squared differences of AP overshoots where the normalization is
 done by the maximal peak value in the input trace</td>
 </tr>
 </tbody>
@@ -596,6 +578,11 @@ is done by the average spike width of the input trace</td>
 </tbody>
 </table>
 </dd></dl>
+
+<dl class="method">
+<dt id="optimizer.fitnessFunctions.fF.FFun_for_Features">
+<tt class="descname">FFun_for_Features</tt><big>(</big><em>mod_t</em>, <em>features_data</em>, <em>feature</em>, <em>k</em>, <em>args={}</em><big>)</big><a class="headerlink" href="#optimizer.fitnessFunctions.fF.FFun_for_Features" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="optimizer.fitnessFunctions.fF.ReNormalize">
@@ -680,7 +667,7 @@ by the squared range of the input trace</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the normalized absolute differences of the number of spikes, where the normalization is done
-by the sum of the number of spikes in both traces plus one.</p>
+by the sum of the number of spikes in both traces plus one</p>
 </td>
 </tr>
 </tbody>
@@ -711,7 +698,7 @@ by the sum of the number of spikes in both traces plus one.</p>
 
 <dl class="method">
 <dt id="optimizer.fitnessFunctions.fF.combineFeatures">
-<tt class="descname">combineFeatures</tt><big>(</big><em>candidates</em>, <em>args</em><big>)</big><a class="headerlink" href="#optimizer.fitnessFunctions.fF.combineFeatures" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">combineFeatures</tt><big>(</big><em>candidates</em>, <em>args={}</em><big>)</big><a class="headerlink" href="#optimizer.fitnessFunctions.fF.combineFeatures" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates the weighted combination of fitness functions and calculates the combined fitness for every
 set of parameters created during the optimization proccess by seting the model parameters,
 running the simulation and evaluating the resulting trace. The selected fitness functions and the
@@ -820,6 +807,11 @@ for every function instance i.e every component</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="optimizer.fitnessFunctions.fF.get_efel_values">
+<tt class="descname">get_efel_values</tt><big>(</big><em>traces</em>, <em>feature</em><big>)</big><a class="headerlink" href="#optimizer.fitnessFunctions.fF.get_efel_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="optimizer.fitnessFunctions.fF.isi_differ">
 <tt class="descname">isi_differ</tt><big>(</big><em>mod_t</em>, <em>exp_t</em>, <em>args</em><big>)</big><a class="headerlink" href="#optimizer.fitnessFunctions.fF.isi_differ" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the normalized average absolute ISI difference in the two traces.
@@ -854,7 +846,7 @@ If one traces has no spikes, but the other has the function returns one.</p>
 
 <dl class="method">
 <dt id="optimizer.fitnessFunctions.fF.modelRunner">
-<tt class="descname">modelRunner</tt><big>(</big><em>candidates</em><big>)</big><a class="headerlink" href="#optimizer.fitnessFunctions.fF.modelRunner" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">modelRunner</tt><big>(</big><em>candidates</em>, <em>act_trace_idx</em><big>)</big><a class="headerlink" href="#optimizer.fitnessFunctions.fF.modelRunner" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prepares the model for the simulation, runs the simulation and records the appropriate variable.
 If an external simulator is used then it writes the parameters to a file, called &#8220;params.param&#8221;
 executes command stored in the <tt class="docutils literal"><span class="pre">model</span></tt> member and tries to read the model&#8217;s output from a file,
@@ -863,7 +855,11 @@ called &#8220;trace.dat&#8221;.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>candidates</strong> &#8211; the new parameter set generated by the optimization algorithm as a <tt class="docutils literal"><span class="pre">list</span></tt> of real values</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>candidates</strong> &#8211; the new parameter set generated by the optimization algorithm as a <tt class="docutils literal"><span class="pre">list</span></tt> of real values</li>
+<li><strong>act_trace_idx</strong> &#8211; used by the external simulator to select current stimulation protocol</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -874,6 +870,22 @@ called &#8220;trace.dat&#8221;.</p>
 <tt class="descname">pyelectro_pptd</tt><big>(</big><em>mod_t</em>, <em>exp_t</em>, <em>args</em><big>)</big><a class="headerlink" href="#optimizer.fitnessFunctions.fF.pyelectro_pptd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns error function value from comparison of two phase
 pptd maps as described by Van Geit 2007.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>mod_t</strong> &#8211; the trace obtained from the model as <tt class="docutils literal"><span class="pre">list</span></tt></li>
+<li><strong>exp_t</strong> &#8211; the input trace as <tt class="docutils literal"><span class="pre">list</span></tt></li>
+<li><strong>args</strong> &#8211; optional arguments as <tt class="docutils literal"><span class="pre">dictionary</span></tt></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">resulting fitness value</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -948,7 +960,7 @@ the parameters are in their valid ranges.</p>
 <dt id="optimizer.fitnessFunctions.spike">
 <em class="property">class </em><tt class="descclassname">optimizer.fitnessFunctions.</tt><tt class="descname">spike</tt><big>(</big><em>start</em>, <em>start_val</em>, <em>peak</em>, <em>peak_val</em>, <em>stop</em>, <em>stop_val</em><big>)</big><a class="headerlink" href="#optimizer.fitnessFunctions.spike" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#optimizer.fitnessFunctions.spike_frame" title="optimizer.fitnessFunctions.spike_frame"><tt class="xref py py-class docutils literal"><span class="pre">optimizer.fitnessFunctions.spike_frame</span></tt></a></p>
-<p>The extension of the <tt class="docutils literal"><span class="pre">spike_frame</span></tt> class as it contains every point in the spike in addition to the 
+<p>The extension of the <tt class="docutils literal"><span class="pre">spike_frame</span></tt> class as it contains every point in the spike in addition to the
 crucial ones.</p>
 </dd></dl>
 
@@ -975,440 +987,8 @@ crucial ones.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-optimizer.graphic">
-<span id="graphic-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">graphic</span></tt> Module<a class="headerlink" href="#module-optimizer.graphic" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="optimizer.graphic.MyDialog">
-<em class="property">class </em><tt class="descclassname">optimizer.graphic.</tt><tt class="descname">MyDialog</tt><big>(</big><em>parent</em>, <em>*args</em>, <em>**kw</em><big>)</big><a class="headerlink" href="#optimizer.graphic.MyDialog" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">wx._windows.Dialog</span></tt></p>
-<dl class="method">
-<dt id="optimizer.graphic.MyDialog.OnClose">
-<tt class="descname">OnClose</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.MyDialog.OnClose" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.MyDialog.OnLoad">
-<tt class="descname">OnLoad</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.MyDialog.OnLoad" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.MyDialog.OnOk">
-<tt class="descname">OnOk</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.MyDialog.OnOk" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="optimizer.graphic.MyDialog2">
-<em class="property">class </em><tt class="descclassname">optimizer.graphic.</tt><tt class="descname">MyDialog2</tt><big>(</big><em>parent</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#optimizer.graphic.MyDialog2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">wx._windows.Dialog</span></tt></p>
-<dl class="method">
-<dt id="optimizer.graphic.MyDialog2.OnClose">
-<tt class="descname">OnClose</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.MyDialog2.OnClose" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.MyDialog2.OnOk">
-<tt class="descname">OnOk</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.MyDialog2.OnOk" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="optimizer.graphic.algorithmLayer">
-<em class="property">class </em><tt class="descclassname">optimizer.graphic.</tt><tt class="descname">algorithmLayer</tt><big>(</big><em>parent</em>, <em>ID</em>, <em>size</em>, <em>title</em>, <em>core</em>, <em>path</em>, <em>kwargs</em><big>)</big><a class="headerlink" href="#optimizer.graphic.algorithmLayer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">wx._windows.Frame</span></tt></p>
-<dl class="method">
-<dt id="optimizer.graphic.algorithmLayer.Algo_Select">
-<tt class="descname">Algo_Select</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.algorithmLayer.Algo_Select" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.algorithmLayer.Boundaries">
-<tt class="descname">Boundaries</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.algorithmLayer.Boundaries" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.algorithmLayer.Design">
-<tt class="descname">Design</tt><big>(</big><big>)</big><a class="headerlink" href="#optimizer.graphic.algorithmLayer.Design" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.algorithmLayer.Next">
-<tt class="descname">Next</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.algorithmLayer.Next" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.algorithmLayer.Prev">
-<tt class="descname">Prev</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.algorithmLayer.Prev" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.algorithmLayer.Run">
-<tt class="descname">Run</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.algorithmLayer.Run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.algorithmLayer.Seed">
-<tt class="descname">Seed</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.algorithmLayer.Seed" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.algorithmLayer.ToolbarCreator">
-<tt class="descname">ToolbarCreator</tt><big>(</big><big>)</big><a class="headerlink" href="#optimizer.graphic.algorithmLayer.ToolbarCreator" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.algorithmLayer.my_close">
-<tt class="descname">my_close</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.algorithmLayer.my_close" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="optimizer.graphic.analyzisLayer">
-<em class="property">class </em><tt class="descclassname">optimizer.graphic.</tt><tt class="descname">analyzisLayer</tt><big>(</big><em>parent</em>, <em>ID</em>, <em>size</em>, <em>title</em>, <em>core</em>, <em>path</em><big>)</big><a class="headerlink" href="#optimizer.graphic.analyzisLayer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">wx._windows.Frame</span></tt></p>
-<dl class="method">
-<dt id="optimizer.graphic.analyzisLayer.Buttons">
-<tt class="descname">Buttons</tt><big>(</big><big>)</big><a class="headerlink" href="#optimizer.graphic.analyzisLayer.Buttons" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.analyzisLayer.Design">
-<tt class="descname">Design</tt><big>(</big><big>)</big><a class="headerlink" href="#optimizer.graphic.analyzisLayer.Design" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.analyzisLayer.DisplayGrid">
-<tt class="descname">DisplayGrid</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.analyzisLayer.DisplayGrid" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.analyzisLayer.PlotAllele">
-<tt class="descname">PlotAllele</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.analyzisLayer.PlotAllele" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.analyzisLayer.PlotGen">
-<tt class="descname">PlotGen</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.analyzisLayer.PlotGen" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.analyzisLayer.PlotGrid">
-<tt class="descname">PlotGrid</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.analyzisLayer.PlotGrid" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.analyzisLayer.Prev">
-<tt class="descname">Prev</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.analyzisLayer.Prev" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.analyzisLayer.ToolbarCreator">
-<tt class="descname">ToolbarCreator</tt><big>(</big><big>)</big><a class="headerlink" href="#optimizer.graphic.analyzisLayer.ToolbarCreator" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.analyzisLayer.my_close">
-<tt class="descname">my_close</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.analyzisLayer.my_close" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="optimizer.graphic.boundarywindow">
-<em class="property">class </em><tt class="descclassname">optimizer.graphic.</tt><tt class="descname">boundarywindow</tt><big>(</big><em>par</em><big>)</big><a class="headerlink" href="#optimizer.graphic.boundarywindow" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">wx._windows.Frame</span></tt></p>
-<dl class="method">
-<dt id="optimizer.graphic.boundarywindow.Set">
-<tt class="descname">Set</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.boundarywindow.Set" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.boundarywindow.my_close">
-<tt class="descname">my_close</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.boundarywindow.my_close" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="optimizer.graphic.ffunctionLayer">
-<em class="property">class </em><tt class="descclassname">optimizer.graphic.</tt><tt class="descname">ffunctionLayer</tt><big>(</big><em>parent</em>, <em>ID</em>, <em>size</em>, <em>title</em>, <em>core</em>, <em>path</em>, <em>kwargs</em><big>)</big><a class="headerlink" href="#optimizer.graphic.ffunctionLayer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">wx._windows.Frame</span></tt></p>
-<dl class="method">
-<dt id="optimizer.graphic.ffunctionLayer.Design">
-<tt class="descname">Design</tt><big>(</big><big>)</big><a class="headerlink" href="#optimizer.graphic.ffunctionLayer.Design" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.ffunctionLayer.FunSelect">
-<tt class="descname">FunSelect</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.ffunctionLayer.FunSelect" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.ffunctionLayer.Next">
-<tt class="descname">Next</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.ffunctionLayer.Next" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.ffunctionLayer.Normalize">
-<tt class="descname">Normalize</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.ffunctionLayer.Normalize" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.ffunctionLayer.Prev">
-<tt class="descname">Prev</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.ffunctionLayer.Prev" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.ffunctionLayer.ToolbarCreator">
-<tt class="descname">ToolbarCreator</tt><big>(</big><big>)</big><a class="headerlink" href="#optimizer.graphic.ffunctionLayer.ToolbarCreator" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.ffunctionLayer.my_close">
-<tt class="descname">my_close</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.ffunctionLayer.my_close" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="optimizer.graphic.inputLayer">
-<em class="property">class </em><tt class="descclassname">optimizer.graphic.</tt><tt class="descname">inputLayer</tt><big>(</big><em>parent</em>, <em>ID</em>, <em>size</em>, <em>title</em>, <em>core</em>, <em>path</em><big>)</big><a class="headerlink" href="#optimizer.graphic.inputLayer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">wx._windows.Frame</span></tt></p>
-<dl class="method">
-<dt id="optimizer.graphic.inputLayer.BrowseDir">
-<tt class="descname">BrowseDir</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.inputLayer.BrowseDir" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.inputLayer.BrowseFile">
-<tt class="descname">BrowseFile</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.inputLayer.BrowseFile" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.inputLayer.Design">
-<tt class="descname">Design</tt><big>(</big><big>)</big><a class="headerlink" href="#optimizer.graphic.inputLayer.Design" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.inputLayer.Load">
-<tt class="descname">Load</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.inputLayer.Load" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.inputLayer.Next">
-<tt class="descname">Next</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.inputLayer.Next" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.inputLayer.ToolbarCreator">
-<tt class="descname">ToolbarCreator</tt><big>(</big><big>)</big><a class="headerlink" href="#optimizer.graphic.inputLayer.ToolbarCreator" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.inputLayer.my_close">
-<tt class="descname">my_close</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.inputLayer.my_close" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.inputLayer.typeChanged">
-<tt class="descname">typeChanged</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.inputLayer.typeChanged" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="optimizer.graphic.main">
-<tt class="descclassname">optimizer.graphic.</tt><tt class="descname">main</tt><big>(</big><em>param=None</em><big>)</big><a class="headerlink" href="#optimizer.graphic.main" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="optimizer.graphic.modelLayer">
-<em class="property">class </em><tt class="descclassname">optimizer.graphic.</tt><tt class="descname">modelLayer</tt><big>(</big><em>parent</em>, <em>ID</em>, <em>size</em>, <em>title</em>, <em>core</em>, <em>path</em><big>)</big><a class="headerlink" href="#optimizer.graphic.modelLayer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">wx._windows.Frame</span></tt></p>
-<dl class="method">
-<dt id="optimizer.graphic.modelLayer.BrowseDir">
-<tt class="descname">BrowseDir</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.modelLayer.BrowseDir" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.modelLayer.BrowseFile">
-<tt class="descname">BrowseFile</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.modelLayer.BrowseFile" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.modelLayer.Design">
-<tt class="descname">Design</tt><big>(</big><big>)</big><a class="headerlink" href="#optimizer.graphic.modelLayer.Design" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.modelLayer.Load">
-<tt class="descname">Load</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.modelLayer.Load" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.modelLayer.Next">
-<tt class="descname">Next</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.modelLayer.Next" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.modelLayer.Prev">
-<tt class="descname">Prev</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.modelLayer.Prev" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.modelLayer.Remove">
-<tt class="descname">Remove</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.modelLayer.Remove" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.modelLayer.Set">
-<tt class="descname">Set</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.modelLayer.Set" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.modelLayer.ToolbarCreator">
-<tt class="descname">ToolbarCreator</tt><big>(</big><big>)</big><a class="headerlink" href="#optimizer.graphic.modelLayer.ToolbarCreator" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.modelLayer.UF">
-<tt class="descname">UF</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.modelLayer.UF" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.modelLayer.my_close">
-<tt class="descname">my_close</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.modelLayer.my_close" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.modelLayer.selectType">
-<tt class="descname">selectType</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.modelLayer.selectType" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="optimizer.graphic.resultsLayer">
-<em class="property">class </em><tt class="descclassname">optimizer.graphic.</tt><tt class="descname">resultsLayer</tt><big>(</big><em>parent</em>, <em>ID</em>, <em>size</em>, <em>title</em>, <em>core</em>, <em>path</em>, <em>kwargs</em><big>)</big><a class="headerlink" href="#optimizer.graphic.resultsLayer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">wx._windows.Frame</span></tt></p>
-<dl class="method">
-<dt id="optimizer.graphic.resultsLayer.Design">
-<tt class="descname">Design</tt><big>(</big><big>)</big><a class="headerlink" href="#optimizer.graphic.resultsLayer.Design" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.resultsLayer.Next">
-<tt class="descname">Next</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.resultsLayer.Next" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.resultsLayer.Prev">
-<tt class="descname">Prev</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.resultsLayer.Prev" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.resultsLayer.ToolbarCreator">
-<tt class="descname">ToolbarCreator</tt><big>(</big><big>)</big><a class="headerlink" href="#optimizer.graphic.resultsLayer.ToolbarCreator" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.resultsLayer.my_close">
-<tt class="descname">my_close</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.resultsLayer.my_close" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="optimizer.graphic.stimuliLayer">
-<em class="property">class </em><tt class="descclassname">optimizer.graphic.</tt><tt class="descname">stimuliLayer</tt><big>(</big><em>parent</em>, <em>ID</em>, <em>size</em>, <em>title</em>, <em>core</em>, <em>path</em><big>)</big><a class="headerlink" href="#optimizer.graphic.stimuliLayer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">wx._windows.Frame</span></tt></p>
-<dl class="method">
-<dt id="optimizer.graphic.stimuliLayer.Design">
-<tt class="descname">Design</tt><big>(</big><big>)</big><a class="headerlink" href="#optimizer.graphic.stimuliLayer.Design" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.stimuliLayer.Next">
-<tt class="descname">Next</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.stimuliLayer.Next" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.stimuliLayer.Prev">
-<tt class="descname">Prev</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.stimuliLayer.Prev" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.stimuliLayer.Stimuli">
-<tt class="descname">Stimuli</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.stimuliLayer.Stimuli" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.stimuliLayer.Stimuli2">
-<tt class="descname">Stimuli2</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.stimuliLayer.Stimuli2" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.stimuliLayer.ToolbarCreator">
-<tt class="descname">ToolbarCreator</tt><big>(</big><big>)</big><a class="headerlink" href="#optimizer.graphic.stimuliLayer.ToolbarCreator" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.stimuliLayer.my_close">
-<tt class="descname">my_close</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.stimuliLayer.my_close" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.stimuliLayer.posChange">
-<tt class="descname">posChange</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.stimuliLayer.posChange" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.stimuliLayer.protocolSelection">
-<tt class="descname">protocolSelection</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.stimuliLayer.protocolSelection" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.stimuliLayer.secChange">
-<tt class="descname">secChange</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.stimuliLayer.secChange" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.stimuliLayer.typeChange">
-<tt class="descname">typeChange</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.stimuliLayer.typeChange" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="optimizer.graphic.stimuliwindow">
-<em class="property">class </em><tt class="descclassname">optimizer.graphic.</tt><tt class="descname">stimuliwindow</tt><big>(</big><em>par</em><big>)</big><a class="headerlink" href="#optimizer.graphic.stimuliwindow" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">wx._windows.Frame</span></tt></p>
-<dl class="method">
-<dt id="optimizer.graphic.stimuliwindow.Accept">
-<tt class="descname">Accept</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.stimuliwindow.Accept" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.stimuliwindow.Set">
-<tt class="descname">Set</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.stimuliwindow.Set" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="optimizer.graphic.stimuliwindow.my_close">
-<tt class="descname">my_close</tt><big>(</big><em>e</em><big>)</big><a class="headerlink" href="#optimizer.graphic.stimuliwindow.my_close" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="optimizer.graphic.stimuliwindow2">
-<em class="property">class </em><tt class="descclassname">optimizer.graphic.</tt><tt class="descname">stimuliwindow2</tt><big>(</big><em>par</em><big>)</big><a class="headerlink" href="#optimizer.graphic.stimuliwindow2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">wx._windows.Frame</span></tt></p>
-</dd></dl>
-
+<div class="section" id="graphic-module">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">graphic</span></tt> Module<a class="headerlink" href="#graphic-module" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-optimizer.modelHandler">
 <span id="modelhandler-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">modelHandler</span></tt> Module<a class="headerlink" href="#module-optimizer.modelHandler" title="Permalink to this headline">¶</a></h2>
@@ -1467,14 +1047,14 @@ crucial ones.</p>
 
 <dl class="method">
 <dt id="optimizer.modelHandler.externalHandler.SetStimuli">
-<tt class="descname">SetStimuli</tt><big>(</big><em>p</em><big>)</big><a class="headerlink" href="#optimizer.modelHandler.externalHandler.SetStimuli" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">SetStimuli</tt><big>(</big><em>p</em>, <em>e</em><big>)</big><a class="headerlink" href="#optimizer.modelHandler.externalHandler.SetStimuli" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="optimizer.modelHandler.modelHandlerNeuron">
-<em class="property">class </em><tt class="descclassname">optimizer.modelHandler.</tt><tt class="descname">modelHandlerNeuron</tt><big>(</big><em>model_path</em>, <em>special_path</em>, <em>base='/home/fripe/workspace/git/optimizer'</em><big>)</big><a class="headerlink" href="#optimizer.modelHandler.modelHandlerNeuron" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">optimizer.modelHandler.</tt><tt class="descname">modelHandlerNeuron</tt><big>(</big><em>model_path</em>, <em>special_path</em>, <em>base='/home/osboxes/Optimizer_sasaray/optimizer'</em><big>)</big><a class="headerlink" href="#optimizer.modelHandler.modelHandlerNeuron" title="Permalink to this definition">¶</a></dt>
 <dd><p>Imports the necessary modules to handle Neuron models and loads the model
 as well as the additional mechanisms. Creates containers for the sections and the channels for easier handling.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1556,7 +1136,8 @@ and pointprocesses that are not some sort of Clamp</li>
 <dl class="method">
 <dt id="optimizer.modelHandler.modelHandlerNeuron.RunControll">
 <tt class="descname">RunControll</tt><big>(</big><em>settings</em><big>)</big><a class="headerlink" href="#optimizer.modelHandler.modelHandlerNeuron.RunControll" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets up the recording procedure and the simulation, then runs it.</p>
+<dd><blockquote>
+<div>Sets up the recording procedure and the simulation, then runs it.</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1578,7 +1159,7 @@ and pointprocesses that are not some sort of Clamp</li>
 
 <dl class="method">
 <dt id="optimizer.modelHandler.modelHandlerNeuron.SetChannelParameters">
-<tt class="descname">SetChannelParameters</tt><big>(</big><em>section</em>, <em>channel</em>, <em>params</em>, <em>values</em><big>)</big><a class="headerlink" href="#optimizer.modelHandler.modelHandlerNeuron.SetChannelParameters" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">SetChannelParameters</tt><big>(</big><em>section</em>, <em>segment</em>, <em>channel</em>, <em>params</em>, <em>values</em><big>)</big><a class="headerlink" href="#optimizer.modelHandler.modelHandlerNeuron.SetChannelParameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the given channel&#8217;s parameter to the given value. If the section is not known that
 indicates a serious internal error and the program will abort.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1735,6 +1316,44 @@ and creates a string which contains only the matching elements separated by spac
 <div class="section" id="module-optimizer.optimizerHandler">
 <span id="optimizerhandler-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">optimizerHandler</span></tt> Module<a class="headerlink" href="#module-optimizer.optimizerHandler" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
+<dt id="optimizer.optimizerHandler.DEA">
+<em class="property">class </em><tt class="descclassname">optimizer.optimizerHandler.</tt><tt class="descname">DEA</tt><big>(</big><em>reader_obj</em>, <em>model_obj</em>, <em>option_obj</em><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.DEA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#optimizer.optimizerHandler.baseOptimizer" title="optimizer.optimizerHandler.baseOptimizer"><tt class="xref py py-class docutils literal"><span class="pre">optimizer.optimizerHandler.baseOptimizer</span></tt></a></p>
+<p>Implements the <tt class="docutils literal"><span class="pre">Differential</span> <span class="pre">Evolution</span> <span class="pre">Algorithm</span></tt> algorithm for minimization from the <tt class="docutils literal"><span class="pre">inspyred</span></tt> package.
+:param reader_obj: an instance of <tt class="docutils literal"><span class="pre">DATA</span></tt> object
+:param model_obj: an instance of a model handler object, either <tt class="docutils literal"><span class="pre">externalHandler</span></tt> or <tt class="docutils literal"><span class="pre">modelHandlerNeuron</span></tt>
+:param option_obj: an instance of <tt class="docutils literal"><span class="pre">optionHandler</span></tt> object</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt>Documentation of the options from &#8216;inspyred&#8217;:</dt>
+<dd><a class="reference external" href="http://inspyred.github.io/reference.html#module-inspyred.ec">http://inspyred.github.io/reference.html#module-inspyred.ec</a></dd>
+</dl>
+</div>
+<dl class="method">
+<dt id="optimizer.optimizerHandler.DEA.Optimize">
+<tt class="descname">Optimize</tt><big>(</big><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.DEA.Optimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs the optimization.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="optimizer.optimizerHandler.DEA.SetBoundaries">
+<tt class="descname">SetBoundaries</tt><big>(</big><em>bounds</em><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.DEA.SetBoundaries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores the bounds of the parameters and creates a <tt class="docutils literal"><span class="pre">bounder</span></tt> object which bounds
+every parameter into the range of 0-1 since the algorithms are using normalized values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bounds</strong> &#8211; <tt class="docutils literal"><span class="pre">list</span></tt> containing the minimum and maximum values.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="optimizer.optimizerHandler.L_BFGS_B">
 <em class="property">class </em><tt class="descclassname">optimizer.optimizerHandler.</tt><tt class="descname">L_BFGS_B</tt><big>(</big><em>reader_obj</em>, <em>model_obj</em>, <em>option_obj</em><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.L_BFGS_B" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#optimizer.optimizerHandler.baseOptimizer" title="optimizer.optimizerHandler.baseOptimizer"><tt class="xref py py-class docutils literal"><span class="pre">optimizer.optimizerHandler.baseOptimizer</span></tt></a></p>
@@ -1752,7 +1371,7 @@ and creates a string which contains only the matching elements separated by spac
 </tr>
 </tbody>
 </table>
-<div class="admonition-see-also admonition seealso">
+<div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <dl class="last docutils">
 <dt>Documentation of the L-BFGS-B from &#8216;scipy&#8217;:</dt>
@@ -1804,6 +1423,92 @@ every parameter into the range of 0-1 since the algorithms are using normalized 
 </dd></dl>
 
 <dl class="class">
+<dt id="optimizer.optimizerHandler.PSO">
+<em class="property">class </em><tt class="descclassname">optimizer.optimizerHandler.</tt><tt class="descname">PSO</tt><big>(</big><em>reader_obj</em>, <em>model_obj</em>, <em>option_obj</em><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.PSO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#optimizer.optimizerHandler.baseOptimizer" title="optimizer.optimizerHandler.baseOptimizer"><tt class="xref py py-class docutils literal"><span class="pre">optimizer.optimizerHandler.baseOptimizer</span></tt></a></p>
+<p>Implements the <tt class="docutils literal"><span class="pre">Particle</span> <span class="pre">Swarm</span></tt> algorithm for minimization from the <tt class="docutils literal"><span class="pre">inspyred</span></tt> package.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>reader_obj</strong> &#8211; an instance of <tt class="docutils literal"><span class="pre">DATA</span></tt> object</li>
+<li><strong>model_obj</strong> &#8211; an instance of a model handler object, either <tt class="docutils literal"><span class="pre">externalHandler</span></tt> or <tt class="docutils literal"><span class="pre">modelHandlerNeuron</span></tt></li>
+<li><strong>option_obj</strong> &#8211; an instance of <tt class="docutils literal"><span class="pre">optionHandler</span></tt> object</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt>Documentation of the Particle Swarm from &#8216;inspyred&#8217;:</dt>
+<dd><a class="reference external" href="http://pythonhosted.org/inspyred/reference.html">http://pythonhosted.org/inspyred/reference.html</a></dd>
+</dl>
+</div>
+<dl class="method">
+<dt id="optimizer.optimizerHandler.PSO.Optimize">
+<tt class="descname">Optimize</tt><big>(</big><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.PSO.Optimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs the optimization.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="optimizer.optimizerHandler.PSO.SetBoundaries">
+<tt class="descname">SetBoundaries</tt><big>(</big><em>bounds</em><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.PSO.SetBoundaries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores the bounds of the parameters and creates a <tt class="docutils literal"><span class="pre">bounder</span></tt> object which bounds
+every parameter into the range of 0-1 since the algorithms are using normalized values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bounds</strong> &#8211; <tt class="docutils literal"><span class="pre">list</span></tt> containing the minimum and maximum values.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="optimizer.optimizerHandler.RandomSearch">
+<em class="property">class </em><tt class="descclassname">optimizer.optimizerHandler.</tt><tt class="descname">RandomSearch</tt><big>(</big><em>reader_obj</em>, <em>model_obj</em>, <em>option_obj</em><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.RandomSearch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#optimizer.optimizerHandler.baseOptimizer" title="optimizer.optimizerHandler.baseOptimizer"><tt class="xref py py-class docutils literal"><span class="pre">optimizer.optimizerHandler.baseOptimizer</span></tt></a></p>
+<p>Implements the <tt class="docutils literal"><span class="pre">Differential</span> <span class="pre">Evolution</span> <span class="pre">Algorithm</span></tt> algorithm for minimization from the <tt class="docutils literal"><span class="pre">inspyred</span></tt> package.
+:param reader_obj: an instance of <tt class="docutils literal"><span class="pre">DATA</span></tt> object
+:param model_obj: an instance of a model handler object, either <tt class="docutils literal"><span class="pre">externalHandler</span></tt> or <tt class="docutils literal"><span class="pre">modelHandlerNeuron</span></tt>
+:param option_obj: an instance of <tt class="docutils literal"><span class="pre">optionHandler</span></tt> object</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt>Documentation of the options from &#8216;inspyred&#8217;:</dt>
+<dd><a class="reference external" href="http://inspyred.github.io/reference.html#module-inspyred.ec">http://inspyred.github.io/reference.html#module-inspyred.ec</a></dd>
+</dl>
+</div>
+<dl class="method">
+<dt id="optimizer.optimizerHandler.RandomSearch.Optimize">
+<tt class="descname">Optimize</tt><big>(</big><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.RandomSearch.Optimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs the optimization.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="optimizer.optimizerHandler.RandomSearch.SetBoundaries">
+<tt class="descname">SetBoundaries</tt><big>(</big><em>bounds</em><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.RandomSearch.SetBoundaries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores the bounds of the parameters and creates a <tt class="docutils literal"><span class="pre">bounder</span></tt> object which bounds
+every parameter into the range of 0-1 since the algorithms are using normalized values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bounds</strong> &#8211; <tt class="docutils literal"><span class="pre">list</span></tt> containing the minimum and maximum values.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="optimizer.optimizerHandler.annealing">
 <em class="property">class </em><tt class="descclassname">optimizer.optimizerHandler.</tt><tt class="descname">annealing</tt><big>(</big><em>reader_obj</em>, <em>model_obj</em>, <em>option_obj</em><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.annealing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#optimizer.optimizerHandler.baseOptimizer" title="optimizer.optimizerHandler.baseOptimizer"><tt class="xref py py-class docutils literal"><span class="pre">optimizer.optimizerHandler.baseOptimizer</span></tt></a></p>
@@ -1821,7 +1526,7 @@ every parameter into the range of 0-1 since the algorithms are using normalized 
 </tr>
 </tbody>
 </table>
-<div class="admonition-see-also admonition seealso">
+<div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <dl class="last docutils">
 <dt>Documentation of the Simulated Annealing from &#8216;inspyred&#8217;:</dt>
@@ -1872,6 +1577,89 @@ every parameter into the range of 0-1 since the algorithms are using normalized 
 </dd></dl>
 
 <dl class="class">
+<dt id="optimizer.optimizerHandler.basinHopping">
+<em class="property">class </em><tt class="descclassname">optimizer.optimizerHandler.</tt><tt class="descname">basinHopping</tt><big>(</big><em>reader_obj</em>, <em>model_obj</em>, <em>option_obj</em><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.basinHopping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#optimizer.optimizerHandler.baseOptimizer" title="optimizer.optimizerHandler.baseOptimizer"><tt class="xref py py-class docutils literal"><span class="pre">optimizer.optimizerHandler.baseOptimizer</span></tt></a></p>
+<p>Implements the <tt class="docutils literal"><span class="pre">Basinhopping</span></tt> algorithm for minimization from the <tt class="docutils literal"><span class="pre">scipy</span></tt> package.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>reader_obj</strong> &#8211; an instance of <tt class="docutils literal"><span class="pre">DATA</span></tt> object</li>
+<li><strong>model_obj</strong> &#8211; an instance of a model handler object, either <tt class="docutils literal"><span class="pre">externalHandler</span></tt> or <tt class="docutils literal"><span class="pre">modelHandlerNeuron</span></tt></li>
+<li><strong>option_obj</strong> &#8211; an instance of <tt class="docutils literal"><span class="pre">optionHandler</span></tt> object</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt>Documentation of the Simulated Annealing from &#8216;scipy&#8217;:</dt>
+<dd><a class="reference external" href="http://docs.scipy.org/doc/scipy-dev/reference/generated/scipy.optimize.basinhopping.html">http://docs.scipy.org/doc/scipy-dev/reference/generated/scipy.optimize.basinhopping.html</a></dd>
+</dl>
+</div>
+<dl class="method">
+<dt id="optimizer.optimizerHandler.basinHopping.Optimize">
+<tt class="descname">Optimize</tt><big>(</big><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.basinHopping.Optimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs the optimization.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="optimizer.optimizerHandler.basinHopping.SetBoundaries">
+<tt class="descname">SetBoundaries</tt><big>(</big><em>bounds</em><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.basinHopping.SetBoundaries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores the bounds of the parameters and creates a <tt class="docutils literal"><span class="pre">bounder</span></tt> object which bounds
+every parameter into the range of 0-1 since the algorithms are using normalized values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bounds</strong> &#8211; <tt class="docutils literal"><span class="pre">list</span></tt> containing the minimum and maximum values.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="optimizer.optimizerHandler.basinHopping.logger">
+<tt class="descname">logger</tt><big>(</big><em>x</em>, <em>f</em>, <em>accepted</em><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.basinHopping.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="optimizer.optimizerHandler.basinHopping.wrapper">
+<tt class="descname">wrapper</tt><big>(</big><em>candidates</em>, <em>args</em><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.basinHopping.wrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the <tt class="docutils literal"><span class="pre">ndarray</span></tt> object into a <tt class="docutils literal"><span class="pre">list</span></tt> and passes it to the fitness function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>candidates</strong> &#8211; the <tt class="docutils literal"><span class="pre">ndarray</span></tt> object</li>
+<li><strong>args</strong> &#8211; optional parameters to be passed to the fitness function</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the return value of the fitness function</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="optimizer.optimizerHandler.bounderObject">
+<em class="property">class </em><tt class="descclassname">optimizer.optimizerHandler.</tt><tt class="descname">bounderObject</tt><big>(</big><em>xmax</em>, <em>xmin</em><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.bounderObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Creates a callable to perform the bounding of the parameters.
+:param xmax: list of maxima
+:param xmin: list of minima</p>
+</dd></dl>
+
+<dl class="class">
 <dt id="optimizer.optimizerHandler.fmin">
 <em class="property">class </em><tt class="descclassname">optimizer.optimizerHandler.</tt><tt class="descname">fmin</tt><big>(</big><em>reader_obj</em>, <em>model_obj</em>, <em>option_obj</em><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.fmin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#optimizer.optimizerHandler.baseOptimizer" title="optimizer.optimizerHandler.baseOptimizer"><tt class="xref py py-class docutils literal"><span class="pre">optimizer.optimizerHandler.baseOptimizer</span></tt></a></p>
@@ -1889,7 +1677,7 @@ every parameter into the range of 0-1 since the algorithms are using normalized 
 </tr>
 </tbody>
 </table>
-<div class="admonition-see-also admonition seealso">
+<div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <dl class="last docutils">
 <dt>Documentation of the fmin from &#8216;scipy&#8217;:</dt>
@@ -1942,7 +1730,7 @@ every parameter into the range of 0-1 since the algorithms are using normalized 
 
 <dl class="class">
 <dt id="optimizer.optimizerHandler.grid">
-<em class="property">class </em><tt class="descclassname">optimizer.optimizerHandler.</tt><tt class="descname">grid</tt><big>(</big><em>reader_obj</em>, <em>model_obj</em>, <em>option_obj</em><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.grid" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">optimizer.optimizerHandler.</tt><tt class="descname">grid</tt><big>(</big><em>reader_obj</em>, <em>model_obj</em>, <em>option_obj</em>, <em>resolution</em><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.grid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#optimizer.optimizerHandler.baseOptimizer" title="optimizer.optimizerHandler.baseOptimizer"><tt class="xref py py-class docutils literal"><span class="pre">optimizer.optimizerHandler.baseOptimizer</span></tt></a></p>
 <p>Implements a brute force algorithm for minimization by calculating the function&#8217;s value
 over the specified grid.</p>
@@ -1958,6 +1746,7 @@ over the specified grid.</p>
 <li><strong>reader_obj</strong> &#8211; an instance of <tt class="docutils literal"><span class="pre">DATA</span></tt> object</li>
 <li><strong>model_obj</strong> &#8211; an instance of a model handler object, either <tt class="docutils literal"><span class="pre">externalHandler</span></tt> or <tt class="docutils literal"><span class="pre">modelHandlerNeuron</span></tt></li>
 <li><strong>option_obj</strong> &#8211; an instance of <tt class="docutils literal"><span class="pre">optionHandler</span></tt> object</li>
+<li><strong>resolution</strong> &#8211; number of sample points along each dimensions (default: 10)</li>
 </ul>
 </td>
 </tr>
@@ -2028,75 +1817,6 @@ each with the same number of values as the given list</li>
 </dd></dl>
 
 <dl class="class">
-<dt id="optimizer.optimizerHandler.scipy_anneal">
-<em class="property">class </em><tt class="descclassname">optimizer.optimizerHandler.</tt><tt class="descname">scipy_anneal</tt><big>(</big><em>reader_obj</em>, <em>model_obj</em>, <em>option_obj</em><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.scipy_anneal" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#optimizer.optimizerHandler.baseOptimizer" title="optimizer.optimizerHandler.baseOptimizer"><tt class="xref py py-class docutils literal"><span class="pre">optimizer.optimizerHandler.baseOptimizer</span></tt></a></p>
-<p>Implements the <tt class="docutils literal"><span class="pre">Simulated</span> <span class="pre">Annealing</span></tt> algorithm for minimization from the <tt class="docutils literal"><span class="pre">scipy</span></tt> package.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>reader_obj</strong> &#8211; an instance of <tt class="docutils literal"><span class="pre">DATA</span></tt> object</li>
-<li><strong>model_obj</strong> &#8211; an instance of a model handler object, either <tt class="docutils literal"><span class="pre">externalHandler</span></tt> or <tt class="docutils literal"><span class="pre">modelHandlerNeuron</span></tt></li>
-<li><strong>option_obj</strong> &#8211; an instance of <tt class="docutils literal"><span class="pre">optionHandler</span></tt> object</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition-see-also admonition seealso">
-<p class="first admonition-title">See also</p>
-<dl class="last docutils">
-<dt>Documentation of the Simulated Annealing from &#8216;scipy&#8217;:</dt>
-<dd><a class="reference external" href="http://docs.scipy.org/doc/scipy-dev/reference/generated/scipy.optimize.anneal.html">http://docs.scipy.org/doc/scipy-dev/reference/generated/scipy.optimize.anneal.html</a></dd>
-</dl>
-</div>
-<dl class="method">
-<dt id="optimizer.optimizerHandler.scipy_anneal.Optimize">
-<tt class="descname">Optimize</tt><big>(</big><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.scipy_anneal.Optimize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Performs the optimization.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="optimizer.optimizerHandler.scipy_anneal.SetBoundaries">
-<tt class="descname">SetBoundaries</tt><big>(</big><em>bounds</em><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.scipy_anneal.SetBoundaries" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stores the bounds of the parameters and creates a <tt class="docutils literal"><span class="pre">bounder</span></tt> object which bounds
-every parameter into the range of 0-1 since the algorithms are using normalized values.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bounds</strong> &#8211; <tt class="docutils literal"><span class="pre">list</span></tt> containing the minimum and maximum values.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="optimizer.optimizerHandler.scipy_anneal.wrapper">
-<tt class="descname">wrapper</tt><big>(</big><em>candidates</em>, <em>args</em><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.scipy_anneal.wrapper" title="Permalink to this definition">¶</a></dt>
-<dd><p>Converts the <tt class="docutils literal"><span class="pre">ndarray</span></tt> object into a <tt class="docutils literal"><span class="pre">list</span></tt> and passes it to the fitness function.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>candidates</strong> &#8211; the <tt class="docutils literal"><span class="pre">ndarray</span></tt> object</li>
-<li><strong>args</strong> &#8211; optional parameters to be passed to the fitness function</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the return value of the fitness function</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="optimizer.optimizerHandler.simpleEO">
 <em class="property">class </em><tt class="descclassname">optimizer.optimizerHandler.</tt><tt class="descname">simpleEO</tt><big>(</big><em>reader_obj</em>, <em>model_obj</em>, <em>option_obj</em><big>)</big><a class="headerlink" href="#optimizer.optimizerHandler.simpleEO" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#optimizer.optimizerHandler.baseOptimizer" title="optimizer.optimizerHandler.baseOptimizer"><tt class="xref py py-class docutils literal"><span class="pre">optimizer.optimizerHandler.baseOptimizer</span></tt></a></p>
@@ -2115,7 +1835,7 @@ every parameter into the range of 0-1 since the algorithms are using normalized 
 </dd>
 </dl>
 </div>
-<div class="admonition-see-also admonition seealso">
+<div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <dl class="last docutils">
 <dt>Documentation of the options from &#8216;inspyred&#8217;:</dt>
@@ -2155,7 +1875,7 @@ every parameter into the range of 0-1 since the algorithms are using normalized 
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>random</strong> &#8211; random number generator object</li>
-<li><strong>args</strong> &#8211; <tt class="docutils literal"><span class="pre">dictionary</span></tt>, must contain key &#8220;num_inputs&#8221; and either &#8220;_ec&#8221; or &#8220;self&#8221;</li>
+<li><strong>args</strong> &#8211; <tt class="docutils literal"><span class="pre">dictionary</span></tt>, must contain key &#8220;num_params&#8221; and either &#8220;_ec&#8221; or &#8220;self&#8221;</li>
 </ul>
 </td>
 </tr>
@@ -2383,7 +2103,7 @@ Gets the list of parameter values corresponding to the parameters subject to opt
 <li>Dwell: number of evaluation on the given temperature level</li>
 <li>Error Tolerance for x: error tolerance for input values</li>
 <li>Error Tolerance for f: error tolerance for fitness values</li>
-<li>num_inputs: number of input parameters</li>
+<li>num_params: number of input parameters</li>
 <li>boundaries: bounds of the parameters</li>
 <li>starting_points: initial values to the algorithm</li>
 </ul>
@@ -2710,7 +2430,7 @@ a <tt class="docutils literal"><span class="pre">sizeError</span></tt> is raised
 
 <dl class="method">
 <dt id="optimizer.traceHandler.DATA.Read">
-<tt class="descname">Read</tt><big>(</big><em>path=['/home/fripe/workspace/git/optimizer/inputTrace.txt'], no_traces=1, scale='mV', t_length=1000, freq=1000, trace_type='voltage'</em><big>)</big><a class="headerlink" href="#optimizer.traceHandler.DATA.Read" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">Read</tt><big>(</big><em>path=['/home/osboxes/Optimizer_sasaray/optimizer/inputTrace.txt'], no_traces=1, scale='mV', t_length=1000, freq=1000, trace_type='voltage'</em><big>)</big><a class="headerlink" href="#optimizer.traceHandler.DATA.Read" title="Permalink to this definition">¶</a></dt>
 <dd><p>The main reader function. This calls the recognition function <tt class="docutils literal"><span class="pre">detect_format</span></tt>
 and uses the obtained reader function to read the data.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -2727,6 +2447,16 @@ and uses the obtained reader function to read the data.</p>
 <p class="last">The function uses the 5. line of the file for recognition.</p>
 </div>
 </dd></dl>
+
+<dl class="method">
+<dt id="optimizer.traceHandler.DATA.abstractDataReader">
+<tt class="descname">abstractDataReader</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#optimizer.traceHandler.DATA.abstractDataReader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="optimizer.traceHandler.DATA.convert">
+<tt class="descname">convert</tt><big>(</big><em>dict_to_conv</em><big>)</big><a class="headerlink" href="#optimizer.traceHandler.DATA.convert" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="optimizer.traceHandler.DATA.detect_format">
@@ -2896,7 +2626,7 @@ Stores spike times in <tt class="docutils literal"><span class="pre">dictionary<
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Attr :</th><td class="field-body"><p class="first last">data:
+<tr class="field-even field"><th class="field-name">Attr:</th><td class="field-body"><p class="first last">data:
 the traces are contained in the attribute named <tt class="docutils literal"><span class="pre">data</span></tt> in the order they were in the input file</p>
 </td>
 </tr>
@@ -3080,9 +2810,9 @@ Writes the content of the given trace object to the given file(s).</p>
   <ul>
 <li><a class="reference internal" href="#">optimizer Package</a><ul>
 <li><a class="reference internal" href="#module-optimizer.Core"><tt class="docutils literal"><span class="pre">Core</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-optimizer.cmd_line"><tt class="docutils literal"><span class="pre">cmd_line</span></tt> Module</a></li>
+<li><a class="reference internal" href="#cmd-line-module"><tt class="docutils literal"><span class="pre">cmd_line</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-optimizer.fitnessFunctions"><tt class="docutils literal"><span class="pre">fitnessFunctions</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-optimizer.graphic"><tt class="docutils literal"><span class="pre">graphic</span></tt> Module</a></li>
+<li><a class="reference internal" href="#graphic-module"><tt class="docutils literal"><span class="pre">graphic</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-optimizer.modelHandler"><tt class="docutils literal"><span class="pre">modelHandler</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-optimizer.optimizer"><tt class="docutils literal"><span class="pre">optimizer</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-optimizer.optimizerHandler"><tt class="docutils literal"><span class="pre">optimizerHandler</span></tt> Module</a></li>
@@ -3093,8 +2823,8 @@ Writes the content of the given trace object to the given file(s).</p>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="install.html"
-                        title="previous chapter">Installation</a></p>
+  <p class="topless"><a href="tutorial.html"
+                        title="previous chapter">Optimizer tutorial</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/optimizer.txt"
@@ -3127,14 +2857,14 @@ Writes the content of the given trace object to the given file(s).</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="install.html" title="Installation"
+          <a href="tutorial.html" title="Optimizer tutorial"
              >previous</a> |</li>
         <li><a href="index.html">optimizer 0.0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2013, Szabolcs Káli, Péter Friedrich, Mike Vella.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>
