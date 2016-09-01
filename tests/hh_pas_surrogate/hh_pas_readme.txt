@@ -16,3 +16,6 @@ set the "model_path" tag to the path "hh_pas.hoc" file
 set the "base_dir" tag to a directory where you want the results to be stored
 After these modifications type "python optimizer.py -c hh_pas_settings.xml" into the terminal and press enter.
 
+
+For step-by-step instructions to run the example from the Optimizer GUI please refer to 'hh_pas_GUI.pdf'.
+

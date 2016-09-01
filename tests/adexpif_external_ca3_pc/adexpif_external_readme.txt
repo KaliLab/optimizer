@@ -26,3 +26,6 @@ set the "sim_command" tag to "python /FULL/PATH/TO/MODEL/SCRIPT 10", where /FULL
 set the "input_dir" tag to the path of the input file (including the file name itself!)
 set the "base_dir" tag to a directory where you want the results to be stored
 After these modifications type "python optimizer.py -c _settings.xml" into the terminal and press enter.
+
+
+For step-by-step instructions to run the example from the Optimizer GUI please refer to 'adexpif_external_ca3_pc_GUI.pdf'.
