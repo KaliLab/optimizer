@@ -41,6 +41,7 @@ You can get `matplotlib` with the following command:
 
 
     Debian / Ubuntu : sudo apt-get install python-matplotlib
+    
     Fedora / Redhat : sudo yum install python-matplotlib
 
 If you encounter any difficulties you can find a more detailed description at:
