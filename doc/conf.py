@@ -12,6 +12,7 @@
 # serve to show the default.
 
 import sys, os
+from mock import Mock as MagicMock
 
 sys.path.insert(0, os.path.abspath('../optimizer'))
 sys.path.insert(0, os.path.abspath('..'))
@@ -247,26 +248,13 @@ texinfo_documents = [
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
 #texinfo_show_urls = 'footnote'
 
-class Mock(object):
-    def __init__(self, *args, **kwargs):
-        pass
 
-    def __call__(self, *args, **kwargs):
-        return Mock()
-
+class Mock(MagicMock):
     @classmethod
     def __getattr__(cls, name):
-        if name in ('__file__', '__path__'):
-            return '/dev/null'
-        elif name[0] == name[0].upper():
-            mockType = type(name, (), {})
-            mockType.__module__ = __name__
-            return mockType
-        else:
             return Mock()
 
 MOCK_MODULES = ['inspyred','wx','ec','inspyred.ec','pyelectro','scipy','numpy','analysis',
                 'pyelectro.analysis','interpolate','scipy.interpolate','matplotlib',
                 'matplotlib.backends.backend_wxagg','backends.backend_wxagg','backend_wxagg','gtk']
-for mod_name in MOCK_MODULES:
-    sys.modules[mod_name] = Mock()
+sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
