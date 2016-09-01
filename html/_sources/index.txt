@@ -13,8 +13,8 @@ conductance based neuron models.
    :maxdepth: 2
 
    install
+   tutorial
    optimizer
-
 
 Indices and tables
 ==================

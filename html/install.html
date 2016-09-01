@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -15,7 +13,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '0.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -26,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="optimizer 0.0.1 documentation" href="index.html" />
-    <link rel="next" title="optimizer Package" href="optimizer.html" />
+    <link rel="next" title="Optimizer tutorial" href="tutorial.html" />
     <link rel="prev" title="Welcome to optimizer’s documentation!" href="index.html" /> 
   </head>
   <body>
@@ -37,7 +35,10 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="optimizer.html" title="optimizer Package"
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tutorial.html" title="Optimizer tutorial"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Welcome to optimizer’s documentation!"
@@ -53,35 +54,199 @@
             
   <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="a-working-version-is-installable-via-pip">
-<h2>A working version is installable via pip:<a class="headerlink" href="#a-working-version-is-installable-via-pip" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><pre>pip install optimizer</pre>
+<div class="section" id="get-a-read-only-copy-of-optimizer">
+<h2>Get a read only copy of optimizer<a class="headerlink" href="#get-a-read-only-copy-of-optimizer" title="Permalink to this headline">¶</a></h2>
+<p>Install <cite>git</cite> and type:</p>
+<blockquote>
+<div>git clone <a class="reference external" href="https://github.com/vellamike/optimizer.git">https://github.com/vellamike/optimizer.git</a></div></blockquote>
+<p>More information on this here: <a class="reference external" href="http://rogerdudler.github.com/git-guide/">http://rogerdudler.github.com/git-guide/</a></p>
 </div>
-<p>This is always the latest (stable) branch corresponding to the master
-branch on github.</p>
-</div>
-<div class="section" id="get-a-read-only-copy-of-libneuroml">
-<h2>Get a read only copy of libNeuroML<a class="headerlink" href="#get-a-read-only-copy-of-libneuroml" title="Permalink to this headline">¶</a></h2>
-<p>Install <a href="#id1"><span class="problematic" id="id2">`git`_</span></a> and type:</p>
-<div class="highlight-python"><pre>git clone git://github.com/vellamike/optimizer.git</pre>
-</div>
-<p>More information on this here:
-.. _Git: <a class="reference external" href="http://rogerdudler.github.com/git-guide/">http://rogerdudler.github.com/git-guide/</a></p>
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>The following python libraries are required:</dt>
+<dd><ul class="first last simple">
+<li>python</li>
+<li>numpy</li>
+<li>scipy</li>
+<li>matplotlib</li>
+<li>wxPython</li>
+<li>inspyred</li>
+<li>pyelectro</li>
+</ul>
+</dd>
+<dt>The following libraries are recommended:</dt>
+<dd><ul class="first last simple">
+<li>neuron</li>
+</ul>
+</dd>
+</dl>
+<p>You can get <cite>numpy</cite>, <cite>scipy</cite> and <cite>inspyred</cite> with <cite>easy_install</cite> or <cite>pip</cite> with the following command (for numpy):</p>
+<blockquote>
+<div>pip install numpy</div></blockquote>
+<p>or</p>
+<blockquote>
+<div>easy_install install numpy</div></blockquote>
+<p>You can get <cite>matplotlib</cite> with the following command:</p>
+<blockquote>
+<div>Debian / Ubuntu : sudo apt-get install python-matplotlib
+Fedora / Redhat : sudo yum install python-matplotlib</div></blockquote>
+<p>If you encounter any difficulties you can find a more detailed description at:</p>
+<blockquote>
+<div><a class="reference external" href="http://matplotlib.org/users/installing.html">http://matplotlib.org/users/installing.html</a></div></blockquote>
+<p>You can get <cite>wxpython</cite> with the following command:</p>
+<blockquote>
+<div>apt-get install python-wxgtk2.8 python-wxtools wx2.8-i18n</div></blockquote>
+<p>This command might not work if your OS has an earlier version in the standard software repository. If so, please follow the instructions at:</p>
+<blockquote>
+<div><a class="reference external" href="http://wiki.wxpython.org/InstallingOnUbuntuOrDebian">http://wiki.wxpython.org/InstallingOnUbuntuOrDebian</a></div></blockquote>
+<p>Currently, Optimizer works properly only with version 2.8 of wxpython. Some distributions (e.g., Ubuntu 16.04) may install version 3.0 instead (or in addition to) 2.8. In this case, please remove version 3.0 and make sure to install only version 2.8. Support for later versions of wxpython will be added to Optimizer in the future.</p>
+<p>You can get <cite>pyelectro</cite> from:</p>
+<blockquote>
+<div><a class="reference external" href="https://github.com/vellamike/pyelectro.git">https://github.com/vellamike/pyelectro.git</a></div></blockquote>
+<p>After cloning the repository you can install it by the standard installation method:</p>
+<blockquote>
+<div>python setup.py install</div></blockquote>
+<p>Installing Neuron as a python package is optional since Optimizer can use any executable to run the simulations.
+WARNING: Many features of Optimizer are designed to work with Neuron, so we recommend that you install it!
+Installing Neuron as a python package is beyond the scope of this tutorial as it is somewhat complicated, but you can find a step-by-step guide at:</p>
+<blockquote>
+<div><a class="reference external" href="http://www.davison.webfactional.com/notes/accessing-hoc-python/">http://www.davison.webfactional.com/notes/accessing-hoc-python/</a></div></blockquote>
 </div>
 <div class="section" id="install-optimizer">
 <h2>Install optimizer<a class="headerlink" href="#install-optimizer" title="Permalink to this headline">¶</a></h2>
 <p>Use the standard install method for Python packages:</p>
-<div class="highlight-python"><pre>sudo python setup.py install</pre>
+<blockquote>
+<div>sudo python setup.py install</div></blockquote>
 </div>
+<div class="section" id="run-optimizer">
+<h2>Run optimizer<a class="headerlink" href="#run-optimizer" title="Permalink to this headline">¶</a></h2>
+<p>You can run Optimizer (with a GUI) directly from its installation folder with:</p>
+<blockquote>
+<div>python optimizer.py -g</div></blockquote>
+<p>Or for the command line version (you must specify a configuration file as well):</p>
+<blockquote>
+<div>python optimizer.py -c example.xml</div></blockquote>
 </div>
 <div class="section" id="build-documentation">
 <h2>Build documentation<a class="headerlink" href="#build-documentation" title="Permalink to this headline">¶</a></h2>
-<p>To build a local copy of documentation you need a working install of
+<p>If you should require a local copy of the Optimizer documentation, you need a working install of
 Sphinx, then run the command:</p>
-<div class="highlight-python"><pre>sphinx-build ./doc &lt;local build directory&gt;</pre>
-</div>
+<blockquote>
+<div>sphinx-build ./doc &lt;local build directory&gt;</div></blockquote>
 <p>from the top-level optimizer directory where &lt;local build directory&gt;
 should be replaced with a custom filepath.</p>
+</div>
+<div class="section" id="test-platforms">
+<h2>Test Platforms<a class="headerlink" href="#test-platforms" title="Permalink to this headline">¶</a></h2>
+<p>The package was tested on the following systems:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Mandriva 2010.2 (kernel 2.6.33, glibc 2.11)</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>python 2.6.5</li>
+<li>numpy 1.6.2</li>
+<li>scipy 0.7.2</li>
+<li>matplotlib 1.1.1</li>
+<li>wxPython 2.8.10.1</li>
+<li>inspyred 1.0</li>
+<li>pyelectro</li>
+<li>neuron 7.3</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>CentOS 6.4 (kernel 2.6.32, glibc 2.12)</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>python 2.6.6</li>
+<li>numpy 1.6.1</li>
+<li>scipy 0.10.1</li>
+<li>matplotlib 1.3.1</li>
+<li>wxPython 2.8.12.0</li>
+<li>inspyred 1.0</li>
+<li>pyelectro</li>
+<li>neuron 7.2</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Ubuntu 12.04.3 LTS (kernel 3.2.0-54-generic, glibc 2.15)</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>Python 2.7.3</li>
+<li>numpy 1.7.0</li>
+<li>scipy 0.11.0</li>
+<li>matplotlib 1.1.1rc</li>
+<li>wxPython 2.8.12.1</li>
+<li>inspyred 1.0</li>
+<li>pyelectro</li>
+<li>neuron 7.2</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="4">
+<li>Ubuntu 14.04.4 LTS</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>Python 2.7.6</li>
+<li>numpy 1.8.2</li>
+<li>scipy 0.13.3</li>
+<li>matplotlib 1.3.1</li>
+<li>wxPython 2.8.12.1</li>
+<li>inspyred 1.0</li>
+<li>pyelectro 0.1.6</li>
+<li>neuron 7.4</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<dl class="docutils">
+<dt>Notes</dt>
+<dd><ul class="first last simple">
+<li>Since Neuron with the python interpreter is not working perfectly on Windows, we recommend to use Ubuntu (installing and setting up a virtual os is not hard).</li>
+<li>inspyred requires a feature which is only included in python 2.7, but ther is a workaround for this problem: <a class="reference external" href="https://groups.google.com/forum/#!topic/inspyred/YwJb3ABVtL8">https://groups.google.com/forum/#!topic/inspyred/YwJb3ABVtL8</a></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="developers">
+<h2>Developers<a class="headerlink" href="#developers" title="Permalink to this headline">¶</a></h2>
+<p>Project Leader:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>Szabolcs Káli:</dt>
+<dd><p class="first last"><a class="reference external" href="mailto:kali&#37;&#52;&#48;koki&#46;hu">kali<span>&#64;</span>koki<span>&#46;</span>hu</a></p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>Lead Developer:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>Peter Friedrich:</dt>
+<dd><p class="first last"><a class="reference external" href="mailto:p&#46;friedrich&#46;m&#37;&#52;&#48;gmail&#46;com">p<span>&#46;</span>friedrich<span>&#46;</span>m<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Sára Sáray</dt>
+<dd><p class="first last"><a class="reference external" href="mailto:saraysari&#37;&#52;&#48;gmail&#46;com">saraysari<span>&#64;</span>gmail<span>&#46;</span>com</a></p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>Contributors:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Mike Vella</li>
+</ul>
+</div></blockquote>
 </div>
 </div>
 
@@ -94,10 +259,13 @@ should be replaced with a custom filepath.</p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Installation</a><ul>
-<li><a class="reference internal" href="#a-working-version-is-installable-via-pip">A working version is installable via pip:</a></li>
-<li><a class="reference internal" href="#get-a-read-only-copy-of-libneuroml">Get a read only copy of libNeuroML</a></li>
+<li><a class="reference internal" href="#get-a-read-only-copy-of-optimizer">Get a read only copy of optimizer</a></li>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
 <li><a class="reference internal" href="#install-optimizer">Install optimizer</a></li>
+<li><a class="reference internal" href="#run-optimizer">Run optimizer</a></li>
 <li><a class="reference internal" href="#build-documentation">Build documentation</a></li>
+<li><a class="reference internal" href="#test-platforms">Test Platforms</a></li>
+<li><a class="reference internal" href="#developers">Developers</a></li>
 </ul>
 </li>
 </ul>
@@ -106,8 +274,8 @@ should be replaced with a custom filepath.</p>
   <p class="topless"><a href="index.html"
                         title="previous chapter">Welcome to optimizer&#8217;s documentation!</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="optimizer.html"
-                        title="next chapter">optimizer Package</a></p>
+  <p class="topless"><a href="tutorial.html"
+                        title="next chapter">Optimizer tutorial</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/install.txt"
@@ -137,7 +305,10 @@ should be replaced with a custom filepath.</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="optimizer.html" title="optimizer Package"
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tutorial.html" title="Optimizer tutorial"
              >next</a> |</li>
         <li class="right" >
           <a href="index.html" title="Welcome to optimizer’s documentation!"
@@ -147,7 +318,7 @@ should be replaced with a custom filepath.</p>
     </div>
     <div class="footer">
         &copy; Copyright 2013, Szabolcs Káli, Péter Friedrich, Mike Vella.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>
