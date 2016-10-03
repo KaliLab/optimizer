@@ -419,6 +419,11 @@ class coreModul():
         if self.option_handler.evo_strat=="Random Search":
             self.optimizer=RandomSearch(self.data_handler,self.model_handler,self.option_handler)
 
+        f_handler=open(self.option_handler.model_path.split("/")[-1].split(".")[0]+"_settings.xml","w")
+        #print self.option_handler.dump(self.ffun_mapper)
+        f_handler.write(self.option_handler.dump(self.ffun_mapper))
+        f_handler.close()
+
         start_time=time.time()
         self.optimizer.Optimize()
         stop_time=time.time()
@@ -534,11 +539,6 @@ class coreModul():
 
         if isinstance(self.model_handler, externalHandler):
             self.model_handler.record[0]=[]
-
-        f_handler=open(self.option_handler.model_path.split("/")[-1].split(".")[0]+"_settings.xml","w")
-        #print self.option_handler.dump(self.ffun_mapper)
-        f_handler.write(self.option_handler.dump(self.ffun_mapper))
-        f_handler.close()
 
         name=self.option_handler.model_path.split("/")[-1].split(".")[0]
         f_handler=open(name+"_results.html","w")
