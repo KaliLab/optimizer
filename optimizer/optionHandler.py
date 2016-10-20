@@ -74,6 +74,7 @@ class optionHandler(object):
         self.pop_size=None
         self.max_evaluation=None
         self.mutation_rate=None
+	self.crossover_rate=None
 
         self.cooling_rate=None
         self.m_gauss=None
@@ -487,6 +488,7 @@ class optionHandler(object):
                 "Size of Population:" : self.pop_size,
                 "Number of Generations:" : self.max_evaluation,
                 "Mutation Rate:" : self.mutation_rate,
+		"Crossover Rate:" : self.crossover_rate,
                 "Cooling Rate:" : self.cooling_rate,
                 "Mean of Gaussian:" : self.m_gauss,
                 "Std. Deviation of Gaussian:" : self.std_gauss,
@@ -522,6 +524,7 @@ class optionHandler(object):
         self.pop_size=options.get("Size of Population:",None)
         self.max_evaluation=options.get("Number of Generations:",None)
         self.mutation_rate=options.get("Mutation Rate:",None)
+	self.crossover_rate=options.get("Crossover Rate:",None)
 
         self.cooling_rate=options.get("Cooling Rate:",None)
         self.m_gauss=options.get("Mean of Gaussian:",None)
