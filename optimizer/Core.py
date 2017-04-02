@@ -55,6 +55,12 @@ class coreModul():
         self.option_handler=optionHandler()
         self.model_handler=None
         self.optimizer=None
+        self.cands = []
+        self.fits = []
+        self.wfits = []
+        self.wfits2 = []
+        self.minind = 0
+        self.deap_var = False
         f_m={"MSE": "calc_ase",
                         "Spike count": "calc_spike",
                         "MSE (excl. spikes)": "calc_spike_ase",
@@ -400,7 +406,10 @@ class coreModul():
             if self.option_handler.run_controll_dt>self.data_handler.data.step:
                 self.option_handler.run_controll_dt=self.data_handler.data.step
 
-
+        self.moo_var = False
+        self.ibea_var = False
+        self.deap_var = False
+        self.minind = 0
 
         if self.option_handler.evo_strat=="Classical EO":
             self.optimizer=simpleEO(self.data_handler,self.model_handler,self.option_handler)
@@ -418,6 +427,21 @@ class coreModul():
             self.optimizer=DEA(self.data_handler,self.model_handler,self.option_handler)
         if self.option_handler.evo_strat=="Random Search":
             self.optimizer=RandomSearch(self.data_handler,self.model_handler,self.option_handler)
+        if self.option_handler.evo_strat=="NSGAII":
+            self.optimizer=NSGAII(self.data_handler,self.model_handler,self.option_handler)
+            self.moo_var = True
+        if self.option_handler.evo_strat=="PAES":
+            self.optimizer=PAES(self.data_handler,self.model_handler,self.option_handler)
+            self.moo_var = True
+        if self.option_handler.evo_strat=="NSGAII-deap":
+            self.optimizer=deapNSGA(self.data_handler,self.model_handler,self.option_handler,'nsga')
+            self.deap_var = True
+        if self.option_handler.evo_strat=="SPEA2":
+            self.optimizer=deapNSGA(self.data_handler,self.model_handler,self.option_handler,'spea')
+            self.deap_var = True
+        if self.option_handler.evo_strat=="IBEA":
+            self.optimizer=deapIBEA(self.data_handler,self.model_handler,self.option_handler)
+            self.ibea_var = True
 
         f_handler=open(self.option_handler.model_path.split("/")[-1].split(".")[0]+"_settings.xml","w")
         #print self.option_handler.dump(self.ffun_mapper)
@@ -427,9 +451,53 @@ class coreModul():
         start_time=time.time()
         self.optimizer.Optimize()
         stop_time=time.time()
-        self.optimizer.final_pop.sort(reverse=True)
-        print self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)],"fitness: ",self.optimizer.final_pop[0].fitness
+
+        del self.fits[:]
+        if self.ibea_var:
+            self.cands=self.optimizer.final_pop[0]
+            self.fits=self.optimizer.final_pop[1]
+            self.optimizer.final_pop = []
+
+            minind=self.fits.index(min(self.fits))
+            print minind
+            print len(self.cands)
+            self.cands[0]=self.cands[minind]
+            self.fits[0]=self.fits[minind]
+        if self.deap_var:
+            self.cands=self.optimizer.final_pop[0]
+            self.fits=self.optimizer.final_pop[1]
+            self.optimizer.final_pop = []
+
+            for i in range(len(self.fits)):
+                self.wfits=0;
+                for j in range(len(self.fits[i])):
+                    self.wfits+=(self.option_handler.weights[j]*self.fits[i][j])
+                self.wfits2.append(self.wfits)
+            minind=self.wfits2.index(min(self.wfits2))
+            self.cands[0]=self.cands[minind]
+            self.fits[0]=self.fits[minind]
+            del self.wfits2[:]
+        else:
+            self.optimizer.final_pop.sort(reverse=True)
+            for i in range(len(self.optimizer.final_pop)):
+                self.cands.append(self.optimizer.final_pop[i].candidate[0:len(self.option_handler.adjusted_params)])
+                self.fits.append(self.optimizer.final_pop[i].fitness)
+        if self.moo_var:
+            for i in range(len(self.fits)):
+                self.wfits=0;
+                for j in range(len(self.fits[i])):
+                    self.wfits+=(self.option_handler.weights[j]*self.fits[i][j])
+                self.wfits2.append(self.wfits)
+            minind=self.wfits2.index(min(self.wfits2))
+            self.cands[0]=self.cands[minind]
+            self.fits[0]=self.fits[minind]
+            del self.wfits2[:]
+        #self.optimizer.final_pop.sort(reverse=True)
+        #print self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)],"fitness: ",self.optimizer.final_pop[0].fitness
+        print self.cands,"fitness: ",self.fits
         print "Optimization lasted for ", stop_time-start_time, " s"
+
+        print self.cands[0],"fitness: ",self.fits[0]
         if self.option_handler.type[-1]!= 'features':
             self.feat_str=", ".join(map(lambda x: self.ffun_mapper[x.__name__],self.option_handler.feats))
         else:
@@ -447,11 +515,13 @@ class coreModul():
         """
         self.final_result=[]
         self.error_comps=[]
-        self.optimal_params=self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])
+        #self.optimal_params=self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])
+        self.optimal_params=self.optimizer.fit_obj.ReNormalize(self.cands[0])
         if self.option_handler.GetUFunString()=='':
             if isinstance(self.model_handler, externalHandler):
                 out_handler=open("params.param","w")
-            for n,k in zip(self.option_handler.GetObjTOOpt(),self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])):
+            #for n,k in zip(self.option_handler.GetObjTOOpt(),self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])):
+            for n,k in zip(self.option_handler.GetObjTOOpt(),self.optimizer.fit_obj.ReNormalize(self.cands[0])):
                 tmp=n.split(" ")
                 if isinstance(self.model_handler, externalHandler):
                     out_handler.write(str(k)+"\n")
@@ -473,7 +543,8 @@ class coreModul():
 
             self.usr_fun_name=self.option_handler.GetUFunString().split("\n")[4][self.option_handler.GetUFunString().split("\n")[4].find(" ")+1:self.option_handler.GetUFunString().split("\n")[4].find("(")]
             self.usr_fun=locals()[self.usr_fun_name]
-            self.usr_fun(self,self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)]))
+            self.usr_fun(self,self.optimizer.fit_obj.ReNormalize(self.cands[0]))
+            #self.usr_fun(self,self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)]))
         #the first cell is a vector with all the stimuli in the simulation
         #the first cell is the current stimulus
 
@@ -546,13 +617,15 @@ class coreModul():
         tmp_str+=self.htmlStr(str(time.asctime( time.localtime(time.time()) )))+"\n"
         tmp_str+="<p>"+self.htmlStyle("Optimization of <b>"+name+".hoc</b> based on: "+self.option_handler.input_dir,self.htmlAlign("center"))+"</p>\n"
         tmp_list=[]
-        tmp_fit=self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])
+        #tmp_fit=self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])
+        tmp_fit=self.optimizer.fit_obj.ReNormalize(self.cands[0])
         for name,mmin,mmax,f in zip(self.option_handler.GetObjTOOpt(),self.option_handler.boundaries[0],self.option_handler.boundaries[1],tmp_fit):
             tmp_list.append([str(name),str(mmin),str(mmax),str(f)])
         tmp_str+="<center><p>"+self.htmlStyle("Results",self.htmlUnderline(),self.htmlResize(200))+"</p></center>\n"
         tmp_str+=self.htmlTable(["Parameter Name","Minimum","Maximum","Optimum"], tmp_list)+"\n"
         tmp_str+="<center><p>"+self.htmlStrBold("Fitnes: ")
-        tmp_str+=self.htmlStrBold(str(self.optimizer.final_pop[0].fitness))+"</p></center>\n"
+        #tmp_str+=self.htmlStrBold(str(self.optimizer.final_pop[0].fitness))+"</p></center>\n"
+        tmp_str+=self.htmlStrBold(str(self.fits[0]))+"</p></center>\n"
         tmp_str+=self.htmlPciture("result_trace.png")+"\n"
         for k in self.option_handler.GetOptimizerOptions().keys():
             tmp_str+="<p><b>"+k+" =</b> "+str(self.option_handler.GetOptimizerOptions()[k])+"</p>\n"

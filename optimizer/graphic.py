@@ -12,13 +12,17 @@ except RuntimeError as re:
 #from inspyred.ec import analysis
 from inspyred.ec.analysis import generation_plot
 import inspyred
+import matplotlib.pyplot as plt
 #from wxPython._controls import wxTextCtrl
 import os
 from string import count, split, strip
 from copy import copy
 import Core
+import numpy
 
 
+from deap.benchmarks.tools import diversity, convergence, hypervolume
+from deap import tools
 
 
 class boundarywindow(wx.Frame):
@@ -53,11 +57,11 @@ class boundarywindow(wx.Frame):
             if len(self.par.core.option_handler.boundaries[1]) == len(self.par.core.option_handler.GetObjTOOpt()):
                 tmp_min.SetValue(str(self.par.core.option_handler.boundaries[0][l]))
                 tmp_max.SetValue(str(self.par.core.option_handler.boundaries[1][l]))
-        Setbutton = wx.Button(panel, label="Set", pos=(hstep, 650))
+        Setbutton = wx.Button(panel, label="Set", pos=(hstep, 250))
         Setbutton.Bind(wx.EVT_BUTTON, self.Set)
-        Savebutton = wx.Button(panel, label="Save", pos=(100, 650))
+        Savebutton = wx.Button(panel, label="Save", pos=(100, 250))
         Savebutton.Bind(wx.EVT_BUTTON, self.Save)
-        Loadbutton = wx.Button(panel, label="Load", pos=(300, 650))
+        Loadbutton = wx.Button(panel, label="Load", pos=(300, 250))
         Loadbutton.Bind(wx.EVT_BUTTON, self.Load)
         self.Show()
         self.save_file_name="boundaries.txt"
@@ -1715,6 +1719,11 @@ class algorithmLayer(wx.Frame):
         self.dd_evo.Append("L-BFGS-B")
         self.dd_evo.Append("Differential Evolution")
         self.dd_evo.Append("Random Search")
+        self.dd_evo.Append("NSGAII")
+        self.dd_evo.Append("PAES")
+        self.dd_evo.Append("NSGAII-deap")
+        self.dd_evo.Append("SPEA2")
+        self.dd_evo.Append("IBEA")
         #self.dd_evo.Select(0)
         self.num_of_ctrl=3
         self.dd_evo.Bind(wx.EVT_CHOICE, self.Algo_Select)
@@ -1803,6 +1812,16 @@ class algorithmLayer(wx.Frame):
             alg=[descr19,descr20,descr21,descr39]
         elif selected_algo=="Random Search":
             alg=[descr19]
+        elif selected_algo=="NSGAII":
+            alg=[descr19,descr20,descr21]
+        elif selected_algo=="PAES":
+            alg=[descr19,descr20]
+        elif selected_algo=="NSGAII-deap":
+            alg=[descr19,descr20]
+        elif selected_algo=="SPEA2":
+            alg=[descr19,descr20]
+        elif selected_algo=="IBEA":
+            alg=[descr19,descr20]
 
 
         self.algo_param=[]
@@ -1952,7 +1971,8 @@ class resultsLayer(wx.Frame):
         heading = wx.StaticText(self.panel, label='Final Result', pos=(10, 15))
         heading.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
         text = "Results:"
-        for n, k in zip(self.core.option_handler.GetObjTOOpt(), self.core.optimizer.fit_obj.ReNormalize(self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)])):
+        #for n, k in zip(self.core.option_handler.GetObjTOOpt(), self.core.optimizer.fit_obj.ReNormalize(self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)])):
+        for n, k in zip(self.core.option_handler.GetObjTOOpt(), self.core.optimizer.fit_obj.ReNormalize(self.core.cands[0])):
             if n.split()[0]==n.split()[-1]:
                 param=[n.split()[0], n.split()[-1]]
                 text += "\n" + param[0] + "\n" + "\t" + str(k)
@@ -1963,7 +1983,8 @@ class resultsLayer(wx.Frame):
                     text += "\n" + ": \n".join(param) + ":" + "\n" + "\t" + str(k)
                 else:
                     text += "\n" + param[0] + ": " + param[-1] + "\n" + "\t" + str(k)
-        text += "\n" + "fitness:\n" + "\t" + str(self.core.optimizer.final_pop[0].fitness)
+        #text += "\n" + "fitness:\n" + "\t" + str(self.core.optimizer.final_pop[0].fitnes)
+        text += "\n" + "fitness:\n" + "\t" + str(self.core.fits)
 
         wx.StaticText(self.panel, label=text, pos=(10, 40))
         wx.StaticLine(self.panel, pos=(1, 0), size=(self.Size[0], 1))
@@ -2066,7 +2087,8 @@ class resultsLayer(wx.Frame):
         if dlg.ShowModal() == wx.ID_OK:
             self.save_file_name=dlg.GetFilename()
             f=open(self.save_file_name,"w")
-            params=self.core.optimizer.fit_obj.ReNormalize(self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)])
+            #params=self.core.optimizer.fit_obj.ReNormalize(self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)])
+            params=self.core.optimizer.fit_obj.ReNormalize(self.core.cands[0])
             #params=self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)]
             f.write("\n".join(map(str,params)))
             dlg.Destroy()
@@ -2083,7 +2105,7 @@ class analyzisLayer(wx.Frame):
         self.panel = wx.Panel(self)
         self.parent = parent
         self.core = core
-
+        self.flg = True
         #this will need to be wrapped in a try statement later:
         import optimizer
         #print optimizer.__file__
@@ -2107,7 +2129,8 @@ class analyzisLayer(wx.Frame):
         heading = wx.StaticText(self.panel, label='Analysis', pos=(10, 15))
         heading.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
         text = "Results:"
-        for n, k in zip(self.core.option_handler.GetObjTOOpt(), self.core.optimizer.fit_obj.ReNormalize(self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)])):
+        #for n, k in zip(self.core.option_handler.GetObjTOOpt(), self.core.optimizer.fit_obj.ReNormalize(self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)])):
+        for n, k in zip(self.core.option_handler.GetObjTOOpt(), self.core.optimizer.fit_obj.ReNormalize(self.core.cands[0])):
             if n.split()[0]==n.split()[-1]:
                 param=[n.split()[0], n.split()[-1]]
                 text += "\n" + param[0] + "\n" + "\t" + str(k)
@@ -2118,17 +2141,34 @@ class analyzisLayer(wx.Frame):
                     text += "\n" + ": \n".join(param) + ":" + "\n" + "\t" + str(k)
                 else:
                     text += "\n" + param[0] + ": " + param[-1] + "\n" + "\t" + str(k)
-        text += "\n" + "fitness:\n" + "\t" + str(self.core.optimizer.final_pop[0].fitness)
+        #text += "\n" + "fitness:\n" + "\t" + str(self.core.optimizer.final_pop[0].fitness)
+        text += "\n" + "fitness:\n" + "\t" + str(self.core.fits[0])
         wx.StaticText(self.panel, label=text, pos=(10, 35))
         wx.StaticText(self.panel, label='Fitness statistics', pos=(410, 35))
 
         wx.StaticLine(self.panel, pos=(400, 0), size=(1, 600), style=wx.LI_VERTICAL)
 
-        try:
-            stats = inspyred.ec.analysis.fitness_statistics(self.core.optimizer.final_pop)
-        except AttributeError:
-            stats={'best' : "unkown",'worst' : "unkown",'mean' : "unkown",'median' : "unkown", 'std' : "unkown"}
-        string = "Best: " + str(stats['best']) + "\nWorst: " + str(stats['worst']) + "\nMean: " + str(stats['mean']) + "\nMedian: " + str(stats['median']) + "\nStd:" + str(stats['std'])
+        if self.core.deap_var or self.core.ibea_var:
+            try:
+                print(self.core.optimizer.logbook)
+                self.record=self.core.optimizer.logbook
+                #for key, value in self.record.iteritems():
+                #    print key, value
+            except AttributeError:
+                stats={'best' : "unkown",'worst' : "unkown",'mean' : "unkown",'median' : "unkown", 'std' : "unkown"}
+            string = "Avg: " + str(self.record[-1]['avg']) + "\nStd: " + str(self.record[-1]['std']) + "\nMin: " + str(self.record[-1]['min']) + "\nMax: " + str(self.record[-1]['max'])
+        else:
+            try:
+                stats = inspyred.ec.analysis.fitness_statistics(self.core.optimizer.final_pop)
+            except AttributeError:
+                stats={'best' : "unkown",'worst' : "unkown",'mean' : "unkown",'median' : "unkown", 'std' : "unkown"}
+            #print 'type---------------------------------------------------------------'
+            #print type(stats['best'])
+            #if stats['best'] is tuple:
+            #    stats['best']=sum(stats['best'])/len(stats['best'])
+            #if stats['worst'] is tuple:
+            #    stats['worst']=sum(stats['worst'])/len(stats['worst'])
+            string = "Best: " + str(stats['best']) + "\nWorst: " + str(stats['worst']) + "\nMean: " + str(stats['mean']) + "\nMedian: " + str(stats['median']) + "\nStd:" + str(stats['std'])
         wx.StaticText(self.panel, label=string, pos=(410, 55))
 
         #insert table with error components: 410,200
@@ -2171,14 +2211,82 @@ class analyzisLayer(wx.Frame):
 
     def PlotGen(self, e):
         import os.path
+        if self.core.moo_var and self.flg:
+            with open("stat_file.txt","r") as f:
+                textlines=""
+                for line in f:
+                    if "(" not in line:
+                        break
+                    sums=0
+                    sums2=0
+                    i=0
+                    tups=line[line.index("(") + 1:line.index(")")]
+                    for word in tups.split(','):
+                        if word:
+                            sums+=float(word)*self.core.option_handler.weights[i]
+                        i+=1
+                    line=line.replace(tups,str(sums))
+                    tups2=line[line.rindex("(") + 1:line.rindex(")")]
+                    i=0
+                    for word in tups2.split(','):
+                        if word:
+                            sums2+=float(word)*self.core.option_handler.weights[i]
+                        i+=1
+                    line=line.replace(tups2,str(sums2))
+                    line=line.replace("(","")
+                    line=line.replace(")","")
+                    print line
+                    textlines+=line
+            if textlines:
+                statsd=open("stat_file.txt","w")
+                statsd.write(textlines)
+                statsd.close()
         if os.path.getmtime("stat_file.txt") <= self.core.option_handler.start_time_stamp:
             wx.MessageBox('Generation plot is not available for this algorithm.', 'Error', wx.OK | wx.ICON_ERROR)
-        else:
-            try:
+        try:
+            if self.core.deap_var or self.core.ibea_var:
+                genarr=[]
+                minarr=[]
+                maxarr=[]
+                avgarr=[]
+                stdarr=[]
+                for i in range(len(self.record)):
+                    genarr.append(int(self.record[i]['gen']))
+                    minarr.append(self.record[i]['min'])
+                    maxarr.append(self.record[i]['max'])
+                    avgarr.append(self.record[i]['avg'])
+                    stdarr.append(self.record[i]['std'])
+                for i in range(len(maxarr)):
+                    maxn=0
+                    minn=0
+                    avgn=0
+                    stdn=0
+                    for j in range(len(maxarr[i])):
+                        maxn+=float(maxarr[i][j])*self.core.option_handler.weights[j]
+                        minn+=float(minarr[i][j])*self.core.option_handler.weights[j]
+                        avgn+=float(avgarr[i][j])*self.core.option_handler.weights[j]
+                        stdn+=float(stdarr[i][j])*self.core.option_handler.weights[j]
+                    maxarr[i]=maxn
+                    minarr[i]=minn
+                    avgarr[i]=avgn
+                    stdarr[i]=stdn
+                plt.plot(genarr,minarr,label='Minimum')
+                plt.plot(genarr,maxarr,label='Maximum')
+                plt.plot(genarr,avgarr,label='Average')
+                plt.plot(genarr,stdarr,label='Standard Deviation')
+                legend = plt.legend(loc='upper center', shadow=True)
+                frame = legend.get_frame()
+                frame.set_facecolor('0.90')
+                for label in legend.get_texts():
+                    label.set_fontsize('large')
+                for label in legend.get_lines():
+                    label.set_linewidth(1.5)
+                plt.show()
+            else:
                 generation_plot("stat_file.txt")
-            except ValueError:
-                stat_file=open("stat_file.txt","rb")
-                generation_plot(stat_file)
+        except ValueError:
+            stat_file=open("stat_file.txt","rb")
+            generation_plot(stat_file)
         self.Show()
 
     def PlotGrid(self, e):
