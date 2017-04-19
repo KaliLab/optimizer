@@ -74,7 +74,7 @@ WARNING: Many features of Optimizer are designed to work with Neuron, so we reco
 
 Installing Neuron as a python package is beyond the scope of this tutorial as it is somewhat complicated, but you can find a step-by-step guide at:
 
-    http://www.davison.webfactional.com/notes/accessing-hoc-python/
+    http://andrewdavison.info/notes/installation-neuron-python/
 
 Install optimizer
 ------------------
