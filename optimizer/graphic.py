@@ -1769,6 +1769,7 @@ class algorithmLayer(wx.Frame):
 	descr36 = ("Social Rate:",2.1)
 	descr37 = ('Neighborhood Size:', 5)
 	descr38 = ('Topology:')
+	descr39 = ('Crossover Rate:',1)
 
 
         while(self.num_of_ctrl>0):
@@ -1791,7 +1792,7 @@ class algorithmLayer(wx.Frame):
         elif selected_algo=="Simulated Annealing":
             alg=[descr20,descr21,descr22,descr23,descr24,descr26]
 	elif selected_algo=="Particle Swarm":
-            alg=[descr19,descr20,descr34,descr35,descr36,descr37]
+            alg=[descr19,descr20,descr34,descr35,descr36]
         elif selected_algo=="Basinhopping":
             alg=[descr32,descr33,descr25,descr27,descr29]
         elif selected_algo=="Nelder-Mead":
@@ -1799,7 +1800,7 @@ class algorithmLayer(wx.Frame):
         elif selected_algo=="L-BFGS-B":
             alg=[descr20,descr28]
         elif selected_algo=="Differential Evolution":
-            alg=[descr19,descr20,descr21]
+            alg=[descr19,descr20,descr21,descr39]
         elif selected_algo=="Random Search":
             alg=[descr19]
 

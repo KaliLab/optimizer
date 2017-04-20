@@ -260,12 +260,12 @@ class PSO(baseOptimizer):
         self.pop_size=option_obj.pop_size
 
 	#PSO attributes
-        self.topology=inspyred.swarm.topologies.ring_topology
+        
         self.inertia=option_obj.inertia
         self.cognitive_rate=option_obj.cognitive_rate
         self.social_rate=option_obj.social_rate
-	self.neighborhood_size=int(round(option_obj.neighborhood_size))
-
+	#self.neighborhood_size=int(round(option_obj.neighborhood_size))
+	self.topology=inspyred.swarm.topologies.star_topology
         self.num_params=option_obj.num_params
         self.SetBoundaries(option_obj.boundaries)
         self.maximize=False #hard wired, always minimize
@@ -308,8 +308,6 @@ class PSO(baseOptimizer):
 					     evaluator=self.ffun,
                                              max_generations=self.max_evaluation-1,
                                              pop_size=self.pop_size,
-					     topology=self.topology,
-					     neighborhood_size=self.neighborhood_size,
 					     inertia=self.inertia,
 					     cognitive_rate=self.cognitive_rate,
 					     social_rate=self.social_rate,
@@ -833,6 +831,7 @@ class DEA(baseOptimizer):
         self.pop_size=option_obj.pop_size
         self.max_evaluation=option_obj.max_evaluation
         self.mutation_rate=option_obj.mutation_rate
+	self.crossover_rate=option_obj.crossover_rate
         self.num_params=option_obj.num_params
         self.SetBoundaries(option_obj.boundaries)
         self.maximize=False #hard wired, always minimize
@@ -874,6 +873,7 @@ class DEA(baseOptimizer):
                                              seeds=self.starting_points,
                                              max_generations=self.max_evaluation,
                                              mutation_rate=self.mutation_rate,
+					     crossover_rate=self.crossover_rate,
                                              num_params=self.num_params,
                                              maximize=self.maximize,
                                              bounder=self.bounder,
