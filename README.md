@@ -10,7 +10,7 @@ Get a read only copy of optimizer
 Install `git` and type:
 
 
-    git clone https://github.com/vellamike/optimizer.git
+    git clone https://github.com/KaliLab/optimizer.git
 
 More information on this here: http://rogerdudler.github.com/git-guide/
 
