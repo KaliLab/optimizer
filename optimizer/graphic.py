@@ -1500,7 +1500,7 @@ class ffunctionLayer(wx.Frame):
             self.my_list = copy(self.core.ffun_calc_list)
             #self.my_list=["ffun1","ffun","ffun3"]
         else:
-            self.my_list=self.core.data_handler.features_data.keys()[3:-1]
+            self.my_list=self.core.data_handler.features_data.keys()[3:]
         self.param_list = [[]] * len(self.my_list)
         if self.core.option_handler.type[-1]!="features":
             self.param_list[2] = [("Spike Detection Thres. (mv)",0.0)]
@@ -1611,7 +1611,7 @@ class ffunctionLayer(wx.Frame):
                                 })
             self.kwargs.update({"weights" : [float(w.GetValue()) for w in filter(lambda x: x.IsEnabled(), self.weights)]})
         else:
-            #self.my_list=self.core.data_handler.features_data.keys()[3:-1]
+            #self.my_list=self.core.data_handler.features_data.keys()[3:]
             self.kwargs.update({"feat":
                                 [tmp_dict,
                                  [self.my_list[fun[0]] for fun in filter(lambda x: x[1].IsEnabled(), enumerate(self.weights))]]

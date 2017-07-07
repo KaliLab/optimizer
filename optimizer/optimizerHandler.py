@@ -599,7 +599,7 @@ class L_BFGS_B(baseOptimizer):
         self.result=optimize.fmin_l_bfgs_b(self.wrapper,
                                       x0=ndarray((self.num_params,),buffer=array(self.starting_points),offset=0,dtype=float),
 #                                      x0=ndarray( (self.num_params,1) ,buffer=array([0.784318808, 4.540607953, -11.919391073,-100]),dtype=float),
-                                      args=[[]],
+                                      args=((),),
                                       bounds= [(0,1)]*len(self.min_max[0]),
                                       maxfun= self.max_evaluation,
                                       fprime= None,
