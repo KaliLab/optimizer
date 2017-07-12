@@ -1856,7 +1856,7 @@ class algorithmLayer(wx.Frame):
 
     def Run(self, e):
         try:
-            tmp = {"seed" : float(self.seed_ctrl.GetValue()),
+            tmp = {"seed" : int(self.seed_ctrl.GetValue()),
                 "evo_strat" : str(self.dd_evo.GetItems()[self.dd_evo.GetCurrentSelection()])
                 }
             for n in self.algo_param:
