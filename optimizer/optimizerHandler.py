@@ -1005,53 +1005,29 @@ class NSGAII(baseOptimizer):
     """
     def __init__(self,reader_obj,model_obj,option_obj):
         self.fit_obj=fF(reader_obj,model_obj,option_obj)
-        print 'reader_obj'
-        print reader_obj
-        print 'model_obj'
-        print model_obj
-        print 'option_obj'
-        print option_obj
+
         self.SetFFun(option_obj)
         self.rand=Random()
-        print 'option_obj'
-        print option_obj
         self.seed=option_obj.seed
         self.rand.seed(self.seed)
         self.evo_strat=ec.emo.NSGA2(self.rand)
-        print 'self.seed'
-        print self.seed
         self.evo_strat.terminator=terminators.generation_termination
-        print 'evo_strat.terminator'
-        print self.evo_strat.terminator
         self.evo_strat.selector=inspyred.ec.selectors.default_selection
-        print 'evo_strat.selector'
-        print self.evo_strat.selector
-        self.evo_strat.replacer=inspyred.ec.replacers.generational_replacement
-        print 'evo_strat.replacer'
-        print self.evo_strat.replacer
+        self.evo_strat.replacer=inspyred.ec.replacers.nsga_replacement
+
         self.evo_strat.variator=[variators.gaussian_mutation,
                                  variators.blend_crossover]
         if option_obj.output_level=="1":
             self.evo_strat.observer=[observers.population_observer,observers.file_observer]
         else:
             self.evo_strat.observer=[observers.file_observer]
-        print 'evo_strat.variator'
-        print self.evo_strat.variator
         self.pop_size=option_obj.pop_size
-        print 'option_obj.pop_size'
-        print option_obj.pop_size
+
         self.max_evaluation=option_obj.max_evaluation
-        print 'option_obj.max_evaluation'
-        print option_obj.max_evaluation
         self.mutation_rate=option_obj.mutation_rate
-        print 'option_obj.mutation_rate'
-        print option_obj.mutation_rate
         self.num_params=option_obj.num_params
-        print 'option_obj.num_params'
-        print option_obj.num_params
         self.SetBoundaries(option_obj.boundaries)
-        print 'option_obj.boundaries'
-        print option_obj.boundaries
+
         self.maximize=False #hard wired, always minimize
         self.stat_file=open("stat_file.txt","w")
         self.ind_file=open("ind_file.txt","w")
@@ -1091,7 +1067,7 @@ class NSGAII(baseOptimizer):
                                              boundaries=self.min_max,
                                              statistics_file=self.stat_file,
                                              individuals_file=self.ind_file)
-        print(self.final_pop)
+	self.final_archive = self.evo_strat.archive
 
     def SetBoundaries(self,bounds):
         """
@@ -1103,11 +1079,6 @@ class NSGAII(baseOptimizer):
         """
         self.min_max=bounds
         self.bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
-        print 'self.min_max'
-        print self.min_max[0]
-        print self.min_max[1]
-        print 'self.bounder'
-        print self.bounder
 
 
 class PAES(baseOptimizer):
@@ -1134,7 +1105,7 @@ class PAES(baseOptimizer):
         self.evo_strat=ec.emo.PAES(self.rand)
         self.evo_strat.terminator=terminators.generation_termination
         self.evo_strat.selector=inspyred.ec.selectors.default_selection
-        self.evo_strat.replacer=inspyred.ec.replacers.generational_replacement
+        self.evo_strat.replacer=inspyred.ec.replacers.paes_replacement
         self.evo_strat.variator=[variators.gaussian_mutation,
                                  variators.blend_crossover]
         if option_obj.output_level=="1":
@@ -1187,7 +1158,7 @@ class PAES(baseOptimizer):
                                              boundaries=self.min_max,
                                              statistics_file=self.stat_file,
                                              individuals_file=self.ind_file)
-
+	self.final_archive = self.evo_strat.archive
     def SetBoundaries(self,bounds):
         """
         Stores the bounds of the parameters and creates a ``bounder`` object which bounds
