@@ -492,6 +492,11 @@ class coreModul():
             self.cands[0]=self.cands[minind]
             self.fits[0]=self.fits[minind]
             del self.wfits2[:]
+	    
+	    with open("final_archive.txt", "wb") as arc_file:
+	    	for f in self.optimizer.final_archive:
+			arc_file.write(str(f.fitness))
+			arc_file.write('\n')
         #self.optimizer.final_pop.sort(reverse=True)
         #print self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)],"fitness: ",self.optimizer.final_pop[0].fitness
         print self.cands,"fitness: ",self.fits
