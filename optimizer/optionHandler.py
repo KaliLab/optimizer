@@ -3,6 +3,7 @@ import time
 from xml.etree.ElementTree import Element as e, SubElement as se
 from xml.etree import ElementTree
 from xml.dom import minidom
+import cPickle as pickle
 
 def prettify(e):
     """
@@ -72,6 +73,7 @@ class optionHandler(object):
         self.evo_strat=None
 
         self.pop_size=None
+        self.number_of_cpu=None
         self.max_evaluation=None
         self.mutation_rate=None
 	self.crossover_rate=None
@@ -358,6 +360,7 @@ class optionHandler(object):
         :return: the parameters listed above in a ``list``
 
         """
+        pickle.dump([self.stim_amp,self.stim_del,self.stim_dur], open( "stim.p", "wb" ) )
         return [self.stim_amp,
         self.stim_del,
         self.stim_dur]
@@ -437,6 +440,7 @@ class optionHandler(object):
         :return: the parameters above in a ``list``
 
         """
+        pickle.dump([self.run_controll_tstop,self.run_controll_dt,self.run_controll_record,self.run_controll_sec,self.run_controll_pos,self.run_controll_vrest], open( "estim.p", "wb" ) )
         return [self.run_controll_tstop,
         self.run_controll_dt,
         self.run_controll_record,
@@ -488,7 +492,7 @@ class optionHandler(object):
                 "Size of Population:" : self.pop_size,
                 "Number of Generations:" : self.max_evaluation,
                 "Mutation Rate:" : self.mutation_rate,
-		"Crossover Rate:" : self.crossover_rate,
+		        "Crossover Rate:" : self.crossover_rate,
                 "Cooling Rate:" : self.cooling_rate,
                 "Mean of Gaussian:" : self.m_gauss,
                 "Std. Deviation of Gaussian:" : self.std_gauss,
@@ -503,10 +507,11 @@ class optionHandler(object):
                 "num_params" : self.num_params,
                 "boundaries" : self.boundaries,
                 "starting_points" : self.starting_points,
-		"Inertia:" :self.inertia,
-		"Cognitive Rate:" : self.cognitive_rate,
-		"Social Rate:" : self.social_rate,
-		"Neighborhood Size:" : self.neighborhood_size
+        		"Inertia:" :self.inertia,
+        		"Cognitive Rate:" : self.cognitive_rate,
+        		"Social Rate:" : self.social_rate,
+        		"Neighborhood Size:" : self.neighborhood_size,
+                "Number of CPU:" : self.number_of_cpu
 		#"Topology:" : self.topology
                 }
 
@@ -524,9 +529,9 @@ class optionHandler(object):
         self.pop_size=options.get("Size of Population:",None)
         self.max_evaluation=options.get("Number of Generations:",None)
         self.mutation_rate=options.get("Mutation Rate:",None)
-	self.crossover_rate=options.get("Crossover Rate:",None)
-
+        self.crossover_rate=options.get("Crossover Rate:",None)
         self.cooling_rate=options.get("Cooling Rate:",None)
+
         self.m_gauss=options.get("Mean of Gaussian:",None)
         self.std_gauss=options.get("Std. Deviation of Gaussian:",None)
         self.init_temp=options.get("Initial Temperature:",None)
@@ -545,10 +550,12 @@ class optionHandler(object):
         self.boundaries=options.get("boundaries")
         self.starting_points=options.get("starting_points",None)
 
-	self.inertia=options.get("Inertia:",None)
-	self.cognitive_rate=options.get("Cognitive Rate:",None)
-	self.social_rate=options.get("Social Rate:",None)
-	self.neighborhood_size=options.get("Neighborhood Size:",None)
+    	self.inertia=options.get("Inertia:",None)
+    	self.cognitive_rate=options.get("Cognitive Rate:",None)
+    	self.social_rate=options.get("Social Rate:",None)
+    	self.neighborhood_size=options.get("Neighborhood Size:",None)
+
+        self.number_of_cpu=options.get("Number of CPU:",None)
 	#self.topology=options.GetCurrentSelection("Topology:")
 
 

@@ -407,7 +407,6 @@ class coreModul():
                 self.option_handler.run_controll_dt=self.data_handler.data.step
 
         self.moo_var = False
-        self.ibea_var = False
         self.deap_var = False
         self.minind = 0
 
@@ -441,7 +440,7 @@ class coreModul():
             self.deap_var = True
         if self.option_handler.evo_strat=="IBEA":
             self.optimizer=deapIBEA(self.data_handler,self.model_handler,self.option_handler)
-            self.ibea_var = True
+            self.deap_var = True
 
         f_handler=open(self.option_handler.model_path.split("/")[-1].split(".")[0]+"_settings.xml","w")
         #print self.option_handler.dump(self.ffun_mapper)
@@ -450,30 +449,28 @@ class coreModul():
 
         start_time=time.time()
         self.optimizer.Optimize()
+
         stop_time=time.time()
 
         del self.fits[:]
-        if self.ibea_var:
-            self.cands=self.optimizer.final_pop[0]
-            self.fits=self.optimizer.final_pop[1]
-            self.optimizer.final_pop = []
-
-            minind=self.fits.index(min(self.fits))
-            print minind
-            print len(self.cands)
-            self.cands[0]=self.cands[minind]
-            self.fits[0]=self.fits[minind]
+        del self.cands[:]
         if self.deap_var:
             self.cands=self.optimizer.final_pop[0]
             self.fits=self.optimizer.final_pop[1]
+            print self.fits
             self.optimizer.final_pop = []
-
+            avgfits=numpy.average(self.fits[0],axis=1,weights=self.option_handler.weights).tolist()
+            mn,idx=min((avgfits[i],i) for i in xrange(len(avgfits)))
+            minind=idx
+            """self.cands[0]=self.cands[minind]
+            self.fits[0]=self.fits[minind]
             for i in range(len(self.fits)):
                 self.wfits=0;
                 for j in range(len(self.fits[i])):
-                    self.wfits+=(self.option_handler.weights[j]*self.fits[i][j])
+                    for g in range(len(self.fits[i][j])):
+                        self.wfits+=(self.option_handler.weights[g]*self.fits[i][j][g])
                 self.wfits2.append(self.wfits)
-            minind=self.wfits2.index(min(self.wfits2))
+            minind=self.wfits2.index(min(self.wfits2))"""
             self.cands[0]=self.cands[minind]
             self.fits[0]=self.fits[minind]
             del self.wfits2[:]
@@ -492,7 +489,7 @@ class coreModul():
             self.cands[0]=self.cands[minind]
             self.fits[0]=self.fits[minind]
             del self.wfits2[:]
-	    
+
 	    with open("final_archive.txt", "wb") as arc_file:
 	    	for f in self.optimizer.final_archive:
 			arc_file.write(str(f.fitness))
@@ -500,6 +497,8 @@ class coreModul():
         #self.optimizer.final_pop.sort(reverse=True)
         #print self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)],"fitness: ",self.optimizer.final_pop[0].fitness
         print self.cands,"fitness: ",self.fits
+        print len(self.cands)
+        print len(self.fits)
         print "Optimization lasted for ", stop_time-start_time, " s"
 
         print self.cands[0],"fitness: ",self.fits[0]
@@ -566,6 +565,7 @@ class coreModul():
                     self.model_handler.SetCustStimuli(parameter)
                 else:
                     extra_param=self.option_handler.GetModelRun()
+                    self.model_handler.CreateStimuli(self.option_handler.GetModelStim())
                     self.model_handler.SetStimuli(parameter,extra_param)
                 if isinstance(self.model_handler, externalHandler):
                     readFile = open("params.param","r")

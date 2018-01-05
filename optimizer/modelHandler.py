@@ -2,6 +2,7 @@ import os
 import sys
 from string import index,split
 from traceHandler import Trace
+import optimizerHandler
 
 class externalHandler():
     """
@@ -92,6 +93,7 @@ class modelHandlerNeuron():
         for n in h.allsec():
             self.sections[str(h.secname())]=n
         self.channels={}
+        optimizerHandler.setmods(self.hoc_obj,self.sections)
         for sec in h.allsec():
             for seg in sec:
                 for mech in seg:

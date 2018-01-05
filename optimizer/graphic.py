@@ -1773,12 +1773,13 @@ class algorithmLayer(wx.Frame):
         descr33 = ('Number of Repetition:',100)
         descr30 = ('Error Tolerance for x:',0.0001)
         descr31 = ('Error Tolerance for f:',0.0001)
-	descr34 = ('Inertia:', 0.5)
-	descr35 = ('Cognitive Rate:', 2.1)
-	descr36 = ("Social Rate:",2.1)
-	descr37 = ('Neighborhood Size:', 5)
-	descr38 = ('Topology:')
-	descr39 = ('Crossover Rate:',1)
+    	descr34 = ('Inertia:', 0.5)
+    	descr35 = ('Cognitive Rate:', 2.1)
+    	descr36 = ("Social Rate:",2.1)
+    	descr37 = ('Neighborhood Size:', 5)
+    	descr38 = ('Topology:')
+    	descr39 = ('Crossover Rate:',1)
+        descr40 = ('Number of CPU:',1)
 
 
         while(self.num_of_ctrl>0):
@@ -1797,11 +1798,11 @@ class algorithmLayer(wx.Frame):
         self.column2=wx.BoxSizer(wx.VERTICAL)
         selected_algo=self.dd_evo.GetItems()[self.dd_evo.GetSelection()]
         if selected_algo=="Classical EO":
-            alg=[descr19,descr20,descr21]
+            alg=[descr19,descr20,descr21,descr40]
         elif selected_algo=="Simulated Annealing":
-            alg=[descr20,descr21,descr22,descr23,descr24,descr26]
+            alg=[descr20,descr21,descr22,descr23,descr24,descr26,descr40]
 	elif selected_algo=="Particle Swarm":
-            alg=[descr19,descr20,descr34,descr35,descr36]
+            alg=[descr19,descr20,descr34,descr35,descr36,descr40]
         elif selected_algo=="Basinhopping":
             alg=[descr32,descr33,descr25,descr27,descr29]
         elif selected_algo=="Nelder-Mead":
@@ -1809,19 +1810,19 @@ class algorithmLayer(wx.Frame):
         elif selected_algo=="L-BFGS-B":
             alg=[descr20,descr28]
         elif selected_algo=="Differential Evolution":
-            alg=[descr19,descr20,descr21,descr39]
+            alg=[descr19,descr20,descr21,descr39,descr40]
         elif selected_algo=="Random Search":
             alg=[descr19]
         elif selected_algo=="NSGAII":
-            alg=[descr19,descr20,descr21]
+            alg=[descr19,descr20,descr21,descr40]
         elif selected_algo=="PAES":
-            alg=[descr19,descr20]
+            alg=[descr19,descr20,descr40]
         elif selected_algo=="NSGAII-deap":
-            alg=[descr19,descr20]
+            alg=[descr19,descr20,descr40]
         elif selected_algo=="SPEA2":
-            alg=[descr19,descr20]
+            alg=[descr19,descr20,descr40]
         elif selected_algo=="IBEA":
-            alg=[descr19,descr20]
+            alg=[descr19,descr20,descr40]
 
 
         self.algo_param=[]
