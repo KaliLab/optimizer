@@ -1812,7 +1812,7 @@ class algorithmLayer(wx.Frame):
         elif selected_algo=="Differential Evolution":
             alg=[descr19,descr20,descr21,descr39,descr40]
         elif selected_algo=="Random Search":
-            alg=[descr19]
+            alg=[descr19,descr40]
         elif selected_algo=="NSGAII":
             alg=[descr19,descr20,descr21,descr40]
         elif selected_algo=="PAES":

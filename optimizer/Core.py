@@ -496,9 +496,6 @@ class coreModul():
 			arc_file.write('\n')
         #self.optimizer.final_pop.sort(reverse=True)
         #print self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)],"fitness: ",self.optimizer.final_pop[0].fitness
-        print self.cands,"fitness: ",self.fits
-        print len(self.cands)
-        print len(self.fits)
         print "Optimization lasted for ", stop_time-start_time, " s"
 
         print self.cands[0],"fitness: ",self.fits[0]

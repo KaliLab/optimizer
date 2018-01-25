@@ -17,7 +17,7 @@ import copy
 import array as array1
 import random
 import json
-
+from functools import partial
 import numpy
 
 from math import sqrt
@@ -65,7 +65,20 @@ def setmods(hoc_ob,secs):
     hoc_obj=hoc_ob
     sections=secs
 
+def uniformz(random,size,bounds):
+    """
+    Creates random values from a uniform distribution. Used to create initial population.
 
+    :param random: random number generator object
+    :param args: ``dictionary``, must contain key "num_params" and either "_ec" or "self"
+
+    :return: the created random values in a ``list``
+
+    """
+    candidate=[]
+    for n in range(int(size)):
+        candidate.append(random.uniform(bounds.lower_bound[n],bounds.upper_bound[n]))
+    return candidate
 
 def SetChannelParameters(section,segment,channel,params,values):
     """
@@ -1212,11 +1225,13 @@ class RandomSearch(baseOptimizer):
         self.fit_obj=fF(reader_obj,model_obj,option_obj)
         self.SetFFun(option_obj)
         self.rand=Random()
+        setmodparams(reader_obj,model_obj,option_obj)
         self.seed=option_obj.seed
         self.rand.seed(self.seed)
         self.pop_size=option_obj.pop_size
         self.num_params=option_obj.num_params
         self.SetBoundaries(option_obj.boundaries)
+        self.number_of_cpu=option_obj.number_of_cpu
 
         try:
             #print type(option_obj.starting_points)
@@ -1241,18 +1256,20 @@ class RandomSearch(baseOptimizer):
         log_f.write("\t")
         log_f.write(str(self.act_min.fitness))
         log_f.write("\n")
+        p=multiprocessing.Pool(int(self.number_of_cpu))
+        act_candidate=[]
         for i in range(int(self.pop_size)):
-            act_candidate=uniform(self.rand, {"self":self,"num_params":self.num_params})
-            act_fitess=self.ffun([act_candidate],{})
-            log_f.write(str(act_candidate))
-            log_f.write("\t")
-            log_f.write(str(act_fitess))
-            log_f.write("\n")
-            if (act_fitess<self.act_min.fitness):
-                self.act_min=my_candidate(array(act_candidate),act_fitess)
+            act_candidate.append(uniform(self.rand, {"self":self,"num_params":self.num_params}))
+        act_candidate=[[x,] for x in act_candidate]
+        act_fitess=p.map(combineFeatures,act_candidate)
+        log_f.write(str(act_candidate))
+        log_f.write("\t")
+        log_f.write(str(act_fitess))
+        log_f.write("\n")
+        if (act_fitess<self.act_min.fitness):
+            self.act_min=my_candidate(act_candidate,act_fitess)
 
-
-        self.final_pop=[self.act_min]
+        self.final_pop=[my_candidate(numpy.asarray(y[0]),z) for y,z in zip(act_candidate,act_fitess)]
     def SetBoundaries(self,bounds):
         """
         Stores the bounds of the parameters and creates a ``bounder`` object which bounds
