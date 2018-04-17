@@ -51,7 +51,7 @@ def main(fname, param=None):
 
     core.ThirdStep(kwargs)
     core.FourthStep()
-    print core.optimizer.final_pop[0].candidate[0:len(core.optimizer.final_pop[0].candidate) / 2]
+    #print core.optimizer.final_pop[0].candidate[0:len(core.optimizer.final_pop[0].candidate) / 2]
     print "resulting parameters: ", core.optimal_params
     fig = figure(1, figsize=(7, 6))
     axes = fig.add_subplot(111)

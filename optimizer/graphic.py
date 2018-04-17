@@ -1724,6 +1724,7 @@ class algorithmLayer(wx.Frame):
         self.dd_evo.Append("NSGAII-deap")
         self.dd_evo.Append("SPEA2")
         self.dd_evo.Append("IBEA")
+        self.dd_evo.Append("NES")
         #self.dd_evo.Select(0)
         self.num_of_ctrl=3
         self.dd_evo.Bind(wx.EVT_CHOICE, self.Algo_Select)
@@ -1822,6 +1823,8 @@ class algorithmLayer(wx.Frame):
         elif selected_algo=="SPEA2":
             alg=[descr19,descr20,descr40]
         elif selected_algo=="IBEA":
+            alg=[descr19,descr20,descr40]
+        elif selected_algo=="NES":
             alg=[descr19,descr20,descr40]
 
 
@@ -2149,9 +2152,9 @@ class analyzisLayer(wx.Frame):
 
         wx.StaticLine(self.panel, pos=(400, 0), size=(1, 600), style=wx.LI_VERTICAL)
 
-        if self.core.deap_var or self.core.ibea_var:
+        if self.core.moo_var:
             try:
-                print(self.core.optimizer.logbook)
+                #print(self.core.optimizer.logbook)
                 self.record=self.core.optimizer.logbook
                 #for key, value in self.record.iteritems():
                 #    print key, value
@@ -2245,7 +2248,7 @@ class analyzisLayer(wx.Frame):
         if os.path.getmtime("stat_file.txt") <= self.core.option_handler.start_time_stamp:
             wx.MessageBox('Generation plot is not available for this algorithm.', 'Error', wx.OK | wx.ICON_ERROR)
         try:
-            if self.core.deap_var or self.core.ibea_var:
+            if self.core.moo_var:
                 genarr=[]
                 minarr=[]
                 maxarr=[]

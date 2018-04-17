@@ -3,32 +3,32 @@
   <param_vals>[0, 0, 0]</param_vals>
   <simulator>Neuron</simulator>
   <f_tol>None</f_tol>
-  <max_evaluation>30.0</max_evaluation>
+  <max_evaluation>40.0</max_evaluation>
   <spike_window>40.0</spike_window>
-  <evo_strat>IBEA</evo_strat>
+  <evo_strat>NES</evo_strat>
   <seed>1234.0</seed>
   <m_gauss>None</m_gauss>
   <run_controll_vrest>-65.0</run_controll_vrest>
   <starting_points>None</starting_points>
   <cooling_rate>None</cooling_rate>
-  <pop_size>100.0</pop_size>
-  <adjusted_params>['soma 0 hh gkbar_hh', 'soma 0 hh gnabar_hh', 'soma 0 hh gl_hh']</adjusted_params>
+  <pop_size>8.0</pop_size>
+  <adjusted_params>['soma 0 hh gnabar_hh', 'soma 0 hh gkbar_hh', 'soma 0 hh gl_hh']</adjusted_params>
   <num_repet>None</num_repet>
   <crossover_rate>None</crossover_rate>
   <temperature>None</temperature>
   <run_controll_tstop>1000.0</run_controll_tstop>
   <stim_sec>soma</stim_sec>
   <spike_thres>0.0</spike_thres>
-  <cognitive_rate>None</cognitive_rate>
+  <cognitive_rate>0.5</cognitive_rate>
   <boundaries>[[0.001, 0.001, 1e-05], [1.0, 1.0, 0.001]]</boundaries>
-  <step_size>None</step_size>
+  <step_size>1</step_size>
   <stim_pos>0.5</stim_pos>
-  <neighborhood_size>None</neighborhood_size>
-  <social_rate>None</social_rate>
+  <neighborhood_size>10</neighborhood_size>
+  <social_rate>0.5</social_rate>
   <input_size>1</input_size>
-  <type>['voltage']</type>
+  <type>['voltage', 'voltage']</type>
   <x_tol>None</x_tol>
-  <feats>MSE, Spike count</feats>
+  <feats>MSE (excl. spikes), Spike count (stim.), AP amplitude</feats>
   <number_of_cpu>4.0</number_of_cpu>
   <sim_command>&quot;&quot;</sim_command>
   <init_temp>None</init_temp>
@@ -51,10 +51,10 @@
   <input_freq>40000</input_freq>
   <input_scale>mV</input_scale>
   <u_fun_string>&quot;&quot;</u_fun_string>
-  <mutation_rate>None</mutation_rate>
-  <weights>[0.5, 0.5]</weights>
+  <mutation_rate>0.25</mutation_rate>
+  <weights>[0.35, 0.35, 0.3]</weights>
   <model_path>/home/mt/Desktop/optimizer/tests/hh_pas_surrogate/hh_pas.hoc</model_path>
-  <start_time_stamp>1515158529.25</start_time_stamp>
+  <start_time_stamp>1517325036.46</start_time_stamp>
   <input_length>1000</input_length>
   <num_iter>None</num_iter>
   <base_dir>/home/mt/Desktop/optimizer/tests/hh_pas_surrogate</base_dir>

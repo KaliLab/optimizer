@@ -1,8 +1,8 @@
 (lp1
 F1000
 aF0.025000000000000001
-aS'v'
-aS'soma'
+aVv
+aVsoma
 p2
 aF0.5
 aF-65

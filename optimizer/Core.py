@@ -55,12 +55,12 @@ class coreModul():
         self.option_handler=optionHandler()
         self.model_handler=None
         self.optimizer=None
-        self.cands = []
-        self.fits = []
         self.wfits = []
         self.wfits2 = []
         self.minind = 0
+        self.moo_var = False
         self.deap_var = False
+        self.brain_var = False
         f_m={"MSE": "calc_ase",
                         "Spike count": "calc_spike",
                         "MSE (excl. spikes)": "calc_spike_ase",
@@ -225,6 +225,15 @@ class coreModul():
         channels=list(set(channels))
         channels.append("None")
         return channels
+
+    def get_moo_var(self):
+        return self.moo_var
+
+    def get_deap_var(self):
+        return self.deap_var
+
+    def get_brain_var(self):
+        return self.brain_var
 
     def ReturnChParams(self,channel):
         """
@@ -408,6 +417,7 @@ class coreModul():
 
         self.moo_var = False
         self.deap_var = False
+        self.brain_var = False
         self.minind = 0
 
         if self.option_handler.evo_strat=="Classical EO":
@@ -428,19 +438,20 @@ class coreModul():
             self.optimizer=RandomSearch(self.data_handler,self.model_handler,self.option_handler)
         if self.option_handler.evo_strat=="NSGAII":
             self.optimizer=NSGAII(self.data_handler,self.model_handler,self.option_handler)
-            self.moo_var = True
         if self.option_handler.evo_strat=="PAES":
             self.optimizer=PAES(self.data_handler,self.model_handler,self.option_handler)
-            self.moo_var = True
         if self.option_handler.evo_strat=="NSGAII-deap":
             self.optimizer=deapNSGA(self.data_handler,self.model_handler,self.option_handler,'nsga')
-            self.deap_var = True
+            self.moo_var = True
         if self.option_handler.evo_strat=="SPEA2":
             self.optimizer=deapNSGA(self.data_handler,self.model_handler,self.option_handler,'spea')
-            self.deap_var = True
+            self.moo_var = True
         if self.option_handler.evo_strat=="IBEA":
             self.optimizer=deapIBEA(self.data_handler,self.model_handler,self.option_handler)
-            self.deap_var = True
+            self.moo_var = True
+        if self.option_handler.evo_strat=="NES":
+            self.optimizer=NES(self.data_handler,self.model_handler,self.option_handler)
+            self.brain_var = True
 
         f_handler=open(self.option_handler.model_path.split("/")[-1].split(".")[0]+"_settings.xml","w")
         #print self.option_handler.dump(self.ffun_mapper)
@@ -452,48 +463,29 @@ class coreModul():
 
         stop_time=time.time()
 
-        del self.fits[:]
-        del self.cands[:]
-        if self.deap_var:
+        self.cands = []
+        self.fits = []
+
+        if self.moo_var:
             self.cands=self.optimizer.final_pop[0]
             self.fits=self.optimizer.final_pop[1]
-            print self.fits
             self.optimizer.final_pop = []
-            avgfits=numpy.average(self.fits[0],axis=1,weights=self.option_handler.weights).tolist()
+            avgfits=numpy.average(self.fits[0],axis=1,weights=self.option_handler.weights*self.data_handler.number_of_traces()).tolist()
             mn,idx=min((avgfits[i],i) for i in xrange(len(avgfits)))
             minind=idx
-            """self.cands[0]=self.cands[minind]
-            self.fits[0]=self.fits[minind]
-            for i in range(len(self.fits)):
-                self.wfits=0;
-                for j in range(len(self.fits[i])):
-                    for g in range(len(self.fits[i][j])):
-                        self.wfits+=(self.option_handler.weights[g]*self.fits[i][j][g])
-                self.wfits2.append(self.wfits)
-            minind=self.wfits2.index(min(self.wfits2))"""
             self.cands[0]=self.cands[minind]
             self.fits[0]=self.fits[minind]
             del self.wfits2[:]
+        elif self.brain_var:
+            self.cands=self.optimizer.final_pop[0]
+            self.fits=self.optimizer.final_pop[1]
         else:
             self.optimizer.final_pop.sort(reverse=True)
             for i in range(len(self.optimizer.final_pop)):
                 self.cands.append(self.optimizer.final_pop[i].candidate[0:len(self.option_handler.adjusted_params)])
                 self.fits.append(self.optimizer.final_pop[i].fitness)
-        if self.moo_var:
-            for i in range(len(self.fits)):
-                self.wfits=0;
-                for j in range(len(self.fits[i])):
-                    self.wfits+=(self.option_handler.weights[j]*self.fits[i][j])
-                self.wfits2.append(self.wfits)
-            minind=self.wfits2.index(min(self.wfits2))
-            self.cands[0]=self.cands[minind]
-            self.fits[0]=self.fits[minind]
-            del self.wfits2[:]
 
-	    with open("final_archive.txt", "wb") as arc_file:
-	    	for f in self.optimizer.final_archive:
-			arc_file.write(str(f.fitness))
-			arc_file.write('\n')
+
         #self.optimizer.final_pop.sort(reverse=True)
         #print self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)],"fitness: ",self.optimizer.final_pop[0].fitness
         print "Optimization lasted for ", stop_time-start_time, " s"
