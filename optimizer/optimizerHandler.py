@@ -64,9 +64,11 @@ def setmodparams(reader_obje,model_obje,option_obje):
     global option
     global reader
     global model
+    global usr_fun
     option=option_obje
     reader=reader_obje
     model=model_obje
+
 
 def setmods(hoc_ob,secs):
     global hoc_obj
@@ -135,7 +137,18 @@ def setParameters(section, params):
                 #print 'setparams22'
     else:
         #cal the user def.ed function
-        usr_fun(params)
+        try:
+            s = option.GetUFunString()
+            print s
+            s = replace(s, "h.", "self.model.hoc_obj.")
+            exec(compile(replace(s, "h(", "self.model.hoc_obj("), '<string>', 'exec'))
+            usr_fun_name = option.GetUFunString().split("\n")[4][option.GetUFunString().split("\n")[4].find(" ") + 1:option.GetUFunString().split("\n")[4].find("(")]
+            usr_fun = locals()[usr_fun_name]
+            usr_fun(fF(reader,model,option),params)
+        except SyntaxError:
+            print "Your function contained syntax errors!! Please fix them!"
+        except IndexError:
+            pass
 
 def modelRunner(candidates, act_trace_idx):
     """
@@ -181,6 +194,7 @@ def modelRunner(candidates, act_trace_idx):
             settings.append(0.05)
         setParameters(section, candidates)
         model.RunControll(settings)
+
 
     return error
 
@@ -286,7 +300,7 @@ def combineFeatures(candidates, args={}):
                         else:
                             temp_fit += w * FFun_for_Features(model.record[0],reader.features_data, f, k, args)
             else:
-                    temp_fit=100
+                temp_fit=100
         if moo_var:
             fitnes.append(ec.emo.Pareto(tuple(temp_fit)))
             del temp_fit[:]
@@ -1060,9 +1074,8 @@ class simpleEO(baseOptimizer):
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
-        self.final_pop=self.evo_strat.evolve(generator=uniform, evaluator=inspyred.ec.evaluators.parallel_evaluation_mp,
-                                             mp_evaluator=combineFeatures,
-                                             mp_nprocs=int(self.number_of_cpu),
+        self.final_pop=self.evo_strat.evolve(generator=uniform, evaluator=combineFeatures,
+                                             #mp_nprocs=int(self.number_of_cpu),
                                              pop_size=self.pop_size, seeds=self.starting_points,
                                              max_generations=self.max_evaluation,
                                              mutation_rate=self.mutation_rate,
