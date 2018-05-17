@@ -2023,9 +2023,15 @@ class SNES(DistributionBasedOptimizer):
             print self.mn
             self.idx=self._allEvaluations.index(self.mn)
             print self._allEvaluated[self.idx]"""
+        file=open("nes.txt","w")
         list(map(self._oneEvaluation, [self._allEvaluated[self.idx]]))
+        print(self._allEvaluated)
+        print(len(self._allEvaluated))
+        a=[(sum(x)/len(x)) for x in self._allEvaluated]
+        print(a)
+        file.write(str(a))
         utilities = self.shapingFunction(self._currentEvaluations)
-
+        file.close()
         utilities /= sum(utilities)  # make the utilities sum to 1
         if self.uniformBaseline:
             utilities -= 1. / self.batchSize
@@ -2083,11 +2089,13 @@ class NES(baseOptimizer):
             #pop=[x.tolist() for x in pop]
             from pybrain.optimization import OriginalNES
             initparam=numpy.average(self.min_max, axis=0)
+            file=open("nes.txt","a")
             lp=SNES(combineFeatures,initparam,verbose=True,batchSize=MU)
             lp.minimize=True
             c=lp.learn(NGEN)
             #lp._allEvaluations
             brain_var=False
+            file.close()
             self.final_pop.append([c[0]])
             self.final_pop.append([c[1]])
 
