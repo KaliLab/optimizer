@@ -35,8 +35,8 @@ class sizeError(Exception):
     """
     def __init__(self,message):
         self.m=message
-        print "There was an error with the size/length of an object, probably not enough element in container. "
-        print message
+        print("There was an error with the size/length of an object, probably not enough element in container. ")
+        print(message)
 
 
 
@@ -95,7 +95,7 @@ class Trace:
         try:
             self.curent_scale=scales.get(trace_type,{}).get(self.scale,1)
         except KeyError:
-            print self.scale + "\n"
+            print(self.scale + "\n")
             sys.exit("Unknown prefix")
 
     def SetTrace(self,d):
@@ -123,7 +123,7 @@ class Trace:
         """
         Prints the contained data. Created for debugging purpose.
         """
-        print "\n".join(map(str,(n for n in self.data)))
+        print("\n".join(map(str,(n for n in self.data))))
     # returns one column from the data matrix: returns one trace
     def GetTrace(self,index):
         """
@@ -279,7 +279,7 @@ class DATA():
             try:
                 data_file=open(my_file,'r')
                 for line in data_file:
-                    temp=map(trace.reScale,map(float,line.split()[0:trace.no_traces]))
+                    temp=list(map(trace.reScale,list(map(float,line.split()[0:trace.no_traces]))))
                     if len(temp)<1:
                         raise sizeError("Data_matrix is empty!\n")
                     else:
@@ -314,7 +314,7 @@ class DATA():
                 data_file=open(my_file,'r')
                 for line in data_file:
                     try:
-                        temp=map(trace.reScale,map(float,line.split()))
+                        temp=list(map(trace.reScale,list(map(float,line.split()))))
                         temp.reverse()
                         temp.pop()
                         temp.reverse()
@@ -361,7 +361,7 @@ class DATA():
                         tmp_dict[tmp[1]].extend([trace.reScale(float(tmp[0]))])
                     except KeyError:
                         tmp_dict[tmp[1]]=[trace.reScale(float(tmp[0]))]
-        trace.data=map(list,zip(*(tmp_dict.values())))
+        trace.data=list(map(list,list(zip(*(list(tmp_dict.values()))))))
         #print len(self.data),len(self.data[0])
         #print self.data[0][0:10]
         return trace
@@ -403,12 +403,12 @@ class DATA():
         self.additional_data=tmp_dict
 
     def convert(self, dict_to_conv):
-        if isinstance(dict_to_conv, basestring):
+        if isinstance(dict_to_conv, str):
             return str(dict_to_conv)
         elif isinstance(dict_to_conv, collections.Mapping):
-            return dict(map(self.convert, dict_to_conv.iteritems()))
+            return dict(list(map(self.convert, iter(dict_to_conv.items()))))
         elif isinstance(dict_to_conv, collections.Iterable):
-            return type(dict_to_conv)(map(self.convert, dict_to_conv))
+            return type(dict_to_conv)(list(map(self.convert, dict_to_conv)))
         else:
             return dict_to_conv
 
@@ -429,7 +429,7 @@ class DATA():
                 data_dict["stim_amp"]=self.features_dict["stimuli"]["amplitudes"]
                 data_dict["stim_delay"]=self.features_dict["stimuli"]["delay"]
                 data_dict["stim_duration"]=self.features_dict["stimuli"]["duration"]
-                features_names=self.features_dict["features"].keys()
+                features_names=list(self.features_dict["features"].keys())
                 for i in range (len(features_names)):
                     data_dict[features_names[i]]={}
                     data_dict[features_names[i]]["mean"]=[None]*len(data_dict["stim_amp"])
@@ -437,7 +437,7 @@ class DATA():
                     data_dict[features_names[i]]["weight"]=self.features_dict["features"][features_names[i]]["weight"]
                     #data_dict[features_names[i]]["requires_spike"]=self.features_dict["features"][features_names[i]]["requires_spike"]
 
-                    amps_keys=self.features_dict["features"][features_names[i]].keys()
+                    amps_keys=list(self.features_dict["features"][features_names[i]].keys())
                     amps_keys.pop(0)
                     for j in range(len(amps_keys)):
                         amp=float(amps_keys[j].split('_',1)[1])
@@ -499,6 +499,6 @@ class traceWriter(Trace):
             if self.flag_w==1:
                 f.write(str(self.scale) + " " + str(self.t_length) + " " + str(self.freq) + "\n")
             for n in self.data:
-                temp=map(str,n)
+                temp=list(map(str,n))
                 f.write(self.separator.join(string.strip(k,"[]") for k in temp))
                 f.write("\n")

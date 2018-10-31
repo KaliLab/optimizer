@@ -1,12 +1,11 @@
 from traceHandler import *
 from modelHandler import *
 from optimizerHandler import *
-from string import replace
 from optionHandler import optionHandler
-from string import find,count
 from scipy.interpolate import interp1d
 from scipy import linspace
 import time
+from fitnessFunctions import *
 
 
 def meanstdv(x):
@@ -72,7 +71,7 @@ class coreModul():
                         "AP width": "AP_width",
                         "Derivative difference" : "calc_grad_dif",
                         "PPTD" : "pyelectro_pptd"}
-        self.ffun_mapper=dict((v,k) for k,v in f_m.iteritems())
+        self.ffun_mapper=dict((v,k) for k,v in f_m.items())
         self.ffun_calc_list=["MSE",
                         "MSE (excl. spikes)",
                         "Spike count",
@@ -129,7 +128,7 @@ class coreModul():
 
 
     def Print(self):
-        print [self.option_handler.GetFileOption(),
+        print([self.option_handler.GetFileOption(),
                self.option_handler.GetInputOptions(),
                self.option_handler.GetModelOptions(),
                self.option_handler.GetModelStim(),
@@ -137,8 +136,8 @@ class coreModul():
                self.option_handler.GetObjTOOpt(),
                self.option_handler.GetOptParam(),
                self.option_handler.GetFitnessParam(),
-               self.option_handler.GetOptimizerOptions()]
-        print "\n"
+               self.option_handler.GetOptimizerOptions()])
+        print("\n")
 
     def FirstStep(self,args):
         """
@@ -286,10 +285,10 @@ class coreModul():
 
         """
         if args.get("channel")!="None":
-            self.option_handler.SetObjTOOpt(args.get("section").encode("utf-8")+" "+args.get("segment").encode("utf-8")+" "+args.get("channel").encode("utf-8")+" "+args.get("params").encode("utf-8"))
+            self.option_handler.SetObjTOOpt(args.get("section")+" "+args.get("segment")+" "+args.get("channel")+" "+args.get("params"))
             self.option_handler.SetOptParam(args.get("values"))
         else:
-            self.option_handler.SetObjTOOpt(args.get("section").encode("utf-8")+" "+args.get("morph").encode("utf-8"))
+            self.option_handler.SetObjTOOpt(args.get("section")+" "+args.get("morph"))
             self.option_handler.SetOptParam(args.get("values"))
 
     def SecondStep(self,args):
@@ -367,6 +366,8 @@ class coreModul():
                 optional parameter shared by every algorithm
                     * starting_points
         """
+        print(args)
+        self.model_handler.hoc_obj = None
         self.grid_result=None
         if args!=None:
             #print "args: ",args
@@ -387,11 +388,10 @@ class coreModul():
                 raise sizeError("No boundaries were given!")
             #tmp.append(args.get("starting_points"))
             self.option_handler.SetOptimizerOptions(tmp)
-
         if self.option_handler.type[-1]!='features':
             if self.option_handler.run_controll_dt<self.data_handler.data.step:
-                print "re-sampling because integration step is smaller then data step"
-                print self.option_handler.run_controll_dt,self.data_handler.data.step
+                print("re-sampling because integration step is smaller then data step")
+                print(self.option_handler.run_controll_dt,self.data_handler.data.step)
                 #we have to resample the input trace so it would match the model output
                 #will use lin interpolation
                 x=linspace(0,self.option_handler.run_controll_tstop,self.option_handler.run_controll_tstop*(1/self.data_handler.data.step))#x axis of data points
@@ -407,7 +407,7 @@ class coreModul():
                 self.data_handler.data.t_length=len(tmp[0])
                 self.data_handler.data.freq=self.option_handler.run_controll_tstop/self.option_handler.run_controll_dt
                 self.data_handler.data.step=self.option_handler.run_controll_dt
-                transp=map(list,zip(*tmp))
+                transp=list(map(list,list(zip(*tmp))))
                 self.data_handler.data.data=[]
                 for n in transp:
                     self.data_handler.data.SetTrace(n)
@@ -419,40 +419,44 @@ class coreModul():
         self.deap_var = False
         self.brain_var = False
         self.minind = 0
-
         if self.option_handler.evo_strat=="Classical EO":
-            self.optimizer=simpleEO(self.data_handler,self.model_handler,self.option_handler)
-        if self.option_handler.evo_strat=="Simulated Annealing":
+                self.optimizer=simpleEO(self.data_handler,self.model_handler,self.option_handler)
+        elif self.option_handler.evo_strat=="Simulated Annealing":
             self.optimizer=annealing(self.data_handler,self.model_handler,self.option_handler)
-	if self.option_handler.evo_strat=="Particle Swarm":
+        elif self.option_handler.evo_strat=="Particle Swarm":
             self.optimizer=PSO(self.data_handler,self.model_handler,self.option_handler)
-        if self.option_handler.evo_strat=="Basinhopping":
+        elif self.option_handler.evo_strat=="Basinhopping":
             self.optimizer=basinHopping(self.data_handler,self.model_handler,self.option_handler)
-        if self.option_handler.evo_strat=="Nelder-Mead":
+        elif self.option_handler.evo_strat=="Nelder-Mead":
             self.optimizer=fmin(self.data_handler,self.model_handler,self.option_handler)
-        if self.option_handler.evo_strat=="L-BFGS-B":
+        elif self.option_handler.evo_strat=="L-BFGS-B":
             self.optimizer=L_BFGS_B(self.data_handler,self.model_handler,self.option_handler)
-        if self.option_handler.evo_strat=="Differential Evolution":
+        elif self.option_handler.evo_strat=="Differential Evolution":
             self.optimizer=DEA(self.data_handler,self.model_handler,self.option_handler)
-        if self.option_handler.evo_strat=="Random Search":
+        elif self.option_handler.evo_strat=="Random Search":
             self.optimizer=RandomSearch(self.data_handler,self.model_handler,self.option_handler)
-        if self.option_handler.evo_strat=="NSGAII":
+        elif self.option_handler.evo_strat=="NSGAII":
             self.optimizer=NSGAII(self.data_handler,self.model_handler,self.option_handler)
-        if self.option_handler.evo_strat=="PAES":
+        elif self.option_handler.evo_strat=="PAES":
             self.optimizer=PAES(self.data_handler,self.model_handler,self.option_handler)
-        if self.option_handler.evo_strat=="NSGAII-deap":
+        elif self.option_handler.evo_strat=="PYGMO DE":
+            self.optimizer=PygmoDE(self.data_handler,self.model_handler,self.option_handler)
+        elif self.option_handler.evo_strat=="PYGMO SADE":
+            self.optimizer=PygmoSADE(self.data_handler,self.model_handler,self.option_handler)
+        elif self.option_handler.evo_strat=="PYGMO PSO":
+            self.optimizer=PygmoPSO(self.data_handler,self.model_handler,self.option_handler)
+        elif self.option_handler.evo_strat=="NSGAII-deap":
             self.optimizer=deapNSGA(self.data_handler,self.model_handler,self.option_handler,'nsga')
             self.moo_var = True
-        if self.option_handler.evo_strat=="SPEA2":
+        elif self.option_handler.evo_strat=="SPEA2":
             self.optimizer=deapNSGA(self.data_handler,self.model_handler,self.option_handler,'spea')
             self.moo_var = True
-        if self.option_handler.evo_strat=="IBEA":
+        elif self.option_handler.evo_strat=="IBEA":
             self.optimizer=deapIBEA(self.data_handler,self.model_handler,self.option_handler)
             self.moo_var = True
-        if self.option_handler.evo_strat=="NES":
+        elif self.option_handler.evo_strat=="NES":
             self.optimizer=NES(self.data_handler,self.model_handler,self.option_handler)
             self.brain_var = True
-
         f_handler=open(self.option_handler.model_path.split("/")[-1].split(".")[0]+"_settings.xml","w")
         #print self.option_handler.dump(self.ffun_mapper)
         f_handler.write(self.option_handler.dump(self.ffun_mapper))
@@ -460,9 +464,7 @@ class coreModul():
 
         start_time=time.time()
         self.optimizer.Optimize()
-
         stop_time=time.time()
-
         self.cands = []
         self.fits = []
 
@@ -471,7 +473,7 @@ class coreModul():
             self.fits=self.optimizer.final_pop[1]
             self.optimizer.final_pop = []
             avgfits=numpy.average(self.fits[0],axis=1,weights=self.option_handler.weights*self.data_handler.number_of_traces()).tolist()
-            mn,idx=min((avgfits[i],i) for i in xrange(len(avgfits)))
+            mn,idx=min((avgfits[i],i) for i in range(len(avgfits)))
             minind=idx
             self.cands[0]=self.cands[minind]
             self.fits[0]=self.fits[minind]
@@ -479,6 +481,14 @@ class coreModul():
         elif self.brain_var:
             self.cands=self.optimizer.final_pop[0]
             self.fits=self.optimizer.final_pop[1]
+        elif(self.option_handler.evo_strat.split(" ")[0] == "PYGMO"):
+            '''
+            Currently only the best individual with its fitness is passed
+            '''
+            self.cands = [self.optimizer.best]
+            self.fits = [self.optimizer.best_fitness]
+            print((self.cands, "CANDS"))
+            print((self.fits, "FITS"))
         else:
             self.optimizer.final_pop.sort(reverse=True)
             for i in range(len(self.optimizer.final_pop)):
@@ -488,13 +498,16 @@ class coreModul():
 
         #self.optimizer.final_pop.sort(reverse=True)
         #print self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)],"fitness: ",self.optimizer.final_pop[0].fitness
-        print "Optimization lasted for ", stop_time-start_time, " s"
+        print("Optimization lasted for ", stop_time-start_time, " s")
 
-        print self.cands[0],"fitness: ",self.fits[0]
+        print(self.cands[0],"fitness: ",self.fits[0])
         if self.option_handler.type[-1]!= 'features':
-            self.feat_str=", ".join(map(lambda x: self.ffun_mapper[x.__name__],self.option_handler.feats))
+            self.feat_str=", ".join([self.ffun_mapper[x.__name__] for x in self.option_handler.feats])
         else:
             self.feat_str=", ".join(self.option_handler.feats)
+
+
+        
 
     def FourthStep(self,args={}):
         """
@@ -519,6 +532,7 @@ class coreModul():
                 if isinstance(self.model_handler, externalHandler):
                     out_handler.write(str(k)+"\n")
                 else:
+                    self.model_handler.load_neuron()
                     if len(tmp)==4:
                         self.model_handler.SetChannelParameters(tmp[0], tmp[1], tmp[2], tmp[3], k)
                     else:
@@ -527,12 +541,13 @@ class coreModul():
                 out_handler.close()
         else:
             try:
+                self.model_handler.load_neuron()
                 s=self.option_handler.GetUFunString()
-                s=replace(s,"h.","self.model_handler.hoc_obj.")
-                s=replace(s,"h(","self.model_handler.hoc_obj(")
+                s=str.replace(s,"h.","self.model_handler.hoc_obj.")
+                s=str.replace(s,"h(","self.model_handler.hoc_obj(")
                 exec(compile(s,'<string>','exec'))
             except SyntaxError:
-                print "Your function contained syntax errors!! Please fix them!"
+                print("Your function contained syntax errors!! Please fix them!")
 
             self.usr_fun_name=self.option_handler.GetUFunString().split("\n")[4][self.option_handler.GetUFunString().split("\n")[4].find(" ")+1:self.option_handler.GetUFunString().split("\n")[4].find("(")]
             self.usr_fun=locals()[self.usr_fun_name]
@@ -550,7 +565,8 @@ class coreModul():
                 param=self.option_handler.GetModelStimParam()
                 parameter=param
                 parameter[0]=param[0][k]
-                if isinstance(parameter[0], unicode):
+                if isinstance(parameter[0], str):
+                    self.model_handler.CreateStimuli(self.option_handler.GetModelStim())
                     self.model_handler.SetCustStimuli(parameter)
                 else:
                     extra_param=self.option_handler.GetModelRun()
@@ -621,7 +637,7 @@ class coreModul():
         #tmp_str+=self.htmlStrBold(str(self.optimizer.final_pop[0].fitness))+"</p></center>\n"
         tmp_str+=self.htmlStrBold(str(self.fits[0]))+"</p></center>\n"
         tmp_str+=self.htmlPciture("result_trace.png")+"\n"
-        for k in self.option_handler.GetOptimizerOptions().keys():
+        for k in list(self.option_handler.GetOptimizerOptions().keys()):
             tmp_str+="<p><b>"+k+" =</b> "+str(self.option_handler.GetOptimizerOptions()[k])+"</p>\n"
 
         tmp_str+="<p><b>feats =</b> "+self.feat_str +"</p>\n"
@@ -670,7 +686,7 @@ class coreModul():
                 tmp[0]=self.ffun_mapper[c[t_idx][1].__name__]
             else:
                 tmp[0]=(c[t_idx][1])
-            tmp=map(str,tmp)
+            tmp=list(map(str,tmp))
             tmp_list.append(tmp)
 
         #print tmp_list

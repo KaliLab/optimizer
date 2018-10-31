@@ -1,5 +1,4 @@
 from math import fsum, sqrt
-from string import split, strip, replace
 from copy import copy
 from pyelectro import analysis
 from traceHandler import sizeError
@@ -11,6 +10,36 @@ from inspyred import ec
 from inspyred.ec import emo
 from inspyred.ec import variators
 from inspyred.ec import observers
+import modelHandler
+
+try:
+    import copyreg
+except:
+    import copyreg
+
+from types import MethodType
+
+
+def _pickle_method(method):
+    func_name = method.__func__.__name__
+    obj = method.__self__
+    cls = method.__self__.__class__
+    return _unpickle_method, (func_name, obj, cls)
+
+def _unpickle_method(func_name, obj, cls):
+    for cls in cls.mro():
+        try:
+            func = cls.__dict__[func_name]
+        except KeyError:
+            pass
+        else:
+            break
+    return func.__get__(obj, cls)
+
+try:
+	copyreg.pickle(MethodType, _pickle_method, _unpickle_method)
+except:
+	copyreg.pickle(MethodType, _pickle_method, _unpickle_method)
 
 def frange(start, stop, step):
         """
@@ -25,8 +54,6 @@ def frange(start, stop, step):
         while r < stop:
             yield r
             r += step
-
-
 
 
 class spike_frame():
@@ -59,7 +86,7 @@ class spike(spike_frame):
         self.s = spike#vector, with the spike in it
 
 
-class fF():
+class fF(object):
     """
     Class encapsulating the implemented error functions.
 
@@ -95,8 +122,9 @@ class fF():
                         "AP width": self.AP_width,
                         "Derivative difference" : self.calc_grad_dif,
                         "PPTD" : self.pyelectro_pptd}
-
+        '''
         try:
+            #self.model.load_neuron()
             s = self.option.GetUFunString()
             s = replace(s, "h.", "self.model.hoc_obj.")
             exec(compile(replace(s, "h(", "self.model.hoc_obj("), '<string>', 'exec'))
@@ -106,6 +134,8 @@ class fF():
             print "Your function contained syntax errors!! Please fix them!"
         except IndexError:
             pass
+        '''
+
 
 
     def setParameters(self, section, params):
@@ -126,12 +156,12 @@ class fF():
         if self.option.GetUFunString() == "":
             for sec in section:
                 #print sec
-                if len(split(sec, " ")) == 4:
-                    self.model.SetChannelParameters(strip(split(sec, " ")[0]), strip(split(sec, " ")[1]), strip(split(sec, " ")[2]), strip(split(sec, " ")[3]),
+                if len(str.split(sec, " ")) == 4:
+                    self.model.SetChannelParameters(str.strip(str.split(sec, " ")[0]), str.strip(str.split(sec, " ")[1]), str.strip(str.split(sec, " ")[2]), str.strip(str.split(sec, " ")[3]),
                                                     params[section.index(sec)])
 
                 else:
-                    self.model.SetMorphParameters(strip(split(sec, " ")[0]), strip(split(sec, " ")[1]), params[section.index(sec)])
+                    self.model.SetMorphParameters(str.strip(str.split(sec, " ")[0]), str.strip(str.split(sec, " ")[1]), params[section.index(sec)])
         else:
             #cal the user def.ed function
             self.usr_fun(self, params)
@@ -263,8 +293,8 @@ class fF():
             grad_b_list.append(grad_b)
         try:
             if self.option.output_level == "1":
-                print "grad dif"
-                print fsum(tmp) / len(tmp) / (pow(max(grad_b_list) - min(grad_b_list), 2))
+                print("grad dif")
+                print(fsum(tmp) / len(tmp) / (pow(max(grad_b_list) - min(grad_b_list), 2)))
         except OverflowError:
                 return 1
 
@@ -318,10 +348,10 @@ class fF():
         exp_spike = len(spikes[1])
         temp_fit += float(abs(mod_spike - exp_spike)) / float(exp_spike + mod_spike + 1)
         if self.option.output_level == "1":
-            print "spike rate:"
-            print "mod: ", len(spikes[0])
-            print "exp: ", len(spikes[1])
-            print temp_fit
+            print("spike rate:")
+            print("mod: ", len(spikes[0]))
+            print("exp: ", len(spikes[1]))
+            print(temp_fit)
         return temp_fit
 
 
@@ -387,10 +417,10 @@ class fF():
             tmp.append((spikes[1][-1].peak - spikes[1][len(spikes[0])-1].peak))
 
         if self.option.output_level == "1":
-            print "isi difference:"
-            print "mod: ", len(spikes[0])
-            print "exp: ", len(spikes[1])
-            print fsum(tmp), " / ", len(exp_t), " = ", fsum(tmp) / len(exp_t)
+            print("isi difference:")
+            print("mod: ", len(spikes[0]))
+            print("exp: ", len(spikes[1]))
+            print(fsum(tmp), " / ", len(exp_t), " = ", fsum(tmp) / len(exp_t))
         return fsum(tmp) / len(exp_t)
 
 
@@ -442,12 +472,12 @@ class fF():
             return 1
         try:
             if self.option.output_level == "1":
-                print "first spike"
-                print "mod: ", len(spikes[0])
-                print "exp: ", len(spikes[1])
-                print float(pow(spikes[0][0].start_pos - spikes[1][0].start_pos, 2)) / (len(exp_t)**2)
+                print("first spike")
+                print("mod: ", len(spikes[0]))
+                print("exp: ", len(spikes[1]))
+                print(float(pow(spikes[0][0].start_pos - spikes[1][0].start_pos, 2)) / (len(exp_t)**2))
         except OverflowError:
-            print "overflow"
+            print("overflow")
             return 1
         return float(pow(spikes[0][0].start_pos - spikes[1][0].start_pos, 2)) / (len(exp_t)**2)
 
@@ -505,19 +535,19 @@ class fF():
             return 0
         if ((len(spikes[0]) < 1) != (len(spikes[1]) < 1)):
             return 1
-        max_amp = max(map(lambda x: x.peak_val - self.thres, spikes[1]))
+        max_amp = max([x.peak_val - self.thres for x in spikes[1]])
         if max_amp == 0:
             max_amp = 1e-12
         tmp = [pow((s1.peak_val - self.thres) - (s2.peak_val - self.thres), 2) for s1, s2 in zip(spikes[0], spikes[1])]
         try:
             if self.option.output_level == "1":
-                print "AP oveshoot:"
-                print "mod: ", len(spikes[0])
-                print "exp: ", len(spikes[1])
-                print fsum(tmp) / len(tmp) / (max_amp**2)
+                print("AP oveshoot:")
+                print("mod: ", len(spikes[0]))
+                print("exp: ", len(spikes[1]))
+                print(fsum(tmp) / len(tmp) / (max_amp**2))
             return  fsum(tmp) / len(tmp) / (max_amp**2)
         except OverflowError:
-            print "overflow"
+            print("overflow")
             return 1
 
 
@@ -576,7 +606,7 @@ class fF():
             return 1
         e = []
         m = []
-        for s1, s2 in zip(range(len(spikes[0])), range(len(spikes[1]))):
+        for s1, s2 in zip(list(range(len(spikes[0]))), list(range(len(spikes[1])))):
             try:
                 m.append(min(mod_t[spikes[0][s1].stop_pos:spikes[0][s2 + 1].start_pos]))
                 e.append(min(exp_t[spikes[1][s2].stop_pos:spikes[1][s2 + 1].start_pos]))
@@ -586,13 +616,13 @@ class fF():
 
         avg_e = fsum(e) / len(e)
         avg_m = fsum(m) / len(m)
-        sub_t_e = filter(lambda x: x < self.thres, exp_t)
+        sub_t_e = [x for x in exp_t if x < self.thres]
         try:
             if self.option.output_level == "1":
-                print "AHP depth:"
-                print "mod: ", len(spikes[0])
-                print "exp: ", len(spikes[1])
-                print pow(avg_e - avg_m, 2) / pow(max(sub_t_e) - min(sub_t_e), 2)
+                print("AHP depth:")
+                print("mod: ", len(spikes[0]))
+                print("exp: ", len(spikes[1]))
+                print(pow(avg_e - avg_m, 2) / pow(max(sub_t_e) - min(sub_t_e), 2))
         except OverflowError:
                 return 1
         tmp = pow(avg_e - avg_m, 2) / pow(max(sub_t_e) - min(sub_t_e), 2)
@@ -644,12 +674,12 @@ class fF():
 
         try:
             if self.option.output_level == "1":
-                print "mod: ", len(spikes[0])
-                print "exp: ", len(spikes[1])
-                print "AP width:"
-                print pow((fsum(avg2) / len(avg2) - fsum(avg1) / len(avg1)) / (fsum(avg2) / len(avg2)), 2)
+                print("mod: ", len(spikes[0]))
+                print("exp: ", len(spikes[1]))
+                print("AP width:")
+                print(pow((fsum(avg2) / len(avg2) - fsum(avg1) / len(avg1)) / (fsum(avg2) / len(avg2)), 2))
         except OverflowError:
-            print "overflow"
+            print("overflow")
             return 1
         return pow((fsum(avg2) / len(avg2) - fsum(avg1) / len(avg1)) / (fsum(avg2) / len(avg2)), 2)
 
@@ -713,10 +743,10 @@ class fF():
 #                tmp.append(self.calc_ase(a[spikes[1][i].stop_pos+window:],b[spikes[1][i].stop_pos+window:],args ))
 #        print fsum(tmp)/len(tmp)
         if self.option.output_level == "1":
-            print "spike_ase"
-            print "mod: ", len(spikes[0])
-            print "exp: ", len(spikes[1])
-            print self.calc_ase(m, e, args)
+            print("spike_ase")
+            print("mod: ", len(spikes[0]))
+            print("exp: ", len(spikes[1]))
+            print(self.calc_ase(m, e, args))
         return self.calc_ase(m, e, args)
 
     def calc_ase(self, mod_t, exp_t, args):
@@ -741,8 +771,8 @@ class fF():
             #    return 1
         try:
             if self.option.output_level == "1":
-                print "ase"
-                print fsum(temp) / len(temp) / (pow(max(exp_t) - min(exp_t), 2))
+                print("ase")
+                print(fsum(temp) / len(temp) / (pow(max(exp_t) - min(exp_t), 2)))
         except OverflowError:
                 return 1
         return fsum(temp) / len(temp) / (pow(max(exp_t) - min(exp_t), 2))
@@ -782,10 +812,10 @@ class fF():
         except ZeroDivisionError:
             temp_fit += 1
         if self.option.output_level == "1":
-            print "spike count"
-            print "mod: ", mod_spike
-            print "exp: ", exp_spike
-            print temp_fit
+            print("spike count")
+            print("mod: ", mod_spike)
+            print("exp: ", exp_spike)
+            print(temp_fit)
         return temp_fit
 
 
@@ -935,6 +965,21 @@ class fF():
             window = int(self.option.spike_window)
         else:
             window=None
+        self.model.load_neuron()
+
+        try:
+            #self.model.load_neuron()
+            s = self.option.GetUFunString()
+            s = str.replace(s, "h.", "self.model.hoc_obj.")
+            exec(compile(str.replace(s, "h(", "self.model.hoc_obj("), '<string>', 'exec'))
+            self.usr_fun_name = self.option.GetUFunString().split("\n")[4][self.option.GetUFunString().split("\n")[4].find(" ") + 1:self.option.GetUFunString().split("\n")[4].find("(")]
+            self.usr_fun = locals()[self.usr_fun_name]
+        except SyntaxError:
+            print("Your function contained syntax errors!! Please fix them!")
+        except IndexError:
+            pass
+
+
         self.model.CreateStimuli(self.option.GetModelStim())
 
         if self.option.type[-1]!= 'features':
@@ -945,10 +990,10 @@ class fF():
 
         for l in candidates:
             if self.option.output_level == "1":
-                print l
+                print(l)
             l = self.ReNormalize(l)
             if self.option.output_level == "1":
-                print l
+                print(l)
             for k in range(k_range):     #for k in range(self.reader.number_of_traces()):
                 try:
                     add_data = [spike_frame(n - window, self.thres, n, 1, n + window, self.thres) for n in self.reader.additional_data.get(k)]
@@ -959,14 +1004,14 @@ class fF():
                 param = self.option.GetModelStimParam()
                 parameter = param
                 parameter[0] = param[0][k]
-                if isinstance(parameter[0], unicode):
+                if isinstance(parameter[0], str):
                     self.model.SetCustStimuli(parameter)
                 else:
                     extra_param = self.option.GetModelRun()
                     self.model.SetStimuli(parameter, extra_param)
                 if (not self.modelRunner(l,k)):
                     if self.option.output_level == "1":
-                        print features, weigths
+                        print(features, weigths)
                     if (self.option.type[-1]!='features'):
                         for f, w in zip(features, weigths):
                             if abs(len(self.model.record[0])-len(self.reader.data.GetTrace(k)))>1:
@@ -982,8 +1027,12 @@ class fF():
                         temp_fit=100
             self.fitnes.append(temp_fit)
             if self.option.output_level == "1":
-                print "current fitness: ",temp_fit
+                print("current fitness: ",temp_fit)
             temp_fit = 0
+
+
+        #self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
+
 
         return self.fitnes
 
@@ -999,6 +1048,7 @@ class fF():
             for every function instance i.e every component
 
         """
+
         features = self.option.feats
         weigths = self.option.weights
         fit_list = []
@@ -1044,6 +1094,7 @@ class fF():
         #print self.option.feats   #--> [<bound method fF.AP1_amp_abstr_data of <fitnessFunctions.fF instance at 0x7f669e957128>>] (ezt adja)
         weigths = self.option.weights
         temp_fit = []
+        self.model.load_neuron()
         if self.option.type[-1]!= 'features':
             window = int(self.option.spike_window)
         else:
@@ -1057,10 +1108,10 @@ class fF():
 
         for l in candidates:
             if self.option.output_level == "1":
-                print l
+                print(l)
             l = self.ReNormalize(l)
             if self.option.output_level == "1":
-                print l
+                print(l)
             for k in range(k_range):     #for k in range(self.reader.number_of_traces()):
                 try:
                     add_data = [spike_frame(n - window, self.thres, n, 1, n + window, self.thres) for n in self.reader.additional_data.get(k)]
@@ -1071,14 +1122,14 @@ class fF():
                 param = self.option.GetModelStimParam()
                 parameter = param
                 parameter[0] = param[0][k]
-                if isinstance(parameter[0], unicode):
+                if isinstance(parameter[0], str):
                     self.model.SetCustStimuli(parameter)
                 else:
                     extra_param = self.option.GetModelRun()
                     self.model.SetStimuli(parameter, extra_param)
                 if (not self.modelRunner(l,k)):
                     if self.option.output_level == "1":
-                        print features, weigths
+                        print(features, weigths)
                     if (self.option.type[-1]!='features'):
                         for f, w in zip(features, weigths):
                             if abs(len(self.model.record[0])-len(self.reader.data.GetTrace(k)))>1:
@@ -1097,40 +1148,8 @@ class fF():
             self.fitnes.append(ec.emo.Pareto(tuple(temp_fit)))
 
             if self.option.output_level == "1":
-                print "current fitness: ",temp_fit
+                print("current fitness: ",temp_fit)
             del temp_fit[:]         #remove list elements
 
 
         return self.fitnes
-
-
-    def getErrorComponents(self, index_of_trace, model_output):
-        """
-        Creates the components of the fitness value for a pair of traces using the fitness functions
-        and the weigths specified in the ``option`` object.
-
-        :param index_of_trace: the index of the input trace (in case of multiple traces)
-        :param model_output: the model trace as ``list``
-
-        :return: a ``list`` containing the weight, the function instance, and the component's fitness value
-            for every function instance i.e every component
-
-        """
-        features = self.option.feats
-        weigths = self.option.weights
-        fit_list = []
-        window = self.option.spike_window
-        try:
-            add_data = [spike_frame(n - window, 0, n, 1, n + 50, 0) for n in self.reader.additional_data.get(index_of_trace)]
-        except AttributeError:
-            add_data = None
-        args = {}
-        args["add_data"] = add_data
-        if (self.option.type[-1]!='features'):
-            for f, w in zip(features, weigths):
-                fit_list.append([w, f, (f(model_output, self.reader.data.GetTrace(index_of_trace), args))])
-        else:
-            for f, w in zip(features, weigths):
-                fit_list.append([w, f, self.FFun_for_Features(model_output,
-                                                    self.reader.features_data, f, index_of_trace, args)])# index_of_trace is index of stim_amp here
-        return fit_list

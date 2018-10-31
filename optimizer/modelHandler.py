@@ -1,8 +1,17 @@
 import os
 import sys
-from string import index,split
 from traceHandler import Trace
 import optimizerHandler
+import importlib
+
+try:
+    import copyreg
+except:
+    import copyreg
+
+from types import MethodType
+
+
 
 class externalHandler():
     """
@@ -41,7 +50,7 @@ class externalHandler():
         for n in range(self.number_of_params):
             o.SetObjTOOpt("parameter"+str(n))
 
-    def GetExec(self):
+    def GetExec(self ,pid='', creation_time=''):
         """
         Creates the command that runs the simulator with the model and with the appropriate options.
         :return: a ``list`` of strings ready for execution
@@ -49,7 +58,7 @@ class externalHandler():
         tmp=[self.executable,self.model_file]
         for o in self.options:
             tmp.append(o)
-
+        tmp += [pid, creation_time]
         return tmp
 
     def GetParameters(self):
@@ -61,6 +70,8 @@ class externalHandler():
     def SetStimuli(self,p,e):
         pass
 
+    def load_neuron(self):
+        pass
 
 # class to handle the neuron models
 class modelHandlerNeuron():
@@ -73,14 +84,37 @@ class modelHandlerNeuron():
     :param base: the base working directory
 
     """
+
+
     def __init__(self,model_path,special_path,base=os.getcwd()):
-        #print "init"
+        from neuron import h
+        import neuron
+
+
+        print('*********** NEURON LOADED ***********')
         self.base_directory=base
         self.special=special_path
         self.model=model_path
-        os.chdir(self.special)
+  
+        neuron.load_mechanisms(self.special)
+        
+        #os.chdir(self.special)
+        #from neuron import h
+        #from nrn import *
+        
+
+        self.hoc_obj=None
+        self.vec=None
+        self.stimulus=None
+        self.record=[]
+        self.spike_times=None
+        self.sections={}
+
+    def load_neuron(self):
+        #from neuron import h
         from neuron import h
-        from nrn import *
+        import neuron
+        neuron.load_mechanisms(self.special)
         self.hoc_obj=h
         self.hoc_obj.load_file(str(self.model))
         self.hoc_obj.load_file("stdrun.hoc")
@@ -93,7 +127,7 @@ class modelHandlerNeuron():
         for n in h.allsec():
             self.sections[str(h.secname())]=n
         self.channels={}
-        optimizerHandler.setmods(self.hoc_obj,self.sections)
+        #optimizerHandler.setmods(self.hoc_obj,self.sections)
         for sec in h.allsec():
             for seg in sec:
                 for mech in seg:
@@ -185,6 +219,7 @@ class modelHandlerNeuron():
             not the actual parameters of the stimulus. This is necessary for Neuron in order to work.
 
         """
+
         self.hoc_obj.load_file("vplay.hoc")
         self.parameters=params
 
@@ -229,7 +264,8 @@ class modelHandlerNeuron():
         sec = self.hoc_obj.cas()
         lseg = [seg for seg in sec]
         #self.hoc_obj.cas().__setattr__(params,values)
-        lseg[int(segment)].__setattr__(params,values)
+        
+        setattr(lseg[int(segment)],params,values)
         self.hoc_obj.pop_section()
 
 
@@ -250,14 +286,16 @@ class modelHandlerNeuron():
             :param values: the value to set
 
         """
+
         try:
             self.sections[section].push()
-            self.hoc_obj.cas().__setattr__(params,values)
+            #self.hoc_obj.cas().__setattr__(params,values)
+            setattr(self.hoc_obj.cas(), params, values)
             self.hoc_obj.pop_section()
         except KeyError:
             sys.exit("No section named " + str(section) + " was found!")
         except AttributeError:
-            self.hoc_obj.cas()(0.5).point_processes()[1].__setattr__(params,values)
+            setattr(self.hoc_obj.cas()(0.5).point_processes()[1], params,values)
 
         #except:
             #sys.exit("Morphology parameter "+params+" not found!")
@@ -284,7 +322,7 @@ class modelHandlerNeuron():
 
         for n in string:
             try:
-                index(n, ss)
+                str.index(n, ss)
                 temp=temp+" "+str(n)
             except ValueError:
                 pass
