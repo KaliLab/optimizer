@@ -72,7 +72,7 @@ def main(fname, param=None):
         t = int(ceil(core.option_handler.run_controll_tstop))
     step = core.option_handler.run_controll_dt
     axes.set_xticks([n for n in range(0, int((t * no_traces) / (step)), int((t * no_traces) / (step) / 5.0)) ])
-    axes.set_xticklabels([str(n) for n in range(0, t * no_traces, (t * no_traces) / 5)])
+    #axes.set_xticklabels([str(n) for n in range(0, t * no_traces, (t * no_traces) / 5)])
     #print t,step
     #print axes.get_xticks()
     axes.set_xlabel("time [ms]")

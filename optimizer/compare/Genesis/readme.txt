@@ -1,1 +1,0 @@
-These examples require a working installation of the GENESIS simulator. To run the optimization examples in GENESIS, simply type "make search" in the directory containing the scripts and the target data.

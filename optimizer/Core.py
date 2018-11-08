@@ -366,7 +366,6 @@ class coreModul():
                 optional parameter shared by every algorithm
                     * starting_points
         """
-        print(args)
         self.model_handler.hoc_obj = None
         self.grid_result=None
         if args!=None:
@@ -461,7 +460,11 @@ class coreModul():
         #print self.option_handler.dump(self.ffun_mapper)
         f_handler.write(self.option_handler.dump(self.ffun_mapper))
         f_handler.close()
-
+        try:
+            self.model_handler.sections.clear()
+            self.model_handler.channels.clear()
+        except:
+            "ok"    
         start_time=time.time()
         self.optimizer.Optimize()
         stop_time=time.time()

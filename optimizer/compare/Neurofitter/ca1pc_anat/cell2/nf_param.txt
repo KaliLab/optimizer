@@ -1,1 +1,0 @@
-Best fit found: { 8.97659 569.025 8.31088e-05 } with error value: 0.191983
