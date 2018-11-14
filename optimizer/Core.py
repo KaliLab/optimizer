@@ -477,12 +477,13 @@ class coreModul():
 			self.cands=self.optimizer.final_pop[0]
 			self.fits=self.optimizer.final_pop[1]
 			self.optimizer.final_pop = []
-
 			#print(self.option_handler.weights*self.data_handler.number_of_traces())
-			for gen in self.fits:
-				avgfits=numpy.average(gen,axis=1,weights=self.option_handler.weights*self.data_handler.number_of_traces()).tolist()
-				mn,idx=min((avgfits[i],i) for i in range(len(avgfits)))
-				minind=idx
+			#for gen in self.fits:
+
+		
+			avgfits=numpy.average(self.fits,axis=1,weights=self.option_handler.weights*self.data_handler.number_of_traces()).tolist()
+			mn,idx=min((avgfits[i],i) for i in range(len(avgfits)))
+			minind=idx
 			self.cands[0]=self.cands[minind]
 			self.fits[0]=self.fits[minind]
 			del self.wfits2[:]
