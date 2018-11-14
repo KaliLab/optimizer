@@ -30,7 +30,7 @@ def main(parameters):
                 cmd_line.main(parameters[1])
             
         except IndexError as IE:
-            print(IE)
+            print IE
             traceback.print_exc()
             sys.exit("Missing filename!")
     else:

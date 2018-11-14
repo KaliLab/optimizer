@@ -17,7 +17,7 @@ gL_Bas      = params[0]*1000   #5.0e-3 #7.14293e-3
 tauMem_Bas 	= params[1]   #14.0
 Cm_Bas      = tauMem_Bas * gL_Bas
 Vrest_Bas 	= params[2]   #-70.0
-reset_Bas 	= params[3]   #-56.0 #-55.0
+reset_Bas 	= params[4]-params[3] #params[3]   #-56.0 #-55.0
 theta_Bas 	= params[4]   #-50.0
 tref_Bas 	= params[5]   #0.1
 
@@ -101,7 +101,7 @@ nest.Connect(neuron,      spikedetector)
 
 # In[165]:
 
-nest.Simulate(1100.01)
+nest.Simulate(1100.1)
 
 
 # In[166]:

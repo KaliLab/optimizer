@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <body>
-<p>Wed Jul  5 20:59:38 2017</p>
-<p><span style="text-align:center;">Optimization of <b>hh_pas.hoc</b> based on: /home/mt/Desktop/optimizer/tests/hh_pas_surrogate/input_data2.dat</span></p>
+<p>Tue Nov  6 16:24:32 2018</p>
+<p><span style="text-align:center;">Optimization of <b>hh_pas.hoc</b> based on: /home/nest/Desktop/opti/optimizer/optimizer/tests/hh_pas_surrogate/input_data2.dat</span></p>
 <center><p><span style="text-decoration:underline;font-size:200%;">Results</span></p></center>
 <table border="1" align="center">
 <th>Parameter Name</th>
@@ -13,43 +13,49 @@
 <td>soma 0 hh gnabar_hh</td>
 <td>0.001</td>
 <td>1.0</td>
-<td>0.64561795018</td>
+<td>0.8084109345366298</td>
 </tr>
 <tr>
 <td>soma 0 hh gkbar_hh</td>
 <td>0.001</td>
 <td>1.0</td>
-<td>0.142385730091</td>
+<td>0.16545858687421341</td>
+</tr>
+<tr>
+<td>soma 0 hh gl_hh</td>
+<td>1e-05</td>
+<td>0.001</td>
+<td>0.0002359539853965591</td>
 </tr>
 </table>
-<center><p><b>Fitnes: </b><b>0.00245119497267</b></p></center>
+<center><p><b>Fitnes: </b><b>0.0022427572918540355</b></p></center>
 <p align="center"><img style="border:none;" src="result_trace.png" ></p>
-<p><b>Number of Repetition: =</b> None</p>
-<p><b>Initial Temperature: =</b> None</p>
-<p><b>Number of Iterations: =</b> None</p>
-<p><b>Neighborhood Size: =</b> None</p>
+<p><b>seed =</b> 1234</p>
 <p><b>evo_strat =</b> Classical EO</p>
-<p><b>seed =</b> 1234.0</p>
-<p><b>starting_points =</b> None</p>
-<p><b>Mean of Gaussian: =</b> None</p>
-<p><b>Inertia: =</b> None</p>
-<p><b>Update Frequency: =</b> None</p>
-<p><b>Crossover Rate: =</b> None</p>
-<p><b>Size of Population: =</b> 100.0</p>
-<p><b>Temperature: =</b> None</p>
-<p><b>boundaries =</b> [[0.001, 0.001], [1.0, 1.0]]</p>
-<p><b>Number of Generations: =</b> 100.0</p>
-<p><b>num_params =</b> 2</p>
-<p><b>Error Tolerance for x: =</b> None</p>
-<p><b>Cooling Rate: =</b> None</p>
-<p><b>Cognitive Rate: =</b> None</p>
+<p><b>Size of Population: =</b> 10.0</p>
+<p><b>Number of Generations: =</b> 10.0</p>
 <p><b>Mutation Rate: =</b> 0.25</p>
-<p><b>Step Size: =</b> None</p>
-<p><b>Error Tolerance for f: =</b> None</p>
-<p><b>Number of CPU: =</b> 4.0</p>
+<p><b>Crossover Rate: =</b> None</p>
+<p><b>Cooling Rate: =</b> None</p>
+<p><b>Mean of Gaussian: =</b> None</p>
 <p><b>Std. Deviation of Gaussian: =</b> None</p>
+<p><b>Initial Temperature: =</b> None</p>
+<p><b>Step Size: =</b> None</p>
+<p><b>Temperature: =</b> None</p>
+<p><b>Update Frequency: =</b> None</p>
+<p><b>Number of Iterations: =</b> None</p>
+<p><b>Number of Repetition: =</b> None</p>
+<p><b>Error Tolerance for x: =</b> None</p>
+<p><b>Error Tolerance for f: =</b> None</p>
+<p><b>num_params =</b> 3</p>
+<p><b>boundaries =</b> [[0.001, 0.001, 1e-05], [1.0, 1.0, 0.001]]</p>
+<p><b>starting_points =</b> None</p>
+<p><b>Inertia: =</b> None</p>
+<p><b>Cognitive Rate: =</b> None</p>
 <p><b>Social Rate: =</b> None</p>
-<p><b>feats =</b> MSE, Spike count</p>
+<p><b>Neighborhood Size: =</b> None</p>
+<p><b>Number of CPU: =</b> 1.0</p>
+<p><b>feats =</b> MSE (excl. spikes), Spike count</p>
 <p><b>weights =</b> [0.5, 0.5]</p>
 <p><b>user function =</b></p>
 </body>
@@ -62,17 +68,17 @@
 <th>Weighted Value</th>
 <th>Weighted Sum</th>
 <tr>
-<td>MSE</td>
-<td>0.0232173175914</td>
+<td>MSE (excl. spikes)</td>
+<td>0.004485514583708071</td>
 <td>0.5</td>
-<td>0.0116086587957</td>
+<td>0.0022427572918540355</td>
 <td></td>
 </tr>
 <tr>
 <td>Spike count</td>
-<td>0.965517241379</td>
+<td>0.0</td>
 <td>0.5</td>
-<td>0.48275862069</td>
+<td>0.0</td>
 <td></td>
 </tr>
 <tr>
@@ -80,7 +86,7 @@
 <td></td>
 <td></td>
 <td></td>
-<td>0.494367279485</td>
+<td>0.0022427572918540355</td>
 </tr>
 </table>
 <table border="1" align="center">
@@ -89,15 +95,15 @@
 <th>Weight</th>
 <th>Weighted Value</th>
 <tr>
-<td>MSE</td>
-<td>0.0232173175914</td>
+<td>MSE (excl. spikes)</td>
+<td>0.004485514583708071</td>
 <td>0.5</td>
-<td>0.0116086587957</td>
+<td>0.0022427572918540355</td>
 </tr>
 <tr>
 <td>Spike count</td>
-<td>0.965517241379</td>
+<td>0.0</td>
 <td>0.5</td>
-<td>0.48275862069</td>
+<td>0.0</td>
 </tr>
 </table>

@@ -7,7 +7,7 @@ try:
     from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
     from matplotlib.figure import Figure
 except RuntimeError as re:
-    print(re)
+    print re
     sys.exit()
 #from inspyred.ec import analysis
 from inspyred.ec.analysis import generation_plot
@@ -199,7 +199,6 @@ class stimuliwindow(wx.Frame):
             self.temp.append(tmp_obj)
         self.accept.Enable()
         self.stimuli_window.Show()
-        
 
 
     def Accept(self, e):
@@ -276,10 +275,10 @@ class MyDialog(wx.Dialog):
             self.parent.core.option_handler.adjusted_params=[]
             self.parent.model.DeleteAllItems()
             text = ""
-            text = list(map(strip, str(self.string.GetValue()).split("\n")))[4:-1]
+            text = map(strip, str(self.string.GetValue()).split("\n"))[4:-1]
             #print text
             variables = []
-            variables = list(map(strip, str(text[0][text[0].index("(") + 1:text[0].index(")")]).split(",")))
+            variables = map(strip, str(text[0][text[0].index("(") + 1:text[0].index(")")]).split(","))
             #print variables
             var_len = int(text[1].lstrip("#"))
             #print var_len
@@ -305,7 +304,7 @@ class MyDialog(wx.Dialog):
             self.parent.toolbar.EnableTool(888, True)
             self.Destroy()
         except ValueError as val_err:
-            print(val_err)
+            print val_err
             wx.MessageBox("Your function doesn't have any input parameters!", "Error", wx.OK | wx.ICON_ERROR)
         except SyntaxError as syn_err:
             wx.MessageBox(str(syn_err), "Syntax Error", wx.OK | wx.ICON_ERROR)
@@ -446,7 +445,7 @@ class MyDialog2(wx.Dialog):
                     hfile.seek(-bsize, os.SEEK_CUR)
                     linecount += hfile.read(bsize).count(sep)
                     hfile.seek(-bsize, os.SEEK_CUR)
-                except IOError as e:
+                except IOError, e:
                     if e.errno == errno.EINVAL:
                         # Attempted to seek past the start, can't go further
                         bsize = hfile.tell()
@@ -470,7 +469,7 @@ class MyDialog2(wx.Dialog):
         for l in lastlines(file_path, self.size_of_pop, 1):
             s=l.strip()
             #print s
-            params = [float(x.lstrip("[").rstrip("]")) for x in s.split(", ")][3:-1]
+            params = map(lambda x: float(x.lstrip("[").rstrip("]")), s.split(", "))[3:-1]
             params = params[0:len(params) / 2 + 1]
             self.vals.append(params)
         self.Destroy()
@@ -592,7 +591,7 @@ class inputLayer(wx.Frame):
 
         self.dropdown = wx.Choice(self.panel, wx.ID_ANY, (150, 245))
         self.dropdown.SetSize((100, 30))
-        self.dropdown.AppendItems(list(Core.scales[str(self.type_selector.GetItems()[self.type_selector.GetCurrentSelection()]).split()[0].lower()].keys()))
+        self.dropdown.AppendItems(Core.scales[str(self.type_selector.GetItems()[self.type_selector.GetCurrentSelection()]).split()[0].lower()].keys())
         self.dropdown.Select(1)
         self.horizontal_box7.Add(self.dropdown, flag=wx.LEFT, border=50)
 
@@ -648,7 +647,7 @@ class inputLayer(wx.Frame):
 
     def typeChanged(self,e):
         self.dropdown.Clear()
-        self.dropdown.AppendItems(list(Core.scales[str(self.type_selector.GetItems()[self.type_selector.GetCurrentSelection()]).split()[0].lower()].keys()))
+        self.dropdown.AppendItems(Core.scales[str(self.type_selector.GetItems()[self.type_selector.GetCurrentSelection()]).split()[0].lower()].keys())
         self.dropdown.Select(1)
 
     def BrowseFile(self, e):
@@ -690,10 +689,9 @@ class inputLayer(wx.Frame):
                                    None,
                                    None,
                                    str(self.type_selector.GetItems()[self.type_selector.GetCurrentSelection()]).split()[0].lower()]}
-                print(kwargs)
             except ValueError as ve:
                 wx.MessageBox('The input file or the type is missing. Please give them', 'Error', wx.OK | wx.ICON_ERROR)
-                print(ve)
+                print ve
 
         else:
             try:
@@ -706,13 +704,11 @@ class inputLayer(wx.Frame):
                                    int(self.freq_ctrl.GetValue()),
                                    self.time_checker.IsChecked(),
                                    str(self.type_selector.GetItems()[self.type_selector.GetCurrentSelection()]).split()[0].lower()]}
-                print(kwargs)
             except ValueError as ve:
                 wx.MessageBox('Some of the cells are empty. Please fill out all of them!', 'Error', wx.OK | wx.ICON_ERROR)
-                print(ve)
+                print ve
 
         self.core.FirstStep(kwargs)
-        
         if self.type_selector.GetSelection()==0 or self.type_selector.GetSelection()==1 or self.type_selector.GetSelection()==3:
             canvas = wx.Panel(self.panel, pos=(300, 270), size=(400, self.GetSize()[1]))
             figure = Figure(figsize=(5, 3))
@@ -735,17 +731,17 @@ class inputLayer(wx.Frame):
             exp_data = []
             for k in range(self.core.data_handler.number_of_traces()):
                 exp_data.extend(self.core.data_handler.data.GetTrace(k))
-            axes.plot(list(range(0, len(exp_data))), exp_data)
+            axes.plot(range(0, len(exp_data)), exp_data)
 
             if self.type_selector.GetSelection()==0:
-                for n in [x for x in enumerate(self.loaded_input_types) if x[1]!=None and x[0]!=2]:
+                for n in filter(lambda x: x[1]!=None and x[0]!=2,enumerate(self.loaded_input_types)):
                     self.input_tree.Delete(n[1])
                     self.loaded_input_types[n[0]]=None
                 self.tvoltage=self.input_tree.AppendItem(self.troot,"Voltage trace")
                 self.loaded_input_types[0]=self.tvoltage
                 self.input_tree.AppendItem(self.tvoltage,self.input_file_controll.GetValue().split("/")[-1])
             elif self.type_selector.GetSelection()==1:
-                for n in [x for x in enumerate(self.loaded_input_types) if x[1]!=None and x[0]!=2]:
+                for n in filter(lambda x: x[1]!=None and x[0]!=2,enumerate(self.loaded_input_types)):
                     self.input_tree.Delete(n[1])
                     self.loaded_input_types[n[0]]=None
                 self.tcurrent=self.input_tree.AppendItem(self.troot,"Current trace")
@@ -763,7 +759,7 @@ class inputLayer(wx.Frame):
                 '''
 
         elif self.type_selector.GetSelection()==2:
-            for n in [x for x in enumerate(self.loaded_input_types) if x[1]!=None and x[0]!=2]:
+            for n in filter(lambda x: x[1]!=None and x[0]!=2,enumerate(self.loaded_input_types)):
                 self.input_tree.Delete(n[1])
                 self.loaded_input_types[n[0]]=None
             self.tfeatures=self.input_tree.AppendItem(self.troot,"Features")
@@ -775,12 +771,12 @@ class inputLayer(wx.Frame):
             pass
 
     def add_data_dict(self,data_dict, root):
-        stack = list(data_dict.items())
+        stack = data_dict.items()
         while stack:
             key, value = stack.pop()
             if isinstance(value, dict):
                 self.input_tree.AppendItem(root, "{0} : ".format(key))
-                stack.extend(iter(value.items()))
+                stack.extend(value.iteritems())
             else:
                 self.input_tree.AppendItem(root, "  {0} : {1}".format(key, value))
 
@@ -847,7 +843,7 @@ class modelLayer(wx.Frame):
         self.horizontal_box2.Add(descr1)
 
         self.model_file_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(300, 30), name="Model File")
-        self.model_file_ctrl.WriteText(self.core.option_handler.base_dnir)
+        self.model_file_ctrl.WriteText(self.core.option_handler.base_dir)
         self.browser1 = wx.Button(self.panel, label="Browse...")
         self.browser1.Bind(wx.EVT_BUTTON, self.BrowseFile)
         self.dd_type = wx.Choice(self.panel, wx.ID_ANY, size=(150, 30))
@@ -1405,14 +1401,6 @@ class stimuliLayer(wx.Frame):
 
     def Next(self, e):
         try:
-            print({"stim" : [str(self.dd_type.GetItems()[self.dd_type.GetCurrentSelection()]), float(self.pos_ctrl.GetValue()), str(self.dd_sec1.GetItems()[self.dd_sec1.GetCurrentSelection()])],
-                                  "stimparam" : [self.stim_window.container, float(self.del_ctrl.GetValue()), float(self.dur_ctrl.GetValue())]})
-            print({"runparam":[float(self.tstop_ctrl.GetValue()),
-                                    float(self.dt_ctrl.GetValue()),
-                                    str(self.dd_record.GetItems()[self.dd_record.GetCurrentSelection()]),
-                                    str(self.dd_sec.GetItems()[self.dd_sec.GetCurrentSelection()]),
-                                    float(self.pos_ctrl2.GetValue()),
-                                    float(self.vrest_ctrl.GetValue())]})       
             self.core.SecondStep({"stim" : [str(self.dd_type.GetItems()[self.dd_type.GetCurrentSelection()]), float(self.pos_ctrl.GetValue()), str(self.dd_sec1.GetItems()[self.dd_sec1.GetCurrentSelection()])],
                                   "stimparam" : [self.stim_window.container, float(self.del_ctrl.GetValue()), float(self.dur_ctrl.GetValue())]})
             self.kwargs = {"runparam":[float(self.tstop_ctrl.GetValue()),
@@ -1422,9 +1410,9 @@ class stimuliLayer(wx.Frame):
                                     float(self.pos_ctrl2.GetValue()),
                                     float(self.vrest_ctrl.GetValue())]}
             if self.core.option_handler.output_level=="1":
-                print({"stim" : [str(self.dd_type.GetItems()[self.dd_type.GetCurrentSelection()]), float(self.pos_ctrl.GetValue()), str(self.dd_sec1.GetItems()[self.dd_sec1.GetCurrentSelection()])],
-                       "stimparam" : [self.stim_window.container, float(self.del_ctrl.GetValue()), float(self.dur_ctrl.GetValue())]})
-                print(self.kwargs)
+                print {"stim" : [str(self.dd_type.GetItems()[self.dd_type.GetCurrentSelection()]), float(self.pos_ctrl.GetValue()), str(self.dd_sec1.GetItems()[self.dd_sec1.GetCurrentSelection()])],
+                       "stimparam" : [self.stim_window.container, float(self.del_ctrl.GetValue()), float(self.dur_ctrl.GetValue())]}
+                print self.kwargs
         except AttributeError:
             wx.MessageBox("No stimulus amplitude was selected!","Error", wx.OK | wx.ICON_ERROR)
         except ValueError:
@@ -1511,12 +1499,12 @@ class ffunctionLayer(wx.Frame):
 
         self.row0.Add(descr3, flag=wx.LEFT, border=10)
         self.column2.Add(self.row0, flag=wx.BOTTOM, border=8)
-        
+
         if self.core.option_handler.type[-1]!="features":
             self.my_list = copy(self.core.ffun_calc_list)
             #self.my_list=["ffun1","ffun","ffun3"]
         else:
-            self.my_list=list(self.core.data_handler.features_data.keys())[3:-1]
+            self.my_list=self.core.data_handler.features_data.keys()[3:-1]
         self.param_list = [[]] * len(self.my_list)
         if self.core.option_handler.type[-1]!="features":
             self.param_list[2] = [("Spike Detection Thres. (mv)",0.0)]
@@ -1574,7 +1562,7 @@ class ffunctionLayer(wx.Frame):
 
 
     def Normalize(self, e):
-        is_enabled = [x for x in enumerate(self.weights) if x[1].IsEnabled()]
+        is_enabled = filter(lambda x: x[1].IsEnabled(), enumerate(self.weights))
         tmp = []
         for n in is_enabled:
             try:
@@ -1623,16 +1611,16 @@ class ffunctionLayer(wx.Frame):
         if self.core.option_handler.type[-1]!="features":
             self.kwargs.update({"feat":
                                 [tmp_dict,
-                                 [self.core.ffun_calc_list[fun[0]] for fun in [x for x in enumerate(self.weights) if x[1].IsEnabled()]]]
+                                 [self.core.ffun_calc_list[fun[0]] for fun in filter(lambda x: x[1].IsEnabled(), enumerate(self.weights))]]
                                 })
-            self.kwargs.update({"weights" : [float(w.GetValue()) for w in [x for x in self.weights if x.IsEnabled()]]})
+            self.kwargs.update({"weights" : [float(w.GetValue()) for w in filter(lambda x: x.IsEnabled(), self.weights)]})
         else:
             #self.my_list=self.core.data_handler.features_data.keys()[3:-1]
             self.kwargs.update({"feat":
                                 [tmp_dict,
-                                 [self.my_list[fun[0]] for fun in [x for x in enumerate(self.weights) if x[1].IsEnabled()]]]
+                                 [self.my_list[fun[0]] for fun in filter(lambda x: x[1].IsEnabled(), enumerate(self.weights))]]
                                 })
-            self.kwargs.update({"weights" : [float(w.GetValue()) for w in [x for x in self.weights if x.IsEnabled()]]})
+            self.kwargs.update({"weights" : [float(w.GetValue()) for w in filter(lambda x: x.IsEnabled(), self.weights)]})
 
         if not(0.99<sum(self.kwargs["weights"])<=1.01):
             dlg = wx.MessageDialog(self, "You did not normalize your weights!\nDo you want to continue?",'Warning', wx.YES_NO | wx.ICON_QUESTION)
@@ -1725,7 +1713,7 @@ class algorithmLayer(wx.Frame):
         self.dd_evo=wx.Choice(self.panel,wx.ID_ANY,size=(175,30))
         self.dd_evo.Append("Classical EO")
         self.dd_evo.Append("Simulated Annealing")
-	    self.dd_evo.Append("Particle Swarm")
+	self.dd_evo.Append("Particle Swarm")
         self.dd_evo.Append("Basinhopping")
         self.dd_evo.Append("Nelder-Mead")
         self.dd_evo.Append("L-BFGS-B")
@@ -1814,7 +1802,7 @@ class algorithmLayer(wx.Frame):
             alg=[descr19,descr20,descr21,descr40]
         elif selected_algo=="Simulated Annealing":
             alg=[descr20,descr21,descr22,descr23,descr24,descr26,descr40]
-	    elif selected_algo=="Particle Swarm":
+	elif selected_algo=="Particle Swarm":
             alg=[descr19,descr20,descr34,descr35,descr36,descr40]
         elif selected_algo=="Basinhopping":
             alg=[descr32,descr33,descr25,descr27,descr29]
@@ -1911,7 +1899,7 @@ class algorithmLayer(wx.Frame):
         #[map(float,map(wxTextCtrl.GetValue,fun)) for fun in self.param_list_container]
 
         if self.core.option_handler.output_level=="1":
-            print(self.kwargs)
+            print self.kwargs
         try:
             self.core.ThirdStep(self.kwargs)
             #wx.MessageBox('Optimization finished. Press the Next button for the results!', 'Done', wx.OK | wx.ICON_EXCLAMATION)
@@ -2029,8 +2017,8 @@ class resultsLayer(wx.Frame):
             _type=self.core.data_handler.data.type
             unit="mV" if _type=="voltage" else "nA" if _type=="current" else ""
             axes.set_ylabel(_type+" [" + unit + "]")
-            axes.plot(list(range(0, len(exp_data))), exp_data)
-            axes.plot(list(range(0, len(model_data))), model_data, 'r')
+            axes.plot(range(0, len(exp_data)), exp_data)
+            axes.plot(range(0, len(model_data)), model_data, 'r')
             axes.legend(["target", "model"])
             figure.savefig("result_trace.png", dpi=None, facecolor='w', edgecolor='w',
             orientation='portrait', papertype=None, format=None,
@@ -2055,7 +2043,7 @@ class resultsLayer(wx.Frame):
             unit="mV" if _type=="v" else "nA" if _type=="c" else ""
             axes.set_ylabel(_type_+" [" + unit + "]")
             #axes.plot(range(0, len(exp_data)), exp_data)
-            axes.plot(list(range(0, len(model_data))), model_data, 'r')
+            axes.plot(range(0, len(model_data)), model_data, 'r')
             axes.legend(["model"])
             figure.savefig("result_trace.png", dpi=None, facecolor='w', edgecolor='w',
             orientation='portrait', papertype=None, format=None,
@@ -2207,7 +2195,7 @@ class analyzisLayer(wx.Frame):
             else:
                 tmp[0]=(c[t_idx][1])
 
-            tmp=list(map(str,tmp))
+            tmp=map(str,tmp)
             #tmp_list.append(tmp)
             self.error_comp_table.InsertStringItem(c_idx,tmp[0])
             self.error_comp_table.SetStringItem(c_idx,1,tmp[1])
@@ -2251,7 +2239,7 @@ class analyzisLayer(wx.Frame):
                     line=line.replace(tups2,str(sums2))
                     line=line.replace("(","")
                     line=line.replace(")","")
-                    print(line)
+                    print line
                     textlines+=line
             if textlines:
                 statsd=open("stat_file.txt","w")

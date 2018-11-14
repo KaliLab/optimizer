@@ -11,6 +11,7 @@ from inspyred.ec import emo
 from inspyred.ec import variators
 from inspyred.ec import observers
 import modelHandler
+import time
 
 try:
     import copyreg
@@ -18,6 +19,7 @@ except:
     import copyreg
 
 from types import MethodType
+import os
 
 
 def _pickle_method(method):
@@ -181,29 +183,46 @@ class fF(object):
 
         """
         #params=candidates
+
+    
         error=0
         from modelHandler import externalHandler
         if isinstance(self.model, externalHandler):
+            pid = str(os.getpid())
+            current_time = str(time.time()).replace('.','')
             self.model.record[0] = []
-            out_handler = open(self.option.base_dir + "/params.param", "w")
-            for c in candidates:
-                out_handler.write(str(c) + "\n")
-            out_handler.write(str(act_trace_idx))
-            out_handler.close()
+            print('PID ', pid, ' ************')
+            
+            with open(self.option.base_dir + "/params" + pid + current_time + ".param" , "w") as out_handler:
+                for c in candidates:
+                    out_handler.write(str(c) + "\n")
+                out_handler.write(str(act_trace_idx))
+            
             from subprocess import call
-            error=call(self.model.GetExec())
-            in_handler = open(self.option.base_dir + "/trace.dat", "r")
-            for line in in_handler:
-                self.model.record[0].append(float(line.split()[-1]))
-            in_handler.close()
+            error=call(self.model.GetExec(pid, current_time))
+
             try:
-                in_handler = open(self.option.base_dir + "/spike.dat", "r")
-                self.model.spike_times = []
+                with open(self.option.base_dir + '/trace' + pid + current_time + '.dat', "r") as in_handler:
+                    for line in in_handler:
+                        self.model.record[0].append(float(line.split()[-1]))
             except OSError:
                 pass
-            for line in in_handler:
-                self.model.spike_times.append(int(float(line) / (1000.0 / self.option.input_freq)))
-                #print self.model.spike_times[1:10]
+             
+            try:
+                with open(self.option.base_dir + '/spike' + pid + current_time + '.dat', "r") as in_handler:
+                    self.model.spike_times = []
+                    for line in in_handler:
+                        self.model.spike_times.append(int(float(line) / (1000.0 / self.option.input_freq)))
+                        #print self.model.spike_times[1:10]
+            except OSError:
+                pass
+            
+            try:
+                os.remove(self.option.base_dir + '/trace' + pid + current_time + '.dat')
+                os.remove(self.option.base_dir + '/spike' + pid + current_time + '.dat')
+            except OSError:
+                pass
+            
 
         else:
             section = self.option.GetObjTOOpt()
@@ -215,6 +234,7 @@ class fF(object):
             self.setParameters(section, candidates)
             self.model.RunControll(settings)
 
+        
         return error
 
     def ReNormalize(self, l):
@@ -955,6 +975,7 @@ class fF(object):
         :return: the ``list`` of fitness values corresponding to the parameter sets
 
         """
+        #modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
         self.fitnes = []
         features = self.option.feats
 
@@ -965,7 +986,8 @@ class fF(object):
             window = int(self.option.spike_window)
         else:
             window=None
-        self.model.load_neuron()
+        if(self.option.simulator == 'Neuron'):
+            self.model.load_neuron()
 
         try:
             #self.model.load_neuron()
@@ -1030,9 +1052,10 @@ class fF(object):
                 print("current fitness: ",temp_fit)
             temp_fit = 0
 
+        if(self.option.simulator == 'Neuron'):
+            self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
 
-        #self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
-
+        print('\n fitnes {}\n'.format(self.fitnes))
 
         return self.fitnes
 
@@ -1094,7 +1117,6 @@ class fF(object):
         #print self.option.feats   #--> [<bound method fF.AP1_amp_abstr_data of <fitnessFunctions.fF instance at 0x7f669e957128>>] (ezt adja)
         weigths = self.option.weights
         temp_fit = []
-        self.model.load_neuron()
         if self.option.type[-1]!= 'features':
             window = int(self.option.spike_window)
         else:

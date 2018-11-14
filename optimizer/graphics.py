@@ -1,22 +1,14 @@
+  
 import wx
 import sys
 from traceHandler import sizeError
-try:
-    import matplotlib
-    matplotlib.use('WXAgg')
-    from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
-    from matplotlib.figure import Figure
-except RuntimeError as re:
-    print(re)
-    sys.exit()
-#from inspyred.ec import analysis
 from inspyred.ec.analysis import generation_plot
 import inspyred
 import matplotlib.pyplot as plt
 #from wxPython._controls import wxTextCtrl
 import os
 from copy import copy
-import Core
+from Core import *
 import numpy
 
 
@@ -34,11 +26,6 @@ from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 
 def popup(message):
-    """
-	Implements modal message dialog from the PyQT package.
-
-    :param message: the string displayed in the window 
-	"""
     msg = QtWidgets.QMessageBox()
     msg.setIcon(QtWidgets.QMessageBox.Warning)
     msg.setText(message)
@@ -49,12 +36,6 @@ def popup(message):
 
 class Ui_Optimizer(object):
     def setupUi(self, Optimizer):
-        """
-        Implements the widgets from the PyQT package.
-        """
-
-
-
         Optimizer.setObjectName("Optimizer")
         Optimizer.resize(771, 589)
         self.centralwidget = QtWidgets.QWidget(Optimizer)
@@ -536,60 +517,17 @@ class Ui_Optimizer(object):
         self.label_60.setFont(font)
         self.label_60.setObjectName("label_60")
         self.tabwidget.addTab(self.runtab, "")
-        self.eval_tab = QtWidgets.QWidget()
-        self.eval_tab.setObjectName("eval_tab")
+        self.tab_7 = QtWidgets.QWidget()
+        self.tab_7.setObjectName("tab_7")
 
         #eval tab 6
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(11)
-        font.setBold(False)
-        font.setWeight(75)
-        self.label_72 = QtWidgets.QLabel(self.eval_tab)
-        self.label_72.setGeometry(QtCore.QRect(10, 50, 131, 16))
-        self.label_72.setFont(font)
-        self.label_72.setObjectName("label_72")
-        self.tabwidget.addTab(self.eval_tab, "")
-        self.plot_tab = QtWidgets.QWidget()
-        self.plot_tab.setObjectName("plot_tab")
-        self.widget2 = QtWidgets.QWidget(self.eval_tab)
-        self.widget2.setGeometry(QtCore.QRect(180, 80, 630, 400))
-        self.widget2.setObjectName("widget2")
-        self.pushButton_34 = QtWidgets.QPushButton(self.eval_tab)
-        self.pushButton_34.setGeometry(QtCore.QRect(50, 360, 111, 22))
-        self.pushButton_34.setObjectName("pushButton_34")
-        
+        self.tabwidget.addTab(self.tab_7, "")
+        self.tab_4 = QtWidgets.QWidget()
+        self.tab_4.setObjectName("tab_4")
+
+
         #plot tab 7
-        self.tabwidget.addTab(self.plot_tab, "")
-        self.pushButton_35 = QtWidgets.QPushButton(self.plot_tab)
-        self.pushButton_35.setGeometry(QtCore.QRect(30, 400, 111, 22))
-        self.pushButton_35.setObjectName("pushButton_34")
-        self.pushButton_36 = QtWidgets.QPushButton(self.plot_tab)
-        self.pushButton_36.setGeometry(QtCore.QRect(150, 400, 111, 22))
-        self.pushButton_36.setObjectName("pushButton_34")
-        self.pushButton_37 = QtWidgets.QPushButton(self.plot_tab)
-        self.pushButton_37.setGeometry(QtCore.QRect(300, 400, 111, 22))
-        self.pushButton_37.setObjectName("pushButton_34")
-        self.label_74 = QtWidgets.QLabel(self.plot_tab)
-        self.label_74.setGeometry(QtCore.QRect(10, 50, 131, 16))
-        self.label_74.setFont(font)
-        self.label_74.setObjectName("label_74")
-        self.errorlist = QtWidgets.QTableWidget(self.plot_tab)
-        self.errorlist.setGeometry(QtCore.QRect(300, 200, 350, 180))
-        self.errorlist.setObjectName("errorlist")
-        self.fitstat = QtWidgets.QLabel(self.plot_tab)
-        self.fitstat.setGeometry(QtCore.QRect(300, 50,200, 24))
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setWeight(50)
-        self.fitstat.setFont(font)
-        self.fitstat.setObjectName("label")
-        self.fitstat.setText(QtCore.QCoreApplication.translate("Optimizer", 'Fitness statistics'))
-
-
-
+        self.tabwidget.addTab(self.tab_4, "")
         Optimizer.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(Optimizer)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 771, 19))
@@ -604,14 +542,12 @@ class Ui_Optimizer(object):
         self.actionMultiple_Optimization.setObjectName("actionMultiple_Optimization")
         self.menuMenu.addAction(self.actionMultiple_Optimization)
         self.menubar.addAction(self.menuMenu.menuAction())
+
         self.retranslateUi(Optimizer)
         QtCore.QMetaObject.connectSlotsByName(Optimizer)
         self.tabwidget.setCurrentIndex(0)
 
     def retranslateUi(self, Optimizer):
-        """
-        Set PyQT widgets behaviors and implements functions.
-        """
         _translate = QtCore.QCoreApplication.translate
         Optimizer.setWindowTitle(_translate("Optimizer", "Optimizer"))
         #self.tabwidget.currentChanged.connect(self.onChange)
@@ -675,7 +611,7 @@ class Ui_Optimizer(object):
         self.tother=None
         self.tfeatures=None
         #self.vbox.setItemText(_translate("Optimizer", "Vbox"))
-        self.figure = plt.figure(figsize=(4,2.5), dpi=80)
+        self.figure = plt.figure(figsize=(4,1.75), dpi=80)
         self.canvas = FigureCanvas(self.figure)
         self.canvas.setParent(self.widget)
         #enable this later
@@ -813,45 +749,22 @@ class Ui_Optimizer(object):
         
 
 
-        self.tabwidget.setTabText(self.tabwidget.indexOf(self.eval_tab), _translate("Optimizer", "Evaluation Tab"))
-        self.label_72.setText(_translate("Optimizer", "Final Result"))
-        #plt.tight_layout()
-        self.figure2 = plt.figure(figsize=(4,2.5), dpi=130)
-        # self.figure2.gcf().subplots_adjust()
-        self.canvas2 = FigureCanvas(self.figure2)
-        self.canvas2.setParent(self.widget2)
-        self.pushButton_34.setText(_translate("Optimizer", "Save Parameters"))
-        self.pushButton_34.clicked.connect(self.SaveParam)
+        self.tabwidget.setTabText(self.tabwidget.indexOf(self.tab_7), _translate("Optimizer", "Evaluation Tab"))
 
 
-        self.tabwidget.setTabText(self.tabwidget.indexOf(self.plot_tab), _translate("Optimizer", "Plot Tab"))
-        self.label_74.setText(_translate("Optimizer", "Analysis"))
-        self.pushButton_35.setText(_translate("Optimizer", "Generation Plot"))
-        self.pushButton_35.clicked.connect(self.PlotGen)
-        self.pushButton_36.setText(_translate("Optimizer", "Grid Plot"))
-        self.pushButton_36.clicked.connect(self.PlotGrid)
-        self.pushButton_37.setText(_translate("Optimizer", "Error Details"))
-        self.pushButton_37.clicked.connect(self.ShowErrorDialog)
-        self.errorlist.setColumnCount(4)
-        self.errorlist.setHorizontalHeaderLabels(["Error Functions","Value","Weight","Weighted Value"])
-        self.errorlist.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
-
-
+        self.tabwidget.setTabText(self.tabwidget.indexOf(self.tab_4), _translate("Optimizer", "Plot Tab"))
         self.menuMenu.setTitle(_translate("Optimizer", "Menu"))
         self.actionMultiple_Optimization.setText(_translate("Optimizer", "Multiple Optimization"))
         #self.tabwidget.setTabEnabled(1,False)
         #self.tabwidget.setTabEnabled(2,False)
         #self.tabwidget.setTabEnabled(3,False)
         #self.tabwidget.setTabEnabled(4,False)
-        #self.tabwidget.setTabEnabled(5,False)
-        #self.tabwidget.setTabEnabled(6,False)
+        self.tabwidget.setTabEnabled(5,False)
+        self.tabwidget.setTabEnabled(6,False)
     
                 
 
-    def openFileNameDialog(self): 
-        """
-        File dialog for the file tab to open file.
-        """
+    def openFileNameDialog(self):    
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
         fileName, _ = QFileDialog.getOpenFileName(None,"QFileDialog.getOpenFileName()", "","Data files (*.dat);;All Files (*);;", options=options)
@@ -860,20 +773,14 @@ class Ui_Optimizer(object):
             self.lineEdit_folder.setText(os.path.dirname(os.path.realpath(fileName)))
             self.pushButton_3.setEnabled(True)
 
-    def openFolderNameDialog2(self): 
-        """
-        File dialog for the model tab to open folder.
-        """ 
+    def openFolderNameDialog2(self):  
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
         folderName= QFileDialog.getExistingDirectory(None, options=options)
         if folderName:
             self.lineEdit_folder2.setText(folderName)
 
-    def openFileNameDialog2(self):  
-        """
-        File dialog for the model tab to open file.
-        """  
+    def openFileNameDialog2(self):    
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
         fileName, _ = QFileDialog.getOpenFileName(None,"QFileDialog.getOpenFileName()", "","Hoc Files (*.hoc);;All Files (*);;", options=options)
@@ -882,10 +789,7 @@ class Ui_Optimizer(object):
             self.lineEdit_folder2.setText(os.path.dirname(os.path.realpath(fileName)))
             self.pushButton_3.setEnabled(True)
 
-    def openFolderNameDialog(self):
-        """
-        File dialog for the file tab to open folder.
-        """  
+    def openFolderNameDialog(self):  
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
         folderName= QFileDialog.getExistingDirectory(None, options=options)
@@ -893,9 +797,6 @@ class Ui_Optimizer(object):
             self.lineEdit_folder.setText(folderName)
 
     def unitchange(self):
-        """
-        Sets units for drop down widget selecting simulation type.
-        """
         self.dropdown.clear()
         if self.type_selector.currentIndex()==0:
             self.dropdown.addItems(["uV","mV","V"])
@@ -909,11 +810,6 @@ class Ui_Optimizer(object):
 
         
     def add_data_dict(self,data_dict, root):
-        """
-        Creates Input tree *not implemented yet*
-        :param data_dict:
-        :param root:
-        """
         stack = data_dict.items()
         while stack:
             key, value = stack.pop()
@@ -925,13 +821,7 @@ class Ui_Optimizer(object):
         
 
     def Load(self):
-        """
-        Loads the model after the 'Load Trace' clicked
 
-        First creates a dictionary with the paths and options and call the First step, giving these as argument
-        Plots the trace in matplotlib on the file tab.
-
-        """
         if (self.type_selector.currentText() == 'Features'):
             try:
 
@@ -984,7 +874,6 @@ class Ui_Optimizer(object):
             ax.hold(False)
             ax.plot(list(range(0, len(exp_data))), exp_data)
             self.canvas.draw()
-            plt.tight_layout()
             #self.graphicsView.set_title('PyQt Matplotlib Example')
             
             
@@ -1056,7 +945,7 @@ class Ui_Optimizer(object):
             self.kwargs={"runparam" : [self.core.data_handler.data.t_length,
                                         self.core.data_handler.data.step,
                                         "record",
-                                        "soma",
+                                        "sec",
                                         "pos",
                                         "vrest"]
                             }
@@ -1064,7 +953,7 @@ class Ui_Optimizer(object):
             self.kwargs={"runparam" : [self.core.data_handler.features_data["stim_delay"] + self.core.data_handler.features_data["stim_duration"]+100,
                                         0.05,
                                         "record",
-                                        "soma",
+                                        "sec",
                                         "pos",
                                         "vrest"]}
         if self.core.option_handler.output_level=="1":
@@ -1079,11 +968,6 @@ class Ui_Optimizer(object):
         
         
     def Set(self, e):
-        """
-        Set the selected parameters to optimize on the model.
-
-        Loop through every selected line.
-        """
         items = self.modellist.selectionModel().selectedRows()
         self.remover.setEnabled(True)
         for item_selected in items:
@@ -1126,7 +1010,6 @@ class Ui_Optimizer(object):
 
 
                     self.core.SetModel2(kwargs)
-                
                 else:
                     for idx in range(self.modellist.rowCount()):
                         item = self.modellist.item(idx, 3)
@@ -1139,15 +1022,9 @@ class Ui_Optimizer(object):
                                 self.modellist.item(idx,j).setBackground(QtGui.QColor(0,255,0))
 
                     self.core.SetModel(kwargs)
-                print(kwargs)
             
 
     def Remove(self, e):
-        """
-        Remove the selected parameters to optimize on the model.
-
-        Loop through every selected line.
-        """
         items = self.modellist.selectionModel().selectedRows()
         for item_selected in items:
                 #try to use the table for selection
@@ -1190,9 +1067,6 @@ class Ui_Optimizer(object):
 
 
     def sim_plat(self):
-        """
-        Called when simulation platform changed, locks unnecessary widgets and swap Label of Load button.
-        """
         if self.dd_type.currentIndex():
             self.sim_path.setEnabled(True)
             self.pushButton_13.setText(QtCore.QCoreApplication.translate("Optimizer", "Set"))
@@ -1218,9 +1092,7 @@ class Ui_Optimizer(object):
 
 
     def Load2(self, e):
-        """
-        Load the selected Neuron model and displays the sections in a tablewidget
-        """
+
         self.model_file = self.lineEdit_file2.text()
         self.spec_file = self.lineEdit_folder2.text()
         try:
@@ -1254,30 +1126,20 @@ class Ui_Optimizer(object):
 
         except OSError as oe:
             print(oe)
-        if not self.dd_type.currentIndex():  
-            try:
-                tmp=self.core.ReturnSections()
-                self.spinBox_16.addItems(tmp)
-                self.spinBox_9.addItems(tmp)
-            except:
-                popup("Section error")
+        
+        tmp=self.core.ReturnSections()
+        self.spinBox_16.addItems(tmp)
+        self.spinBox_9.addItems(tmp)
+
 
 
     def UF(self):
-        """
-        Calls the user function window for the Model tab.
-        """
-
         self.SW = SecondWindow() 
         self.SW.setObjectName("Optimizer")
         self.SW.resize(500, 500)
         self.SW.show()
 
     def amplitudes_fun(self):
-        """
-        Calls the amplitude window for the Options tab.
-        """
-
         self.SiW = StimuliWindow() 
         self.SiW.setObjectName("Optimizer")
         self.SiW.resize(400, 500)
@@ -1285,9 +1147,6 @@ class Ui_Optimizer(object):
 
     
     def fitselect(self):
-        """
-        Calls when fitness functions selected, colours the item and adds them to a set.
-        """
         items = self.fitlist.selectionModel().selectedIndexes()
         for item_selected in items:
             if item_selected.column()==0:
@@ -1299,11 +1158,7 @@ class Ui_Optimizer(object):
                     self.fitlist.item(item_selected.row(),0).setBackground(QtGui.QColor(0,255,0))
                     self.fitset.add(current_item)
 
-
     def fitchanged(self):
-        """
-        Calls when the weights changed for the fitness functions. Stores the weights in a list.
-        """
         self.weights=[]
         try:
             allRows = self.fitlist.rowCount()
@@ -1317,9 +1172,6 @@ class Ui_Optimizer(object):
         
 
     def Normalize(self, e):
-        """
-        Normalize the weigths of fitness functions.
-        """
         try:
             sum_o_weights = sum(self.weights)
             allRows = self.fitlist.rowCount()
@@ -1336,8 +1188,8 @@ class Ui_Optimizer(object):
                         self.fitlist.item(row, 1).setText("0")
                     except ValueError:
                         continue
-        except Exception as e:
-            popup("Wrong values given. "+e)
+        except:
+            popup("Wrong values given")
 
 
     def algoselect(self):
@@ -1372,39 +1224,37 @@ class Ui_Optimizer(object):
     def runsim(self): 
         err=[]
         errpop=[]
-        if not self.dd_type.currentIndex():
-            try:
-                self.core.SecondStep({"stim" : [str(self.stimprot.currentText()), float(self.lineEdit_pos.text()), str(self.spinBox_16.currentText())],
-                                    "stimparam" : [self.SiW.container, float(self.lineEdit_delay.text()), float(self.lineEdit_duration.text())]})
-                self.kwargs = {"runparam":[float(self.lineEdit_tstop.text()),
-                                        float(self.lineEdit_dt.text()),
-                                        str(self.spinBox_15.currentText()),
-                                        str(self.spinBox_9.currentText()),
-                                        float(self.lineEdit_posins.text()),
-                                        float(self.lineEdit_initv.text())]}
-            except AttributeError:
-                err.append(2)
-                errpop.append("No stimulus amplitude was selected!")
-            except ValueError:
-                errpop.append('Some of the cells are empty. Please fill out all of them!')
-                err.append(2)
-            except Exception as e:
-                err.append(2)
-                print(e)
-                errpop.append("There was an error")
+        try:
+            self.core.SecondStep({"stim" : [str(self.stimprot.currentText()), float(self.lineEdit_pos.text()), str(self.spinBox_16.currentText())],
+                                  "stimparam" : [self.SiW.container, float(self.lineEdit_delay.text()), float(self.lineEdit_duration.text())]})
+            self.kwargs = {"runparam":[float(self.lineEdit_tstop.text()),
+                                    float(self.lineEdit_dt.text()),
+                                    str(self.spinBox_15.currentText()),
+                                    str(self.spinBox_9.currentText()),
+                                    float(self.lineEdit_posins.text()),
+                                    float(self.lineEdit_initv.text())]}
+        except AttributeError:
+            err.append(2)
+            errpop.append("No stimulus amplitude was selected!")
+        except ValueError:
+            errpop.append('Some of the cells are empty. Please fill out all of them!')
+            err.append(2)
+        except:
+            err.append(2)
+            errpop.append("Error")
 
         try:
             if self.core.option_handler.type[-1]!="features":
                 self.kwargs.update({"feat":
                                     [{"Spike Detection Thres. (mv)": float(self.spike_tresh.text()), "Spike Window (ms)":float(self.spike_window.text())},
-                                    [str(x) for x in self.my_list if x in self.fitset]]
+                                    [x for x in self.my_list if x in self.fitset]]
                                     })
                 self.kwargs.update({"weights" : self.weights})
             else:
                 self.my_list=self.core.data_handler.features_data.keys()[3:-1]
                 self.kwargs.update({"feat":
                                     [{"Spike Detection Thres. (mv)": float(self.spike_tresh.text()), "Spike Window (ms)":float(self.spike_window.text())},
-                                    [str(x) for x in self.my_list if x in self.fitset]]
+                                    [x for x in self.my_list if x in self.fitset]]
                                     })
                 self.kwargs.update({"weights" : self.weights})
             if not(0.99<sum(self.kwargs["weights"])<=1.01):
@@ -1431,7 +1281,7 @@ class Ui_Optimizer(object):
                 tmp.update({str(self.aspectlist.item(row,0).text()):float(self.aspectlist.item(row,1).text())})
             tmp.update({
                 "num_params" : len(self.core.option_handler.GetObjTOOpt()),
-                "boundaries" : self.core.option_handler.boundaries ,
+                "boundaries" : self.BW.core.option_handler.boundaries ,
                 "starting_points" : self.seed
                 })
             self.kwargs.update({"algo_options":tmp})
@@ -1439,307 +1289,22 @@ class Ui_Optimizer(object):
             err.append(4)
             errpop.append("You forget to select an algorithm!")
             
-        try:
-            self.core.ThirdStep(self.kwargs)
+        #try:
+        self.core.ThirdStep(self.kwargs)
         #wx.MessageBox('Optimization finished. Press the Next button for the results!', 'Done', wx.OK | wx.ICON_EXCLAMATION)
-            if self.core.option_handler.output_level=="1":
-                self.core.Print()
-            self.seed = None
-        except sizeError as sE:
+        if self.core.option_handler.output_level=="1":
+            self.core.Print()
+        self.seed = None
+        """except sizeError as sE:
             err.append(4)
             errpop.append("There was an error during the optimization: "+sE.m)
-        #except Exception as e:
-            #err.append(4)
-            #print(e)
-            #errpop.append("There was an error")
+        except:
+            err.append(4)
+            errpop.append("There was an error:")"""
         if err:
             popup(errpop[0])
             self.tabwidget.setCurrentIndex(int(min(err)))
-        else:
-            try:
-                self.core.FourthStep()
-                self.eval_tab_plot()
-                self.plot_tab_fun()
-                self.tabwidget.setCurrentIndex(5)
-            except:
-                popup("Forth step error")
 
-
-
-    def eval_tab_plot(self):
-        text = "Results:"
-        #for n, k in zip(self.core.option_handler.GetObjTOOpt(), self.core.optimizer.fit_obj.ReNormalize(self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)])):
-        for n, k in zip(self.core.option_handler.GetObjTOOpt(), self.core.optimizer.fit_obj.ReNormalize(self.core.cands[0])):
-            if n.split()[0]==n.split()[-1]:
-                param=[n.split()[0], n.split()[-1]]
-                text += "\n" + param[0] + "\n" + "\t" + str(k)
-            else:
-                param=[n.split()[0], "segment: " + n.split()[1], n.split()[-1]]
-                #print param
-                if n.split()[1]!=n.split()[-1]:
-                    text += "\n" + ": \n".join(param) + ":" + "\n" + "\t" + str(k)
-                else:
-                    text += "\n" + param[0] + ": " + param[-1] + "\n" + "\t" + str(k)
-        #text += "\n" + "fitness:\n" + "\t" + str(self.core.optimizer.final_pop[0].fitnes)
-        text += "\n" + "fitness:\n" + "\t" + str(self.core.fits)
-        for tabs in [self.eval_tab,self.plot_tab]:
-            label = QtWidgets.QLabel(tabs)
-            label.setGeometry(QtCore.QRect(10, 70, 170, 206))
-            font = QtGui.QFont()
-            font.setFamily("Ubuntu")
-            font.setPointSize(10)
-            font.setBold(False)
-            font.setWeight(50)
-            label.setFont(font)
-            label.setObjectName("label")
-            label.setText(QtCore.QCoreApplication.translate("Optimizer", text))
-            scroll_area = QtWidgets.QScrollArea(tabs)
-            scroll_area.setGeometry(QtCore.QRect(10, 100, 170, 256))
-            scroll_area.setWidget(label)
-            scroll_area.setWidgetResizable(True)
-
-        exp_data = []
-        model_data = []
-        axes = self.figure2.add_subplot(111)
-
-        if self.core.option_handler.type[-1]!="features":
-            for n in range(self.core.data_handler.number_of_traces()):
-                exp_data.extend(self.core.data_handler.data.GetTrace(n))
-                model_data.extend(self.core.final_result[n])
-            no_traces=self.core.data_handler.number_of_traces()
-            t = self.core.option_handler.input_length
-            step = self.core.option_handler.run_controll_dt
-            #axes.set_xticks([n for n in range(0, int((t*no_traces)/(step)), int((t*no_traces)/(step)/5.0)) ])
-            #axes.set_xticklabels([str(n) for n in range(0, t*no_traces, (t*no_traces)/5)])
-
-            axes.set_xlabel("time [ms]")
-            _type=self.core.data_handler.data.type
-            unit="mV" if _type=="voltage" else "nA" if _type=="current" else ""
-            axes.set_ylabel(_type+" [" + unit + "]")
-            axes.plot(list(range(0, len(exp_data))), exp_data)
-            axes.plot(list(range(0, len(model_data))), model_data, 'r')
-            axes.legend(["target", "model"])
-            self.figure2.savefig("result_trace.png", dpi=None, facecolor='w', edgecolor='w',
-            orientation='portrait', papertype=None, format=None,
-            transparent=False, bbox_inches=None, pad_inches=0.1)
-            self.figure2.savefig("result_trace.eps", dpi=None, facecolor='w', edgecolor='w')
-            self.figure2.savefig("result_trace.svg", dpi=None, facecolor='w', edgecolor='w')
-            self.canvas2.draw()
-            plt.tight_layout()
-            #param_save=wx.Button(self.panel,id=wx.ID_ANY,label="Save\nParameters",pos=(105,5),size=(90,50))
-            #param_save.Bind(wx.EVT_BUTTON,self.SaveParam)
-
-        else:
-            for n in range(len(self.core.data_handler.features_data["stim_amp"])):
-                model_data.extend(self.core.final_result[n])
-            no_traces=len(self.core.data_handler.features_data["stim_amp"])
-            t = int(self.core.option_handler.run_controll_tstop)         # instead of input_length
-            step = self.core.option_handler.run_controll_dt
-            #axes.set_xticks([n for n in range(0, int((t*no_traces)/(step)), int((t*no_traces)/(step)/5.0)) ])
-            #axes.set_xticklabels([str(n) for n in range(0, t*no_traces, (t*no_traces)/5)])
-
-            axes.set_xlabel("time [ms]")
-            _type=str(self.kwargs["runparam"][2])       #parameter to record
-            _type_ = "Voltage" if _type =="v" else "Current" if _type=="c" else ""
-            unit="mV" if _type=="v" else "nA" if _type=="c" else ""
-            axes.set_ylabel(_type_+" [" + unit + "]")
-            #axes.plot(range(0, len(exp_data)), exp_data)
-            axes.plot(list(range(0, len(model_data))), model_data, 'r')
-            axes.legend(["model"])
-            self.figure2.savefig("result_trace.png", dpi=None, facecolor='w', edgecolor='w',
-            orientation='portrait', papertype=None, format=None,
-            transparent=False, bbox_inches=None, pad_inches=0.1)
-            self.figure2.savefig("result_trace.eps", dpi=None, facecolor='w', edgecolor='w')
-            self.figure2.savefig("result_trace.svg", dpi=None, facecolor='w', edgecolor='w')
-            axes.hold(False)
-            axes.plot(list(range(0, len(exp_data))), exp_data)
-            self.canvas2.draw()
-            plt.tight_layout()
-            #param_save=wx.Button(self.panel,id=wx.ID_ANY,label="Save\nParameters",pos=(105,5),size=(90,50))
-            #param_save.Bind(wx.EVT_BUTTON,self.SaveParam)
-        
-    def SaveParam(self, e):
-        try:
-            save_file_name = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File')
-            if save_file_name[0]:
-                f=open(save_file_name,"w")
-                #params=self.core.optimizer.fit_obj.ReNormalize(self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)])
-                params=self.core.optimizer.fit_obj.ReNormalize(self.core.cands[0])
-                #params=self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)]
-                f.write("\n".join(map(str,params)))
-        except Exception as e:
-            popup("Couldn't save the parameters." + e)
-
-
-    def plot_tab_fun(self):
-
-        if self.core.moo_var:
-            try:
-                #print(self.core.optimizer.logbook)
-                self.record=self.core.optimizer.logbook
-                #for key, value in self.record.iteritems():
-                #    print key, value
-            except AttributeError:
-                stats={'best' : "unkown",'worst' : "unkown",'mean' : "unkown",'median' : "unkown", 'std' : "unkown"}
-            string = "Avg: " + str(self.record[-1]['avg']) + "\nStd: " + str(self.record[-1]['std']) + "\nMin: " + str(self.record[-1]['min']) + "\nMax: " + str(self.record[-1]['max'])
-        else:
-            try:
-                stats = inspyred.ec.analysis.fitness_statistics(self.core.optimizer.final_pop)
-            except AttributeError:
-                stats={'best' : "unkown",'worst' : "unkown",'mean' : "unkown",'median' : "unkown", 'std' : "unkown"}
-            #print 'type---------------------------------------------------------------'
-            #print type(stats['best'])
-            #if stats['best'] is tuple:
-            #    stats['best']=sum(stats['best'])/len(stats['best'])
-            #if stats['worst'] is tuple:
-            #    stats['worst']=sum(stats['worst'])/len(stats['worst'])
-            string = "Best: " + str(stats['best']) + "\nWorst: " + str(stats['worst']) + "\nMean: " + str(stats['mean']) + "\nMedian: " + str(stats['median']) + "\nStd:" + str(stats['std'])
-        label = QtWidgets.QLabel(self.plot_tab)
-        label.setGeometry(QtCore.QRect(300, 80, 250, 146))
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setWeight(50)
-        label.setFont(font)
-        label.setObjectName("label")
-        label.setText(QtCore.QCoreApplication.translate("Optimizer", string))
-        scroll_area = QtWidgets.QScrollArea(self.plot_tab)
-        scroll_area.setGeometry(QtCore.QRect(300,80, 350, 100))
-        scroll_area.setWidget(label)
-        scroll_area.setWidgetResizable(True)
-
-        for c_idx,c in enumerate(zip(*self.core.error_comps)):
-            tmp=[0]*4
-            for t_idx in range(len(c)):
-                #print c[t_idx]
-                tmp[1]+=c[t_idx][2]
-                tmp[2]=c[t_idx][0]
-                tmp[3]+=c[t_idx][2]*c[t_idx][0]
-            if self.core.option_handler.type[-1]!='features':
-                tmp[0]=self.core.ffun_mapper[c[t_idx][1].__name__]
-            else:
-                tmp[0]=(c[t_idx][1])
-
-            tmp=list(map(str,tmp))
-            #tmp_list.append(tmp)
-            self.errorlist.setItem(c_idx, 0, QTableWidgetItem(tmp[0]))
-            self.errorlist.setItem(c_idx, 1, QTableWidgetItem(tmp[1]))
-            self.errorlist.setItem(c_idx, 2, QTableWidgetItem(tmp[2]))
-            self.errorlist.setItem(c_idx, 3, QTableWidgetItem(tmp[3]))
-
-    def PlotGen(self, e):
-        import os.path
-        plt.close('all')
-        if self.core.moo_var:
-            with open("stat_file.txt","r") as f:
-                textlines=""
-                for line in f:
-                    if "(" not in line:
-                        break
-                    sums=0
-                    sums2=0
-                    i=0
-                    tups=line[line.index("(") + 1:line.index(")")]
-                    for word in tups.split(','):
-                        if word:
-                            sums+=float(word)*self.core.option_handler.weights[i]
-                        i+=1
-                    line=line.replace(tups,str(sums))
-                    tups2=line[line.rindex("(") + 1:line.rindex(")")]
-                    i=0
-                    for word in tups2.split(','):
-                        if word:
-                            sums2+=float(word)*self.core.option_handler.weights[i]
-                        i+=1
-                    line=line.replace(tups2,str(sums2))
-                    line=line.replace("(","")
-                    line=line.replace(")","")
-                    print(line)
-                    textlines+=line
-            if textlines:
-                statsd=open("stat_file.txt","w")
-                statsd.write(textlines)
-                statsd.close()
-        if os.path.getmtime("stat_file.txt") <= self.core.option_handler.start_time_stamp:
-            popup('Generation plot is not available for this algorithm.')
-        try:
-            if self.core.moo_var:
-                genarr=[]
-                minarr=[]
-                maxarr=[]
-                avgarr=[]
-                stdarr=[]
-                for i in range(len(self.record)):
-                    genarr.append(int(self.record[i]['gen']))
-                    minarr.append(self.record[i]['min'])
-                    maxarr.append(self.record[i]['max'])
-                    avgarr.append(self.record[i]['avg'])
-                    stdarr.append(self.record[i]['std'])
-                for i in range(len(maxarr)):
-                    maxn=0
-                    minn=0
-                    avgn=0
-                    stdn=0
-                    for j in range(len(maxarr[i])):
-                        maxn+=float(maxarr[i][j])*self.core.option_handler.weights[j]
-                        minn+=float(minarr[i][j])*self.core.option_handler.weights[j]
-                        avgn+=float(avgarr[i][j])*self.core.option_handler.weights[j]
-                        stdn+=float(stdarr[i][j])*self.core.option_handler.weights[j]
-                    maxarr[i]=maxn
-                    minarr[i]=minn
-                    avgarr[i]=avgn
-                    stdarr[i]=stdn
-                plt.plot(genarr,minarr,label='Minimum')
-                plt.plot(genarr,maxarr,label='Maximum')
-                plt.plot(genarr,avgarr,label='Average')
-                plt.plot(genarr,stdarr,label='Standard Deviation')
-                legend = plt.legend(loc='upper center', shadow=True)
-                frame = legend.get_frame()
-                frame.set_facecolor('0.90')
-                for label in legend.get_texts():
-                    label.set_fontsize('large')
-                for label in legend.get_lines():
-                    label.set_linewidth(1.5)
-                plt.show()
-            else:
-                """
-                import csv
-
-                with open('stat_file.txt', 'r') as in_file:
-                    stripped = (line.strip() for line in in_file)
-                    lines = (line.split(",") for line in stripped if line)
-                    with open('stat_file.csv', 'w') as out_file:
-                        writer = csv.writer(out_file)
-                        writer.writerows(lines)
-                with open("stat_file.txt","r+") as f:
-                    tempstr=''
-                    tmplines=f.readlines()
-                    for tmpstr in tmplines:
-                        print(tmpstr)
-                        #tmpstr.decode('utf-8')
-                        tempstr=tempstr+tmpstr+'/n'
-                    print(tempstr)
-                    f.seek(0)
-                    f.write(tempstr)
-                    f.truncate()
-                    """
-                generation_plot("stat_file.txt")
-        except ValueError:
-            stat_file=open("stat_file.txt","rt")
-            generation_plot(stat_file)
-        except Exception as e:
-            popup("Generation Plot generation error." + e)
-
-
-    def PlotGrid(self, e):
-        self.prev_bounds=copy(self.core.option_handler.boundaries)
-        self.PG=gridwindow(self)
-        self.PG.Show()
-
-    def ShowErrorDialog(self,e):
-        self.extra_error_dialog=ErrorDialog(self)
-        self.extra_error_dialog.Show()
 
     def boundarywindow(self):
         self.BW = BoundaryWindow() 
@@ -1804,8 +1369,8 @@ class SecondWindow(QtWidgets.QMainWindow):
     def OnOk(self, e):
         try:
             #print self.string.GetValue()
-            ui.core.option_handler.u_fun_string = str(self.plaintext.toPlainText())
-            ui.core.option_handler.adjusted_params=[]
+            self.core.option_handler.u_fun_string = str(self.plaintext.toPlainText())
+            self.core.option_handler.adjusted_params=[]
             ui.modellist.setRowCount(0)
             text = ""
             text = list(map(str.strip, str(self.plaintext.toPlainText()).split("\n")))[4:-1]
@@ -1822,11 +1387,11 @@ class SecondWindow(QtWidgets.QMainWindow):
             if var_names==[]:
                 var_names=None
             for i in range(var_len):
-                ui.core.option_handler.SetOptParam(0.1)
+                self.core.option_handler.SetOptParam(0.1)
                 if var_names != None:
-                    ui.core.option_handler.SetObjTOOpt(var_names[i])
+                    self.core.option_handler.SetObjTOOpt(var_names[i])
                 else:
-                    ui.core.option_handler.SetObjTOOpt("Vector" + "[" + str(i) + "]")
+                    self.core.option_handler.SetObjTOOpt("Vector" + "[" + str(i) + "]")
             if variables[0] == '':
                 raise ValueError
             compile(self.plaintext.toPlainText(), '<string>', 'exec')
@@ -1958,8 +1523,8 @@ class BoundaryWindow(QtWidgets.QMainWindow):
             self.min.append(tmp_min)
             self.max.append(tmp_max)
             if len(ui.core.option_handler.boundaries[1]) == len(ui.core.option_handler.GetObjTOOpt()):
-                tmp_min.setText(str(ui.core.option_handler.boundaries[0][l]))
-                tmp_max.setText(str(ui.core.option_handler.boundaries[1][l]))
+                tmp_min.SetValue(str(self.par.core.option_handler.boundaries[0][l]))
+                tmp_max.SetValue(str(self.par.core.option_handler.boundaries[1][l]))
         
         Setbutton = QtWidgets.QPushButton(self)
         Setbutton.setGeometry(QtCore.QRect(10, 400, 80, 22))
@@ -1980,8 +1545,8 @@ class BoundaryWindow(QtWidgets.QMainWindow):
 
     def Set(self, e):
         try:
-            ui.core.option_handler.boundaries[0] = [float(n.text()) for n in self.min]
-            ui.core.option_handler.boundaries[1] = [float(n.text()) for n in self.max]
+            self.core.option_handler.boundaries[0] = [float(n.text()) for n in self.min]
+            self.core.option_handler.boundaries[1] = [float(n.text()) for n in self.max]
         except ValueError:
             
             
@@ -1989,8 +1554,8 @@ class BoundaryWindow(QtWidgets.QMainWindow):
             
 
         else:
-            for i in range(len(ui.core.option_handler.boundaries[0])):
-                if ui.core.option_handler.boundaries[0][i] >= ui.core.option_handler.boundaries[1][i] :
+            for i in range(len(self.core.option_handler.boundaries[0])):
+                if self.core.option_handler.boundaries[0][i] >= self.core.option_handler.boundaries[1][i] :
                     
                     
                     popup("""Min boundary must be lower than max
@@ -2011,6 +1576,8 @@ class BoundaryWindow(QtWidgets.QMainWindow):
                     f.write("\n")
                 f.close()
         except IOError:
+            
+            
             popup("Error writing the file!")
             
 
@@ -2027,8 +1594,6 @@ class BoundaryWindow(QtWidgets.QMainWindow):
                     self.max[idx].setText(bounds[1])
             except IOError:
                 popup("Error reading the file!")
-            except Exception as e:
-                print("Error:"+ e)
                 
 
 
@@ -2114,10 +1679,10 @@ class startingpoints(QtWidgets.QMainWindow):
                 f = open(fileName, "r")
                 for idx, l in enumerate(f):
                     self.container[idx].SetValue(str(l))
-            except Exception as e:
+            except IOError:
                 
                 
-                popup("Error: " + e)
+                popup("Error")
                 
     
     def OnLoadPop(self,e):
@@ -2180,105 +1745,6 @@ class startingpoints(QtWidgets.QMainWindow):
             params = params[0:len(params) / 2 + 1]
             self.vals.append(params)
         self.close()
-
-
-class gridwindow(QtWidgets.QMainWindow):
-    def __init__(self,*args):
-        _translate = QtCore.QCoreApplication.translate
-        hstep = 200
-        vstep = 35
-        hoffset = 10
-        voffset = 15
-        self.min = []
-        self.max = []
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setWeight(50)
-
-        for l in range(len(ui.core.option_handler.GetObjTOOpt())):
-            lbl = QtWidgets.QLabel(self)
-            lbl.setGeometry(QtCore.QRect(hoffset, voffset + l * vstep, 121, 16))
-            
-            lbl.setFont(font)
-            lbl.setObjectName("ctrl")
-            lbl.setText(QtCore.QCoreApplication.translate("Optimizer", ui.core.option_handler.GetObjTOOpt()[l].split()[-1]))
-
-            
-            tmp_min = QtWidgets.QLineEdit(self)
-            tmp_min.setGeometry(QtCore.QRect(hstep, voffset + l * vstep, 75, 30))
-            tmp_min.setObjectName("tmp_min")
-            tmp_max = QtWidgets.QLineEdit(self)
-            tmp_max.setGeometry(QtCore.QRect(hstep + hstep/2, voffset + l * vstep, 75, 30))
-            tmp_max.setObjectName("tmp_min")
-            lbl.show()
-            tmp_min.show()
-            self.min.append(tmp_min)
-            self.max.append(tmp_max)
-            if len(ui.core.option_handler.boundaries[1]) == len(ui.core.option_handler.GetObjTOOpt()):
-                tmp_min.SetValue(str(ui.core.option_handler.boundaries[0][l]))
-                tmp_max.SetValue(str(ui.core.option_handler.boundaries[1][l]))
-
-        lbl = QtWidgets.QLabel(self)
-        lbl.setGeometry(QtCore.QRect(hoffset, voffset + l * vstep, 121, 16))
-        lbl.setFont(font)
-        lbl.setObjectName("ctrl")
-        lbl.setText(QtCore.QCoreApplication.translate("Optimizer", ui.core.option_handler.GetObjTOOpt()[l].split()[-1]))
-        self.resolution_ctrl = QtWidgets.QLineEdit(self)
-        self.resolution_ctrl.setGeometry(QtCore.QRect(hstep,600, 75, 30))
-        self.resolution_ctrl.setObjectName("ctrl")
-        self.resolution_ctrl.setText(str(ui.resolution))
-
-        Setbutton = QtWidgets.QPushButton(self)
-        Setbutton.setGeometry(QtCore.QRect(hstep, 650, 80, 22))
-        Setbutton.setObjectName("Okbutton")
-        Setbutton.setText(_translate("Optimizer", "Ok"))
-        Setbutton.clicked.connect(self.Set)
-        
-
-
-    def Set(self, e):
-        try:
-            ui.core.option_handler.boundaries[0] = [float(n.GetValue()) for n in self.min]
-            ui.core.option_handler.boundaries[1] = [float(n.GetValue()) for n in self.max]
-            ui.resolution=int(self.resolution_ctrl.text())
-            self.close()
-        except ValueError as ve:
-           popup("Invalid Value")
-        
-
-
-class ErrorDialog(QtWidgets.QMainWindow):
-    def __init__(self):
-        self.error_comp_table = wx.ListCtrl(panel,pos=(10,10),size=(600,300),style=wx.LC_REPORT | wx.BORDER_SUNKEN)
-        self.error_comp_table.InsertColumn(0, 'Error Function', width=200)
-        self.error_comp_table.InsertColumn(1, 'Value', width=200)
-        self.error_comp_table.InsertColumn(2, 'Weight', width=200)
-        self.error_comp_table.InsertColumn(3, 'Weighted Value', width=200)
-
-        tmp_w_sum=0
-        c_idx=0
-        for t in self.parent.core.error_comps:
-            for c in t:
-                #tmp_str.append( "*".join([str(c[0]),c[1].__name__]))
-                if self.parent.core.option_handler.type[-1]!="features":
-                    idx=self.error_comp_table.InsertStringItem(c_idx,self.parent.core.ffun_mapper[c[1].__name__])
-                else:
-                    idx=self.error_comp_table.InsertStringItem(c_idx,c[1])
-                self.error_comp_table.SetStringItem(idx,1,str(c[2]))
-                self.error_comp_table.SetStringItem(idx,2,str(c[0]))
-                self.error_comp_table.SetStringItem(idx,3,str(c[0]*c[2]))
-                c_idx+=1
-                tmp_w_sum +=c[0]*c[2]
-            c_idx+=1
-            idx=self.error_comp_table.InsertStringItem(c_idx,"Weighted Sum")
-            self.error_comp_table.SetStringItem(idx,1,"-")
-            self.error_comp_table.SetStringItem(idx,2,"-")
-            self.error_comp_table.SetStringItem(idx,3,str(tmp_w_sum))
-            #print str(tmp_w_sum)
-            tmp_w_sum=0
-
 
 
 if __name__ == "__main__":

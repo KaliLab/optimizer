@@ -1,59 +1,61 @@
 <?xml version="1.0" ?>
 <settings>
-  <simulator>external</simulator>
-  <f_tol>None</f_tol>
-  <max_evaluation>200.0</max_evaluation>
-  <spike_window>5.0</spike_window>
-  <evo_strat>Classical EO</evo_strat>
-  <seed>1234.0</seed>
-  <m_gauss>None</m_gauss>
-  <run_controll_vrest>vrest</run_controll_vrest>
+  <init_temp>None</init_temp>
   <starting_points>None</starting_points>
-  <cooling_rate>None</cooling_rate>
-  <pop_size>200.0</pop_size>
+  <stim_sec>&quot;&quot;</stim_sec>
+  <update_freq>None</update_freq>
+  <input_cont_t>True</input_cont_t>
+  <sim_command>python /home/nest/Desktop/opti/optimizer/optimizer/tests/adexpif_external_ca3_pc/teststeps_optim5.py 10</sim_command>
   <adjusted_params>['parameter0', 'parameter1', 'parameter2', 'parameter3', 'parameter4', 'parameter5', 'parameter6', 'parameter7', 'parameter8', 'parameter9']</adjusted_params>
   <num_repet>None</num_repet>
-  <param_vals>[u'']</param_vals>
-  <temperature>None</temperature>
-  <run_controll_tstop>1100</run_controll_tstop>
-  <stim_sec>&quot;&quot;</stim_sec>
-  <spike_thres>0.0</spike_thres>
-  <cognitive_rate>None</cognitive_rate>
-  <boundaries>[[0.001, 10.0, -70.0, -40.0, -40.0, 0.5, -5.0, 0.0, 0.5, 10.0], [0.01, 100.0, -40.0, -10.0, -10.0, 5.0, 5.0, 1.0, 5.0, 500.0]]</boundaries>
-  <step_size>None</step_size>
-  <stim_pos>0</stim_pos>
-  <neighborhood_size>None</neighborhood_size>
-  <social_rate>None</social_rate>
-  <input_size>4</input_size>
-  <type>['voltage', 'voltage']</type>
-  <x_tol>None</x_tol>
-  <feats>MSE (excl. spikes), Spike count (stim.), Latency to 1st spike</feats>
-  <input_length>1100</input_length>
-  <sim_command>python /home/kali/neuron/optimizer/test_auto/new/test_new_adexpif/ca3_pc_v2_1/teststeps_optim5.py 10</sim_command>
-  <init_temp>None</init_temp>
-  <num_params>10</num_params>
-  <stim_dur>0</stim_dur>
-  <run_controll_dt>0.2</run_controll_dt>
-  <run_controll_sec>sec</run_controll_sec>
-  <input_cont_t>True</input_cont_t>
-  <start_time_stamp>1471468373.91</start_time_stamp>
-  <model_spec_dir>&quot;&quot;</model_spec_dir>
   <inertia>None</inertia>
-  <acc>None</acc>
-  <std_gauss>None</std_gauss>
-  <run_controll_record>record</run_controll_record>
-  <stim_type>&quot;&quot;</stim_type>
-  <stim_del>0</stim_del>
-  <stim_amp>[0, 0, 0, 0]</stim_amp>
-  <input_dir>/home/kali/neuron/optimizer/test_auto/new/test_new_adexpif/ca3_pc_v2_1/ca3_pc_v2_4.csv</input_dir>
-  <input_freq>5000</input_freq>
-  <input_scale>mV</input_scale>
+  <run_controll_dt>0.2</run_controll_dt>
   <u_fun_string>&quot;&quot;</u_fun_string>
-  <mutation_rate>0.25</mutation_rate>
+  <input_dir>/home/nest/Desktop/opti/optimizer/optimizer/tests/adexpif_external_ca3_pc/ca3_pc_v2_4.csv</input_dir>
+  <simulator>external</simulator>
+  <input_length>1100</input_length>
+  <step_size>None</step_size>
   <weights>[0.333333333333, 0.333333333333, 0.333333333333]</weights>
-  <model_path>&quot;&quot;</model_path>
   <run_controll_pos>pos</run_controll_pos>
-  <update_freq>None</update_freq>
+  <feats>MSE (excl. spikes), Spike count (stim.), Latency to 1st spike</feats>
+  <model_spec_dir>&quot;&quot;</model_spec_dir>
+  <cognitive_rate>None</cognitive_rate>
+  <spike_window>5.0</spike_window>
+  <stim_del>0</stim_del>
+  <param_vals>['']</param_vals>
+  <m_gauss>None</m_gauss>
   <num_iter>None</num_iter>
-  <base_dir>/home/kali/neuron/optimizer/test_auto/new/test_new_adexpif/ca3_pc_v2_1</base_dir>
+  <run_controll_vrest>vrest</run_controll_vrest>
+  <start_time_stamp>1471468373.91</start_time_stamp>
+  <stim_type>&quot;&quot;</stim_type>
+  <x_tol>None</x_tol>
+  <evo_strat>Classical EO</evo_strat>
+  <crossover_rate>None</crossover_rate>
+  <acc>None</acc>
+  <run_controll_tstop>1100</run_controll_tstop>
+  <cooling_rate>None</cooling_rate>
+  <mutation_rate>0.25</mutation_rate>
+  <seed>1234.0</seed>
+  <f_tol>None</f_tol>
+  <type>['voltage', 'voltage']</type>
+  <input_scale>mV</input_scale>
+  <num_params>10</num_params>
+  <pop_size>10.0</pop_size>
+  <run_controll_record>record</run_controll_record>
+  <number_of_cpu>1</number_of_cpu>
+  <neighborhood_size>None</neighborhood_size>
+  <run_controll_sec>sec</run_controll_sec>
+  <stim_dur>0</stim_dur>
+  <base_dir>/home/nest/Desktop/opti/optimizer/optimizer/tests/adexpif_external_ca3_pc</base_dir>
+  <input_size>4</input_size>
+  <model_path>&quot;&quot;</model_path>
+  <stim_amp>[0, 0, 0, 0]</stim_amp>
+  <spike_thres>0.0</spike_thres>
+  <std_gauss>None</std_gauss>
+  <boundaries>[[0.001, 10.0, -70.0, -40.0, -40.0, 0.5, -5.0, 0.0, 0.5, 10.0], [0.01, 100.0, -40.0, -10.0, -10.0, 5.0, 5.0, 1.0, 5.0, 500.0]]</boundaries>
+  <temperature>None</temperature>
+  <social_rate>None</social_rate>
+  <input_freq>5000</input_freq>
+  <stim_pos>0</stim_pos>
+  <max_evaluation>10.0</max_evaluation>
 </settings>

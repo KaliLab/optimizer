@@ -5,6 +5,78 @@ from xml.etree import ElementTree
 from xml.dom import minidom
 import pickle as pickle
 
+import collections
+
+class OrderedSet(collections.MutableSet):
+
+    def __init__(self, iterable=None):
+        self.end = end = [] 
+        end += [None, end, end]         # sentinel node for doubly linked list
+        self.map = {}                   # key --> [key, prev, next]
+        if iterable is not None:
+            self |= iterable
+
+    def __len__(self):
+        return len(self.map)
+
+    def __contains__(self, key):
+        return key in self.map
+
+    def add(self, key):
+        if key not in self.map:
+            end = self.end
+            curr = end[1]
+            curr[2] = end[1] = self.map[key] = [key, curr, end]
+
+    def discard(self, key):
+        if key in self.map:        
+            key, prev, next = self.map.pop(key)
+            prev[2] = next
+            next[1] = prev
+
+    def __iter__(self):
+        end = self.end
+        curr = end[2]
+        while curr is not end:
+            yield curr[0]
+            curr = curr[2]
+
+    def __reversed__(self):
+        end = self.end
+        curr = end[1]
+        while curr is not end:
+            yield curr[0]
+            curr = curr[1]
+
+    def pop(self, last=True):
+        if not self:
+            raise KeyError('set is empty')
+        key = self.end[1][0] if last else self.end[2][0]
+        self.discard(key)
+        return key
+
+    def __repr__(self):
+        if not self:
+            return '%s()' % (self.__class__.__name__,)
+        return '%s(%r)' % (self.__class__.__name__, list(self))
+
+    def __eq__(self, other):
+        if isinstance(other, OrderedSet):
+            return len(self) == len(other) and list(self) == list(other)
+        return set(self) == set(other)
+
+def meanstdv(x):
+	from math import sqrt
+	n, mean, std = len(x), 0, 0
+	for a in x:
+		mean = mean + a
+	mean = mean / float(n)
+	for a in x:
+		std = std + (a - mean)**2
+	std = sqrt(std / float(n-1))
+	return mean, std
+
+
 def prettify(e):
 	"""
 	Converts the given xml tree object to human readable form.
@@ -74,9 +146,11 @@ class optionHandler(object):
 
 		self.pop_size=None
 		self.number_of_cpu=None
+		self.num_islands=None
 		self.max_evaluation=None
 		self.mutation_rate=None
 		self.crossover_rate=None
+		self.force_bounds=None
 
 		self.cooling_rate=None
 		self.m_gauss=None
@@ -109,7 +183,7 @@ class optionHandler(object):
 		self.feats=[]
 		self.weights=[]
 		post=dir(self)
-		self.class_content=list(set(post)-set(prev))
+		self.class_content=list(OrderedSet(post)-OrderedSet(prev))
 
 #    def dump(self):
 #        target=""
@@ -131,6 +205,7 @@ class optionHandler(object):
 		:return: the content of the class as ``string``
 
 		"""
+
 		root=e("settings")
 		for m in self.class_content:
 			child=se(root,m)
@@ -146,6 +221,7 @@ class optionHandler(object):
 						child.text="\"\""
 			except TypeError:
 				child.text="None"
+	
 		return prettify(root)
 
 	def read_all(self,root):
@@ -490,7 +566,9 @@ class optionHandler(object):
 		return {"seed" : self.seed,
 				"evo_strat" : self.evo_strat,
 				"Size of Population:" : self.pop_size,
+				"Number of Islands:" : self.num_islands,
 				"Number of Generations:" : self.max_evaluation,
+				"Force bounds:" : self.force_bounds,
 				"Mutation Rate:" : self.mutation_rate,
 				"Crossover Rate:" : self.crossover_rate,
 				"Cooling Rate:" : self.cooling_rate,
@@ -527,9 +605,11 @@ class optionHandler(object):
 		self.evo_strat=options.get("evo_strat")
 
 		self.pop_size=options.get("Size of Population:",None)
+		self.num_islands=options.get("Number of Islands:", None)
 		self.max_evaluation=options.get("Number of Generations:",None)
 		self.mutation_rate=options.get("Mutation Rate:",None)
 		self.crossover_rate=options.get("Crossover Rate:",None)
+		self.force_bounds=options.get("Force bounds:",False)
 		self.cooling_rate=options.get("Cooling Rate:",None)
 
 		self.m_gauss=options.get("Mean of Gaussian:",None)

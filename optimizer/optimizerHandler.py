@@ -210,6 +210,7 @@ class InspyredAlgorithmBasis(baseOptimizer):
 
 		self.pop_size = option_obj.pop_size
 		self.max_evaluation = option_obj.max_evaluation
+
 		self.maximize = False  # hard wired, always minimize
 		self.stat_file = open("stat_file.txt", "w")
 		self.ind_file = open("ind_file.txt", "w")
@@ -224,11 +225,11 @@ class InspyredAlgorithmBasis(baseOptimizer):
 			self.starting_points = None
 		if option_obj.output_level == "1":
 			print("starting points: ", self.starting_points)
-		print(self.number_of_cpu)
+
 		self.kwargs = dict(generator=uniform,
 						   evaluator=inspyred.ec.evaluators.parallel_evaluation_mp,
 						   mp_evaluator=self.ffun,
-						   mp_procs=int(self.number_of_cpu),
+						   mp_nprocs=int(self.number_of_cpu),
 						   pop_size=self.pop_size,
 						   seeds=self.starting_points,
 						   max_generations=self.max_evaluation,
@@ -1133,7 +1134,8 @@ class NSGAII(InspyredAlgorithmBasis):
 	"""
 	def __init__(self,reader_obj,model_obj,option_obj):
 		InspyredAlgorithmBasis.__init__(self, reader_obj,model_obj,option_obj)
-
+		global moo_var
+		moo_var = True
 		self.evo_strat=ec.emo.NSGA2(self.rand)
 		self.evo_strat.terminator=terminators.generation_termination
 		self.evo_strat.selector=inspyred.ec.selectors.default_selection

@@ -95,6 +95,7 @@ class modelHandlerNeuron():
         self.base_directory=base
         self.special=special_path
         self.model=model_path
+  
         neuron.load_mechanisms(self.special)
         
         #os.chdir(self.special)
