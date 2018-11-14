@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<settings>
+  <simulator>Neuron</simulator>
+  <f_tol>None</f_tol>
+  <max_evaluation>2</max_evaluation>
+  <spike_window>5.0</spike_window>
+  <evo_strat>PYGMO DE</evo_strat>
+  <seed>1234.0</seed>
+  <m_gauss>None</m_gauss>
+  <run_controll_vrest>-65.0</run_controll_vrest>
+  <starting_points>None</starting_points>
+  <cooling_rate>None</cooling_rate>
+  <number_of_cpu>3</number_of_cpu>
+  <pop_size>5</pop_size>
+  <num_islands>2.0</num_islands>
+  <adjusted_params>['soma 0 H_CA1pyr_prox gmax_H_CA1pyr_prox', 'soma 0 CaN gmax_CaN', 'soma 0 CaL gmax_CaL', 'soma 0 K_AHP gmax_K_AHP', 'soma 0 K_C_1D gmax_K_C_1D', 'soma 0 K_M gmax_K_M', 'soma 0 K_A_prox gmax_K_A_prox', 'soma 0 K_DR gmax_K_DR', 'soma 0 Na_soma gmax_Na_soma']</adjusted_params>
+  <num_repet>None</num_repet>
+  <param_vals>[0, 0, 0, 0, 0, 0, 0, 0, 0]</param_vals>
+  <temperature>None</temperature>
+  <run_controll_tstop>1000.0</run_controll_tstop>
+  <stim_sec>soma</stim_sec>
+  <spike_thres>-10.0</spike_thres>
+  <cognitive_rate>None</cognitive_rate>
+  <boundaries>[[0.0001, 0.0001, 0.0001, 1e-06, 0.0001, 0.0001, 0.001, 0.001, 0.001], [0.01, 0.1, 0.1, 0.01, 0.1, 0.1, 1.0, 1.0, 1.0]]</boundaries>
+  <step_size>None</step_size>
+  <stim_pos>0.5</stim_pos>
+  <neighborhood_size>None</neighborhood_size>
+  <social_rate>None</social_rate>
+  <input_size>1</input_size>
+  <type>['voltage']</type>
+  <x_tol>None</x_tol>
+  <feats>MSE (excl. spikes), Spike count, Latency to 1st spike, AP amplitude, AHP depth, AP width</feats>
+  <input_length>1000</input_length>
+  <sim_command>&quot;&quot;</sim_command>
+  <init_temp>None</init_temp>
+  <num_params>9</num_params>
+  <stim_dur>600.0</stim_dur>
+  <run_controll_dt>0.05</run_controll_dt>
+  <run_controll_sec>soma</run_controll_sec>
+  <input_cont_t>False</input_cont_t>
+  <start_time_stamp>1471378019.77</start_time_stamp>
+  <model_spec_dir>/home/nest/Documents/optimizer/optimizer/tests/ca1_pc_simplification/mod_files</model_spec_dir>
+  <inertia>None</inertia>
+  <acc>None</acc>
+  <std_gauss>None</std_gauss>
+  <run_controll_record>v</run_controll_record>
+  <stim_type>IClamp</stim_type>
+  <force_bounds>True</force_bounds>
+  <stim_del>200.0</stim_del>
+  <stim_amp>[0.2]</stim_amp>
+  <input_dir>/home/nest/Documents/TESTS/SIMP/PYGMO/ISLAND/DE/ca1_pc_simplification/Vinj48_2c_1.dat</input_dir>
+  <input_freq>5000</input_freq>
+  <input_scale>V</input_scale>
+  <u_fun_string>&quot;&quot;</u_fun_string>
+  <mutation_rate>0.25</mutation_rate>
+  <weights>[0.2, 0.4, 0.1, 0.1, 0.1, 0.1]</weights>
+  <model_path>/home/nest/Documents/TESTS/SIMP/PYGMO/ISLAND/DE/ca1_pc_simplification/ca1pc_model.hoc</model_path>
+  <run_controll_pos>0.5</run_controll_pos>
+  <update_freq>None</update_freq>
+  <num_iter>3.0</num_iter>
+  <base_dir>/home/nest/Documents/TESTS/SIMP/PYGMO/ISLAND/DE/ca1_pc_simplification/final</base_dir>
+</settings>

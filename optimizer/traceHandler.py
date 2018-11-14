@@ -138,6 +138,7 @@ class Trace:
         :return: the required trace
 
         """
+
         if index>self.no_traces:
             raise sizeError("There is no " + index + "trace in the structure")
         #print [n[index] for n in self.data]
@@ -500,5 +501,5 @@ class traceWriter(Trace):
                 f.write(str(self.scale) + " " + str(self.t_length) + " " + str(self.freq) + "\n")
             for n in self.data:
                 temp=list(map(str,n))
-                f.write(self.separator.join(string.strip(k,"[]") for k in temp))
+                f.write(self.separator.join(str.strip(k,"[]") for k in temp))
                 f.write("\n")

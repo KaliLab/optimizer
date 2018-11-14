@@ -445,20 +445,22 @@ class coreModul():
 			self.optimizer=PygmoDE1220(self.data_handler,self.model_handler,self.option_handler)
 		elif self.option_handler.evo_strat=="PYGMO BEE":
 			self.optimizer=PygmoBEE(self.data_handler,self.model_handler,self.option_handler)
+		elif self.option_handler.evo_strat=="FullGrid":
+			self.optimizer=FullGrid(self.data_handler,self.model_handler,self.option_handler)
 		elif self.option_handler.evo_strat=="NSGAII-deap":
 			self.optimizer=deapNSGA(self.data_handler,self.model_handler,self.option_handler,'nsga')
-			self.moo_var = True
+			self.deap_var = True
 		elif self.option_handler.evo_strat=="SPEA2":
 			self.optimizer=deapNSGA(self.data_handler,self.model_handler,self.option_handler,'spea')
-			self.moo_var = True
+			self.deap_var = True
 		elif self.option_handler.evo_strat=="IBEA":
-			self.optimizer=deapIBEA(self.data_handler,self.model_handler,self.option_handler)
-			self.moo_var = True
+			self.optimizer=deapNSGA(self.data_handler,self.model_handler,self.option_handler, 'ibea')
+			self.deap_var = True
 		elif self.option_handler.evo_strat=="NES":
 			self.optimizer=NES(self.data_handler,self.model_handler,self.option_handler)
 			self.brain_var = True
-
-		f_handler=open(self.option_handler.model_path.split("/")[-1].split(".")[0]+"_settings.xml","w")
+		
+		f_handler=open(self.option_handler.GetFileOption()+"/"+self.option_handler.GetFileOption().split("/")[-1]+"_settings.xml", 'w')
 		#print self.option_handler.dump(self.ffun_mapper)
 		f_handler.write(self.option_handler.dump(self.ffun_mapper))
 		f_handler.close()
@@ -471,13 +473,16 @@ class coreModul():
 		self.cands = []
 		self.fits = []
 
-		if self.moo_var:
+		if self.deap_var:
 			self.cands=self.optimizer.final_pop[0]
 			self.fits=self.optimizer.final_pop[1]
 			self.optimizer.final_pop = []
-			avgfits=numpy.average(self.fits[0],axis=1,weights=self.option_handler.weights*self.data_handler.number_of_traces()).tolist()
-			mn,idx=min((avgfits[i],i) for i in range(len(avgfits)))
-			minind=idx
+
+			#print(self.option_handler.weights*self.data_handler.number_of_traces())
+			for gen in self.fits:
+				avgfits=numpy.average(gen,axis=1,weights=self.option_handler.weights*self.data_handler.number_of_traces()).tolist()
+				mn,idx=min((avgfits[i],i) for i in range(len(avgfits)))
+				minind=idx
 			self.cands[0]=self.cands[minind]
 			self.fits[0]=self.fits[minind]
 			del self.wfits2[:]

@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<settings>
+  <acc>None</acc>
+  <adjusted_params>['soma 0 hh gnabar_hh', 'soma 0 hh gkbar_hh', 'soma 0 hh gl_hh']</adjusted_params>
+  <base_dir>/home/nest/Documents/TESTS/HH/PYGMO/ISLAND/0.3na/CMAES/hh_pas_surrogate/final</base_dir>
+  <boundaries>[[0.01, 0.01, 1e-05], [1.0, 1.0, 0.001]]</boundaries>
+  <cognitive_rate>None</cognitive_rate>
+  <cooling_rate>None</cooling_rate>
+  <crossover_rate>None</crossover_rate>
+  <evo_strat>PYGMO CMAES</evo_strat>
+  <f_tol>None</f_tol>
+  <feats>MSE (excl. spikes), Spike count, AP amplitude, AP width</feats>
+  <inertia>None</inertia>
+  <init_temp>None</init_temp>
+  <input_cont_t>True</input_cont_t>
+  <input_dir>/home/nest/Documents/TESTS/HH/PYGMO/ISLAND/0.3na/CMAES/hh_pas_surrogate/input_data2.dat</input_dir>
+  <input_freq>40000</input_freq>
+  <input_length>1000</input_length>
+  <input_scale>mV</input_scale>
+  <force_bounds>True</force_bounds>
+  <input_size>1</input_size>
+  <m_gauss>None</m_gauss>
+  <max_evaluation>100.0</max_evaluation>
+  <model_path>/home/nest/Documents/TESTS/HH/PYGMO/ISLAND/0.3na/CMAES/hh_pas_surrogate/hh_pas.hoc</model_path>
+  <model_spec_dir>/home/nest/Documents/TESTS/HH/PYGMO/ISLAND/0.3na/CMAES/hh_pas_surrogate</model_spec_dir>
+  <mutation_rate>0.25</mutation_rate>
+  <neighborhood_size>None</neighborhood_size>
+  <num_islands>1</num_islands>
+  <num_iter>None</num_iter>
+  <num_params>3</num_params>
+  <num_repet>None</num_repet>
+  <number_of_cpu>2</number_of_cpu>
+  <param_vals>[0, 0, 0]</param_vals>
+  <pop_size>25.0</pop_size>
+  <run_controll_dt>0.025</run_controll_dt>
+  <run_controll_pos>0.5</run_controll_pos>
+  <run_controll_record>v</run_controll_record>
+  <run_controll_sec>soma</run_controll_sec>
+  <run_controll_tstop>1000.0</run_controll_tstop>
+  <run_controll_vrest>-65.0</run_controll_vrest>
+  <seed>1234.0</seed>
+  <sim_command>&quot;&quot;</sim_command>
+  <simulator>Neuron</simulator>
+  <social_rate>None</social_rate>
+  <spike_thres>0.0</spike_thres>
+  <spike_window>40.0</spike_window>
+  <start_time_stamp>1471493503.22</start_time_stamp>
+  <starting_points>None</starting_points>
+  <std_gauss>None</std_gauss>
+  <step_size>None</step_size>
+  <stim_amp>[0.3]</stim_amp>
+  <stim_del>200.0</stim_del>
+  <stim_dur>500.0</stim_dur>
+  <stim_pos>0.5</stim_pos>
+  <stim_sec>soma</stim_sec>
+  <stim_type>IClamp</stim_type>
+  <temperature>None</temperature>
+  <type>['voltage', 'voltage']</type>
+  <u_fun_string>&quot;&quot;</u_fun_string>
+  <update_freq>None</update_freq>
+  <weights>[0.25, 0.25, 0.25, 0.25]</weights>
+  <x_tol>None</x_tol>
+</settings>

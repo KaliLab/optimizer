@@ -1,0 +1,77 @@
+<?xml version="1.0" ?>
+<settings>
+  <mutation_rate>0.25</mutation_rate>
+  <pop_size>10.0</pop_size>
+  <adjusted_params>['cm', 'Ra', 'g_pas']</adjusted_params>
+  <model_path>/home/nest/Documents/TESTS/ANAT/PYGMO/ISLAND/CMAES/ca1pc_anat/morphology_131117-C2.hoc</model_path>
+  <simulator>Neuron</simulator>
+  <f_tol>1</f_tol>
+  <model_spec_dir>/home/nest/Documents/TESTS/ANAT/PYGMO/ISLAND/CMAES/ca1pc_anat</model_spec_dir>
+  <m_gauss>1</m_gauss>
+  <boundaries>[[1.0, 30.0, 1e-05], [10.0, 3000.0, 0.001]]</boundaries>
+  <crossover_rate>1</crossover_rate>
+  <num_params>3</num_params>
+  <run_controll_pos>0.5</run_controll_pos>
+  <max_evaluation>3.0</max_evaluation>
+  <type>['voltage', 'voltage']</type>
+  <x_tol>1</x_tol>
+  <run_controll_dt>0.05</run_controll_dt>
+  <input_size>1</input_size>
+  <input_dir>/home/nest/Documents/TESTS/ANAT/PYGMO/ISLAND/CMAES/ca1pc_anat/131117-C2_short.dat</input_dir>
+  <stim_amp>['/home/nest/Documents/TESTS/ANAT/PYGMO/ISLAND/CMAES/ca1pc_anat/cell2_stim.dat']</stim_amp>
+  <stim_del>0.0</stim_del>
+  <input_cont_t>True</input_cont_t>
+  <spike_window>20.0</spike_window>
+  <input_length>1500</input_length>
+  <stim_sec>soma</stim_sec>
+  <input_freq>20000</input_freq>
+  <num_islands>4</num_islands>
+  <run_controll_vrest>0.0</run_controll_vrest>
+  <temperature>1</temperature>
+  <param_vals>[0.1, 0.1, 0.1]</param_vals>
+  <stim_pos>0.5</stim_pos>
+  <u_fun_string>#Please define your function below in the template!
+#You may choose an arbitrary name for your function,
+#but the input parameters must be self and a vector!In the first line of the function specify the length of the vector in a comment!
+#In the second line you may specify the names of the parameters in a comment, separated by spaces.
+def usr_fun(self,v):
+#3
+#cm
+#Ra
+#g_pas
+	for sec in h.allsec():
+		sec.cm=v[0]
+		sec.Ra=v[1]
+		for seg in sec:
+			seg.g_pas=v[2]
+			seg.e_pas=0</u_fun_string>
+  <feats>MSE</feats>
+  <run_controll_tstop>1500.0</run_controll_tstop>
+  <evo_strat>PYGMO CMAES</evo_strat>
+  <acc>1</acc>
+  <std_gauss>1</std_gauss>
+  <update_freq>2</update_freq>
+  <number_of_cpu>3</number_of_cpu>
+  <start_time_stamp>1471546876.5</start_time_stamp>
+  <social_rate>1</social_rate>
+  <weights>[1.0]</weights>
+  <cognitive_rate>1</cognitive_rate>
+  <input_scale>mV</input_scale>
+  <run_controll_record>v</run_controll_record>
+  <init_temp>1</init_temp>
+  <force_bounds>True</force_bounds>
+  <base_dir>/home/nest/Documents/TESTS/ANAT/PYGMO/ISLAND/SADE/ca1pc_anat/final</base_dir>
+  <seed>1234.0</seed>
+  <sim_command>&quot;&quot;</sim_command>
+  <num_iter>1</num_iter>
+  <spike_thres>0.0</spike_thres>
+  <starting_points>None</starting_points>
+  <cooling_rate>1</cooling_rate>
+  <stim_type>IClamp</stim_type>
+  <run_controll_sec>soma</run_controll_sec>
+  <inertia>1</inertia>
+  <stim_dur>1000000000.0</stim_dur>
+  <num_repet>1</num_repet>
+  <neighborhood_size>1</neighborhood_size>
+  <step_size>2</step_size>
+</settings>

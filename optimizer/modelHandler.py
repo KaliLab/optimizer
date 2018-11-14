@@ -50,7 +50,7 @@ class externalHandler():
         for n in range(self.number_of_params):
             o.SetObjTOOpt("parameter"+str(n))
 
-    def GetExec(self ,pid='', creation_time=''):
+    def GetExec(self ,unique_ID=''):
         """
         Creates the command that runs the simulator with the model and with the appropriate options.
         :return: a ``list`` of strings ready for execution
@@ -58,7 +58,7 @@ class externalHandler():
         tmp=[self.executable,self.model_file]
         for o in self.options:
             tmp.append(o)
-        tmp += [pid, creation_time]
+        tmp += [unique_ID]
         return tmp
 
     def GetParameters(self):

@@ -1,0 +1,76 @@
+<?xml version="1.0" ?>
+<settings>
+  <stim_type>VClamp</stim_type>
+  <stim_pos>0.5</stim_pos>
+  <simulator>Neuron</simulator>
+  <cooling_rate>None</cooling_rate>
+  <run_controll_dt>0.025</run_controll_dt>
+  <evo_strat>PYGMO CMAES</evo_strat>
+  <stim_del>0.0</stim_del>
+  <param_vals>[0, 0.1, 0.1, 0.1, 0.1]</param_vals>
+  <crossover_rate>None</crossover_rate>
+  <update_freq>None</update_freq>
+  <feats>MSE, Derivative difference</feats>
+  <stim_amp>[-70.0]</stim_amp>
+  <pop_size>20.0</pop_size>
+  <sim_command>&quot;&quot;</sim_command>
+  <base_dir>/home/nest/Documents/TESTS/CLAMP/PYGMO/ISLAND/CMAES/VClamp_surrogate</base_dir>
+  <input_dir>/home/nest/Documents/TESTS/CLAMP/PYGMO/ISLAND/CMAES/VClamp_surrogate/iclamp_new.dat</input_dir>
+  <num_repet>None</num_repet>
+  <force_bounds>True</force_bounds>
+  <spike_thres>0.0</spike_thres>
+  <seed>1234.0</seed>
+  <type>['voltage', 'voltage']</type>
+  <inertia>None</inertia>
+  <run_controll_sec>soma</run_controll_sec>
+  <adjusted_params>['weight', 'delay', 'tau_rise', 'tau_decay']</adjusted_params>
+  <input_scale>mV</input_scale>
+  <input_freq>40000</input_freq>
+  <max_evaluation>5.0</max_evaluation>
+  <u_fun_string>#Please define your function below in the template!
+#You may choose an arbitrary name for your function,
+#but the input parameters must be self and a vector!In the first line of the function specify the length of the vector in a comment!
+#In the second line you may specify the names of the parameters in a comment, separated by spaces.
+def usr_fun(self,v):
+#4
+#weight
+#delay
+#tau_rise
+#tau_decay
+    h.nc.weight[0] = v[0]
+    h.nc.delay = v[1]
+    h.ampasyn.tau1 = v[2]
+    h.ampasyn.tau2 = v[3]</u_fun_string>
+  <social_rate>None</social_rate>
+  <temperature>None</temperature>
+  <model_path>/home/nest/Documents/TESTS/CLAMP/PYGMO/ISLAND/CMAES/VClamp_surrogate/simple_hh_syn_vclamp_toopt2.hoc</model_path>
+  <x_tol>None</x_tol>
+  <run_controll_tstop>500.0</run_controll_tstop>
+  <weights>[0.5, 0.5]</weights>
+  <acc>None</acc>
+  <spike_window>40.0</spike_window>
+  <stim_dur>500.0</stim_dur>
+  <cognitive_rate>None</cognitive_rate>
+  <std_gauss>None</std_gauss>
+  <m_gauss>None</m_gauss>
+  <boundaries>[[0.001, 0.0, 0.001, 0.1], [1.0, 5.0, 1.0, 5.0]]</boundaries>
+  <step_size>None</step_size>
+  <input_length>500</input_length>
+  <model_spec_dir>/home/nest/Documents/TESTS/CLAMP/PYGMO/ISLAND/CMAES/VClamp_surrogate</model_spec_dir>
+  <run_controll_record>i</run_controll_record>
+  <num_params>4</num_params>
+  <run_controll_pos>0.5</run_controll_pos>
+  <input_size>1</input_size>
+  <num_iter>None</num_iter>
+  <num_islands>4</num_islands>
+  <init_temp>None</init_temp>
+  <starting_points>None</starting_points>
+  <f_tol>None</f_tol>
+  <mutation_rate>0.25</mutation_rate>
+  <stim_sec>soma</stim_sec>
+  <input_cont_t>True</input_cont_t>
+  <neighborhood_size>None</neighborhood_size>
+  <run_controll_vrest>-70.0</run_controll_vrest>
+  <start_time_stamp>1480436113.67</start_time_stamp>
+  <number_of_cpu>2</number_of_cpu>
+</settings>

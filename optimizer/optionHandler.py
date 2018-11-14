@@ -436,7 +436,9 @@ class optionHandler(object):
 		:return: the parameters listed above in a ``list``
 
 		"""
-		pickle.dump([self.stim_amp,self.stim_del,self.stim_dur], open( "stim.p", "wb" ) )
+		
+		#pickle.dump([self.stim_amp,self.stim_del,self.stim_dur], open(self.GetFileOption() + "/stim.p", "wb" ) )
+		
 		return [self.stim_amp,
 		self.stim_del,
 		self.stim_dur]
@@ -516,7 +518,7 @@ class optionHandler(object):
 		:return: the parameters above in a ``list``
 
 		"""
-		pickle.dump([self.run_controll_tstop,self.run_controll_dt,self.run_controll_record,self.run_controll_sec,self.run_controll_pos,self.run_controll_vrest], open( "estim.p", "wb" ) )
+		#pickle.dump([self.run_controll_tstop,self.run_controll_dt,self.run_controll_record,self.run_controll_sec,self.run_controll_pos,self.run_controll_vrest], open( "estim.p", "wb" ) )
 		return [self.run_controll_tstop,
 		self.run_controll_dt,
 		self.run_controll_record,
