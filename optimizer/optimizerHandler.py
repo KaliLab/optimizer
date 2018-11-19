@@ -24,12 +24,17 @@ import os
 
 from math import sqrt
 
-from deap import algorithms
-from deap import base
-from deap import benchmarks
-from deap.benchmarks.tools import diversity, convergence, hypervolume
-from deap import creator
-from deap import tools
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+try:
+    import matplotlib
+    matplotlib.use('WXAgg')
+    from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
+    from matplotlib.figure import Figure
+except RuntimeError as re:
+    print(re)
+    sys.exit()
 #from Image import NONE
 #from jinja2._stringdefs import No
 #from math import exp
@@ -472,7 +477,7 @@ class bounderObject(object):
 		return tmax and tmin
 
 
-class annealing(InspyredAlgorithmBasis):
+class Simulated_Annealing(InspyredAlgorithmBasis):
 	"""
 	Implements the ``Simulated Annealing`` algorithm for minimization from the ``inspyred`` package.
 
@@ -504,7 +509,7 @@ class annealing(InspyredAlgorithmBasis):
 		else:
 			self.evo_strat.observer=[observers.file_observer]
 
-class PygmoDE(PygmoAlgorithmBasis):
+class Pygmo_Differential_Evolution(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
 
@@ -513,7 +518,7 @@ class PygmoDE(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.algorithm(pg.de(gen=self.max_evaluation, ftol=1e-15, tol=1e-15))
 
-class PygmoCMAES(PygmoAlgorithmBasis):
+class Pygmo_Covariance_Matrix_Adaptation_ES(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
 
@@ -523,7 +528,7 @@ class PygmoCMAES(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.algorithm(pg.cmaes(gen=self.max_evaluation, ftol=1e-15, xtol=1e-15, force_bounds=bool(self.force_bounds)))
 
-class PygmoPSO(PygmoAlgorithmBasis):
+class Pygmo_Particle_Swarm(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
 
@@ -532,7 +537,7 @@ class PygmoPSO(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.algorithm(pg.pso(gen=self.max_evaluation))
 
-class PygmoXNES(PygmoAlgorithmBasis):
+class Pygmo_Exponential_Evolution_Strategies(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
 
@@ -543,7 +548,7 @@ class PygmoXNES(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.algorithm(pg.xnes(gen=self.max_evaluation, ftol=1e-15, xtol=1e-15, force_bounds=bool(self.force_bounds)))
 
-class PygmoBEE(PygmoAlgorithmBasis):
+class Pygmo_Bee_Colony(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
 
@@ -552,7 +557,7 @@ class PygmoBEE(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.algorithm(pg.bee_colony(gen=self.max_evaluation))
 
-class PygmoSGA(PygmoAlgorithmBasis):
+class Pygmo_Simple_Genetic_Algorithm(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
 
@@ -561,7 +566,7 @@ class PygmoSGA(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.algorithm(pg.sga(gen=self.max_evaluation))
 
-class PygmoSADE(PygmoAlgorithmBasis):
+class Pygmo_Self_adaptive_DE(PygmoAlgorithmBasis):
 
 	def __init__(self,reader_obj,model_obj,option_obj):
 
@@ -579,7 +584,7 @@ class PygmoSADE(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.algorithm(pg.sade(gen=self.max_evaluation, ftol=1e-15, xtol=1e-15))
 
-class PygmoDE1220(PygmoAlgorithmBasis):
+class Pygmo_Differential_Evolution_1220(PygmoAlgorithmBasis):
 
 	def __init__(self,reader_obj,model_obj,option_obj):
 
@@ -598,7 +603,7 @@ class PygmoDE1220(PygmoAlgorithmBasis):
 		self.algorithm = pg.algorithm(pg.de1220(gen=self.max_evaluation, ftol=1e-15, xtol=1e-15))
 
 
-class PSO(InspyredAlgorithmBasis):
+class Particle_Swarm(InspyredAlgorithmBasis):
 	"""
 	Implements the ``Particle Swarm`` algorithm for minimization from the ``inspyred`` package.
 
@@ -654,7 +659,7 @@ class PSO(InspyredAlgorithmBasis):
 
 		self.final_pop = self.evo_strat.evolve(**self.kwargs)
 
-class basinHopping(ScipyAlgorithmBasis):
+class Basinhopping(ScipyAlgorithmBasis):
 	"""
 	Implements the ``Basinhopping`` algorithm for minimization from the ``scipy`` package.
 
@@ -757,7 +762,7 @@ class basinHopping(ScipyAlgorithmBasis):
 		self.bounder=bounderObject([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
 
 
-class fmin(baseOptimizer):
+class Nelder_Mead(baseOptimizer):
 	"""
 	Implements a downhill simplex algorithm for minimization from the ``scipy`` package.
 
@@ -995,7 +1000,7 @@ class grid(baseOptimizer):
 		self.bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
 
 
-class simpleEO(InspyredAlgorithmBasis):
+class Evolutionary_Algorithm(InspyredAlgorithmBasis):
 	"""
 	Implements a custom version of ``Evolution Strategy`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1033,7 +1038,7 @@ class simpleEO(InspyredAlgorithmBasis):
 			self.evo_strat.observer=[observers.file_observer]
 
 
-class DEA(InspyredAlgorithmBasis):
+class Differential_Evolution(InspyredAlgorithmBasis):
 	"""
 	Implements the ``Differential Evolution Algorithm`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1115,7 +1120,7 @@ class RandomSearch(InspyredAlgorithmBasis):
 
 
 # simple NSGA-II
-class NSGAII(InspyredAlgorithmBasis):
+class Nondominated_Sorted(InspyredAlgorithmBasis):
 	"""
 	Implements a custom version of ``Evolution Strategy`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1153,7 +1158,7 @@ class NSGAII(InspyredAlgorithmBasis):
 
 
 
-class PAES(InspyredAlgorithmBasis):
+class Pareto_Archived_ES(InspyredAlgorithmBasis):
 	"""
 	Implements a custom version of ``PAES`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1289,27 +1294,20 @@ class FullGrid(InspyredAlgorithmBasis):
 
 def selIBEA(population, mu, alpha=None, kappa=.05, tournament_n=4):
 	"""IBEA Selector"""
-	print("selIBEA OK")
 	if alpha is None:
 		alpha = len(population)
 
 	# Calculate a matrix with the fitness components of every individual
 	components = _calc_fitness_components(population, kappa=kappa)
-	print("Calc fitnes components OK")
-
+	
 	# Calculate the fitness values
 	_calc_fitnesses(population, components)
-	print("Calc fitnes OK")
-
+	
 	# Do the environmental selection
 	population[:] = _environmental_selection(population, alpha)
-	print("Env selection OK")
-
+	
 	# Select the parents in a tournament
 	parents = _mating_selection(population, mu, tournament_n)
-	print("Mating OK")
-	print('\nPARENTS')
-	print(parents)
 	return parents
 
 
@@ -1328,7 +1326,6 @@ def _calc_fitness_components(population, kappa):
 	# Calculate minimal square bounding box of the objectives
 	box_ranges = (numpy.max(population_matrix, axis=0) -
 				  numpy.min(population_matrix, axis=0))
-	print("box_ranges OK")
 	# Replace all possible zeros to avoid division by zero
 	# Basically 0/0 is replaced by 0/1
 	box_ranges[box_ranges == 0] = 1.0
@@ -1339,7 +1336,6 @@ def _calc_fitness_components(population, kappa):
 		components_matrix[i, :] = numpy.max(
 			numpy.divide(diff, box_ranges),
 			axis=1)
-	print("divide OK")
 	# Calculate max of absolute value of all elements in matrix
 	max_absolute_indicator = numpy.max(numpy.abs(components_matrix))
 
@@ -1394,7 +1390,7 @@ def _environmental_selection(population, selection_size):
 	return population[:selection_size]
 
 
-class deapIBEA(oldBaseOptimizer):
+class IBEA(oldBaseOptimizer):
 
 
 
@@ -1463,8 +1459,8 @@ class deapIBEA(oldBaseOptimizer):
 			stats.register("min", numpy.min, axis=0)
 			stats.register("max", numpy.max, axis=0)
 			valid_ind= []
-			logbook = tools.Logbook()
-			logbook.header = "gen", "evals", "std", "min", "avg", "max"
+			#logbook = tools.Logbook()
+			#logbook.header = "gen", "evals", "std", "min", "avg", "max"
 			for i in range(len(population)):
 				poparr = []
 				if not population[i].fitness.valid:
@@ -1481,7 +1477,7 @@ class deapIBEA(oldBaseOptimizer):
 			pop = selIBEA(population, len(population))
 
 			record = stats.compile(pop)
-			logbook.record(gen=0, evals=len(invalid_ind), **record)
+			#logbook.record(gen=0, evals=len(invalid_ind), **record)
 			self.logbook.record(gen=0, evals=len(invalid_ind), **record)
 			population2=[]
 			fitnesses2=[]
@@ -1515,7 +1511,7 @@ class deapIBEA(oldBaseOptimizer):
 				self.final_pop.append(pop)
 				self.final_pop.append(fitnesses)
 			print(self.logbook)
-			self.stat_file.write(self.logbook.__str__())
+			#self.stat_file.write(self.logbook.__str__())
 
 			
 
@@ -1531,7 +1527,7 @@ class deapIBEA(oldBaseOptimizer):
 		print(self.bounder)
 
 
-class deapNSGA(oldBaseOptimizer):
+class DEAP(oldBaseOptimizer):
 
 
 	def __init__(self,reader_obj,model_obj,option_obj,algo):
@@ -1551,9 +1547,8 @@ class deapNSGA(oldBaseOptimizer):
 		BOUND_UP = self.min_max[1]
 
 		NDIM = 30
-		minimweights=[ -x for x in option_obj.weights]*reader_obj.number_of_traces() #turn weights for minimizing
-		print(minimweights)
-		creator.create("FitnessMin", base.Fitness, weights=minimweights)
+		self.minimweights=[-x for x in option_obj.weights]*reader_obj.number_of_traces() #turn weights for minimizing
+		creator.create("FitnessMin", base.Fitness, weights=self.minimweights)
 		creator.create("Individual", array1.array, typecode='d', fitness=creator.FitnessMin)
 		self.toolbox = base.Toolbox()
 		def uniformd(low, up, size=None):
@@ -1640,8 +1635,6 @@ class deapNSGA(oldBaseOptimizer):
 		#fitnesses = self.toolbox.map(self.toolbox.evaluate, invalid_ind)
 
 		fitnesses = self.toolbox.map(self.toolbox.evaluate,valid_ind)
-		print("fits")
-		print(fitnesses)
 		for ind, fit in zip(invalid_ind, fitnesses):
 			ind.fitness.values = fit[0]
 
@@ -1660,6 +1653,8 @@ class deapNSGA(oldBaseOptimizer):
 		self.final_pop = []
 		for gen in range(1, NGEN):
 		# Vary the population
+			print("******************ĠEN****************")
+			print(gen)
 			offspring = tools.selTournament(pop, len(pop),tourn)
 			offspring = [self.toolbox.clone(ind) for ind in offspring]
 
@@ -1719,7 +1714,32 @@ class deapNSGA(oldBaseOptimizer):
 			#self.finap_pop.birthdate.append((birth-len(pop)+i))
 		self.final_pop.append(poparray2) #]append([poparray2 , finalfitness[i] , (birth-len(pop)+i)])
 		self.final_pop.append(finalfits)
-    self.stat_file.write(self.logbook.__str__())
+		self.stat_file.write(self.logbook.__str__())
+		min_, max_, avg_, std_ = self.logbook.select("min","max", "avg", "std")
+		figure=plt.figure(figsize=(10,4), dpi=500)
+		axes = figure.add_subplot(111)
+		axes.set_xlabel("Generation")
+		axes.set_ylabel("Fitness Value")
+		axes.set_yscale("log")
+		print(min_)
+		plt.plot(range(len(min_)),numpy.average(min_,axis=1,weights=self.minimweights),label='Minimum')
+		plt.plot(range(len(max_)),numpy.average(max_,axis=1,weights=self.minimweights),label='Maximum')
+		plt.plot(range(len(avg_)),avg_,label='Average')
+		#plt.plot(range(len(std_)),std_,label='Standard Deviation')
+		legend = plt.legend(loc='upper right', shadow=True)
+		frame = legend.get_frame()
+		frame.set_facecolor('0.90')
+		for label in legend.get_texts():
+			label.set_fontsize('large')
+		for label in legend.get_lines():
+			label.set_linewidth(1.5)
+		plt.savefig("gen_plot.png", dpi=None, facecolor='w', edgecolor='w',
+		orientation='portrait', papertype=None, format=None,
+		transparent=False, bbox_inches=None, pad_inches=0.1)
+		plt.savefig("gen_plot.eps", dpi=None, facecolor='w', edgecolor='w')
+		plt.savefig("gen_plot.svg", dpi=None, facecolor='w', edgecolor='w')
+		plt.close('all')
+
 
 		
 		#<Individual: candidate = [0.07722800626371065, 0.2423814486289446, 0.5850818875172326, 0.889195037637904],>
@@ -1868,7 +1888,7 @@ class SNES(DistributionBasedOptimizer):
 
 
 
-class NES(oldBaseOptimizer):
+class Natural_Evolution_Strategies(oldBaseOptimizer):
 
 
 

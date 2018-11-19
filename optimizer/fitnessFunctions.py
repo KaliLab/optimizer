@@ -1121,8 +1121,6 @@ class fF(object):
             the actual data traces.
         :return: the ``list`` of fitness values corresponding to the parameter sets
         """
-        print("MOOO CANDIDATES")
-        print(candidates)
         self.fitnes = []
         features = self.option.feats
 
@@ -1187,17 +1185,7 @@ class fF(object):
 
             if self.option.output_level == "1":
                 print("current fitness: ",temp_fit)
-            del temp_fit[:]         #remove list elements
-        '''
-        if(len(self.fitnes[0])==4):
-            print("WOLOLO")
-            self.fitnes = [ec.emo.Pareto((1,1,1,1,1,1,1,1,1,1,1,1))]
-        print("\nPARAMS: ", candidates)
-        print("FITNES: " ,self.fitnes)
-        print("LEN: ", len(self.fitnes[0]))
-        '''
-        print("Param and fit", candidates) 
-        print(self.fitnes)
+            del temp_fit[:]         #remove list element
         
         
         return self.fitnes

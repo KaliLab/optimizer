@@ -272,10 +272,10 @@ class coreModul():
 
 		"""
 		if args.get("channel")!="None":
-			self.option_handler.SetObjTOOpt(args.get("section").encode("utf-8")+" "+args.get("segment").encode("utf-8")+" "+args.get("channel").encode("utf-8")+" "+args.get("params").encode("utf-8"))
+			self.option_handler.SetObjTOOpt(args.get("section")+" "+args.get("segment")+" "+args.get("channel")+" "+args.get("params"))
 			self.option_handler.SetOptParam(args.get("values"))
 		else:
-			self.option_handler.SetObjTOOpt(args.get("section").encode("utf-8")+" "+args.get("morph").encode("utf-8"))
+			self.option_handler.SetObjTOOpt(args.get("section")+" "+args.get("morph"))
 			self.option_handler.SetOptParam(args.get("values"))
 
 	def SecondStep(self,args):
@@ -407,57 +407,57 @@ class coreModul():
 		self.brain_var = False
 		self.minind = 0
 
-		if self.option_handler.evo_strat=="Classical EO":
-			self.optimizer=simpleEO(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Simulated Annealing":
-			self.optimizer=annealing(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Particle Swarm":
-			self.optimizer=PSO(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Basinhopping":
-			self.optimizer=basinHopping(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Nelder-Mead":
-			self.optimizer=fmin(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="L-BFGS-B":
+		if self.option_handler.evo_strat=="Evolutionary Algorithm (EA) - Inspyred":
+			self.optimizer=Evolutionary_Algorithm(self.data_handler,self.model_handler,self.option_handler)
+		elif self.option_handler.evo_strat=="Simulated Annealing - Inspyred":
+			self.optimizer=Simulated_Annealing(self.data_handler,self.model_handler,self.option_handler)
+		elif self.option_handler.evo_strat=="Particle Swarm (PSO) - Inspyred":
+			self.optimizer=Particle_Swarm(self.data_handler,self.model_handler,self.option_handler)
+		elif self.option_handler.evo_strat=="Basinhopping - Scipy":
+			self.optimizer=Basinhopping(self.data_handler,self.model_handler,self.option_handler)
+		elif self.option_handler.evo_strat=="Nelder-Mead - Scipy":
+			self.optimizer=Nelder_Mead(self.data_handler,self.model_handler,self.option_handler)
+		elif self.option_handler.evo_strat=="L-BFGS-B - Scipy":
 			self.optimizer=L_BFGS_B(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Differential Evolution":
-			self.optimizer=DEA(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Random Search":
+		elif self.option_handler.evo_strat=="Differential Evolution (DE) - Inspyred":
+			self.optimizer=Differential_Evolution(self.data_handler,self.model_handler,self.option_handler)
+		elif self.option_handler.evo_strat=="Random Search - Inspyred":
 			self.optimizer=RandomSearch(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="NSGAII":
-			self.optimizer=NSGAII(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="PAES":
-			self.optimizer=PAES(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="PYGMO DE":
-			self.optimizer=PygmoDE(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="PYGMO XNES":
-			self.optimizer=PygmoXNES(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="PYGMO PSO":
-			self.optimizer=PygmoPSO(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="PYGMO SGA":
-			self.optimizer=PygmoSGA(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="PYGMO CMAES":
-			self.optimizer=PygmoCMAES(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="SINGLE PYGMO DE":
-			self.optimizer=SinglePygmoDE(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="PYGMO SADE":
-			self.optimizer=PygmoSADE(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="PYGMO DE1220":
-			self.optimizer=PygmoDE1220(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="PYGMO BEE":
-			self.optimizer=PygmoBEE(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="FullGrid":
+		elif self.option_handler.evo_strat=="Nondominated Sorted (NSGAII) - Inspyred":
+			self.optimizer=Nondominated_Sorted(self.data_handler,self.model_handler,self.option_handler)
+		elif self.option_handler.evo_strat=="Pareto Archived (PAES) - Inspyred":
+			self.optimizer=Pareto_Archived_ES(self.data_handler,self.model_handler,self.option_handler)
+		elif self.option_handler.evo_strat=="Differential Evolution (DE) - Pygmo":
+			self.optimizer=Pygmo_Differential_Evolution(self.data_handler,self.model_handler,self.option_handler)
+		elif self.option_handler.evo_strat=="Exponential Evolution Strategies (XNES) - Pygmo":
+			self.optimizer=Pygmo_Exponential_Evolution_Strategies(self.data_handler,self.model_handler,self.option_handler)
+		elif self.option_handler.evo_strat=="Particle Swarm (PSO) - Pygmo":
+			self.optimizer=Pygmo_Particle_Swarm(self.data_handler,self.model_handler,self.option_handler)
+		elif self.option_handler.evo_strat=="Simple Genetic Algorithm (SGA) - Pygmo":
+			self.optimizer=Pygmo_Simple_Genetic_Algorithm(self.data_handler,self.model_handler,self.option_handler)
+		elif self.option_handler.evo_strat=="Covariance Matrix Adaptation ES (CMAES) - Pygmo":
+			self.optimizer=Pygmo_Covariance_Matrix_Adaptation_ES(self.data_handler,self.model_handler,self.option_handler)
+		elif self.option_handler.evo_strat=="Single Differential Evolution - Pygmo":
+			self.optimizer=Pygmo_Single_Differential_Evolution(self.data_handler,self.model_handler,self.option_handler)
+		elif self.option_handler.evo_strat=="Self-Adaptive DE (SADE) - Pygmo":
+			self.optimizer=Pygmo_Self_Adaptive_DE(self.data_handler,self.model_handler,self.option_handler)
+		elif self.option_handler.evo_strat=="Differential Evolution (DE1220) - Pygmo":
+			self.optimizer=Pygmo_Differential_Evolution_1220(self.data_handler,self.model_handler,self.option_handler)
+		elif self.option_handler.evo_strat=="Bee Colony - Pygmo":
+			self.optimizer=Pygmo_Bee_Colony(self.data_handler,self.model_handler,self.option_handler)
+		elif self.option_handler.evo_strat=="FullGrid - Pygmo":
 			self.optimizer=FullGrid(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="NSGAII-deap":
-			self.optimizer=deapNSGA(self.data_handler,self.model_handler,self.option_handler,'nsga')
+		elif self.option_handler.evo_strat=="Nondominated Sorted (NSGAII) - DEAP":
+			self.optimizer=DEAP(self.data_handler,self.model_handler,self.option_handler,'nsga')
 			self.deap_var = True
-		elif self.option_handler.evo_strat=="SPEA2":
-			self.optimizer=deapNSGA(self.data_handler,self.model_handler,self.option_handler,'spea')
+		elif self.option_handler.evo_strat=="Strength Pareto (SPEA2) - DEAP":
+			self.optimizer=DEAP(self.data_handler,self.model_handler,self.option_handler,'spea')
 			self.deap_var = True
-		elif self.option_handler.evo_strat=="IBEA":
-			self.optimizer=deapNSGA(self.data_handler,self.model_handler,self.option_handler, 'ibea')
+		elif self.option_handler.evo_strat=="Indicator Based (IBEA) - DEAP":
+			self.optimizer=DEAP(self.data_handler,self.model_handler,self.option_handler, 'ibea')
 			self.deap_var = True
-		elif self.option_handler.evo_strat=="NES":
-			self.optimizer=NES(self.data_handler,self.model_handler,self.option_handler)
+		elif self.option_handler.evo_strat=="Natural Evolution Strategies (NES) - Pybrain":
+			self.optimizer=Natural_Evolution_Strategies(self.data_handler,self.model_handler,self.option_handler)
 			self.brain_var = True
 		
 		f_handler=open(self.option_handler.GetFileOption()+"/"+self.option_handler.GetFileOption().split("/")[-1]+"_settings.xml", 'w')
@@ -465,9 +465,16 @@ class coreModul():
 		f_handler.write(self.option_handler.dump(self.ffun_mapper))
 		f_handler.close()
 
+		try:
+			self.model_handler.channels.clear()
+			self.model_handler.sections.clear()
+		except:
+			"no model yet"
+
 		start_time=time.time()
 		self.optimizer.Optimize()
-
+		
+		
 		stop_time=time.time()
 
 		self.cands = []
@@ -482,8 +489,8 @@ class coreModul():
 
 		
 			avgfits=numpy.average(self.fits,axis=1,weights=self.option_handler.weights*self.data_handler.number_of_traces()).tolist()
-			mn,idx=min((avgfits[i],i) for i in range(len(avgfits)))
-			minind=idx
+			#mn,idx=min((avgfits[i],i) for i in range(len(avgfits)))
+			minind=numpy.argmin(avgfits)
 			self.cands[0]=self.cands[minind]
 			self.fits[0]=self.fits[minind]
 			del self.wfits2[:]

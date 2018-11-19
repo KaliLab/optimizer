@@ -55,7 +55,7 @@
   <stim_sec>soma</stim_sec>
   <stim_type>IClamp</stim_type>
   <temperature>None</temperature>
-  <type>['voltage', 'voltage']</type>
+  <type>['voltage']</type>
   <u_fun_string>&quot;&quot;</u_fun_string>
   <update_freq>None</update_freq>
   <weights>[0.5, 0.5]</weights>
