@@ -486,11 +486,15 @@ class coreModul():
 			self.optimizer.final_pop = []
 			#print(self.option_handler.weights*self.data_handler.number_of_traces())
 			#for gen in self.fits:
-
-		
-			avgfits=numpy.average(self.fits,axis=1,weights=self.option_handler.weights*self.data_handler.number_of_traces()).tolist()
+			print(len(self.cands))
+			print(len(self.fits))
+			import pprint
+			pp=pprint.PrettyPrinter(indent=4)
+			avgfits=numpy.average(self.fits,axis=1,weights=self.option_handler.weights*self.data_handler.number_of_traces())
+			print("*************************End***********************")
 			#mn,idx=min((avgfits[i],i) for i in range(len(avgfits)))
 			minind=numpy.argmin(avgfits)
+			print(minind)
 			self.cands[0]=self.cands[minind]
 			self.fits[0]=self.fits[minind]
 			del self.wfits2[:]

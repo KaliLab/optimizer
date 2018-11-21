@@ -1296,7 +1296,6 @@ def selIBEA(population, mu, alpha=None, kappa=.05, tournament_n=4):
 	"""IBEA Selector"""
 	if alpha is None:
 		alpha = len(population)
-
 	# Calculate a matrix with the fitness components of every individual
 	components = _calc_fitness_components(population, kappa=kappa)
 	
@@ -1534,8 +1533,6 @@ class DEAP(oldBaseOptimizer):
 		self.fit_obj=fF(reader_obj,model_obj,option_obj)
 		self.SetFFun(option_obj)
 		self.rand=Random()
-		global moo_var
-		moo_var=True
 		self.seed=option_obj.seed
 		self.pop_size=option_obj.pop_size
 		self.max_evaluation=option_obj.max_evaluation
@@ -1564,13 +1561,10 @@ class DEAP(oldBaseOptimizer):
 		self.toolbox.register("mutate", tools.mutPolynomialBounded, low=BOUND_LOW, up=BOUND_UP, eta=20.0, indpb=1.0/NDIM)
 		if algo=='spea':
 			self.toolbox.register("select", tools.selSPEA2)
-			print('spea')
 		elif algo=='ibea':
 			self.toolbox.register("select", selIBEA)
-			print('ibea')
 		else:
 			self.toolbox.register("select", tools.selNSGA2)
-			print('nsga')
 		pool=multiprocessing.Pool(processes=int(self.number_of_cpu))
 		self.toolbox.register("map",pool.map)
 		self.stat_file=open("stat_file.txt","w")
@@ -1624,79 +1618,57 @@ class DEAP(oldBaseOptimizer):
 
 		# Evaluate the individuals with an invalid fitness
 		invalid_ind = [ind for ind in pop if not ind.fitness.valid]
-		valid_ind= []
-		for i in range(len(pop)):
-			poparr = []
-			if not pop[i].fitness.valid:
-				for j in range(0,len(pop[i])):
-					poparr.append(pop[i][j])
-				valid_ind.append([normalize(poparr,self)])
-
-		#fitnesses = self.toolbox.map(self.toolbox.evaluate, invalid_ind)
-
-		fitnesses = self.toolbox.map(self.toolbox.evaluate,valid_ind)
-		for ind, fit in zip(invalid_ind, fitnesses):
-			ind.fitness.values = fit[0]
+		fitnesses = self.toolbox.map(self.toolbox.evaluate, [invalid_ind])
+		for ind, fit in zip(invalid_ind, *fitnesses):
+			ind.fitness.values = fit
 
 		# This is just to assign the crowding distance to the individuals
 		# no actual selection is done
-		pop = self.toolbox.select(pop, len(pop))
-		#for value in range(2,7):
-		#    if (len(pop) % value) == 0:
-		#        tourn=value;
-		tourn=int(self.pop_size)
+		"""
+		for x in invalid_ind:
+			print("******************values***********************")
+			print(x)
+			print(x.fitness)
+		"""
+		pop = self.toolbox.select(invalid_ind, len(invalid_ind))
+
 		record = stats.compile(pop)
-		self.logbook.record(gen=0, evals=len(invalid_ind), **record)
-		birth = 0
-		finalfits=[]
-		poparray2=[]
+		self.logbook.record(gen=0, evals=len(pop), **record)
+
+		finalfits=fitnesses[0]
+		pop2 = [normalize(arr.tolist(),self) for arr in pop]
+		poparray2=pop
 		self.final_pop = []
 		for gen in range(1, NGEN):
 		# Vary the population
 			print("******************ĠEN****************")
 			print(gen)
-			offspring = tools.selTournament(pop, len(pop),tourn)
+				
+			offspring = tools.selTournament(pop, len(pop),2)
 			offspring = [self.toolbox.clone(ind) for ind in offspring]
-
-			stats = tools.Statistics(lambda ind: ind.fitness.values)
-			stats.register("std", numpy.std, axis=0)
-			stats.register("min", numpy.min, axis=0)
-			stats.register("median", numpy.median, axis=0)
-
-			stats.register("max", numpy.max, axis=0)
-
+			
 			for ind1, ind2 in zip(offspring[::2], offspring[1::2]):
 				if random.random() <= CXPB:
 					self.toolbox.mate(ind1, ind2)
-
-					self.toolbox.mutate(ind1)
-					self.toolbox.mutate(ind2)
+				
+				self.toolbox.mutate(ind1)
+				self.toolbox.mutate(ind2)
 				del ind1.fitness.values, ind2.fitness.values
-
-		#Evaluate the individuals with an invalid fitness
+			
+			# Evaluate the individuals with an invalid fitness
 			invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
-			valid_ind= []
-			for i in range(len(offspring)):
-				poparr = []
-				if not offspring[i].fitness.valid:
-					for j in range(0,len(pop[i])):
-						poparr.append(pop[i][j])
-					valid_ind.append([normalize(poparr, self)])
+			fitnesses = self.toolbox.map(self.toolbox.evaluate, [invalid_ind])
+			for ind, fit in zip(invalid_ind, *fitnesses):
+				ind.fitness.values = fit
 
-			#fitnesses = self.toolbox.map(self.toolbox.evaluate, invalid_ind)
-			fitnesses = self.toolbox.map(self.toolbox.evaluate,valid_ind)
-
-			for ind, fit in zip(invalid_ind, fitnesses):
-				ind.fitness.values = fit[0]
-
-		# Select the next generation population
-
+			# Select the next generation population
+			pop = self.toolbox.select(pop + offspring, MU)	
 			pop2 = [normalize(arr.tolist(),self) for arr in pop]
 
-			poparray2 += pop2 #]append([poparray2 , finalfitness[i] , (birth-len(pop)+i)])
+			poparray2 += pop #]append([poparray2 , finalfitness[i] , (birth-len(pop)+i)])
 			
-			fitnesses = [fit[0] for fit in fitnesses]
-			finalfits += fitnesses
+			#fitnesses = [fit[0] for fit in fitnesses]
+			finalfits += fitnesses[0]
 			pop = self.toolbox.select(pop + offspring, MU)
 
 			record = stats.compile(pop)
