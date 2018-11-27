@@ -487,10 +487,12 @@ class coreModul():
 			#print(self.option_handler.weights*self.data_handler.number_of_traces())
 			#for gen in self.fits:
 			print(len(self.cands))
-			print(len(self.fits))
+			print(self.fits)
 			import pprint
 			pp=pprint.PrettyPrinter(indent=4)
 			avgfits=numpy.average(self.fits,axis=1,weights=self.option_handler.weights*self.data_handler.number_of_traces())
+			with open("ibeapop.txt","w") as f:				
+				[f.write(str(pop)+" ; "+str(avg)+"\n") for pop,avg in zip(self.cands,self.fits)] 
 			print("*************************End***********************")
 			#mn,idx=min((avgfits[i],i) for i in range(len(avgfits)))
 			minind=numpy.argmin(avgfits)
@@ -613,7 +615,7 @@ class coreModul():
 						self.model_handler.spike_times = []
 						for line in in_handler:
 							self.model_handler.spike_times.append(int(float(line) / (1000.0 / self.option_handler.input_freq)))
-						in_handler.close();
+						in_handler.close()
 					except OSError:
 						pass
 

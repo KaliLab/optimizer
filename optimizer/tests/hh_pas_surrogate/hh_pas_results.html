@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-<p>Wed Nov 21 13:03:16 2018</p>
+<p>Tue Nov 27 12:37:54 2018</p>
 <p><span style="text-align:center;">Optimization of <b>hh_pas.hoc</b> based on: /home/nest/Desktop/opti/own/optimizer/optimizer/tests/hh_pas_surrogate/input_data2.dat</span></p>
 <center><p><span style="text-decoration:underline;font-size:200%;">Results</span></p></center>
 <table border="1" align="center">
@@ -13,26 +13,26 @@
 <td>soma 0 hh gnabar_hh</td>
 <td>0.001</td>
 <td>1.0</td>
-<td>0.2626897765902285</td>
+<td>0.6822896395309251</td>
 </tr>
 <tr>
 <td>soma 0 hh gkbar_hh</td>
 <td>0.001</td>
 <td>1.0</td>
-<td>0.028649504013565814</td>
+<td>0.14252226641027307</td>
 </tr>
 <tr>
 <td>soma 0 hh gl_hh</td>
 <td>1e-05</td>
 <td>0.001</td>
-<td>1.0877351564124606e-05</td>
+<td>1.0782985138632292e-05</td>
 </tr>
 </table>
-<center><p><b>Fitnes: </b><b>(0.009455312473320014, 0.0)</b></p></center>
+<center><p><b>Fitnes: </b><b>(0.013015349766391151, 0.08333333333333333, 0.33671419325149915, 0.17813737778500752)</b></p></center>
 <p align="center"><img style="border:none;" src="result_trace.png" ></p>
 <p><b>seed =</b> 1234</p>
 <p><b>evo_strat =</b> Indicator Based (IBEA) - DEAP</p>
-<p><b>Size of Population: =</b> 20.0</p>
+<p><b>Size of Population: =</b> 10.0</p>
 <p><b>Number of Islands: =</b> None</p>
 <p><b>Number of Generations: =</b> 10.0</p>
 <p><b>Force bounds: =</b> False</p>
@@ -57,8 +57,8 @@
 <p><b>Social Rate: =</b> None</p>
 <p><b>Neighborhood Size: =</b> None</p>
 <p><b>Number of CPU: =</b> 4.0</p>
-<p><b>feats =</b> MSE (excl. spikes), Spike count</p>
-<p><b>weights =</b> [0.5, 0.5]</p>
+<p><b>feats =</b> MSE (excl. spikes), Spike count (stim.), AP width, AP amplitude</p>
+<p><b>weights =</b> [0.25, 0.25, 0.25, 0.25]</p>
 <p><b>user function =</b></p>
 </body>
 </html>
@@ -71,16 +71,30 @@
 <th>Weighted Sum</th>
 <tr>
 <td>MSE (excl. spikes)</td>
-<td>0.007969787159189794</td>
-<td>0.5</td>
-<td>0.003984893579594897</td>
+<td>0.013631441200162783</td>
+<td>0.25</td>
+<td>0.003407860300040696</td>
 <td></td>
 </tr>
 <tr>
-<td>Spike count</td>
-<td>0.109375</td>
-<td>0.5</td>
-<td>0.0546875</td>
+<td>Spike count (stim.)</td>
+<td>0.018518518518518517</td>
+<td>0.25</td>
+<td>0.004629629629629629</td>
+<td></td>
+</tr>
+<tr>
+<td>AP width</td>
+<td>0.4163999341368108</td>
+<td>0.25</td>
+<td>0.1040999835342027</td>
+<td></td>
+</tr>
+<tr>
+<td>AP amplitude</td>
+<td>0.1978138975483836</td>
+<td>0.25</td>
+<td>0.0494534743870959</td>
 <td></td>
 </tr>
 <tr>
@@ -88,7 +102,7 @@
 <td></td>
 <td></td>
 <td></td>
-<td>0.058672393579594896</td>
+<td>0.16159094785096892</td>
 </tr>
 </table>
 <table border="1" align="center">
@@ -98,14 +112,26 @@
 <th>Weighted Value</th>
 <tr>
 <td>MSE (excl. spikes)</td>
-<td>0.007969787159189794</td>
-<td>0.5</td>
-<td>0.003984893579594897</td>
+<td>0.013631441200162783</td>
+<td>0.25</td>
+<td>0.003407860300040696</td>
 </tr>
 <tr>
-<td>Spike count</td>
-<td>0.109375</td>
-<td>0.5</td>
-<td>0.0546875</td>
+<td>Spike count (stim.)</td>
+<td>0.018518518518518517</td>
+<td>0.25</td>
+<td>0.004629629629629629</td>
+</tr>
+<tr>
+<td>AP width</td>
+<td>0.4163999341368108</td>
+<td>0.25</td>
+<td>0.1040999835342027</td>
+</tr>
+<tr>
+<td>AP amplitude</td>
+<td>0.1978138975483836</td>
+<td>0.25</td>
+<td>0.0494534743870959</td>
 </tr>
 </table>

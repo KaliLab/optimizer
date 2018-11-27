@@ -1532,6 +1532,7 @@ class DEAP(oldBaseOptimizer):
 	def __init__(self,reader_obj,model_obj,option_obj,algo):
 		self.fit_obj=fF(reader_obj,model_obj,option_obj)
 		self.SetFFun(option_obj)
+		self.option_obj=option_obj
 		self.rand=Random()
 		self.seed=option_obj.seed
 		self.pop_size=option_obj.pop_size
@@ -1542,7 +1543,6 @@ class DEAP(oldBaseOptimizer):
 		self.SetBoundaries(option_obj.boundaries)
 		BOUND_LOW = self.min_max[0]
 		BOUND_UP = self.min_max[1]
-
 		NDIM = 30
 		self.minimweights=[-x for x in option_obj.weights]*reader_obj.number_of_traces() #turn weights for minimizing
 		creator.create("FitnessMin", base.Fitness, weights=self.minimweights)
@@ -1622,21 +1622,16 @@ class DEAP(oldBaseOptimizer):
 		for ind, fit in zip(invalid_ind, *fitnesses):
 			ind.fitness.values = fit
 
-		# This is just to assign the crowding distance to the individuals
-		# no actual selection is done
-		"""
-		for x in invalid_ind:
-			print("******************values***********************")
-			print(x)
-			print(x.fitness)
-		"""
 		pop = self.toolbox.select(invalid_ind, len(invalid_ind))
 
 		record = stats.compile(pop)
 		self.logbook.record(gen=0, evals=len(pop), **record)
-
-		finalfits=fitnesses[0]
-		pop2 = [normalize(arr.tolist(),self) for arr in pop]
+		
+		fits = [ind.fitness.values for ind in pop]
+		finalfits = fits
+		weighted_fitness = numpy.average(fits,axis=1,weights=self.minimweights)
+		min_, max_, avg_, std_ = [[min(weighted_fitness)],[max(weighted_fitness)],[numpy.mean(weighted_fitness)],[numpy.std(weighted_fitness)]]
+		#pop2 = [normalize(arr.tolist(),self) for arr in pop]
 		poparray2=pop
 		self.final_pop = []
 		for gen in range(1, NGEN):
@@ -1663,41 +1658,35 @@ class DEAP(oldBaseOptimizer):
 
 			# Select the next generation population
 			pop = self.toolbox.select(pop + offspring, MU)	
-			pop2 = [normalize(arr.tolist(),self) for arr in pop]
+			#pop2 = [normalize(arr.tolist(),self) for arr in pop]
 
 			poparray2 += pop #]append([poparray2 , finalfitness[i] , (birth-len(pop)+i)])
 			
-			#fitnesses = [fit[0] for fit in fitnesses]
-			finalfits += fitnesses[0]
-			pop = self.toolbox.select(pop + offspring, MU)
 
+			fits = [ind.fitness.values for ind in pop]
+			finalfits += fits
+			weighted_fitness = numpy.average(fits,axis=1,weights=self.minimweights)
+			min_.append(min(weighted_fitness))
+			max_.append(max(weighted_fitness))
+			avg_.append(numpy.mean(weighted_fitness))
+			std_.append(numpy.std(weighted_fitness))
 			record = stats.compile(pop)
 
 			self.logbook.record(gen=gen, evals=len(invalid_ind), **record)
-		#self.final_pop = []
-				#self.final_pop.candidate = []
-				#self.final_pop.fitness = []
-				#self.finap_pop.birthdate = []
-
-
-
-			#self.final_pop.candidate.append(poparray2)
-			#self.final_pop.fitness.append(finalfitness[i])
-			#self.finap_pop.birthdate.append((birth-len(pop)+i))
+		
 		self.final_pop.append(poparray2) #]append([poparray2 , finalfitness[i] , (birth-len(pop)+i)])
 		self.final_pop.append(finalfits)
 		self.stat_file.write(self.logbook.__str__())
-		min_, max_, avg_, std_ = self.logbook.select("min","max", "avg", "std")
+		#min_, max_, avg_, std_ = self.logbook.select("min","max", "avg", "std")
 		figure=plt.figure(figsize=(10,4), dpi=500)
 		axes = figure.add_subplot(111)
 		axes.set_xlabel("Generation")
 		axes.set_ylabel("Fitness Value")
 		axes.set_yscale("log")
-		print(min_)
-		plt.plot(range(len(min_)),numpy.average(min_,axis=1,weights=self.minimweights),label='Minimum')
-		plt.plot(range(len(max_)),numpy.average(max_,axis=1,weights=self.minimweights),label='Maximum')
+		plt.plot(range(len(min_)),min_,label='Minimum')
+		plt.plot(range(len(max_)),max_,label='Maximum')
 		plt.plot(range(len(avg_)),avg_,label='Average')
-		#plt.plot(range(len(std_)),std_,label='Standard Deviation')
+		plt.errorbar(range(len(std_)),avg_,std_,label='Standard Deviation')
 		legend = plt.legend(loc='upper right', shadow=True)
 		frame = legend.get_frame()
 		frame.set_facecolor('0.90')
@@ -1705,11 +1694,11 @@ class DEAP(oldBaseOptimizer):
 			label.set_fontsize('large')
 		for label in legend.get_lines():
 			label.set_linewidth(1.5)
-		plt.savefig("gen_plot.png", dpi=None, facecolor='w', edgecolor='w',
+		plt.savefig(self.option_obj.GetFileOption()+"/gen_plot.png", dpi=None, facecolor='w', edgecolor='w',
 		orientation='portrait', papertype=None, format=None,
 		transparent=False, bbox_inches=None, pad_inches=0.1)
-		plt.savefig("gen_plot.eps", dpi=None, facecolor='w', edgecolor='w')
-		plt.savefig("gen_plot.svg", dpi=None, facecolor='w', edgecolor='w')
+		plt.savefig(self.option_obj.GetFileOption()+"/gen_plot.eps", dpi=None, facecolor='w', edgecolor='w')
+		plt.savefig(self.option_obj.GetFileOption()+"/gen_plot.svg", dpi=None, facecolor='w', edgecolor='w')
 		plt.close('all')
 
 

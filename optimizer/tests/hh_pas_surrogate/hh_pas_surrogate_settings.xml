@@ -9,7 +9,7 @@
   <crossover_rate>None</crossover_rate>
   <evo_strat>Indicator Based (IBEA) - DEAP</evo_strat>
   <f_tol>None</f_tol>
-  <feats>MSE (excl. spikes), Spike count</feats>
+  <feats>MSE (excl. spikes), Spike count (stim.), AP width, AP amplitude</feats>
   <force_bounds>False</force_bounds>
   <inertia>None</inertia>
   <init_temp>None</init_temp>
@@ -31,7 +31,7 @@
   <num_repet>None</num_repet>
   <number_of_cpu>4.0</number_of_cpu>
   <param_vals>[0, 0, 0]</param_vals>
-  <pop_size>20.0</pop_size>
+  <pop_size>10.0</pop_size>
   <run_controll_dt>0.025</run_controll_dt>
   <run_controll_pos>0.5</run_controll_pos>
   <run_controll_record>v</run_controll_record>
@@ -58,6 +58,6 @@
   <type>['voltage', 'voltage']</type>
   <u_fun_string>&quot;&quot;</u_fun_string>
   <update_freq>None</update_freq>
-  <weights>[0.5, 0.5]</weights>
+  <weights>[0.25, 0.25, 0.25, 0.25]</weights>
   <x_tol>None</x_tol>
 </settings>
