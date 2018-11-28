@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<settings>
+  <acc>None</acc>
+  <adjusted_params>['parameter0', 'parameter1', 'parameter2', 'parameter3', 'parameter4', 'parameter5', 'parameter6', 'parameter7', 'parameter8', 'parameter9']</adjusted_params>
+  <base_dir>/home/nest/Desktop/opti/own/optimizer/optimizer/tests/adexpif_external_ca3_pc</base_dir>
+  <boundaries>[[0.001, 10.0, -70.0, -40.0, -40.0, 0.5, -5.0, 0.0, 0.5, 10.0], [0.01, 100.0, -40.0, -10.0, -10.0, 5.0, 5.0, 1.0, 5.0, 500.0]]</boundaries>
+  <cognitive_rate>None</cognitive_rate>
+  <cooling_rate>None</cooling_rate>
+  <crossover_rate>None</crossover_rate>
+  <evo_strat>Indicator Based (IBEA) - DEAP</evo_strat>
+  <f_tol>None</f_tol>
+  <feats>MSE (excl. spikes), Spike count (stim.), Latency to 1st spike</feats>
+  <force_bounds>None</force_bounds>
+  <inertia>None</inertia>
+  <init_temp>None</init_temp>
+  <input_cont_t>True</input_cont_t>
+  <input_dir>/home/nest/Desktop/opti/own/optimizer/optimizer/tests/adexpif_external_ca3_pc/ca3_pc_v2_4.csv</input_dir>
+  <input_freq>5000</input_freq>
+  <input_length>1100</input_length>
+  <input_scale>mV</input_scale>
+  <input_size>4</input_size>
+  <m_gauss>None</m_gauss>
+  <max_evaluation>200.0</max_evaluation>
+  <model_path>&quot;&quot;</model_path>
+  <model_spec_dir>&quot;&quot;</model_spec_dir>
+  <mutation_rate>0.25</mutation_rate>
+  <neighborhood_size>None</neighborhood_size>
+  <num_islands>None</num_islands>
+  <num_iter>None</num_iter>
+  <num_params>10</num_params>
+  <num_repet>None</num_repet>
+  <number_of_cpu>4.0</number_of_cpu>
+  <param_vals>['']</param_vals>
+  <pop_size>100.0</pop_size>
+  <run_controll_dt>0.2</run_controll_dt>
+  <run_controll_pos>pos</run_controll_pos>
+  <run_controll_record>record</run_controll_record>
+  <run_controll_sec>sec</run_controll_sec>
+  <run_controll_tstop>1100</run_controll_tstop>
+  <run_controll_vrest>vrest</run_controll_vrest>
+  <seed>1234.0</seed>
+  <sim_command>python /home/nest/Desktop/opti/own/optimizer/optimizer/tests/adexpif_external_ca3_pc/teststeps_optim5.py 10</sim_command>
+  <simulator>external</simulator>
+  <social_rate>None</social_rate>
+  <spike_thres>0.0</spike_thres>
+  <spike_window>5.0</spike_window>
+  <start_time_stamp>1471468373.91</start_time_stamp>
+  <starting_points>None</starting_points>
+  <std_gauss>None</std_gauss>
+  <step_size>None</step_size>
+  <stim_amp>[0, 0, 0, 0]</stim_amp>
+  <stim_del>0</stim_del>
+  <stim_dur>0</stim_dur>
+  <stim_pos>0</stim_pos>
+  <stim_sec>&quot;&quot;</stim_sec>
+  <stim_type>&quot;&quot;</stim_type>
+  <temperature>None</temperature>
+  <type>['voltage', 'voltage']</type>
+  <u_fun_string>&quot;&quot;</u_fun_string>
+  <update_freq>None</update_freq>
+  <weights>[0.333333333333, 0.333333333333, 0.333333333333]</weights>
+  <x_tol>None</x_tol>
+</settings>

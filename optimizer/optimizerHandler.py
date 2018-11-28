@@ -1178,8 +1178,6 @@ class Pareto_Archived_ES(InspyredAlgorithmBasis):
 
 		self.kwargs["mp_evaluator"] = self.mfun
 
-		global moo_var
-		moo_var = True
 
 		self.evo_strat=ec.emo.PAES(self.rand)
 		self.evo_strat.terminator=terminators.generation_termination
@@ -1558,7 +1556,7 @@ class DEAP(oldBaseOptimizer):
 		self.toolbox.register("population", tools.initRepeat, list, self.toolbox.individual)
 		self.toolbox.register("evaluate", self.mfun)
 		self.toolbox.register("mate", tools.cxSimulatedBinaryBounded, low=BOUND_LOW, up=BOUND_UP, eta=20.0)
-		self.toolbox.register("mutate", tools.mutPolynomialBounded, low=BOUND_LOW, up=BOUND_UP, eta=20.0, indpb=1.0/NDIM)
+		self.toolbox.register("mutate", tools.mutPolynomialBounded, low=BOUND_LOW, up=BOUND_UP, eta=20.0, indpb=self.mutation_rate)
 		if algo=='spea':
 			self.toolbox.register("select", tools.selSPEA2)
 		elif algo=='ibea':
@@ -1590,23 +1588,12 @@ class DEAP(oldBaseOptimizer):
 		"""
 		Performs the optimization.
 		"""
-	# Problem definition
-	# Functions zdt1, zdt2, zdt3, zdt6 have bounds [0, 1]
-
-
-	# Functions zdt4 has bounds x1 = [0, 1], xn = [-5, 5], with n = 2, ..., 10
-	# BOUND_LOW, BOUND_UP = [0.0] + [-5.0]*9, [1.0] + [5.0]*9
-	# Functions zdt1, zdt2, zdt3 have 30 dimensions, zdt4 and zdt6 have 10
-
 		random.seed(self.seed)
 
 		NGEN = int(self.max_evaluation)
 		MU = int(self.pop_size)
-		CXPB = 2
-
+		CXPB = 0.5
 		stats = tools.Statistics(lambda ind: ind.fitness.values)
-		# stats.register("avg", numpy.mean, axis=0)
-		# stats.register("std", numpy.std, axis=0)
 		stats.register("std", numpy.std, axis=0)
 		stats.register("min", numpy.min, axis=0)
 		stats.register("median", numpy.median, axis=0)
@@ -1616,11 +1603,10 @@ class DEAP(oldBaseOptimizer):
 		self.logbook.header = "gen", "evals", "min", "max", "avg", "std"
 		pop = self.toolbox.population(n=MU)
 
-		# Evaluate the individuals with an invalid fitness
 		invalid_ind = [ind for ind in pop if not ind.fitness.valid]
-		fitnesses = self.toolbox.map(self.toolbox.evaluate, [invalid_ind])
-		for ind, fit in zip(invalid_ind, *fitnesses):
-			ind.fitness.values = fit
+		fitnesses = self.toolbox.map(self.toolbox.evaluate, invalid_ind)
+		for ind, fit in zip(invalid_ind, fitnesses):
+			ind.fitness.values = fit[0]
 
 		pop = self.toolbox.select(invalid_ind, len(invalid_ind))
 
@@ -1631,11 +1617,9 @@ class DEAP(oldBaseOptimizer):
 		finalfits = fits
 		weighted_fitness = numpy.average(fits,axis=1,weights=self.minimweights)
 		min_, max_, avg_, std_ = [[min(weighted_fitness)],[max(weighted_fitness)],[numpy.mean(weighted_fitness)],[numpy.std(weighted_fitness)]]
-		#pop2 = [normalize(arr.tolist(),self) for arr in pop]
 		poparray2=pop
 		self.final_pop = []
 		for gen in range(1, NGEN):
-		# Vary the population
 			print("******************ĠEN****************")
 			print(gen)
 				
@@ -1650,17 +1634,14 @@ class DEAP(oldBaseOptimizer):
 				self.toolbox.mutate(ind2)
 				del ind1.fitness.values, ind2.fitness.values
 			
-			# Evaluate the individuals with an invalid fitness
 			invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
-			fitnesses = self.toolbox.map(self.toolbox.evaluate, [invalid_ind])
-			for ind, fit in zip(invalid_ind, *fitnesses):
-				ind.fitness.values = fit
+			fitnesses = self.toolbox.map(self.toolbox.evaluate, invalid_ind)
+			for ind, fit in zip(invalid_ind, fitnesses):
+				ind.fitness.values = fit[0]
 
-			# Select the next generation population
 			pop = self.toolbox.select(pop + offspring, MU)	
-			#pop2 = [normalize(arr.tolist(),self) for arr in pop]
 
-			poparray2 += pop #]append([poparray2 , finalfitness[i] , (birth-len(pop)+i)])
+			poparray2 += pop 
 			
 
 			fits = [ind.fitness.values for ind in pop]
@@ -1674,10 +1655,9 @@ class DEAP(oldBaseOptimizer):
 
 			self.logbook.record(gen=gen, evals=len(invalid_ind), **record)
 		
-		self.final_pop.append(poparray2) #]append([poparray2 , finalfitness[i] , (birth-len(pop)+i)])
+		self.final_pop.append(poparray2) 
 		self.final_pop.append(finalfits)
 		self.stat_file.write(self.logbook.__str__())
-		#min_, max_, avg_, std_ = self.logbook.select("min","max", "avg", "std")
 		figure=plt.figure(figsize=(10,4), dpi=500)
 		axes = figure.add_subplot(111)
 		axes.set_xlabel("Generation")
@@ -1701,10 +1681,6 @@ class DEAP(oldBaseOptimizer):
 		plt.savefig(self.option_obj.GetFileOption()+"/gen_plot.svg", dpi=None, facecolor='w', edgecolor='w')
 		plt.close('all')
 
-
-		
-		#<Individual: candidate = [0.07722800626371065, 0.2423814486289446, 0.5850818875172326, 0.889195037637904],>
-		#fitness = (0.6016907118977254, 0.03124087065642784), birthdate = 1479060665.16>
 
 	def SetBoundaries(self,bounds):
 		"""

@@ -1123,10 +1123,11 @@ class fF(object):
         """
         self.fitnes = []
         features = self.option.feats
-
         #print self.option.feats   #--> [<bound method fF.AP1_amp_abstr_data of <fitnessFunctions.fF instance at 0x7f669e957128>>] (ezt adja)
         weigths = self.option.weights
         temp_fit = []
+        if not hasattr(candidates[0], '__len__'):
+            candidates=[candidates]
         self.model.load_neuron()
         if self.option.type[-1]!= 'features':
             window = int(self.option.spike_window)

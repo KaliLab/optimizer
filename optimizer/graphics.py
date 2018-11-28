@@ -272,9 +272,9 @@ class Ui_Optimizer(object):
         self.tabwidget.addTab(self.modeltab, "")
         self.simtab = QtWidgets.QWidget()
         self.simtab.setObjectName("simtab")
-        self.spinBox_15 = QtWidgets.QComboBox((self.simtab))
-        self.spinBox_15.setGeometry(QtCore.QRect(220, 100, 121, 23))
-        self.spinBox_15.setObjectName("parameter to record")
+        self.param_to_record = QtWidgets.QComboBox((self.simtab))
+        self.param_to_record.setGeometry(QtCore.QRect(220, 100, 121, 23))
+        self.param_to_record.setObjectName("parameter to record")
         self.label_44 = QtWidgets.QLabel(self.simtab)
         self.label_44.setGeometry(QtCore.QRect(10, 220, 111, 16))
         font = QtGui.QFont()
@@ -314,9 +314,9 @@ class Ui_Optimizer(object):
         self.lineEdit_pos = QtWidgets.QLineEdit(self.simtab)
         self.lineEdit_pos.setGeometry(QtCore.QRect(220, 200, 113, 22))
         self.lineEdit_pos.setObjectName("position")
-        self.spinBox_9 = QtWidgets.QComboBox(self.simtab)
-        self.spinBox_9.setGeometry(QtCore.QRect(10, 340, 121, 23))
-        self.spinBox_9.setObjectName("section dur")
+        self.section_dur = QtWidgets.QComboBox(self.simtab)
+        self.section_dur.setGeometry(QtCore.QRect(10, 340, 121, 23))
+        self.section_dur.setObjectName("section dur")
         self.label_46 = QtWidgets.QLabel(self.simtab)
         self.label_46.setGeometry(QtCore.QRect(10, 270, 111, 16))
         font = QtGui.QFont()
@@ -329,9 +329,9 @@ class Ui_Optimizer(object):
         self.stimprot = QtWidgets.QComboBox(self.simtab)
         self.stimprot.setGeometry(QtCore.QRect(10, 100, 121, 23))
         self.stimprot.setObjectName("stimprot")
-        self.spinBox_11 = QtWidgets.QComboBox(self.simtab)
-        self.spinBox_11.setGeometry(QtCore.QRect(10, 150, 121, 23))
-        self.spinBox_11.setObjectName("stimulus type")
+        self.stimulus_type = QtWidgets.QComboBox(self.simtab)
+        self.stimulus_type.setGeometry(QtCore.QRect(10, 150, 121, 23))
+        self.stimulus_type.setObjectName("stimulus type")
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -422,9 +422,9 @@ class Ui_Optimizer(object):
         self.lineEdit_dt = QtWidgets.QLineEdit(self.simtab)
         self.lineEdit_dt.setGeometry(QtCore.QRect(220, 380, 113, 22))
         self.lineEdit_dt.setObjectName("lineEdit_dt")
-        self.spinBox_16 = QtWidgets.QComboBox(self.simtab)
-        self.spinBox_16.setGeometry(QtCore.QRect(220, 150, 121, 23))
-        self.spinBox_16.setObjectName("section")
+        self.section_box = QtWidgets.QComboBox(self.simtab)
+        self.section_box.setGeometry(QtCore.QRect(220, 150, 121, 23))
+        self.section_box.setObjectName("section")
         self.lineEdit_initv = QtWidgets.QLineEdit(self.simtab)
         self.lineEdit_initv.setGeometry(QtCore.QRect(220, 280, 113, 22))
         self.lineEdit_initv.setObjectName("initv")
@@ -709,8 +709,8 @@ class Ui_Optimizer(object):
         self.lineEdit_dt.setText("0.05")
         
         self.stimprot.addItems(["IClamp","VClamp"])
-        self.spinBox_11.addItems(["Step Protocol","Custom Waveform"])
-        self.spinBox_15.addItems(["v","i"])
+        self.stimulus_type.addItems(["Step Protocol","Custom Waveform"])
+        self.param_to_record.addItems(["v","i"])
         #self.stimprot.setItemText(0, _translate("Optimizer", "IClamp"))
         #self.stimprot.setItemText(1, _translate("Optimizer", "VClamp"))
 
@@ -748,9 +748,9 @@ class Ui_Optimizer(object):
         self.label_59.setText(_translate("Optimizer", "Algorithms"))
         self.label_60.setText(_translate("Optimizer", "Parameters"))
         self.tabwidget.setTabText(self.tabwidget.indexOf(self.runtab), _translate("Optimizer", "Run Tab"))
-        self.algolist.setColumnCount(3)
+        self.algolist.setColumnCount(2)
         self.algolist.horizontalHeader().setStretchLastSection(True)
-        self.algolist.setHorizontalHeaderLabels(["Algorithms","Package","Description"])
+        self.algolist.setHorizontalHeaderLabels(["Algorithms","Package"])
         self.algolist.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.algolist.setColumnWidth(0,200)
         self.algolist.clicked.connect(self.algoselect)
@@ -1280,8 +1280,8 @@ class Ui_Optimizer(object):
         if not self.dd_type.currentIndex():  
             try:
                 tmp=self.core.ReturnSections()
-                self.spinBox_16.addItems(tmp)
-                self.spinBox_9.addItems(tmp)
+                self.section_box.addItems(tmp)
+                self.section_dur.addItems(tmp)
             except:
                 popup("Section error")
 
@@ -1416,12 +1416,12 @@ class Ui_Optimizer(object):
         errpop=[]
         if not self.dd_type.currentIndex():
             try:
-                self.core.SecondStep({"stim" : [str(self.stimprot.currentText()), float(self.lineEdit_pos.text()), str(self.spinBox_16.currentText())],
+                self.core.SecondStep({"stim" : [str(self.stimprot.currentText()), float(self.lineEdit_pos.text()), str(self.section_box.currentText())],
                                     "stimparam" : [self.SiW.container, float(self.lineEdit_delay.text()), float(self.lineEdit_duration.text())]})
                 self.kwargs = {"runparam":[float(self.lineEdit_tstop.text()),
                                         float(self.lineEdit_dt.text()),
-                                        str(self.spinBox_15.currentText()),
-                                        str(self.spinBox_9.currentText()),
+                                        str(self.param_to_record.currentText()),
+                                        str(self.section_dur.currentText()),
                                         float(self.lineEdit_posins.text()),
                                         float(self.lineEdit_initv.text())]}
             except AttributeError:
