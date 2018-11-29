@@ -112,8 +112,9 @@ class fF(object):
         self.option = option_object
         self.reader = reader_object
         #self.current_pop=0
-        self.fun_dict = {"Combinations": self.combineFeatures}
-        self.fun_dict2 = {"Multiobj": self.MooFeatures}
+        self.fun_dict = {"Combinations": self.combineFeatures,
+                        "Multiobj": self.MooFeatures,
+                        "Deapwrapper": self.DEAP_wrapper}
         self.calc_dict = {"MSE": self.calc_ase,
                         "MSE (excl. spikes)": self.calc_spike_ase,
                         "Spike count": self.calc_spike,
@@ -1126,8 +1127,6 @@ class fF(object):
         #print self.option.feats   #--> [<bound method fF.AP1_amp_abstr_data of <fitnessFunctions.fF instance at 0x7f669e957128>>] (ezt adja)
         weigths = self.option.weights
         temp_fit = []
-        if not hasattr(candidates[0], '__len__'):
-            candidates=[candidates]
         self.model.load_neuron()
         if self.option.type[-1]!= 'features':
             window = int(self.option.spike_window)
@@ -1190,3 +1189,8 @@ class fF(object):
         
         
         return self.fitnes
+
+    def DEAP_wrapper(self,candidates,args={}):
+        candidates=[candidates]
+        fitnesses=self.MooFeatures(candidates,args)
+        return fitnesses[0]

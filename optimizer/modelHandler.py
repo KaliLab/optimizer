@@ -95,8 +95,9 @@ class modelHandlerNeuron():
         self.base_directory=base
         self.special=special_path
         self.model=model_path
-  
-        neuron.load_mechanisms(self.special)
+        print(self.special)
+        if self.special:
+            neuron.load_mechanisms(self.special)
         
         #os.chdir(self.special)
         #from neuron import h
@@ -114,7 +115,8 @@ class modelHandlerNeuron():
         #from neuron import h
         from neuron import h
         import neuron
-        neuron.load_mechanisms(self.special)
+        if self.special:
+            neuron.load_mechanisms(self.special)
         self.hoc_obj=h
         self.hoc_obj.load_file(str(self.model))
         self.hoc_obj.load_file("stdrun.hoc")

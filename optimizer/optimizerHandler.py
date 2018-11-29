@@ -152,7 +152,8 @@ class oldBaseOptimizer():
 
 		try:
 			self.ffun=self.fit_obj.fun_dict["Combinations"]
-			self.mfun=self.fit_obj.fun_dict2["Multiobj"]
+			self.mfun=self.fit_obj.fun_dict["Multiobj"]
+			self.deapfun=self.fit_obj.fun_dict["Deapwrapper"]
 		except KeyError:
 			sys.exit("Unknown fitness function!")
 
@@ -190,7 +191,8 @@ class baseOptimizer():
 
 		try:
 			self.ffun=self.fit_obj.fun_dict["Combinations"]
-			self.mfun=self.fit_obj.fun_dict2["Multiobj"]
+			self.mfun=self.fit_obj.fun_dict["Multiobj"]
+			self.deapfun=self.fit_obj.fun_dict["Deapwrapper"]
 		except KeyError:
 			sys.exit("Unknown fitness function!")
 
@@ -1554,7 +1556,7 @@ class DEAP(oldBaseOptimizer):
 		self.toolbox.register("attr_float", uniformd, BOUND_LOW, BOUND_UP, NDIM)
 		self.toolbox.register("individual", tools.initIterate, creator.Individual, self.toolbox.attr_float)
 		self.toolbox.register("population", tools.initRepeat, list, self.toolbox.individual)
-		self.toolbox.register("evaluate", self.mfun)
+		self.toolbox.register("evaluate", self.deapfun)
 		self.toolbox.register("mate", tools.cxSimulatedBinaryBounded, low=BOUND_LOW, up=BOUND_UP, eta=20.0)
 		self.toolbox.register("mutate", tools.mutPolynomialBounded, low=BOUND_LOW, up=BOUND_UP, eta=20.0, indpb=self.mutation_rate)
 		if algo=='spea':
@@ -1606,7 +1608,7 @@ class DEAP(oldBaseOptimizer):
 		invalid_ind = [ind for ind in pop if not ind.fitness.valid]
 		fitnesses = self.toolbox.map(self.toolbox.evaluate, invalid_ind)
 		for ind, fit in zip(invalid_ind, fitnesses):
-			ind.fitness.values = fit[0]
+			ind.fitness.values = fit
 
 		pop = self.toolbox.select(invalid_ind, len(invalid_ind))
 
@@ -1637,7 +1639,7 @@ class DEAP(oldBaseOptimizer):
 			invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
 			fitnesses = self.toolbox.map(self.toolbox.evaluate, invalid_ind)
 			for ind, fit in zip(invalid_ind, fitnesses):
-				ind.fitness.values = fit[0]
+				ind.fitness.values = fit
 
 			pop = self.toolbox.select(pop + offspring, MU)	
 

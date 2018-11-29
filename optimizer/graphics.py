@@ -179,8 +179,10 @@ class Ui_Optimizer(object):
         self.tabwidget.addTab(self.filetab, "")
         self.modeltab = QtWidgets.QWidget()
         self.modeltab.setObjectName("modeltab")
+        self.load_mods_checkbox = QtWidgets.QCheckBox(self.modeltab)
+        self.load_mods_checkbox.setGeometry(QtCore.QRect(10, 130, 20, 20))
         self.label_23 = QtWidgets.QLabel(self.modeltab)
-        self.label_23.setGeometry(QtCore.QRect(10, 130, 121, 16))
+        self.label_23.setGeometry(QtCore.QRect(30, 130, 121, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -202,7 +204,6 @@ class Ui_Optimizer(object):
         self.pushButton_13.setObjectName("pushButton_13")
         self.lineEdit_file2 = QtWidgets.QLineEdit(self.modeltab)
         self.lineEdit_file2.setGeometry(QtCore.QRect(10, 100, 221, 22))
-        self.lineEdit_file2.setText("")
         self.lineEdit_file2.setObjectName("lineEdit_file2")
         self.modellist = QtWidgets.QTableWidget(self.modeltab)
         self.modellist.setGeometry(QtCore.QRect(10, 200, 441, 261))
@@ -251,7 +252,6 @@ class Ui_Optimizer(object):
         self.dd_type.currentIndexChanged.connect(self.sim_plat)
         self.lineEdit_folder2 = QtWidgets.QLineEdit(self.modeltab)
         self.lineEdit_folder2.setGeometry(QtCore.QRect(10, 150, 221, 22))
-        self.lineEdit_folder2.setText("")
         self.lineEdit_folder2.setObjectName("lineEdit_folder2")
         self.sim_path = QtWidgets.QLineEdit(self.modeltab)
         self.sim_path.setGeometry(QtCore.QRect(360, 150, 241, 22))
@@ -616,8 +616,11 @@ class Ui_Optimizer(object):
         #self.tabwidget.currentChanged.connect(self.onChange)
         #modeltab 1
         self.tabwidget.setTabText(self.tabwidget.indexOf(self.filetab), _translate("Optimizer", "File Tab"))
-        self.label_23.setText(_translate("Optimizer", "Special File location"))
+        self.label_23.setText(_translate("Optimizer", "Load mod files from:"))
         self.label_24.setText(_translate("Optimizer", "Model File"))
+        self.lineEdit_folder2.setEnabled(False)
+        self.pushButton_14.setEnabled(False)
+        self.load_mods_checkbox.clicked.connect(self.disable_mod_path)
         self.pushButton_13.setText(_translate("Optimizer", "Load"))
         self.pushButton_13.clicked.connect(self.Load2)
         self.pushButton_14.setText(_translate("Optimizer", "Browse..."))
@@ -818,9 +821,9 @@ class Ui_Optimizer(object):
             "Random Search - Inspyred": [descr19.copy(),descr40],
             "Nondominated Sorted (NSGAII) - Inspyred": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
             "Pareto Archived (PAES) - Inspyred": [descr19.copy(),descr20.copy(),descr40],
-            "Nondominated Sorted (NSGAII) - DEAP": [descr19.copy(),descr20.copy(),descr40],
-            "Strength Pareto (SPEA2) - DEAP": [descr19.copy(),descr20.copy(),descr40],
-            "Indicator Based (IBEA) - DEAP": [descr19.copy(),descr20.copy(),descr40],
+            "Nondominated Sorted (NSGAII) - DEAP": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
+            "Strength Pareto (SPEA2) - DEAP": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
+            "Indicator Based (IBEA) - DEAP": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
             "Natural Evolution Strategies (NES)- Pybrain": [descr19.copy(),descr20.copy(),descr40],
             "Differential Evolution (DE) - Pygmo":[descr19.copy(),descr20.copy(),descr40],
             "Self-Adaptive DE (SADE) - Pygmo":[descr19.copy(),descr20.copy(),descr40],
@@ -839,7 +842,7 @@ class Ui_Optimizer(object):
         self.tabwidget.setTabText(self.tabwidget.indexOf(self.eval_tab), _translate("Optimizer", "Evaluation Tab"))
         self.label_72.setText(_translate("Optimizer", "Final Result"))
         #plt.tight_layout()
-        self.figure2 = plt.figure(figsize=(4,2.5), dpi=130)
+        self.figure2 = plt.figure(figsize=(4,2), dpi=130)
         # self.figure2.gcf().subplots_adjust()
         self.canvas2 = FigureCanvas(self.figure2)
         self.canvas2.setParent(self.widget2)
@@ -915,6 +918,18 @@ class Ui_Optimizer(object):
         if folderName:
             self.lineEdit_folder.setText(folderName)
 
+    def disable_mod_path(self):
+        """
+        Disables mod files path if checked for usage
+        """
+        if self.load_mods_checkbox.isChecked():
+            self.lineEdit_folder2.setEnabled(True)
+            self.pushButton_14.setEnabled(True)
+        else:
+            self.lineEdit_folder2.setEnabled(False)
+            self.pushButton_14.setEnabled(False)
+
+
     def unitchange(self):
         """
         Sets units for drop down widget selecting simulation type.
@@ -968,7 +983,6 @@ class Ui_Optimizer(object):
                                    self.type_selector.currentText().split()[0].lower()]}
                 
             except ValueError as ve:
-                #wx.MessageBox('The input file or the type is missing. Please give them', 'Error', wx.OK | wx.ICON_ERROR)
                 print(ve)
 
         else:
@@ -984,7 +998,6 @@ class Ui_Optimizer(object):
                                    self.type_selector.currentText().split()[0].lower()]}
                 
             except ValueError as ve:
-                #wx.MessageBox('Some of the cells are empty. Please fill out all of them!', 'Error', wx.OK | wx.ICON_ERROR)
                 print(ve)
         self.core.FirstStep(kwargs)
         self.tabwidget.setTabEnabled(1,True)
@@ -1237,7 +1250,7 @@ class Ui_Optimizer(object):
             self.remover.setEnabled(True)
             self.modellist.setEnabled(True)
             self.lineEdit_file2.setEnabled(True)
-            self.lineEdit_folder2.setEnabled(True   )
+            self.lineEdit_folder2.setEnabled(True)
 
 
     def Load2(self, e):
@@ -1245,7 +1258,11 @@ class Ui_Optimizer(object):
         Load the selected Neuron model and displays the sections in a tablewidget
         """
         self.model_file = self.lineEdit_file2.text()
-        self.spec_file = self.lineEdit_folder2.text()
+        if self.load_mods_checkbox.isChecked():
+            self.spec_file = self.lineEdit_folder2.text()
+        else:
+            self.spec_file = None
+
         try:
             self.core.LoadModel({"model" : [self.model_file, self.spec_file],
                                  "simulator" : self.dd_type.currentText(),
@@ -1414,6 +1431,7 @@ class Ui_Optimizer(object):
         """
         err=[]
         errpop=[]
+
         if not self.dd_type.currentIndex():
             try:
                 self.core.SecondStep({"stim" : [str(self.stimprot.currentText()), float(self.lineEdit_pos.text()), str(self.section_box.currentText())],
@@ -1498,13 +1516,13 @@ class Ui_Optimizer(object):
             popup(errpop[0])
             self.tabwidget.setCurrentIndex(int(min(err)))
         else:
-            try:
-                self.core.FourthStep()
-                self.eval_tab_plot()
-                self.plot_tab_fun()
-                self.tabwidget.setCurrentIndex(5)
-            except:
-                popup("Forth step error")
+            #try:
+            self.core.FourthStep()
+            self.eval_tab_plot()
+            self.plot_tab_fun()
+            self.tabwidget.setCurrentIndex(5)
+            #except:
+            #   popup("Forth step error")
 
 
 
@@ -1546,7 +1564,7 @@ class Ui_Optimizer(object):
 
         exp_data = []
         model_data = []
-        axes = self.figure2.add_subplot(111)
+        axes = self.figure2.add_subplot(1,1,1)
 
         if self.core.option_handler.type[-1]!="features":
             for n in range(self.core.data_handler.number_of_traces()):
