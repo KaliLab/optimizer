@@ -1501,17 +1501,16 @@ class Ui_Optimizer(object):
             
         try:
             self.core.ThirdStep(self.kwargs)
-        #wx.MessageBox('Optimization finished. Press the Next button for the results!', 'Done', wx.OK | wx.ICON_EXCLAMATION)
             if self.core.option_handler.output_level=="1":
                 self.core.Print()
             self.seed = None
         except sizeError as sE:
             err.append(4)
             errpop.append("There was an error during the optimization: "+sE.m)
-        #except Exception as e:
-            #err.append(4)
-            #print(e)
-            #errpop.append("There was an error")
+        except Exception as e:
+            err.append(4)
+            print(e)
+            errpop.append("There was an error")
         if err:
             popup(errpop[0])
             self.tabwidget.setCurrentIndex(int(min(err)))

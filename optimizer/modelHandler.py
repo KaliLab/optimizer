@@ -93,9 +93,8 @@ class modelHandlerNeuron():
 
         print('*********** NEURON LOADED ***********')
         self.base_directory=base
-        self.special=special_path
+        self.special= None if special_path == 'None' else special_path
         self.model=model_path
-        print(self.special)
         if self.special:
             neuron.load_mechanisms(self.special)
         
@@ -115,6 +114,7 @@ class modelHandlerNeuron():
         #from neuron import h
         from neuron import h
         import neuron
+        
         if self.special:
             neuron.load_mechanisms(self.special)
         self.hoc_obj=h

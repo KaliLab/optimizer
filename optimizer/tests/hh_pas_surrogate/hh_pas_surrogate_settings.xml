@@ -7,9 +7,9 @@
   <cognitive_rate>None</cognitive_rate>
   <cooling_rate>None</cooling_rate>
   <crossover_rate>None</crossover_rate>
-  <evo_strat>Evolutionary Algorithm (EA) - Inspyred</evo_strat>
+  <evo_strat>Indicator Based (IBEA) - DEAP</evo_strat>
   <f_tol>None</f_tol>
-  <feats>MSE (excl. spikes), Spike count</feats>
+  <feats>MSE (excl. spikes), Spike count (stim.), AP width, AP amplitude</feats>
   <force_bounds>False</force_bounds>
   <inertia>None</inertia>
   <init_temp>None</init_temp>
@@ -20,7 +20,7 @@
   <input_scale>mV</input_scale>
   <input_size>1</input_size>
   <m_gauss>None</m_gauss>
-  <max_evaluation>10.0</max_evaluation>
+  <max_evaluation>100.0</max_evaluation>
   <model_path>/home/nest/Desktop/opti/own/optimizer/optimizer/tests/hh_pas_surrogate/hh_pas.hoc</model_path>
   <model_spec_dir>None</model_spec_dir>
   <mutation_rate>0.25</mutation_rate>
@@ -29,9 +29,9 @@
   <num_iter>None</num_iter>
   <num_params>3</num_params>
   <num_repet>None</num_repet>
-  <number_of_cpu>1.0</number_of_cpu>
+  <number_of_cpu>4.0</number_of_cpu>
   <param_vals>[0, 0, 0]</param_vals>
-  <pop_size>10.0</pop_size>
+  <pop_size>100.0</pop_size>
   <run_controll_dt>0.025</run_controll_dt>
   <run_controll_pos>0.5</run_controll_pos>
   <run_controll_record>v</run_controll_record>
@@ -44,7 +44,7 @@
   <social_rate>None</social_rate>
   <spike_thres>0.0</spike_thres>
   <spike_window>40.0</spike_window>
-  <start_time_stamp>1543489764.4717348</start_time_stamp>
+  <start_time_stamp>1542625214.8177612</start_time_stamp>
   <starting_points>None</starting_points>
   <std_gauss>None</std_gauss>
   <step_size>None</step_size>
@@ -55,9 +55,9 @@
   <stim_sec>soma</stim_sec>
   <stim_type>IClamp</stim_type>
   <temperature>None</temperature>
-  <type>['voltage']</type>
+  <type>['voltage', 'voltage']</type>
   <u_fun_string>&quot;&quot;</u_fun_string>
   <update_freq>None</update_freq>
-  <weights>[0.5, 0.5]</weights>
+  <weights>[0.25, 0.25, 0.25, 0.25]</weights>
   <x_tol>None</x_tol>
 </settings>

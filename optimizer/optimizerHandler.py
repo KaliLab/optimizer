@@ -55,6 +55,7 @@ from deap import tools
 #from math import exp
 import queue
 import Core
+from graphics import Ui_Optimizer
 #from inspyred.ec.terminators import max_evaluations
 import pickle as pickle
 
@@ -65,6 +66,10 @@ from pybrain.tools.rankingfunctions import RankingFunction
 import pygmo as pg
 import modelHandler
 from itertools import combinations, product
+
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+gen_count_signal = QtCore.pyqtSignal()
 
 global moo_var
 global brain_var
@@ -1624,7 +1629,6 @@ class DEAP(oldBaseOptimizer):
 		for gen in range(1, NGEN):
 			print("******************ĠEN****************")
 			print(gen)
-				
 			offspring = tools.selTournament(pop, len(pop),2)
 			offspring = [self.toolbox.clone(ind) for ind in offspring]
 			

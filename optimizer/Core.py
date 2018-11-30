@@ -473,7 +473,6 @@ class coreModul():
 
 		start_time=time.time()
 		self.optimizer.Optimize()
-		
 		stop_time=time.time()
 
 		self.cands = []
@@ -484,13 +483,13 @@ class coreModul():
 			self.fits=self.optimizer.final_pop[1]
 			self.optimizer.final_pop = []
 			#print(self.option_handler.weights*self.data_handler.number_of_traces())
-			#for gen in self.fits:
+			# for gen in self.fits:
 			import pprint
 			pp=pprint.PrettyPrinter(indent=4)
 			avgfits=numpy.average(self.fits,axis=1,weights=self.option_handler.weights*self.data_handler.number_of_traces())
-			with open("ibeapop.txt","w") as f:				
-				[f.write(str(pop)+" ; "+str(avg)+"\n") for pop,avg in zip(self.cands,self.fits)] 
-			print("*************************End***********************")
+			# with open("ibeapop.txt","w") as f:				
+			# 	[f.write(str(pop)+" ; "+str(avg)+"\n") for pop,avg in zip(self.cands,self.fits)] 
+			# print("*************************End***********************")
 			#mn,idx=min((avgfits[i],i) for i in range(len(avgfits)))
 			minind=numpy.argmin(avgfits)
 			print(minind)
