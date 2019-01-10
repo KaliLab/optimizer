@@ -217,13 +217,14 @@ class DATA():
     #TODO
     #need more rule for spike timings and other
         pynn_rule=re.compile("# variable = [a-zA-Z]")
-        neuron_rule_time=re.compile("[0-9]*(.[0-9]*)?\s-?[0-9]*(.[0-9]*)?")
-        neuron_rule=re.compile("-?[0-9]*(.[0-9]*)?$|(-?[0-9]*(.[0-9]*)?\t)")
+        neuron_rule_time=re.compile("[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\s-?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?")
+        neuron_rule=re.compile("-?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$|(-?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\t)")
         spike_times_rule=re.compile("# variable = spikes")
         rules=[pynn_rule,neuron_rule_time,neuron_rule,spike_times_rule]
         result=[n!=None for n in [re.match(k,line) for k in rules ] ]
-        #print result
-        #print result.index(True)
+        print('WOLOLO'*20)
+        print (result)
+        print (result.index(True))
         return [self.PyNNReader,self.traceReaderTime,self.traceReader,self.spikeTimeReader][result.index(True)]
 
     def Read(self,path=[os.getcwd()+"/inputTrace.txt"],no_traces=1,scale="mV",t_length=1000,freq=1000,trace_type="voltage"):

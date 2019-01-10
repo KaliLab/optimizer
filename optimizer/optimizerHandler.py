@@ -21,17 +21,14 @@ from functools import partial
 import numpy
 import time
 import os
-
+import bluepyopt as bpop
 from math import sqrt
+import bluepyopt.ephys as ephys
 
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.figure import Figure
 try:
-    import matplotlib
-    matplotlib.use('WXAgg')
-    from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
-    from matplotlib.figure import Figure
+	import matplotlib.pyplot as plt
+	from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+	from matplotlib.figure import Figure
 except RuntimeError as re:
     print(re)
     sys.exit()
@@ -200,7 +197,7 @@ class baseOptimizer():
 			self.deapfun=self.fit_obj.fun_dict["Deapwrapper"]
 		except KeyError:
 			sys.exit("Unknown fitness function!")
-
+		
 		if option_obj.type[-1]!='features':
 			try:
 				option_obj.feats=[self.fit_obj.calc_dict[x] for x in option_obj.feats]
@@ -313,7 +310,7 @@ class PygmoAlgorithmBasis(baseOptimizer):
 		self.num_islands = int(option_obj.num_islands)
 
 	def Optimize(self):
-
+		
 		self.prob = Problem(self.ffun,self.boundaries, self.num_islands, self.pop_size, self.max_evaluation, self.base_dir)
 		self.archi = pg.archipelago(n=self.num_islands,algo=self.algorithm, prob=self.prob, pop_size=self.pop_size)
 		
@@ -1297,227 +1294,6 @@ class FullGrid(InspyredAlgorithmBasis):
 
 
 
-def selIBEA(population, mu, alpha=None, kappa=.05, tournament_n=4):
-	"""IBEA Selector"""
-	if alpha is None:
-		alpha = len(population)
-	# Calculate a matrix with the fitness components of every individual
-	components = _calc_fitness_components(population, kappa=kappa)
-	
-	# Calculate the fitness values
-	_calc_fitnesses(population, components)
-	
-	# Do the environmental selection
-	population[:] = _environmental_selection(population, alpha)
-	
-	# Select the parents in a tournament
-	parents = _mating_selection(population, mu, tournament_n)
-	return parents
-
-
-def _calc_fitness_components(population, kappa):
-	"""returns an N * N numpy array of doubles, which is their IBEA fitness """
-	# DEAP selector are supposed to maximise the objective values
-	# We take the negative objectives because this algorithm will minimise
-	population_matrix = numpy.fromiter(
-		iter(-x for individual in population
-			 for x in individual.fitness.wvalues),
-		dtype=numpy.float)
-	pop_len = len(population)
-	feat_len = len(population[0].fitness.wvalues)
-	population_matrix = population_matrix.reshape((pop_len, feat_len))
-
-	# Calculate minimal square bounding box of the objectives
-	box_ranges = (numpy.max(population_matrix, axis=0) -
-				  numpy.min(population_matrix, axis=0))
-	# Replace all possible zeros to avoid division by zero
-	# Basically 0/0 is replaced by 0/1
-	box_ranges[box_ranges == 0] = 1.0
-
-	components_matrix = numpy.zeros((pop_len, pop_len))
-	for i in range(0, pop_len):
-		diff = population_matrix - population_matrix[i, :]
-		components_matrix[i, :] = numpy.max(
-			numpy.divide(diff, box_ranges),
-			axis=1)
-	# Calculate max of absolute value of all elements in matrix
-	max_absolute_indicator = numpy.max(numpy.abs(components_matrix))
-
-	# Normalisation
-	if max_absolute_indicator != 0:
-		components_matrix = numpy.exp(
-			(-1.0 / (kappa * max_absolute_indicator)) * components_matrix.T)
-
-	return components_matrix
-
-
-def _calc_fitnesses(population, components):
-	"""Calculate the IBEA fitness of every individual"""
-
-	# Calculate sum of every column in the matrix, ignore diagonal elements
-	column_sums = numpy.sum(components, axis=0) - numpy.diagonal(components)
-
-	# Fill the 'ibea_fitness' field on the individuals with the fitness value
-	for individual, ibea_fitness in zip(population, column_sums):
-		individual.ibea_fitness = ibea_fitness
-
-
-def _choice(seq):
-	"""Python 2 implementation of choice"""
-
-	return seq[int(random.random() * len(seq))]
-
-
-def _mating_selection(population, mu, tournament_n):
-	"""Returns the n_of_parents individuals with the best fitness"""
-
-	parents = []
-	for _ in range(mu):
-		winner = _choice(population)
-		for _ in range(tournament_n - 1):
-			individual = _choice(population)
-			# Save winner is element with smallest fitness
-			if individual.ibea_fitness < winner.ibea_fitness:
-				winner = individual
-		parents.append(winner)
-
-	return parents
-
-
-def _environmental_selection(population, selection_size):
-	"""Returns the selection_size individuals with the best fitness"""
-
-	# Sort the individuals based on their fitness
-	population.sort(key=lambda ind: ind.ibea_fitness)
-
-	# Return the first 'selection_size' elements
-	return population[:selection_size]
-
-
-class IBEA(oldBaseOptimizer):
-
-
-
-	def __init__(self,reader_obj,model_obj,option_obj):
-		self.fit_obj=fF(reader_obj,model_obj,option_obj)
-		self.SetFFun(option_obj)
-		self.rand=Random()
-		self.directory = option_obj.base_dir
-		global moo_var
-		moo_var=True
-		self.seed=option_obj.seed
-		self.pop_size=int(option_obj.pop_size)
-		self.max_evaluation=int(option_obj.max_evaluation)
-		self.mutation_rate=option_obj.mutation_rate
-		self.num_params=option_obj.num_params
-		self.number_of_cpu=option_obj.number_of_cpu
-		self.SetBoundaries(option_obj.boundaries)
-		BOUND_LOW = self.min_max[0]
-		BOUND_UP = self.min_max[1]
-		NDIM = 30
-		minimweights=[ -x for x in option_obj.weights]*reader_obj.number_of_traces() #turn weights for minimizing
-		creator.create("FitnessMin", base.Fitness, weights=minimweights)
-		creator.create("Individual", array1.array, typecode='d', fitness=creator.FitnessMin)
-		self.toolbox = base.Toolbox()
-		def uniformd(low, up, size=None):
-			try:
-				return [random.uniform(a, b) for a, b in zip(low, up)]
-			except TypeError:
-				return [random.uniform(a, b) for a, b in zip([low] * size, [up] * size)]
-		self.toolbox.register("attr_float", uniformd, BOUND_LOW, BOUND_UP, NDIM)
-		self.toolbox.register("evaluate", self.mfun)
-		self.toolbox.register("individual", tools.initIterate, creator.Individual, self.toolbox.attr_float)
-		self.toolbox.register("population", tools.initRepeat, list, self.toolbox.individual)
-		self.toolbox.register("mate", tools.cxSimulatedBinaryBounded, low=BOUND_LOW, up=BOUND_UP, eta=20.0)
-		self.toolbox.register("mutate", tools.mutPolynomialBounded, low=BOUND_LOW, up=BOUND_UP, eta=20.0, indpb=1.0/NDIM)
-		pool=multiprocessing.Pool(processes=int(self.number_of_cpu))
-		self.toolbox.register("map",pool.map)
-		self.stat_file=open(self.directory + "/stat_file.txt", "w")
-
-	def Optimize(self):
-
-
-
-			population = self.toolbox.population(self.pop_size)
-			MU=self.pop_size
-			NGEN=self.max_evaluation
-			kappa=.05
-			CXPB=0.9
-			#population, kappa
-			stats = tools.Statistics(lambda ind: ind.fitness.values)
-			# stats.register("avg", numpy.mean, axis=0)
-			# stats.register("std", numpy.std, axis=0)
-			stats.register("std", numpy.std, axis=0)
-			stats.register("min", numpy.min, axis=0)
-			stats.register("avg", numpy.mean, axis=0)
-			stats.register("max", numpy.max, axis=0)
-			self.logbook = tools.Logbook()
-			self.logbook.header = "gen", "evals", "min", "max", "avg", "std"
-				#record = stats.compile(pop)
-				#self.logbook.record(gen=0, evals=len(invalid_ind), **record)
-			self.final_pop = []
-
-			stats = tools.Statistics(lambda ind: ind.fitness.values)
-			# stats.register("avg", numpy.mean, axis=0)
-			# stats.register("std", numpy.std, axis=0)
-			stats.register("min", numpy.min, axis=0)
-			stats.register("max", numpy.max, axis=0)
-			valid_ind= []
-			#logbook = tools.Logbook()
-			#logbook.header = "gen", "evals", "std", "min", "avg", "max"
-			for i in range(len(population)):
-				poparr = []
-				if not population[i].fitness.valid:
-					for j in range(0,len(population[i])):
-						poparr.append(population[i][j])
-					valid_ind.append([poparr])
-			# Evaluate the individuals with an invalid fitness
-			invalid_ind = [ind for ind in population if not ind.fitness.valid]
-			fitnesses = self.toolbox.map(self.toolbox.evaluate,[[x,] for x in population])
-			for ind, fit in zip(population, fitnesses):
-				ind.fitness.values = fit[0]
-
-
-			pop = selIBEA(population, len(population))
-
-			record = stats.compile(pop)
-			#logbook.record(gen=0, evals=len(invalid_ind), **record)
-			self.logbook.record(gen=0, evals=len(invalid_ind), **record)
-			population2=[]
-			fitnesses2=[]
-			# Begin the generational process
-			for gen in range(1, NGEN):
-				# Vary the population
-				offspring = tools.selTournament(pop, len(pop),2)
-				offspring = [self.toolbox.clone(ind) for ind in offspring]
-
-				for ind1, ind2 in zip(offspring[::2], offspring[1::2]):
-					if random.random() <= CXPB:
-						self.toolbox.mate(ind1, ind2)
-
-					self.toolbox.mutate(ind1)
-					self.toolbox.mutate(ind2)
-					del ind1.fitness.values, ind2.fitness.values
-
-				valid_ind= []
-
-				# Evaluate the individuals with an invalid fitness
-				invalid_ind = [ind for ind in population if not ind.fitness.valid]
-				fitnesses = self.toolbox.map(self.toolbox.evaluate,[[x,] for x in population])
-				for ind, fit in zip(offspring, fitnesses):
-					ind.fitness.values = fit[0]
-
-				# Select the next generation population
-				pop = selIBEA(pop+offspring, MU)
-				record = stats.compile(pop)
-				self.logbook.record(gen=gen, evals=len(invalid_ind), **record)
-
-				self.final_pop.append(pop)
-				self.final_pop.append(fitnesses)
-			print(self.logbook)
-			#self.stat_file.write(self.logbook.__str__())
-
-			
 
 
 	def SetBoundaries(self,bounds):
@@ -1546,6 +1322,7 @@ class DEAP(oldBaseOptimizer):
 		self.num_params=option_obj.num_params
 		self.number_of_cpu=option_obj.number_of_cpu
 		self.SetBoundaries(option_obj.boundaries)
+		print(self.min_max)
 		BOUND_LOW = self.min_max[0]
 		BOUND_UP = self.min_max[1]
 		NDIM = 30
@@ -1564,12 +1341,16 @@ class DEAP(oldBaseOptimizer):
 		self.toolbox.register("evaluate", self.deapfun)
 		self.toolbox.register("mate", tools.cxSimulatedBinaryBounded, low=BOUND_LOW, up=BOUND_UP, eta=20.0)
 		self.toolbox.register("mutate", tools.mutPolynomialBounded, low=BOUND_LOW, up=BOUND_UP, eta=20.0, indpb=self.mutation_rate)
+		"""
 		if algo=='spea':
 			self.toolbox.register("select", tools.selSPEA2)
 		elif algo=='ibea':
 			self.toolbox.register("select", selIBEA)
 		else:
 			self.toolbox.register("select", tools.selNSGA2)
+		"""
+		print(self.option_obj.GetObjTOOpt())
+		self.param_names=self.option_obj.GetObjTOOpt()
 		pool=multiprocessing.Pool(processes=int(self.number_of_cpu))
 		self.toolbox.register("map",pool.map)
 		self.stat_file=open("stat_file.txt","w")
@@ -1591,102 +1372,17 @@ class DEAP(oldBaseOptimizer):
 		# evaluator comes from fitnessFunctions
 		# bounder comes from the class, should be callable
 
+
+
 	def Optimize(self):
-		"""
-		Performs the optimization.
-		"""
-		random.seed(self.seed)
 
-		NGEN = int(self.max_evaluation)
-		MU = int(self.pop_size)
-		CXPB = 0.5
-		stats = tools.Statistics(lambda ind: ind.fitness.values)
-		stats.register("std", numpy.std, axis=0)
-		stats.register("min", numpy.min, axis=0)
-		stats.register("median", numpy.median, axis=0)
-
-		stats.register("max", numpy.max, axis=0)
-		self.logbook = tools.Logbook()
-		self.logbook.header = "gen", "evals", "min", "max", "avg", "std"
-		pop = self.toolbox.population(n=MU)
-
-		invalid_ind = [ind for ind in pop if not ind.fitness.valid]
-		fitnesses = self.toolbox.map(self.toolbox.evaluate, invalid_ind)
-		for ind, fit in zip(invalid_ind, fitnesses):
-			ind.fitness.values = fit
-
-		pop = self.toolbox.select(invalid_ind, len(invalid_ind))
-
-		record = stats.compile(pop)
-		self.logbook.record(gen=0, evals=len(pop), **record)
+		random.seed(self.seed)	
+		feats=self.get_feat_names(self.option_obj.GetFitnessParam())
+		feats_pairwise=[x for x in zip(feats[0],feats[1])]
+		params=zip(self.param_names,self.min_max[0],self.min_max[1])
+		optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(params,self.deapfun,feats_pairwise,self.min_max),offspring_size = int(self.pop_size))
+		self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))
 		
-		fits = [ind.fitness.values for ind in pop]
-		finalfits = fits
-		weighted_fitness = numpy.average(fits,axis=1,weights=self.minimweights)
-		min_, max_, avg_, std_ = [[min(weighted_fitness)],[max(weighted_fitness)],[numpy.mean(weighted_fitness)],[numpy.std(weighted_fitness)]]
-		poparray2=pop
-		self.final_pop = []
-		for gen in range(1, NGEN):
-			print("******************ĠEN****************")
-			print(gen)
-			offspring = tools.selTournament(pop, len(pop),2)
-			offspring = [self.toolbox.clone(ind) for ind in offspring]
-			
-			for ind1, ind2 in zip(offspring[::2], offspring[1::2]):
-				if random.random() <= CXPB:
-					self.toolbox.mate(ind1, ind2)
-				
-				self.toolbox.mutate(ind1)
-				self.toolbox.mutate(ind2)
-				del ind1.fitness.values, ind2.fitness.values
-			
-			invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
-			fitnesses = self.toolbox.map(self.toolbox.evaluate, invalid_ind)
-			for ind, fit in zip(invalid_ind, fitnesses):
-				ind.fitness.values = fit
-
-			pop = self.toolbox.select(pop + offspring, MU)	
-
-			poparray2 += pop 
-			
-
-			fits = [ind.fitness.values for ind in pop]
-			finalfits += fits
-			weighted_fitness = numpy.average(fits,axis=1,weights=self.minimweights)
-			min_.append(min(weighted_fitness))
-			max_.append(max(weighted_fitness))
-			avg_.append(numpy.mean(weighted_fitness))
-			std_.append(numpy.std(weighted_fitness))
-			record = stats.compile(pop)
-
-			self.logbook.record(gen=gen, evals=len(invalid_ind), **record)
-		
-		self.final_pop.append(poparray2) 
-		self.final_pop.append(finalfits)
-		self.stat_file.write(self.logbook.__str__())
-		figure=plt.figure(figsize=(10,4), dpi=500)
-		axes = figure.add_subplot(111)
-		axes.set_xlabel("Generation")
-		axes.set_ylabel("Fitness Value")
-		axes.set_yscale("log")
-		plt.plot(range(len(min_)),min_,label='Minimum')
-		plt.plot(range(len(max_)),max_,label='Maximum')
-		plt.plot(range(len(avg_)),avg_,label='Average')
-		plt.errorbar(range(len(std_)),avg_,std_,label='Standard Deviation')
-		legend = plt.legend(loc='upper right', shadow=True)
-		frame = legend.get_frame()
-		frame.set_facecolor('0.90')
-		for label in legend.get_texts():
-			label.set_fontsize('large')
-		for label in legend.get_lines():
-			label.set_linewidth(1.5)
-		plt.savefig(self.option_obj.GetFileOption()+"/gen_plot.png", dpi=None, facecolor='w', edgecolor='w',
-		orientation='portrait', papertype=None, format=None,
-		transparent=False, bbox_inches=None, pad_inches=0.1)
-		plt.savefig(self.option_obj.GetFileOption()+"/gen_plot.eps", dpi=None, facecolor='w', edgecolor='w')
-		plt.savefig(self.option_obj.GetFileOption()+"/gen_plot.svg", dpi=None, facecolor='w', edgecolor='w')
-		plt.close('all')
-
 
 	def SetBoundaries(self,bounds):
 		"""
@@ -1698,11 +1394,22 @@ class DEAP(oldBaseOptimizer):
 		"""
 		self.min_max=bounds
 		self.bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
-		print('self.min_max')
-		print(self.min_max[0])
-		print(self.min_max[1])
-		print('self.bounder')
-		print(self.bounder)
+		
+	def get_feat_names(self,feats):
+		f_m={"MSE": "calc_ase",
+						"Spike count": "calc_spike",
+						"MSE (excl. spikes)": "calc_spike_ase",
+						"Spike count (stim.)": "spike_rate",
+						"ISI differences": "isi_differ",
+						"Latency to 1st spike": "first_spike",
+						"AP amplitude": "AP_overshoot",
+						"AHP depth": "AHP_depth",
+						"AP width": "AP_width",
+						"Derivative difference" : "calc_grad_dif",
+						"PPTD" : "pyelectro_pptd"}
+		self.ffun_mapper=dict((v,k) for k,v in list(f_m.items()))
+		feat_names=[self.ffun_mapper[x.__name__] for x in feats[0][1]]
+		return [feat_names,feats[1]]
 
 
 
@@ -1889,8 +1596,23 @@ class Natural_Evolution_Strategies(oldBaseOptimizer):
 
 		self.min_max=bounds
 		self.bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
-		print('self.min_max')
-		print(self.min_max[0])
-		print(self.min_max[1])
-		print('self.bounder')
-		print(self.bounder)
+
+
+
+class DeapEvaluator(bpop.evaluators.Evaluator):
+	
+	def __init__(self,param,ffun,feats,min_max):
+
+		super(DeapEvaluator,self).__init__()
+		self.ffun=ffun
+		self.min_max=min_max
+		self.params = [bpop.parameters.Parameter(p_name, bounds=(min_b,max_b)) for p_name,min_b,max_b in param]
+		self.param_names = [param.bounds for param in self.params]
+		self.objectives = [bpop.objectives.Objective(name=name) for name,value in feats*3]
+
+	def evaluate_with_lists(self, param_values):
+		err=self.ffun(normalize(param_values, self))
+		return err
+
+
+

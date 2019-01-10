@@ -2,14 +2,11 @@
 # coding: utf-8
 
 # In[158]:
-
 import nest
 import numpy as np
 import sys
 import os
-
 nest.ResetKernel()
-
 
 # In[159]:
 
@@ -127,6 +124,7 @@ spikes   = nest.GetStatus(spikedetector)[0]['events']['times']
 #import matplotlib.pyplot as plt
 #plt.plot(times, voltages)
 #plt.show()
+
 
 # In[167]:
 spike_filename = 'spike' + unique_ID + '.dat'

@@ -156,10 +156,12 @@ class fF(object):
             the parameters are in their valid ranges.
 
         """
-        #print section
+        print("SECTION")
+        print(section)
         if self.option.GetUFunString() == "":
             for sec in section:
-                #print sec
+                print("SEC")
+                print(sec)
                 if len(str.split(sec, " ")) == 4:
                     self.model.SetChannelParameters(str.strip(str.split(sec, " ")[0]), str.strip(str.split(sec, " ")[1]), str.strip(str.split(sec, " ")[2]), str.strip(str.split(sec, " ")[3]),
                                                     params[section.index(sec)])
@@ -198,8 +200,6 @@ class fF(object):
             print('PID ', pid, ' ************')
             
             with open(self.option.base_dir + "/params" + unique_ID + ".param" , "w") as out_handler:
-                print("CANDIDATES")
-                print(candidates)
                 for c in candidates:
                     out_handler.write(str(c) + "\n")
                 out_handler.write(str(act_trace_idx))
@@ -247,6 +247,7 @@ class fF(object):
                 settings.append(self.reader.data.step)
             else:
                 settings.append(0.05)
+            
             self.setParameters(section, candidates)
             self.model.RunControll(settings)
 
@@ -991,6 +992,7 @@ class fF(object):
 
         """
         #modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
+        print(candidates)
         self.fitnes = []
         features = self.option.feats
 
@@ -1029,6 +1031,8 @@ class fF(object):
             if self.option.output_level == "1":
                 print(l)
             l = self.ReNormalize(l)
+            print("************renormalized*****************************")
+            print(l)
             if self.option.output_level == "1":
                 print(l)
             for k in range(k_range):     #for k in range(self.reader.number_of_traces()):
@@ -1070,7 +1074,6 @@ class fF(object):
         if(self.option.simulator == 'Neuron'):
             self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
 
-        print('\n fitnes {}\n'.format(self.fitnes))
         
 
         return self.fitnes
@@ -1124,6 +1127,7 @@ class fF(object):
         """
         self.fitnes = []
         features = self.option.feats
+
         #print self.option.feats   #--> [<bound method fF.AP1_amp_abstr_data of <fitnessFunctions.fF instance at 0x7f669e957128>>] (ezt adja)
         weigths = self.option.weights
         temp_fit = []
@@ -1144,7 +1148,6 @@ class fF(object):
             if self.option.output_level == "1":
                 print(l)
             l = self.ReNormalize(l)
-
             if self.option.output_level == "1":
                 print(l)
             for k in range(k_range):     #for k in range(self.reader.number_of_traces()):
@@ -1185,12 +1188,15 @@ class fF(object):
 
             if self.option.output_level == "1":
                 print("current fitness: ",temp_fit)
-            del temp_fit[:]         #remove list element
+            del temp_fit[:]         #remove list elements
         
         
         return self.fitnes
 
+
     def DEAP_wrapper(self,candidates,args={}):
         candidates=[candidates]
         fitnesses=self.MooFeatures(candidates,args)
+        #with open("ibeafits.txt","a+") as f:
+        #    f.write(str(candidates[0])+":"+str(fitnesses[0])+"\n") 
         return fitnesses[0]

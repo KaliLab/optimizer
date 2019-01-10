@@ -450,9 +450,6 @@ class coreModul():
 		elif self.option_handler.evo_strat=="Nondominated Sorted (NSGAII) - DEAP":
 			self.optimizer=DEAP(self.data_handler,self.model_handler,self.option_handler,'nsga')
 			self.deap_var = True
-		elif self.option_handler.evo_strat=="Strength Pareto (SPEA2) - DEAP":
-			self.optimizer=DEAP(self.data_handler,self.model_handler,self.option_handler,'spea')
-			self.deap_var = True
 		elif self.option_handler.evo_strat=="Indicator Based (IBEA) - DEAP":
 			self.optimizer=DEAP(self.data_handler,self.model_handler,self.option_handler, 'ibea')
 			self.deap_var = True
@@ -465,6 +462,12 @@ class coreModul():
 		f_handler.write(self.option_handler.dump(self.ffun_mapper))
 		f_handler.close()
 
+		if self.option_handler.type[-1]!= 'features':
+			self.feat_str=", ".join([self.ffun_mapper[x.__name__] for x in self.option_handler.feats])
+		else:
+			self.feat_str=", ".join(self.option_handler.feats)
+
+			
 		try:
 			self.model_handler.channels.clear()
 			self.model_handler.sections.clear()
@@ -479,23 +482,20 @@ class coreModul():
 		self.fits = []
 
 		if self.deap_var:
-			self.cands=self.optimizer.final_pop[0]
-			self.fits=self.optimizer.final_pop[1]
-			self.optimizer.final_pop = []
+			"""
 			#print(self.option_handler.weights*self.data_handler.number_of_traces())
 			# for gen in self.fits:
-			import pprint
-			pp=pprint.PrettyPrinter(indent=4)
 			avgfits=numpy.average(self.fits,axis=1,weights=self.option_handler.weights*self.data_handler.number_of_traces())
-			# with open("ibeapop.txt","w") as f:				
-			# 	[f.write(str(pop)+" ; "+str(avg)+"\n") for pop,avg in zip(self.cands,self.fits)] 
-			# print("*************************End***********************")
+			with open("ibeaallpop.txt","w") as f:				
+				[f.write(str(pop)+" ; "+str(avg)+"\n") for pop,avg in zip(self.cands,self.fits)] 
+			print("*************************End***********************")
 			#mn,idx=min((avgfits[i],i) for i in range(len(avgfits)))
 			minind=numpy.argmin(avgfits)
-			print(minind)
-			self.cands[0]=self.cands[minind]
-			self.fits[0]=self.fits[minind]
-			del self.wfits2[:]
+			print(minind)"""
+			self.cands=[normalize(hof,self.optimizer) for hof in self.optimizer.hall_of_fame]
+			self.fits=[x.fitness.values for x in self.optimizer.hall_of_fame]
+			print(self.cands)
+			print(self.fits)
 		elif self.brain_var:
 			self.cands=self.optimizer.final_pop[0]
 			self.fits=self.optimizer.final_pop[1]
@@ -513,16 +513,12 @@ class coreModul():
 				self.cands.append(self.optimizer.final_pop[i].candidate[0:len(self.option_handler.adjusted_params)])
 				self.fits.append(self.optimizer.final_pop[i].fitness)
 
-
 		#self.optimizer.final_pop.sort(reverse=True)
 		#print self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)],"fitness: ",self.optimizer.final_pop[0].fitness
 		print(("Optimization lasted for ", stop_time-start_time, " s"))
 
 		print((self.cands[0],"fitness: ",self.fits[0]))
-		if self.option_handler.type[-1]!= 'features':
-			self.feat_str=", ".join([self.ffun_mapper[x.__name__] for x in self.option_handler.feats])
-		else:
-			self.feat_str=", ".join(self.option_handler.feats)
+		
 
 	def FourthStep(self,args={}):
 		"""

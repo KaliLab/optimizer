@@ -449,6 +449,7 @@ class modelHandlerNeuron():
 
         :param vector: a hoc vector
 
+
         :return: the data trace from the created object
 
         """
