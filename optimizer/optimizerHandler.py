@@ -1326,6 +1326,7 @@ class DEAP(oldBaseOptimizer):
 		BOUND_LOW = self.min_max[0]
 		BOUND_UP = self.min_max[1]
 		NDIM = 30
+		self.number_of_traces=reader_obj.number_of_traces()
 		self.minimweights=[-x for x in option_obj.weights]*reader_obj.number_of_traces() #turn weights for minimizing
 		creator.create("FitnessMin", base.Fitness, weights=self.minimweights)
 		creator.create("Individual", array1.array, typecode='d', fitness=creator.FitnessMin)
@@ -1355,8 +1356,6 @@ class DEAP(oldBaseOptimizer):
 		self.toolbox.register("map",pool.map)
 		self.stat_file=open("stat_file.txt","w")
 		self.ind_file=open("ind_file.txt","w")
-		#inspyred needs sequence of seeds
-		#self.starting_points=[normalize(args.get("starting_points",uniform(self.rand,{"num_params" : self.num_params,"self": self})),self)]
 		try:
 			#print type(option_obj.starting_points)
 			if isinstance(option_obj.starting_points[0],list):
@@ -1368,20 +1367,35 @@ class DEAP(oldBaseOptimizer):
 		if option_obj.output_level=="1":
 			print("starting points: ",self.starting_points)
 
-		# generator comes from the class
-		# evaluator comes from fitnessFunctions
-		# bounder comes from the class, should be callable
-
 
 
 	def Optimize(self):
-
-		random.seed(self.seed)	
+		"""try:
+			os.system("ipcluster start -n "+str(int(self.number_of_cpu))+" &")
+			time.sleep(10)
+			from ipyparallel import Client
+			c = Client(profile=os.getenv('IPYTHON_PROFILE'))
+			print("******************PARALLEL RUN*******************")
+			view = c.load_balanced_view()
+			view.map(os.chdir, [str(os.path.dirname(os.path.realpath(__file__)))]*int(self.number_of_cpu))
+			map_function=view.map
+		
+			feats=self.get_feat_names(self.option_obj.GetFitnessParam())
+			feats_pairwise=[x for x in zip(feats[0],feats[1])]
+			params=zip(self.param_names,self.min_max[0],self.min_max[1])
+			optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(params,self.deapfun,feats_pairwise,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),map_function=map_function)
+			self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))
+			os.system("ipcluster stop")
+		except Exception:
+			os.system("ipcluster stop")
+			"""
+		print("******************PARALLELIZATION PROBLEM*******************")
 		feats=self.get_feat_names(self.option_obj.GetFitnessParam())
 		feats_pairwise=[x for x in zip(feats[0],feats[1])]
 		params=zip(self.param_names,self.min_max[0],self.min_max[1])
-		optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(params,self.deapfun,feats_pairwise,self.min_max),offspring_size = int(self.pop_size))
+		optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(params,self.deapfun,feats_pairwise,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size))
 		self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))
+		
 		
 
 	def SetBoundaries(self,bounds):
@@ -1601,17 +1615,21 @@ class Natural_Evolution_Strategies(oldBaseOptimizer):
 
 class DeapEvaluator(bpop.evaluators.Evaluator):
 	
-	def __init__(self,param,ffun,feats,min_max):
+	def __init__(self,param,ffun,feats,min_max,traces):
 
 		super(DeapEvaluator,self).__init__()
 		self.ffun=ffun
 		self.min_max=min_max
 		self.params = [bpop.parameters.Parameter(p_name, bounds=(min_b,max_b)) for p_name,min_b,max_b in param]
 		self.param_names = [param.bounds for param in self.params]
-		self.objectives = [bpop.objectives.Objective(name=name) for name,value in feats*3]
+		number_of_traces=traces
+		self.objectives = [bpop.objectives.Objective(name=name) for name,value in feats*number_of_traces]
+
 
 	def evaluate_with_lists(self, param_values):
+		print('33333333333333333333333333333333333333333333')
 		err=self.ffun(normalize(param_values, self))
+		print('444444444444444444444444444444444444')
 		return err
 
 
