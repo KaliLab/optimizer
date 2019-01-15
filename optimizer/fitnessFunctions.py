@@ -1197,6 +1197,4 @@ class fF(object):
     def DEAP_wrapper(self,candidates,args={}):
         candidates=[candidates]
         fitnesses=self.MooFeatures(candidates,args)
-        #with open("ibeafits.txt","a+") as f:
-        #    f.write(str(candidates[0])+":"+str(fitnesses[0])+"\n") 
         return fitnesses[0]
