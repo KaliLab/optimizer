@@ -992,10 +992,10 @@ class fF(object):
 
         """
         #modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
-        print(candidates)
+       
         self.fitnes = []
         features = self.option.feats
-
+        
         #print self.option.feats   #--> [<bound method fF.AP1_amp_abstr_data of <fitnessFunctions.fF instance at 0x7f669e957128>>] (ezt adja)
         weigths = self.option.weights
         temp_fit = 0
@@ -1127,10 +1127,9 @@ class fF(object):
         """
         self.fitnes = []
         features = self.option.feats
-
-        #print self.option.feats   #--> [<bound method fF.AP1_amp_abstr_data of <fitnessFunctions.fF instance at 0x7f669e957128>>] (ezt adja)
         weigths = self.option.weights
         temp_fit = []
+        
         self.model.load_neuron()
         if self.option.type[-1]!= 'features':
             window = int(self.option.spike_window)
@@ -1150,7 +1149,7 @@ class fF(object):
             l = self.ReNormalize(l)
             if self.option.output_level == "1":
                 print(l)
-            for k in range(k_range):     #for k in range(self.reader.number_of_traces()):
+            for k in range(k_range):
                 try:
                     add_data = [spike_frame(n - window, self.thres, n, 1, n + window, self.thres) for n in self.reader.additional_data.get(k)]
                 except AttributeError:
@@ -1188,7 +1187,7 @@ class fF(object):
 
             if self.option.output_level == "1":
                 print("current fitness: ",temp_fit)
-            del temp_fit[:]         #remove list elements
+            del temp_fit[:] 
         
         
         return self.fitnes
@@ -1196,5 +1195,70 @@ class fF(object):
 
     def DEAP_wrapper(self,candidates,args={}):
         candidates=[candidates]
-        fitnesses=self.MooFeatures(candidates,args)
-        return fitnesses[0]
+        self.fitnes = []
+        features = self.option.feats
+        weigths = self.option.weights
+        temp_fit = []
+        print(candidates)
+        self.model.load_neuron()
+        
+        if self.option.type[-1]!= 'features':
+            window = int(self.option.spike_window)
+        else:
+            window=None
+        self.model.CreateStimuli(self.option.GetModelStim())
+
+        if self.option.type[-1]!= 'features':
+            k_range=self.reader.number_of_traces()
+        else:
+            k_range=len(self.reader.features_data["stim_amp"])
+        
+        for l in candidates:
+            if self.option.output_level == "1":
+                print(l)
+            l = self.ReNormalize(l)
+            if self.option.output_level == "1":
+                print(l)
+            for k in range(k_range):
+                try:
+                    add_data = [spike_frame(n - window, self.thres, n, 1, n + window, self.thres) for n in self.reader.additional_data.get(k)]
+                except AttributeError:
+                    add_data = None
+                args = {}
+                args["add_data"] = add_data
+                param = self.option.GetModelStimParam()
+                parameter = param
+                parameter[0] = param[0][k]
+                
+                if isinstance(parameter[0], str):
+                    self.model.SetCustStimuli(parameter)
+                else:
+                    extra_param = self.option.GetModelRun()
+                    self.model.SetStimuli(parameter, extra_param)
+
+                if (not self.modelRunner(l,k)):
+                    if self.option.output_level == "1":
+                        print(features, weigths)
+                    if (self.option.type[-1]!='features'):
+                        for f, w in zip(features, weigths):
+                            if abs(len(self.model.record[0])-len(self.reader.data.GetTrace(k)))>1:
+                                raise sizeError("model: " + str(len(self.model.record[0])) + ", target: " + str(len(self.reader.data.GetTrace(k))))
+                            temp_fit.append( (f(self.model.record[0],
+                                                              self.reader.data.GetTrace(k), args)))
+
+                    else:
+                        for f, w in zip(features, weigths):
+                            temp_fit.append( self.FFun_for_Features(self.model.record[0],
+                                                                self.reader.features_data, f, k, args))
+                else:
+                    temp_fit.append(0)
+
+            
+            self.fitnes.append(tuple(temp_fit))
+
+            if self.option.output_level == "1":
+                print("current fitness: ",temp_fit)
+            del temp_fit[:] 
+        
+        
+        return self.fitnes[0]

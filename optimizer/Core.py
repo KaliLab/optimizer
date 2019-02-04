@@ -494,8 +494,8 @@ class coreModul():
 			print(minind)"""
 			self.cands=[normalize(hof,self.optimizer) for hof in self.optimizer.hall_of_fame]
 			self.fits=[x.fitness.values for x in self.optimizer.hall_of_fame]
-			print(self.cands)
-			print(self.fits)
+			print([str(can)+':'+str(fit) for can,fit in zip(self.optimizer.hall_of_fame,self.fits)])
+			
 		elif self.brain_var:
 			self.cands=self.optimizer.final_pop[0]
 			self.fits=self.optimizer.final_pop[1]
@@ -516,7 +516,6 @@ class coreModul():
 		#self.optimizer.final_pop.sort(reverse=True)
 		#print self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)],"fitness: ",self.optimizer.final_pop[0].fitness
 		print(("Optimization lasted for ", stop_time-start_time, " s"))
-
 		print((self.cands[0],"fitness: ",self.fits[0]))
 		
 
