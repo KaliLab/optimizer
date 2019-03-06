@@ -1,12 +1,10 @@
 from random import Random
-#from time import time
 from inspyred import ec
 from inspyred.ec import emo
 from inspyred.ec import terminators
 from inspyred.ec import variators
 from inspyred.ec import observers
 from fitnessFunctions import fF,frange
-#from fitnessFunctions import *
 import sys
 import inspyred
 import logging
@@ -32,11 +30,6 @@ try:
 except RuntimeError as re:
     print(re)
     sys.exit()
-#from Image import NONE
-#from jinja2._stringdefs import No
-#from math import exp
-
-#from inspyred.ec.terminators import max_evaluations
 
 import multiprocessing
 from math import sqrt
@@ -47,18 +40,12 @@ from deap import benchmarks
 from deap.benchmarks.tools import diversity, convergence, hypervolume
 from deap import creator
 from deap import tools
-#from Image import NONE
-#from jinja2._stringdefs import No
-#from math import exp
 import queue
 import Core
 from graphics import Ui_Optimizer
-#from inspyred.ec.terminators import max_evaluations
 import pickle as pickle
 
-from pybrain.optimization.distributionbased.distributionbased import DistributionBasedOptimizer
 from scipy import dot, exp, log, sqrt, floor, ones, randn
-from pybrain.tools.rankingfunctions import RankingFunction
 
 import pygmo as pg
 import modelHandler
@@ -66,12 +53,8 @@ from itertools import combinations, product
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-gen_count_signal = QtCore.pyqtSignal()
 
-global moo_var
-global brain_var
 
-brain_var=False
 
 def _pickle_method(method):
 	func_name = method.__func__.__name__
@@ -430,7 +413,7 @@ class SingleProblem:
 	def get_bounds(self):
 		return(self.bounds[0], self.bounds[1])
 
-class SinglePygmoDE(SinglePygmoAlgorithmBasis):
+class Single_Differential_Evolution_Pygmo(SinglePygmoAlgorithmBasis):
 	
 	def __init__(self,reader_obj,model_obj,option_obj):
 
@@ -481,7 +464,7 @@ class bounderObject(object):
 		return tmax and tmin
 
 
-class Simulated_Annealing(InspyredAlgorithmBasis):
+class Simulated_Annealing_Inspyred(InspyredAlgorithmBasis):
 	"""
 	Implements the ``Simulated Annealing`` algorithm for minimization from the ``inspyred`` package.
 
@@ -513,7 +496,7 @@ class Simulated_Annealing(InspyredAlgorithmBasis):
 		else:
 			self.evo_strat.observer=[observers.file_observer]
 
-class Pygmo_Differential_Evolution(PygmoAlgorithmBasis):
+class Differential_Evolution_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
 
@@ -522,7 +505,7 @@ class Pygmo_Differential_Evolution(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.algorithm(pg.de(gen=self.max_evaluation, ftol=1e-15, tol=1e-15))
 
-class Pygmo_Covariance_Matrix_Adaptation_ES(PygmoAlgorithmBasis):
+class Covariance_Matrix_Adaptation_ES_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
 
@@ -532,7 +515,7 @@ class Pygmo_Covariance_Matrix_Adaptation_ES(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.algorithm(pg.cmaes(gen=self.max_evaluation, ftol=1e-15, xtol=1e-15, force_bounds=bool(self.force_bounds)))
 
-class Pygmo_Particle_Swarm(PygmoAlgorithmBasis):
+class Particle_Swarm_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
 
@@ -541,7 +524,7 @@ class Pygmo_Particle_Swarm(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.algorithm(pg.pso(gen=self.max_evaluation))
 
-class Pygmo_Exponential_Evolution_Strategies(PygmoAlgorithmBasis):
+class Exponential_Evolution_Strategies_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
 
@@ -552,7 +535,7 @@ class Pygmo_Exponential_Evolution_Strategies(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.algorithm(pg.xnes(gen=self.max_evaluation, ftol=1e-15, xtol=1e-15, force_bounds=bool(self.force_bounds)))
 
-class Pygmo_Bee_Colony(PygmoAlgorithmBasis):
+class Bee_Colony_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
 
@@ -561,7 +544,7 @@ class Pygmo_Bee_Colony(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.algorithm(pg.bee_colony(gen=self.max_evaluation))
 
-class Pygmo_Simple_Genetic_Algorithm(PygmoAlgorithmBasis):
+class Simple_Genetic_Algorithm_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
 
@@ -570,7 +553,7 @@ class Pygmo_Simple_Genetic_Algorithm(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.algorithm(pg.sga(gen=self.max_evaluation))
 
-class Pygmo_Self_adaptive_DE(PygmoAlgorithmBasis):
+class Self_adaptive_DE_Pygmo(PygmoAlgorithmBasis):
 
 	def __init__(self,reader_obj,model_obj,option_obj):
 
@@ -588,7 +571,7 @@ class Pygmo_Self_adaptive_DE(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.algorithm(pg.sade(gen=self.max_evaluation, ftol=1e-15, xtol=1e-15))
 
-class Pygmo_Differential_Evolution_1220(PygmoAlgorithmBasis):
+class Differential_Evolution_1220_Pygmo(PygmoAlgorithmBasis):
 
 	def __init__(self,reader_obj,model_obj,option_obj):
 
@@ -607,7 +590,7 @@ class Pygmo_Differential_Evolution_1220(PygmoAlgorithmBasis):
 		self.algorithm = pg.algorithm(pg.de1220(gen=self.max_evaluation, ftol=1e-15, xtol=1e-15))
 
 
-class Particle_Swarm(InspyredAlgorithmBasis):
+class Particle_Swarm_Inspyred(InspyredAlgorithmBasis):
 	"""
 	Implements the ``Particle Swarm`` algorithm for minimization from the ``inspyred`` package.
 
@@ -663,7 +646,7 @@ class Particle_Swarm(InspyredAlgorithmBasis):
 
 		self.final_pop = self.evo_strat.evolve(**self.kwargs)
 
-class Basinhopping(ScipyAlgorithmBasis):
+class Basinhopping_Scipy(ScipyAlgorithmBasis):
 	"""
 	Implements the ``Basinhopping`` algorithm for minimization from the ``scipy`` package.
 
@@ -766,7 +749,7 @@ class Basinhopping(ScipyAlgorithmBasis):
 		self.bounder=bounderObject([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
 
 
-class Nelder_Mead(baseOptimizer):
+class Nelder_Mead_Scipy(baseOptimizer):
 	"""
 	Implements a downhill simplex algorithm for minimization from the ``scipy`` package.
 
@@ -851,7 +834,7 @@ class Nelder_Mead(baseOptimizer):
 
 
 
-class L_BFGS_B(baseOptimizer):
+class L_BFGS_B_Scipy(baseOptimizer):
 	"""
 	Implements L-BFGS-B algorithm for minimization from the ``scipy`` package.
 
@@ -1004,7 +987,7 @@ class grid(baseOptimizer):
 		self.bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
 
 
-class Evolutionary_Algorithm(InspyredAlgorithmBasis):
+class Evolutionary_Algorithm_Inspyred(InspyredAlgorithmBasis):
 	"""
 	Implements a custom version of ``Evolution Strategy`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1042,7 +1025,7 @@ class Evolutionary_Algorithm(InspyredAlgorithmBasis):
 			self.evo_strat.observer=[observers.file_observer]
 
 
-class Differential_Evolution(InspyredAlgorithmBasis):
+class Differential_Evolution_Inspyred(InspyredAlgorithmBasis):
 	"""
 	Implements the ``Differential Evolution Algorithm`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1074,7 +1057,7 @@ class Differential_Evolution(InspyredAlgorithmBasis):
 			self.evo_strat.observer=[observers.file_observer]
 
 
-class RandomSearch(InspyredAlgorithmBasis):
+class Random_Search_Inspyred(InspyredAlgorithmBasis):
 	"""
 	Implements the ``Differential Evolution Algorithm`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1124,7 +1107,7 @@ class RandomSearch(InspyredAlgorithmBasis):
 
 
 # simple NSGA-II
-class Nondominated_Sorted(InspyredAlgorithmBasis):
+class Nondominated_Sorted_Inspyred(InspyredAlgorithmBasis):
 	"""
 	Implements a custom version of ``Evolution Strategy`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1162,7 +1145,7 @@ class Nondominated_Sorted(InspyredAlgorithmBasis):
 
 
 
-class Pareto_Archived_ES(InspyredAlgorithmBasis):
+class Pareto_Archived_ES_Inspyred(InspyredAlgorithmBasis):
 	"""
 	Implements a custom version of ``PAES`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1197,7 +1180,7 @@ class Pareto_Archived_ES(InspyredAlgorithmBasis):
 		self.kwargs['mutation_rate'] = option_obj.mutation_rate
 		self.kwargs['num_elites'] = int(self.pop_size/2)
 
-class FullGrid(InspyredAlgorithmBasis):
+class FullGrid_Pygmo(InspyredAlgorithmBasis):
 	
 	def __init__(self,reader_obj,model_obj,option_obj):
 		InspyredAlgorithmBasis.__init__(self, reader_obj,model_obj,option_obj)
@@ -1284,12 +1267,7 @@ class FullGrid(InspyredAlgorithmBasis):
 		self.kwargs["seeds"] = self.grid
 		self.kwargs["max_generations"] = 0
 		self.kwargs["pop_size"] = 1
-		#candidate[-0.024653979238754356, -0.012413494809688589, 0.02948166788997238]
-		#fitnes 0.746863844888 0.746863844888
-
-		print("NOOOORM", normalize([0.12,0.036,0.0003],self))
-		#self.grid = [normalize([0.12,0.036,0.0003],self), [ 0.42144982,  0.10608837,  0.18303551]]
-		#print(self.grid)
+		
 
 
 
@@ -1307,95 +1285,46 @@ class FullGrid(InspyredAlgorithmBasis):
 		print(self.bounder)
 
 
-class DEAP(oldBaseOptimizer):
+class Indicator_Based_Bluepyopt(oldBaseOptimizer):
 
 
-	def __init__(self,reader_obj,model_obj,option_obj,algo):
+	def __init__(self,reader_obj,model_obj,option_obj):
 		self.fit_obj=fF(reader_obj,model_obj,option_obj)
 		self.SetFFun(option_obj)
 		self.option_obj=option_obj
-		self.rand=Random()
 		self.seed=option_obj.seed
 		self.pop_size=option_obj.pop_size
 		self.max_evaluation=option_obj.max_evaluation
-		self.mutation_rate=option_obj.mutation_rate
 		self.num_params=option_obj.num_params
 		self.number_of_cpu=option_obj.number_of_cpu
 		self.SetBoundaries(option_obj.boundaries)
-		
-		BOUND_LOW = self.min_max[0]
-		BOUND_UP = self.min_max[1]
-		NDIM = 30
-		self.number_of_traces=reader_obj.number_of_traces()
-		self.minimweights=[-x for x in option_obj.weights]*reader_obj.number_of_traces() #turn weights for minimizing
-		creator.create("FitnessMin", base.Fitness, weights=self.minimweights)
-		creator.create("Individual", array1.array, typecode='d', fitness=creator.FitnessMin)
-		self.toolbox = base.Toolbox()
-		def uniformd(low, up, size=None):
-			try:
-				return [random.uniform(a, b) for a, b in zip(low, up)]
-			except TypeError:
-				return [random.uniform(a, b) for a, b in zip([low] * size, [up] * size)]
-		self.toolbox.register("attr_float", uniformd, BOUND_LOW, BOUND_UP, NDIM)
-		self.toolbox.register("individual", tools.initIterate, creator.Individual, self.toolbox.attr_float)
-		self.toolbox.register("population", tools.initRepeat, list, self.toolbox.individual)
-		self.toolbox.register("evaluate", self.deapfun)
-		self.toolbox.register("mate", tools.cxSimulatedBinaryBounded, low=BOUND_LOW, up=BOUND_UP, eta=20.0)
-		self.toolbox.register("mutate", tools.mutPolynomialBounded, low=BOUND_LOW, up=BOUND_UP, eta=20.0, indpb=self.mutation_rate)
-		"""
-		if algo=='spea':
-			self.toolbox.register("select", tools.selSPEA2)
-		elif algo=='ibea':
-			self.toolbox.register("select", selIBEA)
-		else:
-			self.toolbox.register("select", tools.selNSGA2)
-		"""
 		self.param_names=self.option_obj.GetObjTOOpt()
-		pool=multiprocessing.Pool(processes=int(self.number_of_cpu))
-		self.toolbox.register("map",pool.map)
-		self.stat_file=open("stat_file.txt","w")
-		self.ind_file=open("ind_file.txt","w")
-		try:
-			#print type(option_obj.starting_points)
-			if isinstance(option_obj.starting_points[0],list):
-				self.starting_points=option_obj.starting_points
-			else:
-				self.starting_points=[normalize(option_obj.starting_points,self)]
-		except TypeError:
-			self.starting_points=None
-		if option_obj.output_level=="1":
-			print("starting points: ",self.starting_points)
+		self.number_of_traces=reader_obj.number_of_traces()
+		
 
 
 
 	def Optimize(self):
-		#try:
-			#os.system("ipcluster start -n "+str(int(self.number_of_cpu))+" --debug &")
-		from ipyparallel import Client
-		c = Client(profile=os.getenv('IPYTHON_PROFILE'),timeout=180)
-		print("******************PARALLEL RUN*******************")
-		view = c.load_balanced_view()
-		view.map_sync(os.chdir, [str(os.path.dirname(os.path.realpath(__file__)))]*int(self.number_of_cpu))
-		map_function=view.map_sync
-		
-		feats=self.get_feat_names(self.option_obj.GetFitnessParam())
-		feats_pairwise=[x for x in zip(feats[0],feats[1])]
-		params=zip(self.param_names,self.min_max[0],self.min_max[1])
-		optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(params,self.deapfun,feats_pairwise,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),map_function=map_function)
-		self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))
-		print(self.hist)
-		#os.system("ipcluster stop")
-	"""
-		#except Exception:
-		#os.system("ipcluster stop")
-		print("******************PARALLELIZATION PROBLEM*******************")
 		feats=self.get_feat_names(self.option_obj.GetFitnessParam())
 		feats_and_weights=[x for x in zip(feats[0],feats[1])]
 		params=zip(self.param_names,self.min_max[0],self.min_max[1])
-		optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(params,self.deapfun,feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size))
-		self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))	
-		"""
-	
+		try:
+			from ipyparallel import Client
+			print("******************PARALLEL RUN : IBEA *******************")
+			os.system("ipcluster start -n "+str(int(self.number_of_cpu))+" &")
+			c = Client(profile=os.getenv('IPYTHON_PROFILE'),timeout=60)
+			view = c.load_balanced_view()
+			view.map_sync(os.chdir, [str(os.path.dirname(os.path.realpath(__file__)))]*int(self.number_of_cpu))
+			map_function=view.map_sync
+			optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(params,self.deapfun,feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),map_function=map_function,selector_name='IBEA')
+			self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))
+			os.system("ipcluster stop")
+		except Exception:
+			os.system("ipcluster stop")
+			print("*****************Single Run : IBEA *******************")
+			optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(params,self.deapfun,feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),selector_name='IBEA')
+			self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))	
+			
 
 	def SetBoundaries(self,bounds):
 		"""
@@ -1425,191 +1354,73 @@ class DEAP(oldBaseOptimizer):
 		return [feat_names,feats[1]]
 
 
-
-
-
-class SNES(DistributionBasedOptimizer):
-	""" Separable NES (diagonal).
-	[As described in Schaul, Glasmachers and Schmidhuber (GECCO'11)]
-	"""
-
-	# parameters, which can be set but have a good (adapted) default value
-	centerLearningRate = 1
-	covLearningRate = None
-	batchSize = None
-	uniformBaseline = True
-	from pybrain.tools.rankingfunctions import HansenRanking
-	shapingFunction = HansenRanking()
-	initVariance = 0.2
-
-	# fixed settings
-	mustMaximize = True
-	storeAllEvaluations = True
-	storeAllEvaluated = True
-	# for very long runs, we don't want to run out of memory
-	clearStorage = False
-	mn=1
-	idx=0
-	# minimal setting where to abort the search
-	varianceCutoff = 1e-20
-
-	def _stoppingCriterion(self):
-		if DistributionBasedOptimizer._stoppingCriterion(self):
-			return True
-		elif max(abs(self._sigmas)) < self.varianceCutoff:
-			return True
-		else:
-			return False
-
-	def _initLearningRate(self):
-		""" Careful, robust default value. """
-		return 0.6 * (3 + log(self.numParameters)) / 3 / sqrt(self.numParameters)
-
-	def _initBatchSize(self):
-		""" as in CMA-ES """
-		return 4 + int(floor(3 * log(self.numParameters)))
-
-	def _additionalInit(self):
-		if self.covLearningRate is None:
-			self.covLearningRate = self._initLearningRate()
-		if self.batchSize is None:
-			self.batchSize = self._initBatchSize()
-
-		self._center = self._initEvaluable.copy()
-		self._sigmas = ones(self.numParameters) * self.initVariance
-
-	@property
-	def _population(self):
-		if self._wasUnwrapped:
-			return [self._allEvaluated[i].params for i in self._pointers]
-		else:
-			return [self._allEvaluated[i] for i in self._pointers]
-
-	@property
-	def _currentEvaluations(self):
-		fits = [self._allEvaluations[i] for i in self._pointers]
-		if self._wasOpposed:
-			fits = [-x for x in fits]
-		return fits
-
-	def _produceSample(self):
-		return [random.gauss(x,x/4) for x in self._initEvaluable]
-
-	def _sample2base(self, sample):
-		""" How does a sample look in the outside (base problem) coordinate system? """
-		return self._sigmas * sample + self._center
-
-	def _base2sample(self, e):
-		""" How does the point look in the present one reference coordinates? """
-		return (e - self._center) / self._sigmas
-
-	def _produceSamples(self):
-		""" Append batch size new samples and evaluate them. """
-		if self.clearStorage:
-			self._allEvaluated = []
-			self._allEvaluations = []
-
-
-		tmp = [self._sample2base(self._produceSample()) for _ in range(self.batchSize)]
-		"""procs=multiprocessing.Pool(int(4))
-		self._allEvaluations.extend(procs.map(combineFeatures, tmp))
-		procs.close()
-		self._allEvaluated.extend(tmp)"""
-		list(map(self._oneEvaluation, tmp))
-		self._pointers = list(range(len(self._allEvaluated) - self.batchSize, len(self._allEvaluated)))
-
-	def _learnStep(self):
-		# produce samples
-		self._produceSamples()
-		samples = list(map(self._base2sample, self._population))
-		#compute utilities
-		"""if min(self._allEvaluations)<self.mn:
-			self.mn=min(self._allEvaluations)
-			print self.mn
-			self.idx=self._allEvaluations.index(self.mn)
-			print self._allEvaluated[self.idx]"""
-		file=open("nes.txt","w")
-		list(map(self._oneEvaluation, [self._allEvaluated[self.idx]]))
-		print((self._allEvaluated))
-		print((len(self._allEvaluated)))
-		a=[(sum(x)/len(x)) for x in self._allEvaluated]
-		print(a)
-		file.write(str(a))
-		utilities = self.shapingFunction(self._currentEvaluations)
-		file.close()
-		utilities /= sum(utilities)  # make the utilities sum to 1
-		if self.uniformBaseline:
-			utilities -= 1. / self.batchSize
-
-		# update center
-		dCenter = dot(utilities, samples)
-		self._center += self.centerLearningRate * self._sigmas * dCenter
-		# update variances
-		covGradient = dot(utilities, [s ** 2 - 1 for s in samples])
-		dA = 0.5 * self.covLearningRate * covGradient
-		self._sigmas = self._sigmas * exp(dA)
-
-
-
-class Natural_Evolution_Strategies(oldBaseOptimizer):
-
+class Nondominated_Sorted_Bluepyopt(oldBaseOptimizer):
 
 
 	def __init__(self,reader_obj,model_obj,option_obj):
 		self.fit_obj=fF(reader_obj,model_obj,option_obj)
-		global brain_var
-		brain_var=True
 		self.SetFFun(option_obj)
-		self.rand=Random()
+		self.option_obj=option_obj
 		self.seed=option_obj.seed
-		self.pop_size=int(option_obj.pop_size)
-		self.max_evaluation=int(option_obj.max_evaluation)
-		self.mutation_rate=option_obj.mutation_rate
+		self.pop_size=option_obj.pop_size
+		self.max_evaluation=option_obj.max_evaluation
 		self.num_params=option_obj.num_params
 		self.number_of_cpu=option_obj.number_of_cpu
 		self.SetBoundaries(option_obj.boundaries)
-		self.starting_points=option_obj.starting_points
+		self.param_names=self.option_obj.GetObjTOOpt()
+		self.number_of_traces=reader_obj.number_of_traces()
+		
+
 
 
 	def Optimize(self):
-
-			MU=self.pop_size
-			NGEN=self.max_evaluation
-			#population, kappa
-			stats = tools.Statistics(lambda ind: ind.fitness.values)
-			# stats.register("avg", numpy.mean, axis=0)
-			# stats.register("std", numpy.std, axis=0)
-			stats.register("std", numpy.std, axis=0)
-			stats.register("min", numpy.min, axis=0)
-			stats.register("avg", numpy.mean, axis=0)
-			stats.register("max", numpy.max, axis=0)
-			self.logbook = tools.Logbook()
-			self.logbook.header = "gen", "evals", "min", "max", "avg", "std"
-				#record = stats.compile(pop)
-				#self.logbook.record(gen=0, evals=len(invalid_ind), **record)
-			self.final_pop = []
-			#pop = self.toolbox.population(n=MU)
-			# Begin the generational process
-			#pop=[x.tolist() for x in pop]
-			from pybrain.optimization import OriginalNES
-			initparam=numpy.average(self.min_max, axis=0)
-			file=open("nes.txt","a")
-			lp=SNES(self.ffun,initparam,verbose=True,batchSize=MU)
-			lp.minimize=True
-			c=lp.learn(NGEN)
-			#lp._allEvaluations
-			brain_var=False
-			file.close()
-			self.final_pop.append([c[0]])
-			self.final_pop.append([c[1]])
-
-
+		feats=self.get_feat_names(self.option_obj.GetFitnessParam())
+		feats_and_weights=[x for x in zip(feats[0],feats[1])]
+		params=zip(self.param_names,self.min_max[0],self.min_max[1])
+		try:
+			from ipyparallel import Client
+			print("******************PARALLEL RUN : NSGA2 *******************")
+			os.system("ipcluster start -n "+str(int(self.number_of_cpu))+" &")
+			c = Client(profile=os.getenv('IPYTHON_PROFILE'),timeout=60)
+			view = c.load_balanced_view()
+			view.map_sync(os.chdir, [str(os.path.dirname(os.path.realpath(__file__)))]*int(self.number_of_cpu))
+			map_function=view.map_sync
+			optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(params,self.deapfun,feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),map_function=map_function)
+			self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))
+			os.system("ipcluster stop")
+		except Exception:
+			os.system("ipcluster stop")
+			print("*****************Single Run : NSGA2 *******************")
+			optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(params,self.deapfun,feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size))
+			self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))	
+			
 
 	def SetBoundaries(self,bounds):
+		"""
+		Stores the bounds of the parameters and creates a ``bounder`` object which bounds
+		every parameter into the range of 0-1 since the algorithms are using normalized values.
 
+		:param bounds: ``list`` containing the minimum and maximum values.
+
+		"""
 		self.min_max=bounds
 		self.bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
-
+		
+	def get_feat_names(self,feats):
+		f_m={"MSE": "calc_ase",
+						"Spike count": "calc_spike",
+						"MSE (excl. spikes)": "calc_spike_ase",
+						"Spike count (stim.)": "spike_rate",
+						"ISI differences": "isi_differ",
+						"Latency to 1st spike": "first_spike",
+						"AP amplitude": "AP_overshoot",
+						"AHP depth": "AHP_depth",
+						"AP width": "AP_width",
+						"Derivative difference" : "calc_grad_dif",
+						"PPTD" : "pyelectro_pptd"}
+		self.ffun_mapper=dict((v,k) for k,v in list(f_m.items()))
+		feat_names=[self.ffun_mapper[x.__name__] for x in feats[0][1]]
+		return [feat_names,feats[1]]
 
 
 class DeapEvaluator(bpop.evaluators.Evaluator):

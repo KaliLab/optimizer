@@ -767,7 +767,6 @@ class Ui_Optimizer(object):
                 "Nondominated Sorted (NSGAII)","Pareto Archived (PAES)","Simulated Annealing"]
         Scipy=["Basinhopping","Nelder-Mead","L-BFGS-B"]
         DEAP=["Nondominated Sorted (NSGAII)","Strength Pareto (SPEA2)","Indicator Based (IBEA)"]
-        Pybrain=["Natural Evolution Strategies (NES)"]
         Pygmo=["Differential Evolution (DE)","Self-adaptive DE (SADE)","Particle Swarm (PSO)","Exponential Evolution Strategies (XNES)",
                 "Simple Genetic Algorithm (SGA)","Covariance Matrix Adaptation ES (CMAES)","Single Differential Evolution",
                 "Differential Evolution (DE1220)","Bee Colony","FullGrid"]
@@ -775,7 +774,6 @@ class Ui_Optimizer(object):
             'Inspyred': Inspyred,
             'Scipy': Scipy,
             'DEAP': DEAP,
-            'Pybrain': Pybrain,
             'Pygmo': Pygmo}
         self.algolist.setRowCount(len(Inspyred+Scipy+DEAP+Pybrain+Pygmo))
         index=0

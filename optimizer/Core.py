@@ -402,63 +402,13 @@ class coreModul():
 			if self.option_handler.run_controll_dt>self.data_handler.data.step:
 				self.option_handler.run_controll_dt=self.data_handler.data.step
 
-		self.moo_var = False
-		self.deap_var = False
-		self.brain_var = False
-		self.minind = 0
-
-		if self.option_handler.evo_strat=="Evolutionary Algorithm (EA) - Inspyred":
-			self.optimizer=Evolutionary_Algorithm(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Simulated Annealing - Inspyred":
-			self.optimizer=Simulated_Annealing(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Particle Swarm (PSO) - Inspyred":
-			self.optimizer=Particle_Swarm(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Basinhopping - Scipy":
-			self.optimizer=Basinhopping(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Nelder-Mead - Scipy":
-			self.optimizer=Nelder_Mead(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="L-BFGS-B - Scipy":
-			self.optimizer=L_BFGS_B(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Differential Evolution (DE) - Inspyred":
-			self.optimizer=Differential_Evolution(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Random Search - Inspyred":
-			self.optimizer=RandomSearch(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Nondominated Sorted (NSGAII) - Inspyred":
-			self.optimizer=Nondominated_Sorted(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Pareto Archived (PAES) - Inspyred":
-			self.optimizer=Pareto_Archived_ES(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Differential Evolution (DE) - Pygmo":
-			self.optimizer=Pygmo_Differential_Evolution(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Exponential Evolution Strategies (XNES) - Pygmo":
-			self.optimizer=Pygmo_Exponential_Evolution_Strategies(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Particle Swarm (PSO) - Pygmo":
-			self.optimizer=Pygmo_Particle_Swarm(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Simple Genetic Algorithm (SGA) - Pygmo":
-			self.optimizer=Pygmo_Simple_Genetic_Algorithm(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Covariance Matrix Adaptation ES (CMAES) - Pygmo":
-			self.optimizer=Pygmo_Covariance_Matrix_Adaptation_ES(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Single Differential Evolution - Pygmo":
-			self.optimizer=Pygmo_Single_Differential_Evolution(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Self-Adaptive DE (SADE) - Pygmo":
-			self.optimizer=Pygmo_Self_Adaptive_DE(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Differential Evolution (DE1220) - Pygmo":
-			self.optimizer=Pygmo_Differential_Evolution_1220(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Bee Colony - Pygmo":
-			self.optimizer=Pygmo_Bee_Colony(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="FullGrid - Pygmo":
-			self.optimizer=FullGrid(self.data_handler,self.model_handler,self.option_handler)
-		elif self.option_handler.evo_strat=="Nondominated Sorted (NSGAII) - DEAP":
-			self.optimizer=DEAP(self.data_handler,self.model_handler,self.option_handler,'nsga')
-			self.deap_var = True
-		elif self.option_handler.evo_strat=="Indicator Based (IBEA) - DEAP":
-			self.optimizer=DEAP(self.data_handler,self.model_handler,self.option_handler, 'ibea')
-			self.deap_var = True
-		elif self.option_handler.evo_strat=="Natural Evolution Strategies (NES) - Pybrain":
-			self.optimizer=Natural_Evolution_Strategies(self.data_handler,self.model_handler,self.option_handler)
-			self.brain_var = True
 		
+		import re 
+		algo_str=re.sub('_+',"_",re.sub("[\(\[].*?[\)\]]", "", self.option_handler.evo_strat).replace("-","_").replace(" ","_"))
+		exec("self.optimizer="+algo_str+"(self.data_handler,self.model_handler,self.option_handler)")
+		print("*********************"+algo_str)
+
 		f_handler=open(self.option_handler.GetFileOption()+"/"+self.option_handler.GetFileOption().split("/")[-1]+"_settings.xml", 'w')
-		#print self.option_handler.dump(self.ffun_mapper)
 		f_handler.write(self.option_handler.dump(self.ffun_mapper))
 		f_handler.close()
 
@@ -469,8 +419,7 @@ class coreModul():
 
 			
 		try:
-			self.model_handler.channels.clear()
-			self.model_handler.sections.clear()
+			self.model_handler=modelHandler.modelHandlerNeuron(self.option_handler.model_path,self.option_handler.model_spec_dir,self.option_handler.base_dir)
 		except:
 			"no model yet"
 
@@ -478,28 +427,14 @@ class coreModul():
 		self.optimizer.Optimize()
 		stop_time=time.time()
 
-		self.cands = []
-		self.fits = []
+		self.cands,self.fits = [],[]
 
-		if self.deap_var:
-			"""
-			#print(self.option_handler.weights*self.data_handler.number_of_traces())
-			# for gen in self.fits:
-			avgfits=numpy.average(self.fits,axis=1,weights=self.option_handler.weights*self.data_handler.number_of_traces())
-			with open("ibeaallpop.txt","w") as f:				
-				[f.write(str(pop)+" ; "+str(avg)+"\n") for pop,avg in zip(self.cands,self.fits)] 
-			print("*************************End***********************")
-			#mn,idx=min((avgfits[i],i) for i in range(len(avgfits)))
-			minind=numpy.argmin(avgfits)
-			print(minind)"""
-			self.cands=[normalize(hof,self.optimizer) for hof in self.optimizer.hall_of_fame]
+		if self.option_handler.evo_strat.split(" ")[-1] == "Bluepyopt":
+			self.cands=self.optimizer.hall_of_fame #[normalize(hof,self.optimizer) for hof in self.optimizer.hall_of_fame]
 			self.fits=[x.fitness.values for x in self.optimizer.hall_of_fame]
 			print([str(can)+':'+str(fit) for can,fit in zip(self.optimizer.hall_of_fame,self.fits)])
 			
-		elif self.brain_var:
-			self.cands=self.optimizer.final_pop[0]
-			self.fits=self.optimizer.final_pop[1]
-		elif(self.option_handler.evo_strat.split(" ")[0] == "PYGMO"):
+		elif(self.option_handler.evo_strat.split(" ")[-1] == "Pygmo"):
 			'''
 			Currently only the best individual with its fitness is passed
 			'''
@@ -513,8 +448,6 @@ class coreModul():
 				self.cands.append(self.optimizer.final_pop[i].candidate[0:len(self.option_handler.adjusted_params)])
 				self.fits.append(self.optimizer.final_pop[i].fitness)
 
-		#self.optimizer.final_pop.sort(reverse=True)
-		#print self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)],"fitness: ",self.optimizer.final_pop[0].fitness
 		print(("Optimization lasted for ", stop_time-start_time, " s"))
 		print((self.cands[0],"fitness: ",self.fits[0]))
 		

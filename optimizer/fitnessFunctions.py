@@ -156,12 +156,8 @@ class fF(object):
             the parameters are in their valid ranges.
 
         """
-        print("SECTION")
-        print(section)
         if self.option.GetUFunString() == "":
             for sec in section:
-                print("SEC")
-                print(sec)
                 if len(str.split(sec, " ")) == 4:
                     self.model.SetChannelParameters(str.strip(str.split(sec, " ")[0]), str.strip(str.split(sec, " ")[1]), str.strip(str.split(sec, " ")[2]), str.strip(str.split(sec, " ")[3]),
                                                     params[section.index(sec)])
@@ -197,7 +193,6 @@ class fF(object):
             current_time = str(time.time() + param_sum).replace('.','')
             unique_ID = pid + current_time
             self.model.record[0] = []
-            print('PID ', pid, ' ************')
             
             with open(self.option.base_dir + "/params" + unique_ID + ".param" , "w") as out_handler:
                 for c in candidates:
@@ -227,7 +222,6 @@ class fF(object):
                     self.model.spike_times = []
                     for line in in_handler:
                         self.model.spike_times.append(int(float(line) / (1000.0 / self.option.input_freq)))
-                        #print self.model.spike_times[1:10]
             except OSError:
                 pass
 
@@ -992,7 +986,6 @@ class fF(object):
 
         """
         #modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
-       
         self.fitnes = []
         features = self.option.feats
         
@@ -1031,8 +1024,7 @@ class fF(object):
             if self.option.output_level == "1":
                 print(l)
             l = self.ReNormalize(l)
-            print("************renormalized*****************************")
-            print(l)
+            
             if self.option.output_level == "1":
                 print(l)
             for k in range(k_range):     #for k in range(self.reader.number_of_traces()):
@@ -1113,7 +1105,7 @@ class fF(object):
 
     def MooFeatures(self, candidates, args={}):
         """
-        Creates the weighted combination of fitness functions and calculates the combined fitness for every
+        Creates the combination of fitness functions and calculates the  fitness for every
         set of parameters created during the optimization proccess by seting the model parameters,
         running the simulation and evaluating the resulting trace. The selected fitness functions and the
         weights are determined from the ``option`` object.
@@ -1184,7 +1176,8 @@ class fF(object):
 
             
             self.fitnes.append(ec.emo.Pareto(tuple(temp_fit)))
-
+            self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
+        
             if self.option.output_level == "1":
                 print("current fitness: ",temp_fit)
             del temp_fit[:] 
@@ -1194,12 +1187,11 @@ class fF(object):
 
 
     def DEAP_wrapper(self,candidates,args={}):
-        candidates=[candidates]
         self.fitnes = []
         features = self.option.feats
         weigths = self.option.weights
         temp_fit = []
-        print(candidates)
+        
         self.model.load_neuron()
         
         if self.option.type[-1]!= 'features':
@@ -1213,52 +1205,52 @@ class fF(object):
         else:
             k_range=len(self.reader.features_data["stim_amp"])
         
-        for l in candidates:
-            if self.option.output_level == "1":
-                print(l)
-            l = self.ReNormalize(l)
-            if self.option.output_level == "1":
-                print(l)
-            for k in range(k_range):
-                try:
-                    add_data = [spike_frame(n - window, self.thres, n, 1, n + window, self.thres) for n in self.reader.additional_data.get(k)]
-                except AttributeError:
-                    add_data = None
-                args = {}
-                args["add_data"] = add_data
-                param = self.option.GetModelStimParam()
-                parameter = param
-                parameter[0] = param[0][k]
-                
-                if isinstance(parameter[0], str):
-                    self.model.SetCustStimuli(parameter)
-                else:
-                    extra_param = self.option.GetModelRun()
-                    self.model.SetStimuli(parameter, extra_param)
-
-                if (not self.modelRunner(l,k)):
-                    if self.option.output_level == "1":
-                        print(features, weigths)
-                    if (self.option.type[-1]!='features'):
-                        for f, w in zip(features, weigths):
-                            if abs(len(self.model.record[0])-len(self.reader.data.GetTrace(k)))>1:
-                                raise sizeError("model: " + str(len(self.model.record[0])) + ", target: " + str(len(self.reader.data.GetTrace(k))))
-                            temp_fit.append( (f(self.model.record[0],
-                                                              self.reader.data.GetTrace(k), args)))
-
-                    else:
-                        for f, w in zip(features, weigths):
-                            temp_fit.append( self.FFun_for_Features(self.model.record[0],
-                                                                self.reader.features_data, f, k, args))
-                else:
-                    temp_fit.append(0)
-
+        if self.option.output_level == "1":
+            print(candidates)
+        l = self.ReNormalize(candidates)
+        if self.option.output_level == "1":
+            print(l)
+        for k in range(k_range):
+            try:
+                add_data = [spike_frame(n - window, self.thres, n, 1, n + window, self.thres) for n in self.reader.additional_data.get(k)]
+            except AttributeError:
+                add_data = None
+            args = {}
+            args["add_data"] = add_data
+            param = self.option.GetModelStimParam()
+            parameter = param
+            parameter[0] = param[0][k]
             
-            self.fitnes.append(tuple(temp_fit))
+            if isinstance(parameter[0], str):
+                self.model.SetCustStimuli(parameter)
+            else:
+                extra_param = self.option.GetModelRun()
+                self.model.SetStimuli(parameter, extra_param)
 
+            if (not self.modelRunner(l,k)):
+                if self.option.output_level == "1":
+                    print(features, weigths)
+                if (self.option.type[-1]!='features'):
+                    for f, w in zip(features, weigths):
+                        if abs(len(self.model.record[0])-len(self.reader.data.GetTrace(k)))>1:
+                            raise sizeError("model: " + str(len(self.model.record[0])) + ", target: " + str(len(self.reader.data.GetTrace(k))))
+                        temp_fit.append( (f(self.model.record[0],
+                                                            self.reader.data.GetTrace(k), args)))
+
+                else:
+                    for f, w in zip(features, weigths):
+                        temp_fit.append( self.FFun_for_Features(self.model.record[0],
+                                                            self.reader.features_data, f, k, args))
+            else:
+                temp_fit.append(0)
+
+        
+            self.fitnes.append(tuple(temp_fit))
+                      
             if self.option.output_level == "1":
                 print("current fitness: ",temp_fit)
             del temp_fit[:] 
-        
+        self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
         
         return self.fitnes[0]
+

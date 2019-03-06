@@ -91,7 +91,7 @@ class modelHandlerNeuron():
         import neuron
 
 
-        print('*********** NEURON LOADED ***********')
+        #print('*********** NEURON LOADED ***********')
         self.base_directory=base
         self.special= None if special_path == 'None' else special_path
         self.model=model_path
