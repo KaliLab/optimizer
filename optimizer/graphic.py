@@ -1892,9 +1892,9 @@ class SecondWindow(QtWidgets.QMainWindow):
     def OnOk(self, e):
         try:
             #print self.string.GetValue()
-            ui.core.option_handler.u_fun_string = str(self.plaintext.toPlainText())
-            ui.core.option_handler.adjusted_params=[]
-            ui.modellist.setRowCount(0)
+            self.core.option_handler.u_fun_string = str(self.plaintext.toPlainText())
+            self.core.option_handler.adjusted_params=[]
+            self.modellist.setRowCount(0)
             text = ""
             text = list(map(str.strip, str(self.plaintext.toPlainText()).split("\n")))[4:-1]
             variables = []
@@ -1910,11 +1910,11 @@ class SecondWindow(QtWidgets.QMainWindow):
             if var_names==[]:
                 var_names=None
             for i in range(var_len):
-                ui.core.option_handler.SetOptParam(0.1)
+                self.core.option_handler.SetOptParam(0.1)
                 if var_names != None:
-                    ui.core.option_handler.SetObjTOOpt(var_names[i])
+                    self.core.option_handler.SetObjTOOpt(var_names[i])
                 else:
-                    ui.core.option_handler.SetObjTOOpt("Vector" + "[" + str(i) + "]")
+                    self.core.option_handler.SetObjTOOpt("Vector" + "[" + str(i) + "]")
             if variables[0] == '':
                 raise ValueError
             compile(self.plaintext.toPlainText(), '<string>', 'exec')
@@ -1966,7 +1966,7 @@ class StimuliWindow(QtWidgets.QMainWindow):
             vstep = 35
             hoffset = 10
             voffset = 50
-            unit="nA" if ui.dd_type.currentText()==0 else "mV"
+            unit="nA" if self.dd_type.currentText()==0 else "mV"
             for l in range(min(10, int(self.amplit_edit.text()))):
                 label = QtWidgets.QLabel(self)
                 label.setGeometry(QtCore.QRect(hoffset, voffset + l * vstep, 121, 16))
@@ -2067,8 +2067,8 @@ class BoundaryWindow(QtWidgets.QMainWindow):
 
     def Set(self, e):
         try:
-            ui.core.option_handler.boundaries[0] = [float(n.text()) for n in self.min]
-            ui.core.option_handler.boundaries[1] = [float(n.text()) for n in self.max]
+            self.core.option_handler.boundaries[0] = [float(n.text()) for n in self.min]
+            self.core.option_handler.boundaries[1] = [float(n.text()) for n in self.max]
         except ValueError:
             
             
@@ -2077,7 +2077,7 @@ class BoundaryWindow(QtWidgets.QMainWindow):
 
         else:
             for i in range(len(ui.core.option_handler.boundaries[0])):
-                if ui.core.option_handler.boundaries[0][i] >= ui.core.option_handler.boundaries[1][i] :
+                if self.core.option_handler.boundaries[0][i] >= self.core.option_handler.boundaries[1][i] :
                     
                     
                     popup("""Min boundary must be lower than max
@@ -2290,7 +2290,7 @@ class gridwindow(QtWidgets.QMainWindow):
             
             lbl.setFont(font)
             lbl.setObjectName("ctrl")
-            lbl.setText(QtCore.QCoreApplication.translate("Optimizer", ui.core.option_handler.GetObjTOOpt()[l].split()[-1]))
+            lbl.setText(QtCore.QCoreApplication.translate("Optimizer", self.core.option_handler.GetObjTOOpt()[l].split()[-1]))
 
             
             tmp_min = QtWidgets.QLineEdit(self)
@@ -2311,7 +2311,7 @@ class gridwindow(QtWidgets.QMainWindow):
         lbl.setGeometry(QtCore.QRect(hoffset, voffset + l * vstep, 121, 16))
         lbl.setFont(font)
         lbl.setObjectName("ctrl")
-        lbl.setText(QtCore.QCoreApplication.translate("Optimizer", ui.core.option_handler.GetObjTOOpt()[l].split()[-1]))
+        lbl.setText(QtCore.QCoreApplication.translate("Optimizer", self.core.option_handler.GetObjTOOpt()[l].split()[-1]))
         self.resolution_ctrl = QtWidgets.QLineEdit(self)
         self.resolution_ctrl.setGeometry(QtCore.QRect(hstep,600, 75, 30))
         self.resolution_ctrl.setObjectName("ctrl")
@@ -2327,9 +2327,9 @@ class gridwindow(QtWidgets.QMainWindow):
 
     def Set(self, e):
         try:
-            ui.core.option_handler.boundaries[0] = [float(n.GetValue()) for n in self.min]
-            ui.core.option_handler.boundaries[1] = [float(n.GetValue()) for n in self.max]
-            ui.resolution=int(self.resolution_ctrl.text())
+            self.core.option_handler.boundaries[0] = [float(n.GetValue()) for n in self.min]
+            self.core.option_handler.boundaries[1] = [float(n.GetValue()) for n in self.max]
+            self.resolution=int(self.resolution_ctrl.text())
             self.close()
         except ValueError as ve:
            popup("Invalid Value")
@@ -2338,7 +2338,6 @@ class gridwindow(QtWidgets.QMainWindow):
 
 class ErrorDialog(QtWidgets.QMainWindow):
     def __init__(self):
-        self.error_comp_table = wx.ListCtrl(panel,pos=(10,10),size=(600,300),style=wx.LC_REPORT | wx.BORDER_SUNKEN)
         self.error_comp_table.InsertColumn(0, 'Error Function', width=200)
         self.error_comp_table.InsertColumn(1, 'Value', width=200)
         self.error_comp_table.InsertColumn(2, 'Weight', width=200)
@@ -2370,7 +2369,8 @@ class ErrorDialog(QtWidgets.QMainWindow):
 def main(param=None):
     import sys
     if param!=None:
-        Core.option_handler.output_level=param.lstrip("-v_level=")
+        core=Core.coreModul()
+        core.option_handler.output_level=param.lstrip("-v_level=")
     app = QtWidgets.QApplication(sys.argv)
     Optimizer = QtWidgets.QMainWindow()
     ui = Ui_Optimizer()
