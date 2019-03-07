@@ -1963,7 +1963,7 @@ class StimuliWindow(QtWidgets.QMainWindow):
         self.data_handler=parent.core.data_handler
         try:
             if self.option_handler.type[-1]=="features":
-                self.number.SetValue((str(len(self.core.data_handler.features_data["stim_amp"]))))
+                self.amplit_edit.setText(str(len(self.core.data_handler.features_data["stim_amp"])))
                 self.Set(self) 
         except:
             print("No input file found")
