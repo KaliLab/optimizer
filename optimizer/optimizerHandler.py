@@ -42,7 +42,7 @@ from deap import creator
 from deap import tools
 import queue
 import Core
-from graphics import Ui_Optimizer
+from graphic import Ui_Optimizer
 import pickle as pickle
 
 from scipy import dot, exp, log, sqrt, floor, ones, randn

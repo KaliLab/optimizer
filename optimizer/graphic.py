@@ -1514,7 +1514,7 @@ class Ui_Optimizer(object):
                 print(self.aspectlist.item(row,1).text())
             """
             selected_algo = self.algolist.selectionModel().selectedRows()
-            algo_name=str(self.algolist.item(selected_algo[0].row(), 0).text()+' - '+str(self.algolist.item(selected_algo[0].row(), 1).text()))
+            algo_name=str(self.algolist.item(selected_algo[0].row(), 0).text())
             tmp = {"seed" : int(self.aspectlist.item(0,1).text()),
                 "evo_strat" : str(algo_name)
                 }
