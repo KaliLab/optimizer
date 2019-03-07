@@ -1332,7 +1332,7 @@ class Ui_Optimizer(object):
         Calls the user function window for the Model tab.
         """
 
-        self.SW = SecondWindow() 
+        self.SW = SecondWindow(self) 
         self.SW.setObjectName("Optimizer")
         self.SW.resize(500, 500)
         self.SW.show()
@@ -1342,7 +1342,7 @@ class Ui_Optimizer(object):
         Calls the amplitude window for the Options tab.
         """
 
-        self.SiW = StimuliWindow() 
+        self.SiW = StimuliWindow(self) 
         self.SiW.setObjectName("Optimizer")
         self.SiW.resize(400, 500)
         self.SiW.show()
@@ -1830,7 +1830,7 @@ class Ui_Optimizer(object):
         self.extra_error_dialog.Show()
 
     def boundarywindow(self):
-        self.BW = BoundaryWindow() 
+        self.BW = BoundaryWindow(self) 
         self.BW.setObjectName("Optimizer")
         self.BW.resize(400, 500)
         self.BW.show()
@@ -1846,7 +1846,7 @@ class Ui_Optimizer(object):
 
     
 class SecondWindow(QtWidgets.QMainWindow):
-    def __init__(self): 
+    def __init__(self,parent): 
         super(SecondWindow, self).__init__()
         _translate = QtCore.QCoreApplication.translate
         self.core=Core.coreModul()
@@ -1872,6 +1872,9 @@ class SecondWindow(QtWidgets.QMainWindow):
         self.pushButton_47.setObjectName("pushButton_47")
         self.pushButton_47.setText(_translate("Ufun", "Cancel"))
         self.pushButton_47.clicked.connect(self.close)
+        self.option_handler=parent.core.option_handler 
+        self.modellist=parent.modellist
+            
         
 
 
@@ -1892,8 +1895,8 @@ class SecondWindow(QtWidgets.QMainWindow):
     def OnOk(self, e):
         try:
             #print self.string.GetValue()
-            self.core.option_handler.u_fun_string = str(self.plaintext.toPlainText())
-            self.core.option_handler.adjusted_params=[]
+            self.option_handler.u_fun_string = str(self.plaintext.toPlainText())
+            self.option_handler.adjusted_params=[]
             self.modellist.setRowCount(0)
             text = ""
             text = list(map(str.strip, str(self.plaintext.toPlainText()).split("\n")))[4:-1]
@@ -1910,11 +1913,11 @@ class SecondWindow(QtWidgets.QMainWindow):
             if var_names==[]:
                 var_names=None
             for i in range(var_len):
-                self.core.option_handler.SetOptParam(0.1)
+                self.opt_hand.SetOptParam(0.1)
                 if var_names != None:
-                    self.core.option_handler.SetObjTOOpt(var_names[i])
+                    self.option_handler.SetObjTOOpt(var_names[i])
                 else:
-                    self.core.option_handler.SetObjTOOpt("Vector" + "[" + str(i) + "]")
+                    self.option_handler.SetObjTOOpt("Vector" + "[" + str(i) + "]")
             if variables[0] == '':
                 raise ValueError
             compile(self.plaintext.toPlainText(), '<string>', 'exec')
@@ -1926,7 +1929,7 @@ class SecondWindow(QtWidgets.QMainWindow):
     
 
 class StimuliWindow(QtWidgets.QMainWindow):
-    def __init__(self): 
+    def __init__(self,parent): 
         super(StimuliWindow, self).__init__()
         _translate = QtCore.QCoreApplication.translate
         self.core=Core.coreModul()
@@ -1955,9 +1958,15 @@ class StimuliWindow(QtWidgets.QMainWindow):
         self.pushButton_accept.setText(_translate("Optimizer", "Create"))
         self.pushButton_accept.clicked.connect(self.Accept)
         self.pushButton_accept.setEnabled(False)
-        if self.core.option_handler.type[-1]=="features":
-            self.number.SetValue((str(len(self.core.data_handler.features_data["stim_amp"]))))
-            self.Set(self) 
+        self.dd_type=parent.dd_type
+        self.option_handler=parent.core.option_handler
+        self.data_handler=parent.core.data_handler
+        try:
+            if self.option_handler.type[-1]=="features":
+                self.number.SetValue((str(len(self.core.data_handler.features_data["stim_amp"]))))
+                self.Set(self) 
+        except:
+            print("No input file found")
 
     def Set(self, e):
         try:
@@ -1985,8 +1994,8 @@ class StimuliWindow(QtWidgets.QMainWindow):
                 amplitude_edit.show()
                 #wx.StaticText(self.panel, label="Amplitude" + str(l+1) + " ("+unit+"):", pos=(hoffset, voffset + l * vstep))
                 #tmp_obj = wx.TextCtrl(self.panel, id=l, pos=(hstep / 2+25, voffset + l * vstep), size=(75, 30))
-                if self.core.option_handler.type[-1]=="features":
-                    amplitude_edit.setText(str(self.core.data_handler.features_data["stim_amp"][l]))
+                if self.option_handler.type[-1]=="features":
+                    amplitude_edit.setText(str(self.data_handler.features_data["stim_amp"][l]))
 
                 self.temp.append(amplitude_edit)
             self.pushButton_accept.setEnabled(True)
@@ -2002,7 +2011,7 @@ class StimuliWindow(QtWidgets.QMainWindow):
 
     
 class BoundaryWindow(QtWidgets.QMainWindow):
-    def __init__(self): 
+    def __init__(self,parent): 
         super(BoundaryWindow, self).__init__()
         _translate = QtCore.QCoreApplication.translate
         self.core=Core.coreModul()
@@ -2012,9 +2021,11 @@ class BoundaryWindow(QtWidgets.QMainWindow):
         voffset = 15
         self.min = []
         self.max = []
+        params=parent.core.option_handler.GetObjTOOpt()
+        self.option_handler=parent.option_handler
 
-        for l in range(len(ui.core.option_handler.GetObjTOOpt())):
-            param=ui.core.option_handler.GetObjTOOpt()[l].split()
+        for l in range(len(params)):
+            param=params[l].split()
             if len(param)==4:
                 label=param[0] + " " + param[1] + " " + param[3]
             else:
@@ -2044,9 +2055,9 @@ class BoundaryWindow(QtWidgets.QMainWindow):
             tmp_min.show()
             self.min.append(tmp_min)
             self.max.append(tmp_max)
-            if len(ui.core.option_handler.boundaries[1]) == len(ui.core.option_handler.GetObjTOOpt()):
-                tmp_min.setText(str(ui.core.option_handler.boundaries[0][l]))
-                tmp_max.setText(str(ui.core.option_handler.boundaries[1][l]))
+            if len([1]) == len(self.option_handler.GetObjTOOpt()):
+                tmp_min.setText(str(self.option_handler.boundaries[0][l]))
+                tmp_max.setText(str(self.option_handler.boundaries[1][l]))
         
         Setbutton = QtWidgets.QPushButton(self)
         Setbutton.setGeometry(QtCore.QRect(10, 400, 80, 22))
@@ -2067,8 +2078,8 @@ class BoundaryWindow(QtWidgets.QMainWindow):
 
     def Set(self, e):
         try:
-            self.core.option_handler.boundaries[0] = [float(n.text()) for n in self.min]
-            self.core.option_handler.boundaries[1] = [float(n.text()) for n in self.max]
+            self.option_handler.boundaries[0] = [float(n.text()) for n in self.min]
+            self.option_handler.boundaries[1] = [float(n.text()) for n in self.max]
         except ValueError:
             
             
@@ -2076,8 +2087,8 @@ class BoundaryWindow(QtWidgets.QMainWindow):
             
 
         else:
-            for i in range(len(ui.core.option_handler.boundaries[0])):
-                if self.core.option_handler.boundaries[0][i] >= self.core.option_handler.boundaries[1][i] :
+            for i in range(len(self.option_handler.boundaries[0])):
+                if self.option_handler.boundaries[0][i] >= self.core.option_handler.boundaries[1][i] :
                     
                     
                     popup("""Min boundary must be lower than max
@@ -2120,7 +2131,7 @@ class BoundaryWindow(QtWidgets.QMainWindow):
 
 
 class startingpoints(QtWidgets.QMainWindow):
-    def __init__(self,*args,**kwargs):
+    def __init__(self,parent,*args,**kwargs):
         super(startingpoints,self).__init__()
         _translate = QtCore.QCoreApplication.translate
         n_o_params=args[1]
@@ -2131,7 +2142,7 @@ class startingpoints(QtWidgets.QMainWindow):
         hoffset = 10
         voffset = 15
         for n in range(n_o_params):
-            param=ui.core.option_handler.GetObjTOOpt()[n].split()
+            param=parent.option_handler.GetObjTOOpt()[n].split()
             if len(param)==4:
                 p_name=param[0] + " " + param[1] + " " + param[3]
             else:
@@ -2270,7 +2281,8 @@ class startingpoints(QtWidgets.QMainWindow):
 
 
 class gridwindow(QtWidgets.QMainWindow):
-    def __init__(self,*args):
+    def __init__(self,parent,*args):
+        super(gridwindow,self).__init__()
         _translate = QtCore.QCoreApplication.translate
         hstep = 200
         vstep = 35
@@ -2283,14 +2295,15 @@ class gridwindow(QtWidgets.QMainWindow):
         font.setPointSize(10)
         font.setBold(False)
         font.setWeight(50)
+        self.option_handler=parent.core.option_handler
 
-        for l in range(len(ui.core.option_handler.GetObjTOOpt())):
+        for l in range(len(self.option_handler.GetObjTOOpt())):
             lbl = QtWidgets.QLabel(self)
             lbl.setGeometry(QtCore.QRect(hoffset, voffset + l * vstep, 121, 16))
             
             lbl.setFont(font)
             lbl.setObjectName("ctrl")
-            lbl.setText(QtCore.QCoreApplication.translate("Optimizer", self.core.option_handler.GetObjTOOpt()[l].split()[-1]))
+            lbl.setText(QtCore.QCoreApplication.translate("Optimizer", self.option_handler.GetObjTOOpt()[l].split()[-1]))
 
             
             tmp_min = QtWidgets.QLineEdit(self)
@@ -2303,19 +2316,19 @@ class gridwindow(QtWidgets.QMainWindow):
             tmp_min.show()
             self.min.append(tmp_min)
             self.max.append(tmp_max)
-            if len(ui.core.option_handler.boundaries[1]) == len(ui.core.option_handler.GetObjTOOpt()):
-                tmp_min.SetValue(str(ui.core.option_handler.boundaries[0][l]))
-                tmp_max.SetValue(str(ui.core.option_handler.boundaries[1][l]))
+            if len(self.option_handler.boundaries[1]) == len(self.option_handler.GetObjTOOpt()):
+                tmp_min.SetValue(str(self.option_handler.boundaries[0][l]))
+                tmp_max.SetValue(str(self.option_handler.boundaries[1][l]))
 
         lbl = QtWidgets.QLabel(self)
         lbl.setGeometry(QtCore.QRect(hoffset, voffset + l * vstep, 121, 16))
         lbl.setFont(font)
         lbl.setObjectName("ctrl")
-        lbl.setText(QtCore.QCoreApplication.translate("Optimizer", self.core.option_handler.GetObjTOOpt()[l].split()[-1]))
+        lbl.setText(QtCore.QCoreApplication.translate("Optimizer", self.option_handler.GetObjTOOpt()[l].split()[-1]))
         self.resolution_ctrl = QtWidgets.QLineEdit(self)
         self.resolution_ctrl.setGeometry(QtCore.QRect(hstep,600, 75, 30))
         self.resolution_ctrl.setObjectName("ctrl")
-        self.resolution_ctrl.setText(str(ui.resolution))
+        self.resolution_ctrl.setText(str(parent.resolution))
 
         Setbutton = QtWidgets.QPushButton(self)
         Setbutton.setGeometry(QtCore.QRect(hstep, 650, 80, 22))
@@ -2327,8 +2340,8 @@ class gridwindow(QtWidgets.QMainWindow):
 
     def Set(self, e):
         try:
-            self.core.option_handler.boundaries[0] = [float(n.GetValue()) for n in self.min]
-            self.core.option_handler.boundaries[1] = [float(n.GetValue()) for n in self.max]
+            self.option_handler.boundaries[0] = [float(n.GetValue()) for n in self.min]
+            self.option_handler.boundaries[1] = [float(n.GetValue()) for n in self.max]
             self.resolution=int(self.resolution_ctrl.text())
             self.close()
         except ValueError as ve:
@@ -2337,7 +2350,8 @@ class gridwindow(QtWidgets.QMainWindow):
 
 
 class ErrorDialog(QtWidgets.QMainWindow):
-    def __init__(self):
+    def __init__(self,parent):
+        super(ErrorDialog,self).__init__()
         self.error_comp_table.InsertColumn(0, 'Error Function', width=200)
         self.error_comp_table.InsertColumn(1, 'Value', width=200)
         self.error_comp_table.InsertColumn(2, 'Weight', width=200)
@@ -2345,10 +2359,10 @@ class ErrorDialog(QtWidgets.QMainWindow):
 
         tmp_w_sum=0
         c_idx=0
-        for t in self.parent.core.error_comps:
+        for t in parent.core.error_comps:
             for c in t:
                 #tmp_str.append( "*".join([str(c[0]),c[1].__name__]))
-                if self.parent.core.option_handler.type[-1]!="features":
+                if parent.core.option_handler.type[-1]!="features":
                     idx=self.error_comp_table.InsertStringItem(c_idx,self.parent.core.ffun_mapper[c[1].__name__])
                 else:
                     idx=self.error_comp_table.InsertStringItem(c_idx,c[1])
