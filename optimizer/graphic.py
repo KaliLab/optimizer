@@ -1134,7 +1134,11 @@ class Ui_Optimizer(object):
             self.lineEdit_tstop.setText(str(self.core.data_handler.data.t_length))
         else:
             self.lineEdit_tstop.setText(str(self.core.data_handler.features_data["stim_delay"] + self.core.data_handler.features_data["stim_duration"]+100))
+            self.lineEdit_delay.setText(str(self.core.data_handler.features_data["stim_delay"]))
+            self.lineEdit_duration.setText(str(self.core.data_handler.features_data["stim_duration"]))    
+
         self.fitlist.cellChanged.connect(self.fitchanged)
+
         
         
         
