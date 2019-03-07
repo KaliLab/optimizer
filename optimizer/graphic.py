@@ -1913,7 +1913,7 @@ class SecondWindow(QtWidgets.QMainWindow):
             if var_names==[]:
                 var_names=None
             for i in range(var_len):
-                self.opt_hand.SetOptParam(0.1)
+                self.option_handler.SetOptParam(0.1)
                 if var_names != None:
                     self.option_handler.SetObjTOOpt(var_names[i])
                 else:
