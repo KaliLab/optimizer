@@ -1107,7 +1107,10 @@ class Ui_Optimizer(object):
             item = QTableWidgetItem(elems)
             item.setFlags( QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled )      
             self.fitlist.setItem(index, 0, item)
-            self.fitlist.setItem(index, 1, QTableWidgetItem("0"))
+            if self.core.option_handler.type[-1]=="features":
+                self.fitlist.setItem(index, 1, QTableWidgetItem(str(self.core.data_handler.features_data[self.my_list[index]]["weight"])))
+            else:
+                self.fitlist.setItem(index, 1, QTableWidgetItem("0"))
 
         if self.core.option_handler.type[-1]!="features":
             self.kwargs={"runparam" : [self.core.data_handler.data.t_length,
@@ -1952,10 +1955,9 @@ class StimuliWindow(QtWidgets.QMainWindow):
         self.pushButton_accept.setText(_translate("Optimizer", "Create"))
         self.pushButton_accept.clicked.connect(self.Accept)
         self.pushButton_accept.setEnabled(False)
-        
-        #if self.core.option_handler.type[-1]=="features":
-        #    self.number.SetValue((str(len(self.core.data_handler.features_data["stim_amp"]))))
-        #    self.Set(self) 
+        if self.core.option_handler.type[-1]=="features":
+            self.number.SetValue((str(len(self.core.data_handler.features_data["stim_amp"]))))
+            self.Set(self) 
 
     def Set(self, e):
         try:
@@ -1983,8 +1985,8 @@ class StimuliWindow(QtWidgets.QMainWindow):
                 amplitude_edit.show()
                 #wx.StaticText(self.panel, label="Amplitude" + str(l+1) + " ("+unit+"):", pos=(hoffset, voffset + l * vstep))
                 #tmp_obj = wx.TextCtrl(self.panel, id=l, pos=(hstep / 2+25, voffset + l * vstep), size=(75, 30))
-                #if self.core.option_handler.type[-1]=="features":
-                #    amplitude_edit.setText(str(self.core.data_handler.features_data["stim_amp"][l]))
+                if self.core.option_handler.type[-1]=="features":
+                    amplitude_edit.setText(str(self.core.data_handler.features_data["stim_amp"][l]))
 
                 self.temp.append(amplitude_edit)
             self.pushButton_accept.setEnabled(True)
@@ -2365,13 +2367,17 @@ class ErrorDialog(QtWidgets.QMainWindow):
             tmp_w_sum=0
 
 
-
-if __name__ == "__main__":
+def main(param=None):
     import sys
+    if param!=None:
+        Core.option_handler.output_level=param.lstrip("-v_level=")
     app = QtWidgets.QApplication(sys.argv)
     Optimizer = QtWidgets.QMainWindow()
     ui = Ui_Optimizer()
     ui.setupUi(Optimizer)
     Optimizer.show()
     sys.exit(app.exec_())
+
+if __name__ == "__main__":
+    main()    
 

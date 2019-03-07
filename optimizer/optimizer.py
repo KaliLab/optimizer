@@ -18,6 +18,7 @@ def main(parameters):
         #os.system(os.getcwd()+"/graphic.py")
         import graphic
         try:
+            print(parameters[1])
             graphic.main(parameters[1])
         except IndexError:
             graphic.main()
