@@ -822,7 +822,7 @@ class fF(object):
         add_data = args.get("add_data", None)
         temp_fit = 0
         spikes = [[], []]
-        
+
         if (self.model.spike_times == None):
             spikes[0] = self.detectSpike(mod_t)
         else:
