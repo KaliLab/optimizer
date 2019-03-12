@@ -822,7 +822,7 @@ class fF(object):
         add_data = args.get("add_data", None)
         temp_fit = 0
         spikes = [[], []]
-        #window = self.option.spike_window
+        
         if (self.model.spike_times == None):
             spikes[0] = self.detectSpike(mod_t)
         else:
@@ -920,34 +920,13 @@ class fF(object):
 
         efel.setThreshold(self.thres)
 
-        '''
 
-        used_features=list(features)
-
-        AP_num = efel.getFeatureValues(traces,['Spikecount'])
-        for i in range (len(features)):
-            if AP_num[0]['Spikecount'] == 0 and features_data[features[i]]["requires_spike"]=="True":
-                used_features.remove(features[i])
-                temp_fit += 10  #MEnnyi legyen a bunti?
-
-            if AP_num[0]['Spikecount'] <2 and "ISI" in features_data[features[i]]:
-                used_features.remove(features[i])
-                temp_fit += 1
-
-        '''
-
-        #traces_results = efel.getFeatureValues(traces,[feature])      #list
         traces_results = self.get_efel_values(traces, feature)
-        #print traces_results
 
         exp_mean = features_data[feature]["mean"][k]
         exp_std = features_data[feature]["std"][k]
         mod_result=traces_results[0][feature]
-        #print feature
-
-        #print "exp mean", exp_mean
-        #print "exp std", exp_std
-        #print "model", mod_result
+        
 
         if mod_result is not None and mod_result.size > 1 and (feature == 'AP_rise_time' or feature == 'AP_amplitude' or feature == 'AP_duration_half_width' or feature == 'AP_begin_voltage' or feature == 'AP_rise_rate'):
             mod_result = scipy.mean(mod_result[1:])
@@ -960,12 +939,11 @@ class fF(object):
             temp_fit=250
         elif exp_mean == None and exp_std == None :
             temp_fit=0
-        #elif exp_mean != None and exp_std != None :
+
         else:
             result = abs(exp_mean - mod_result) / exp_std
             temp_fit = result
 
-        #print temp_fit
         return temp_fit
 
     def combineFeatures(self, candidates, args={}):

@@ -7,7 +7,7 @@
   <cognitive_rate>None</cognitive_rate>
   <cooling_rate>None</cooling_rate>
   <crossover_rate>None</crossover_rate>
-  <evo_strat>Indicator Based (IBEA) - Bluepyopt</evo_strat>
+  <evo_strat>Evolutionary Algorithm (EA) - Inspyred</evo_strat>
   <f_tol>None</f_tol>
   <feats>MSE (excl. spikes), Spike count (stim.), Latency to 1st spike</feats>
   <force_bounds>None</force_bounds>

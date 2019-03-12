@@ -1307,7 +1307,7 @@ class Indicator_Based_Bluepyopt(oldBaseOptimizer):
 		feats=self.get_feat_names(self.option_obj.GetFitnessParam())
 		feats_and_weights=[x for x in zip(feats[0],feats[1])]
 		params=zip(self.param_names,self.min_max[0],self.min_max[1])
-		try:
+		"""try:
 			from ipyparallel import Client
 			print("******************PARALLEL RUN : IBEA *******************")
 			os.system("ipcluster start -n "+str(int(self.number_of_cpu))+" &")
@@ -1318,12 +1318,12 @@ class Indicator_Based_Bluepyopt(oldBaseOptimizer):
 			optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(params,self.deapfun,feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),map_function=map_function,selector_name='IBEA')
 			self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))
 			os.system("ipcluster stop")
-		except Exception:
-			os.system("ipcluster stop")
-			print("*****************Single Run : IBEA *******************")
-			optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(params,self.deapfun,feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),selector_name='IBEA')
-			self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))	
-			
+		except Exception:"""
+		os.system("ipcluster stop")
+		print("*****************Single Run : IBEA *******************")
+		optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(params,self.deapfun,feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),selector_name='IBEA')
+		self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))	
+		
 
 	def SetBoundaries(self,bounds):
 		"""

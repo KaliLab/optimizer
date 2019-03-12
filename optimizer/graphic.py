@@ -1647,7 +1647,7 @@ class Ui_Optimizer(object):
             transparent=False, bbox_inches=None, pad_inches=0.1)
             self.figure2.savefig("result_trace.eps", dpi=None, facecolor='w', edgecolor='w')
             self.figure2.savefig("result_trace.svg", dpi=None, facecolor='w', edgecolor='w')
-            axes.hold(False)
+            plt.hold(False)
             self.canvas2.draw()
             plt.tight_layout()
         
