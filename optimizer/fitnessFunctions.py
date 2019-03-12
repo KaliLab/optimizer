@@ -182,7 +182,6 @@ class fF(object):
         :param act_trace_idx: used by the external simulator to select current stimulation protocol
 
         """
-        #params=candidates
 
     
         error=0
@@ -193,15 +192,18 @@ class fF(object):
             current_time = str(time.time() + param_sum).replace('.','')
             unique_ID = pid + current_time
             self.model.record[0] = []
+            print('PID ', pid, ' ************')
             
             with open(self.option.base_dir + "/params" + unique_ID + ".param" , "w") as out_handler:
+                print("CANDIDATES")
+                print(candidates)
                 for c in candidates:
                     out_handler.write(str(c) + "\n")
                 out_handler.write(str(act_trace_idx))
             
             from subprocess import call
             error=call(self.model.GetExec(unique_ID))
-            
+
             params_file = 'params' + unique_ID + '.param' 
             
             try:
@@ -216,14 +218,16 @@ class fF(object):
                 for line in in_handler:
                     self.model.record[0].append(float(line.split()[-1]))
 
+             
             try:
                 with open(self.option.base_dir + '/spike' + unique_ID + '.dat', "r") as in_handler:
                     self.model.spike_times = []
                     for line in in_handler:
                         self.model.spike_times.append(int(float(line) / (1000.0 / self.option.input_freq)))
+                        #print self.model.spike_times[1:10]
             except OSError:
                 pass
-
+            
             os.remove(self.option.base_dir + '/trace' + unique_ID + '.dat')
             
             try:
@@ -1100,8 +1104,9 @@ class fF(object):
         features = self.option.feats
         weigths = self.option.weights
         temp_fit = []
-        
-        self.model.load_neuron()
+        if(self.option.simulator == 'Neuron'):
+            self.model.load_neuron()
+
         if self.option.type[-1]!= 'features':
             window = int(self.option.spike_window)
         else:
@@ -1155,7 +1160,8 @@ class fF(object):
 
             
             self.fitnes.append(ec.emo.Pareto(tuple(temp_fit)))
-            self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
+            if(self.option.simulator == 'Neuron'):
+                self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
         
             if self.option.output_level == "1":
                 print("current fitness: ",temp_fit)
@@ -1170,8 +1176,8 @@ class fF(object):
         features = self.option.feats
         weigths = self.option.weights
         temp_fit = []
-        
-        self.model.load_neuron()
+        if(self.option.simulator == 'Neuron'):
+            self.model.load_neuron()
         
         if self.option.type[-1]!= 'features':
             window = int(self.option.spike_window)
@@ -1229,7 +1235,8 @@ class fF(object):
             if self.option.output_level == "1":
                 print("current fitness: ",temp_fit)
             del temp_fit[:] 
-        self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
+        if(self.option.simulator == 'Neuron'):
+            self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
         
         return self.fitnes[0]
 

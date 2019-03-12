@@ -2,15 +2,17 @@
 <settings>
   <simulator>external</simulator>
   <f_tol>None</f_tol>
-  <max_evaluation>10.0</max_evaluation>
+  <max_evaluation>20</max_evaluation>
   <spike_window>5.0</spike_window>
-  <evo_strat>Evolutionary Algorithm (EA) - Inspyred</evo_strat>
+  <evo_strat>Indicator Based (IBEA) - Bluepyopt</evo_strat>
+  <num_islands>2.0</num_islands>
   <seed>1234.0</seed>
   <m_gauss>None</m_gauss>
   <run_controll_vrest>vrest</run_controll_vrest>
   <starting_points>None</starting_points>
   <cooling_rate>None</cooling_rate>
-  <pop_size>10.0</pop_size>
+  <number_of_cpu>4</number_of_cpu>
+  <pop_size>20</pop_size>
   <adjusted_params>['parameter0', 'parameter1', 'parameter2', 'parameter3', 'parameter4', 'parameter5', 'parameter6', 'parameter7', 'parameter8', 'parameter9']</adjusted_params>
   <num_repet>None</num_repet>
   <param_vals>[]</param_vals>
@@ -19,7 +21,7 @@
   <stim_sec>&quot;&quot;</stim_sec>
   <spike_thres>0.0</spike_thres>
   <cognitive_rate>None</cognitive_rate>
-  <boundaries>[[0.001, 10.0, -70.0, -40.0, -40.0, 0.5, -5.0, 0.0, 0.5, 10.0], [0.01, 100.0, -40.0, -10.0, -10.0, 5.0, 5.0, 1.0, 5.0, 500.0]]</boundaries>
+  <boundaries>[[0.001, 10.0, -70.0, 0.0, -40.0, 0.5, -5.0, 0.0, 0.5, 10.0], [0.01, 100.0, -40.0, 30.0, -10.0, 5.0, 5.0, 1.0, 5.0, 500.0]]</boundaries>
   <step_size>None</step_size>
   <stim_pos>0</stim_pos>
   <neighborhood_size>None</neighborhood_size>
@@ -27,12 +29,12 @@
   <input_size>4</input_size>
   <type>['voltage']</type>
   <x_tol>None</x_tol>
-  <number_of_cpu>4.0</number_of_cpu>
   <feats>MSE (excl. spikes), Spike count (stim.), Latency to 1st spike</feats>
   <input_length>1100</input_length>
   <sim_command>python /home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py 10</sim_command>
   <init_temp>None</init_temp>
   <num_params>10</num_params>
+  <force_bounds>True</force_bounds>
   <stim_dur>0</stim_dur>
   <run_controll_dt>0.2</run_controll_dt>
   <run_controll_sec>sec</run_controll_sec>
@@ -55,6 +57,6 @@
   <model_path>&quot;&quot;</model_path>
   <run_controll_pos>pos</run_controll_pos>
   <update_freq>None</update_freq>
-  <num_iter>None</num_iter>
+  <num_iter>2.0</num_iter>
   <base_dir>/home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc</base_dir>
 </settings>

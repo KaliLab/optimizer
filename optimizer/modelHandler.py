@@ -59,6 +59,7 @@ class externalHandler():
         for o in self.options:
             tmp.append(o)
         tmp += [unique_ID]
+        print(tmp)
         return tmp
 
     def GetParameters(self):

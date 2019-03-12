@@ -1,0 +1,729 @@
+['/home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc', ['/home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/ca3_pc_v2_4.csv', 4, 'mV', 1100, 5000, 'True', 'voltage'], ['""', '""'], ['""', 0, '""'], [[0, 0, 0, 0], 0, 0], ['parameter0', 'parameter1', 'parameter2', 'parameter3', 'parameter4', 'parameter5', 'parameter6', 'parameter7', 'parameter8', 'parameter9'], [''], [[{'Spike Detection Thres. (mv)': 0.0, 'Spike Window (ms)': 5.0}, ['MSE (excl. spikes)', 'Spike count (stim.)', 'Latency to 1st spike']], [0.333333333333, 0.333333333333, 0.333333333333]], {'seed': 1234.0, 'evo_strat': 'Evolutionary Algorithm (EA) - Inspyred', 'Size of Population:': 10.0, 'Number of Islands:': None, 'Number of Generations:': 10.0, 'Force bounds:': None, 'Mutation Rate:': 0.25, 'Crossover Rate:': None, 'Cooling Rate:': 'None', 'Mean of Gaussian:': 'None', 'Std. Deviation of Gaussian:': 'None', 'Initial Temperature:': 'None', 'Step Size:': 'None', 'Temperature:': 'None', 'Update Frequency:': 'None', 'Number of Iterations:': 'None', 'Number of Repetition:': 'None', 'Error Tolerance for x:': 'None', 'Error Tolerance for f:': 'None', 'num_params': 10, 'boundaries': [[0.001, 10.0, -70.0, -40.0, -40.0, 0.5, -5.0, 0.0, 0.5, 10.0], [0.01, 100.0, -40.0, -10.0, -10.0, 5.0, 5.0, 1.0, 5.0, 500.0]], 'starting_points': 'None', 'Inertia:': 'None', 'Cognitive Rate:': 'None', 'Social Rate:': 'None', 'Neighborhood Size:': 'None', 'Number of CPU:': 1.0}]
+
+
+already selected
+
+already selected
+
+already selected
+
+already selected
+
+already selected
+
+already selected
+
+already selected
+
+already selected
+
+already selected
+
+already selected
+
+*********************Evolutionary_Algorithm_Inspyred
+NEURON mechanisms not found in "".
+[INFO] [2019.3.12 16:33:1 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:238 @ Network::create_rngs_] : Creating default RNGs
+[INFO] [2019.3.12 16:33:1 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:284 @ Network::create_grng_] : Creating new default global RNG
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: v2.16.0
+ Built: Mar 12 2019 15:03:13
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit http://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+Mar 12 16:33:01 ModelManager::clear_models_ [Info]: 
+    Models will be cleared and parameters reset.
+
+Mar 12 16:33:01 Network::create_rngs_ [Info]: 
+    Deleting existing random number generators
+
+Mar 12 16:33:01 Network::create_rngs_ [Info]: 
+    Creating default RNGs
+
+Mar 12 16:33:01 Network::create_grng_ [Info]: 
+    Creating new default global RNG
+
+Mar 12 16:33:01 NodeManager::prepare_nodes [Info]: 
+    Preparing 4 nodes for simulation.
+
+Mar 12 16:33:01 SimulationManager::run [Warning]: 
+    The requested simulation time is not an integer multiple of the minimal 
+    delay in the network. This may result in inconsistent results under the 
+    following conditions: (i) A network contains more than one source of 
+    randomness, e.g., two different poisson_generators, and (ii) Simulate is 
+    called repeatedly with simulation times that are not multiples of the 
+    minimal delay.
+
+Mar 12 16:33:01 SimulationManager::start_updating_ [Info]: 
+    Number of local nodes: 4
+    Simulation time (ms): 1100.1
+    Number of OpenMP threads: 1
+    Not using MPI
+
+Mar 12 16:33:01 SimulationManager::resume [Info]: 
+    Simulation finished.
+{'C_m': 481.66429093999693, 'g_L': 9.698081821229248, 'E_L': -69.77525589824238, 'E_ex': 0.0, 'E_in': -70.0, 'tau_syn_ex': 3.0, 'tau_syn_in': 1.5, 't_ref': 3.120024078765271, 'V_reset': 0.848791047439196, 'V_th': -11.821930079087078, 'a': 1.7156348148798504, 'b': 83.93822683708396, 'Delta_T': 3.9491641975630833, 'tau_w': 126.0367899279277, 'V_peak': 7.923890908728339}
+[INFO] [2019.3.12 16:33:1 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:238 @ Network::create_rngs_] : Creating default RNGs
+[INFO] [2019.3.12 16:33:1 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:284 @ Network::create_grng_] : Creating new default global RNG
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: v2.16.0
+ Built: Mar 12 2019 15:03:13
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit http://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+Mar 12 16:33:01 ModelManager::clear_models_ [Info]: 
+    Models will be cleared and parameters reset.
+
+Mar 12 16:33:01 Network::create_rngs_ [Info]: 
+    Deleting existing random number generators
+
+Mar 12 16:33:01 Network::create_rngs_ [Info]: 
+    Creating default RNGs
+
+Mar 12 16:33:01 Network::create_grng_ [Info]: 
+    Creating new default global RNG
+
+Mar 12 16:33:01 NodeManager::prepare_nodes [Info]: 
+    Preparing 4 nodes for simulation.
+
+Mar 12 16:33:01 SimulationManager::run [Warning]: 
+    The requested simulation time is not an integer multiple of the minimal 
+    delay in the network. This may result in inconsistent results under the 
+    following conditions: (i) A network contains more than one source of 
+    randomness, e.g., two different poisson_generators, and (ii) Simulate is 
+    called repeatedly with simulation times that are not multiples of the 
+    minimal delay.
+
+Mar 12 16:33:01 SimulationManager::start_updating_ [Info]: 
+    Number of local nodes: 4
+    Simulation time (ms): 1100.1
+    Number of OpenMP threads: 1
+    Not using MPI
+
+Mar 12 16:33:01 SimulationManager::resume [Info]: 
+    Simulation finished.
+{'C_m': 481.66429093999693, 'g_L': 9.698081821229248, 'E_L': -69.77525589824238, 'E_ex': 0.0, 'E_in': -70.0, 'tau_syn_ex': 3.0, 'tau_syn_in': 1.5, 't_ref': 3.120024078765271, 'V_reset': 0.848791047439196, 'V_th': -11.821930079087078, 'a': 1.7156348148798504, 'b': 83.93822683708396, 'Delta_T': 3.9491641975630833, 'tau_w': 126.0367899279277, 'V_peak': 7.923890908728339}
+[INFO] [2019.3.12 16:33:1 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:238 @ Network::create_rngs_] : Creating default RNGs
+[INFO] [2019.3.12 16:33:1 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:284 @ Network::create_grng_] : Creating new default global RNG
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: v2.16.0
+ Built: Mar 12 2019 15:03:13
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit http://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+Mar 12 16:33:02 ModelManager::clear_models_ [Info]: 
+    Models will be cleared and parameters reset.
+
+Mar 12 16:33:02 Network::create_rngs_ [Info]: 
+    Deleting existing random number generators
+
+Mar 12 16:33:02 Network::create_rngs_ [Info]: 
+    Creating default RNGs
+
+Mar 12 16:33:02 Network::create_grng_ [Info]: 
+    Creating new default global RNG
+
+Mar 12 16:33:02 NodeManager::prepare_nodes [Info]: 
+    Preparing 4 nodes for simulation.
+
+Mar 12 16:33:02 SimulationManager::run [Warning]: 
+    The requested simulation time is not an integer multiple of the minimal 
+    delay in the network. This may result in inconsistent results under the 
+    following conditions: (i) A network contains more than one source of 
+    randomness, e.g., two different poisson_generators, and (ii) Simulate is 
+    called repeatedly with simulation times that are not multiples of the 
+    minimal delay.
+
+Mar 12 16:33:02 SimulationManager::start_updating_ [Info]: 
+    Number of local nodes: 4
+    Simulation time (ms): 1100.1
+    Number of OpenMP threads: 1
+    Not using MPI
+
+Mar 12 16:33:02 SimulationManager::resume [Info]: 
+    Simulation finished.
+{'C_m': 481.66429093999693, 'g_L': 9.698081821229248, 'E_L': -69.77525589824238, 'E_ex': 0.0, 'E_in': -70.0, 'tau_syn_ex': 3.0, 'tau_syn_in': 1.5, 't_ref': 3.120024078765271, 'V_reset': 0.848791047439196, 'V_th': -11.821930079087078, 'a': 1.7156348148798504, 'b': 83.93822683708396, 'Delta_T': 3.9491641975630833, 'tau_w': 126.0367899279277, 'V_peak': 7.923890908728339}
+[INFO] [2019.3.12 16:33:2 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:238 @ Network::create_rngs_] : Creating default RNGs
+[INFO] [2019.3.12 16:33:2 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:284 @ Network::create_grng_] : Creating new default global RNG
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: v2.16.0
+ Built: Mar 12 2019 15:03:13
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit http://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+Mar 12 16:33:02 ModelManager::clear_models_ [Info]: 
+    Models will be cleared and parameters reset.
+
+Mar 12 16:33:02 Network::create_rngs_ [Info]: 
+    Deleting existing random number generators
+
+Mar 12 16:33:02 Network::create_rngs_ [Info]: 
+    Creating default RNGs
+
+Mar 12 16:33:02 Network::create_grng_ [Info]: 
+    Creating new default global RNG
+
+Mar 12 16:33:02 NodeManager::prepare_nodes [Info]: 
+    Preparing 4 nodes for simulation.
+
+Mar 12 16:33:02 SimulationManager::run [Warning]: 
+    The requested simulation time is not an integer multiple of the minimal 
+    delay in the network. This may result in inconsistent results under the 
+    following conditions: (i) A network contains more than one source of 
+    randomness, e.g., two different poisson_generators, and (ii) Simulate is 
+    called repeatedly with simulation times that are not multiples of the 
+    minimal delay.
+
+Mar 12 16:33:02 SimulationManager::start_updating_ [Info]: 
+    Number of local nodes: 4
+    Simulation time (ms): 1100.1
+    Number of OpenMP threads: 1
+    Not using MPI
+
+Mar 12 16:33:02 SimulationManager::resume [Info]: 
+    Simulation finished.
+{'C_m': 481.66429093999693, 'g_L': 9.698081821229248, 'E_L': -69.77525589824238, 'E_ex': 0.0, 'E_in': -70.0, 'tau_syn_ex': 3.0, 'tau_syn_in': 1.5, 't_ref': 3.120024078765271, 'V_reset': 0.848791047439196, 'V_th': -11.821930079087078, 'a': 1.7156348148798504, 'b': 83.93822683708396, 'Delta_T': 3.9491641975630833, 'tau_w': 126.0367899279277, 'V_peak': 7.923890908728339}
+[INFO] [2019.3.12 16:33:2 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:238 @ Network::create_rngs_] : Creating default RNGs
+[INFO] [2019.3.12 16:33:2 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:284 @ Network::create_grng_] : Creating new default global RNG
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: v2.16.0
+ Built: Mar 12 2019 15:03:13
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit http://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+Mar 12 16:33:02 ModelManager::clear_models_ [Info]: 
+    Models will be cleared and parameters reset.
+
+Mar 12 16:33:02 Network::create_rngs_ [Info]: 
+    Deleting existing random number generators
+
+Mar 12 16:33:02 Network::create_rngs_ [Info]: 
+    Creating default RNGs
+
+Mar 12 16:33:02 Network::create_grng_ [Info]: 
+    Creating new default global RNG
+{'C_m': 153.11170478027668, 'g_L': 9.684114048245943, 'E_L': -53.767354433466096, 'E_ex': 0.0, 'E_in': -70.0, 'tau_syn_ex': 3.0, 'tau_syn_in': 1.5, 't_ref': 0.9001797349579804, 'V_reset': 4.066946716582255, 'V_th': -21.956096513168458, 'a': 0.790026861873665, 'b': 269.58550381944826, 'Delta_T': 3.0039465225029702, 'tau_w': 325.8707747473585, 'V_peak': -6.936363900653607}
+[INFO] [2019.3.12 16:33:3 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:238 @ Network::create_rngs_] : Creating default RNGs
+[INFO] [2019.3.12 16:33:3 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:284 @ Network::create_grng_] : Creating new default global RNG
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: v2.16.0
+ Built: Mar 12 2019 15:03:13
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit http://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+Mar 12 16:33:03 ModelManager::clear_models_ [Info]: 
+    Models will be cleared and parameters reset.
+
+Mar 12 16:33:03 Network::create_rngs_ [Info]: 
+    Deleting existing random number generators
+
+Mar 12 16:33:03 Network::create_rngs_ [Info]: 
+    Creating default RNGs
+
+Mar 12 16:33:03 Network::create_grng_ [Info]: 
+    Creating new default global RNG
+{'C_m': 231.0359174194579, 'g_L': 5.255442328126658, 'E_L': -68.37474404061571, 'E_ex': 0.0, 'E_in': -70.0, 'tau_syn_ex': 3.0, 'tau_syn_in': 1.5, 't_ref': 3.0079860684866064, 'V_reset': -12.705758531673244, 'V_th': -35.07990328774116, 'a': -3.5575427839809173, 'b': 937.3070846962247, 'Delta_T': 3.9694098718389874, 'tau_w': 478.89722995120866, 'V_peak': -15.232853928546223}
+[INFO] [2019.3.12 16:33:3 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:238 @ Network::create_rngs_] : Creating default RNGs
+[INFO] [2019.3.12 16:33:3 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:284 @ Network::create_grng_] : Creating new default global RNG
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: v2.16.0
+ Built: Mar 12 2019 15:03:13
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit http://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+Mar 12 16:33:03 ModelManager::clear_models_ [Info]: 
+    Models will be cleared and parameters reset.
+
+Mar 12 16:33:03 Network::create_rngs_ [Info]: 
+    Deleting existing random number generators
+
+Mar 12 16:33:03 Network::create_rngs_ [Info]: 
+    Creating default RNGs
+
+Mar 12 16:33:03 Network::create_grng_ [Info]: 
+    Creating new default global RNG
+{'C_m': 61.29697143631514, 'g_L': 1.3695652564462673, 'E_L': -59.51223094108923, 'E_ex': 0.0, 'E_in': -70.0, 'tau_syn_ex': 3.0, 'tau_syn_in': 1.5, 't_ref': 2.641707086592777, 'V_reset': 14.242657918913295, 'V_th': -15.50610829857309, 'a': 2.8289028952240356, 'b': 470.84012530884513, 'Delta_T': 4.178048030861638, 'tau_w': 441.9681233412471, 'V_peak': 5.384131855735102}
+[INFO] [2019.3.12 16:33:4 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:238 @ Network::create_rngs_] : Creating default RNGs
+[INFO] [2019.3.12 16:33:4 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:284 @ Network::create_grng_] : Creating new default global RNG
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: v2.16.0
+ Built: Mar 12 2019 15:03:13
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit http://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+Mar 12 16:33:04 ModelManager::clear_models_ [Info]: 
+    Models will be cleared and parameters reset.
+
+Mar 12 16:33:04 Network::create_rngs_ [Info]: 
+    Deleting existing random number generators
+
+Mar 12 16:33:04 Network::create_rngs_ [Info]: 
+    Creating default RNGs
+
+Mar 12 16:33:04 Network::create_grng_ [Info]: 
+    Creating new default global RNG
+
+Mar 12 16:33:04 NodeManager::prepare_nodes [Info]: 
+    Preparing 4 nodes for simulation.
+
+Mar 12 16:33:04 SimulationManager::run [Warning]: 
+    The requested simulation time is not an integer multiple of the minimal 
+    delay in the network. This may result in inconsistent results under the 
+    following conditions: (i) A network contains more than one source of 
+    randomness, e.g., two different poisson_generators, and (ii) Simulate is 
+    called repeatedly with simulation times that are not multiples of the 
+    minimal delay.
+
+Mar 12 16:33:04 SimulationManager::start_updating_ [Info]: 
+    Number of local nodes: 4
+    Simulation time (ms): 1100.1
+    Number of OpenMP threads: 1
+    Not using MPI
+
+Mar 12 16:33:04 SimulationManager::resume [Info]: 
+    Simulation finished.
+{'C_m': 448.644203096102, 'g_L': 5.366810376877914, 'E_L': -50.30825132381745, 'E_ex': 0.0, 'E_in': -70.0, 'tau_syn_ex': 3.0, 'tau_syn_in': 1.5, 't_ref': 3.6619652707174617, 'V_reset': -8.87082317842291, 'V_th': -29.639532243872196, 'a': 3.0994058373120286, 'b': 157.16958478401756, 'Delta_T': 4.5859577860199785, 'tau_w': 141.9718799460409, 'V_peak': -6.709743313772304}
+[INFO] [2019.3.12 16:33:4 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:238 @ Network::create_rngs_] : Creating default RNGs
+[INFO] [2019.3.12 16:33:4 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:284 @ Network::create_grng_] : Creating new default global RNG
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: v2.16.0
+ Built: Mar 12 2019 15:03:13
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit http://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+Mar 12 16:33:04 ModelManager::clear_models_ [Info]: 
+    Models will be cleared and parameters reset.
+
+Mar 12 16:33:04 Network::create_rngs_ [Info]: 
+    Deleting existing random number generators
+
+Mar 12 16:33:04 Network::create_rngs_ [Info]: 
+    Creating default RNGs
+
+Mar 12 16:33:04 Network::create_grng_ [Info]: 
+    Creating new default global RNG
+
+Mar 12 16:33:04 NodeManager::prepare_nodes [Info]: 
+    Preparing 4 nodes for simulation.
+
+Mar 12 16:33:04 SimulationManager::run [Warning]: 
+    The requested simulation time is not an integer multiple of the minimal 
+    delay in the network. This may result in inconsistent results under the 
+    following conditions: (i) A network contains more than one source of 
+    randomness, e.g., two different poisson_generators, and (ii) Simulate is 
+    called repeatedly with simulation times that are not multiples of the 
+    minimal delay.
+
+Mar 12 16:33:04 SimulationManager::start_updating_ [Info]: 
+    Number of local nodes: 4
+    Simulation time (ms): 1100.1
+    Number of OpenMP threads: 1
+    Not using MPI
+
+Mar 12 16:33:04 SimulationManager::resume [Info]: 
+    Simulation finished.
+{'C_m': 448.644203096102, 'g_L': 5.366810376877914, 'E_L': -50.30825132381745, 'E_ex': 0.0, 'E_in': -70.0, 'tau_syn_ex': 3.0, 'tau_syn_in': 1.5, 't_ref': 3.6619652707174617, 'V_reset': -8.87082317842291, 'V_th': -29.639532243872196, 'a': 3.0994058373120286, 'b': 157.16958478401756, 'Delta_T': 4.5859577860199785, 'tau_w': 141.9718799460409, 'V_peak': -6.709743313772304}
+[INFO] [2019.3.12 16:33:4 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:238 @ Network::create_rngs_] : Creating default RNGs
+[INFO] [2019.3.12 16:33:4 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:284 @ Network::create_grng_] : Creating new default global RNG
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: v2.16.0
+ Built: Mar 12 2019 15:03:13
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit http://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+Mar 12 16:33:05 ModelManager::clear_models_ [Info]: 
+    Models will be cleared and parameters reset.
+
+Mar 12 16:33:05 Network::create_rngs_ [Info]: 
+    Deleting existing random number generators
+
+Mar 12 16:33:05 Network::create_rngs_ [Info]: 
+    Creating default RNGs
+
+Mar 12 16:33:05 Network::create_grng_ [Info]: 
+    Creating new default global RNG
+
+Mar 12 16:33:05 NodeManager::prepare_nodes [Info]: 
+    Preparing 4 nodes for simulation.
+
+Mar 12 16:33:05 SimulationManager::run [Warning]: 
+    The requested simulation time is not an integer multiple of the minimal 
+    delay in the network. This may result in inconsistent results under the 
+    following conditions: (i) A network contains more than one source of 
+    randomness, e.g., two different poisson_generators, and (ii) Simulate is 
+    called repeatedly with simulation times that are not multiples of the 
+    minimal delay.
+
+Mar 12 16:33:05 SimulationManager::start_updating_ [Info]: 
+    Number of local nodes: 4
+    Simulation time (ms): 1100.1
+    Number of OpenMP threads: 1
+    Not using MPI
+
+Mar 12 16:33:05 SimulationManager::resume [Info]: 
+    Simulation finished.
+{'C_m': 448.644203096102, 'g_L': 5.366810376877914, 'E_L': -50.30825132381745, 'E_ex': 0.0, 'E_in': -70.0, 'tau_syn_ex': 3.0, 'tau_syn_in': 1.5, 't_ref': 3.6619652707174617, 'V_reset': -8.87082317842291, 'V_th': -29.639532243872196, 'a': 3.0994058373120286, 'b': 157.16958478401756, 'Delta_T': 4.5859577860199785, 'tau_w': 141.9718799460409, 'V_peak': -6.709743313772304}
+[INFO] [2019.3.12 16:33:5 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:238 @ Network::create_rngs_] : Creating default RNGs
+[INFO] [2019.3.12 16:33:5 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:284 @ Network::create_grng_] : Creating new default global RNG
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: v2.16.0
+ Built: Mar 12 2019 15:03:13
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit http://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+Mar 12 16:33:05 ModelManager::clear_models_ [Info]: 
+    Models will be cleared and parameters reset.
+
+Mar 12 16:33:05 Network::create_rngs_ [Info]: 
+    Deleting existing random number generators
+
+Mar 12 16:33:05 Network::create_rngs_ [Info]: 
+    Creating default RNGs
+
+Mar 12 16:33:05 Network::create_grng_ [Info]: 
+    Creating new default global RNG
+
+Mar 12 16:33:05 NodeManager::prepare_nodes [Info]: 
+    Preparing 4 nodes for simulation.
+
+Mar 12 16:33:05 SimulationManager::run [Warning]: 
+    The requested simulation time is not an integer multiple of the minimal 
+    delay in the network. This may result in inconsistent results under the 
+    following conditions: (i) A network contains more than one source of 
+    randomness, e.g., two different poisson_generators, and (ii) Simulate is 
+    called repeatedly with simulation times that are not multiples of the 
+    minimal delay.
+
+Mar 12 16:33:05 SimulationManager::start_updating_ [Info]: 
+    Number of local nodes: 4
+    Simulation time (ms): 1100.1
+    Number of OpenMP threads: 1
+    Not using MPI
+
+Mar 12 16:33:05 SimulationManager::resume [Info]: 
+    Simulation finished.
+{'C_m': 448.644203096102, 'g_L': 5.366810376877914, 'E_L': -50.30825132381745, 'E_ex': 0.0, 'E_in': -70.0, 'tau_syn_ex': 3.0, 'tau_syn_in': 1.5, 't_ref': 3.6619652707174617, 'V_reset': -8.87082317842291, 'V_th': -29.639532243872196, 'a': 3.0994058373120286, 'b': 157.16958478401756, 'Delta_T': 4.5859577860199785, 'tau_w': 141.9718799460409, 'V_peak': -6.709743313772304}
+[INFO] [2019.3.12 16:33:5 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:238 @ Network::create_rngs_] : Creating default RNGs
+[INFO] [2019.3.12 16:33:5 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:284 @ Network::create_grng_] : Creating new default global RNG
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: v2.16.0
+ Built: Mar 12 2019 15:03:13
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit http://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+Mar 12 16:33:05 ModelManager::clear_models_ [Info]: 
+    Models will be cleared and parameters reset.
+
+Mar 12 16:33:05 Network::create_rngs_ [Info]: 
+    Deleting existing random number generators
+
+Mar 12 16:33:05 Network::create_rngs_ [Info]: 
+    Creating default RNGs
+
+Mar 12 16:33:05 Network::create_grng_ [Info]: 
+    Creating new default global RNG
+{'C_m': 99.47672333633358, 'g_L': 5.560433577497299, 'E_L': -42.01523059480586, 'E_ex': 0.0, 'E_in': -70.0, 'tau_syn_ex': 3.0, 'tau_syn_in': 1.5, 't_ref': 4.752729815049125, 'V_reset': -11.472037887449567, 'V_th': -30.490419200295683, 'a': -4.337723956631149, 'b': 257.42889088769783, 'Delta_T': 0.8284984089415458, 'tau_w': 218.88908643467457, 'V_peak': -26.347927155587954}
+[INFO] [2019.3.12 16:33:6 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:238 @ Network::create_rngs_] : Creating default RNGs
+[INFO] [2019.3.12 16:33:6 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:284 @ Network::create_grng_] : Creating new default global RNG
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: v2.16.0
+ Built: Mar 12 2019 15:03:13
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit http://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+Mar 12 16:33:06 ModelManager::clear_models_ [Info]: 
+    Models will be cleared and parameters reset.
+
+Mar 12 16:33:06 Network::create_rngs_ [Info]: 
+    Deleting existing random number generators
+
+Mar 12 16:33:06 Network::create_rngs_ [Info]: 
+    Creating default RNGs
+
+Mar 12 16:33:06 Network::create_grng_ [Info]: 
+    Creating new default global RNG
+{'C_m': 161.03589520665983, 'g_L': 2.5722092656262685, 'E_L': -60.94668826602903, 'E_ex': 0.0, 'E_in': -70.0, 'tau_syn_ex': 3.0, 'tau_syn_in': 1.5, 't_ref': 2.7481428688695457, 'V_reset': -8.355319395532902, 'V_th': -23.96977756476541, 'a': 2.7332520448330735, 'b': 549.0306725534498, 'Delta_T': 2.001911056222617, 'tau_w': 74.1571016129518, 'V_peak': -13.960222283652323}
+[INFO] [2019.3.12 16:33:6 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:238 @ Network::create_rngs_] : Creating default RNGs
+[INFO] [2019.3.12 16:33:6 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:284 @ Network::create_grng_] : Creating new default global RNG
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: v2.16.0
+ Built: Mar 12 2019 15:03:13
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit http://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+Mar 12 16:33:06 ModelManager::clear_models_ [Info]: 
+    Models will be cleared and parameters reset.
+
+Mar 12 16:33:06 Network::create_rngs_ [Info]: 
+    Deleting existing random number generators
+
+Mar 12 16:33:06 Network::create_rngs_ [Info]: 
+    Creating default RNGs
+
+Mar 12 16:33:06 Network::create_grng_ [Info]: 
+    Creating new default global RNG
+{'C_m': 144.56275791378914, 'g_L': 2.953303228014722, 'E_L': -47.89825432201974, 'E_ex': 0.0, 'E_in': -70.0, 'tau_syn_ex': 3.0, 'tau_syn_in': 1.5, 't_ref': 2.2154048957954915, 'V_reset': 18.471537687555774, 'V_th': -15.314892230620181, 'a': 3.74285779261748, 'b': 960.024664402363, 'Delta_T': 2.9186947408564685, 'tau_w': 461.3230060728026, 'V_peak': -0.721418526337839}
+[INFO] [2019.3.12 16:33:7 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:238 @ Network::create_rngs_] : Creating default RNGs
+[INFO] [2019.3.12 16:33:7 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:284 @ Network::create_grng_] : Creating new default global RNG
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: v2.16.0
+ Built: Mar 12 2019 15:03:13
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit http://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+Mar 12 16:33:07 ModelManager::clear_models_ [Info]: 
+    Models will be cleared and parameters reset.
+
+Mar 12 16:33:07 Network::create_rngs_ [Info]: 
+    Deleting existing random number generators
+
+Mar 12 16:33:07 Network::create_rngs_ [Info]: 
+    Creating default RNGs
+
+Mar 12 16:33:07 Network::create_grng_ [Info]: 
+    Creating new default global RNG
+{'C_m': 128.05927185669407, 'g_L': 4.378136057168499, 'E_L': -48.51290095512581, 'E_ex': 0.0, 'E_in': -70.0, 'tau_syn_ex': 3.0, 'tau_syn_in': 1.5, 't_ref': 4.44843670170974, 'V_reset': -16.0503168513207, 'V_th': -38.425031375245936, 'a': -0.5944491004573491, 'b': 776.8870405145091, 'Delta_T': 1.2439431712958027, 'tau_w': 160.8794097691752, 'V_peak': -32.20531551876692}
+[INFO] [2019.3.12 16:33:7 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:238 @ Network::create_rngs_] : Creating default RNGs
+[INFO] [2019.3.12 16:33:7 /home/nest/Downloads/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:284 @ Network::create_grng_] : Creating new default global RNG
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: v2.16.0
+ Built: Mar 12 2019 15:03:13
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit http://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
+
+Mar 12 16:33:07 ModelManager::clear_models_ [Info]: 
+    Models will be cleared and parameters reset.
+
+Mar 12 16:33:07 Network::create_rngs_ [Info]: 
+    Deleting existing random number generators
+
+Mar 12 16:33:07 Network::create_rngs_ [Info]: 
+    Creating default RNGs
+
+Mar 12 16:33:07 Network::create_grng_ [Info]: 
+    Creating new default global RNG
+{'C_m': 161.85017996007727, 'g_L': 2.8546118253531643, 'E_L': -42.109819449180875, 'E_ex': 0.0, 'E_in': -70.0, 'tau_syn_ex': 3.0, 'tau_syn_in': 1.5, 't_ref': 3.469294362718796, 'V_reset': 6.3267916449856365, 'V_th': -19.950684649997864, 'a': 3.0134516802145868, 'b': 725.55037936488, 'Delta_T': 3.4731816470408416, 'tau_w': 60.818303251167, 'V_peak': -2.584776414793655}
+PID  20642  ************
+CANDIDATES
+[0.009698081821229249, 49.665933925781744, -69.77525589824238, -12.670721126526274, -11.821930079087078, 3.120024078765271, 1.7156348148798504, 0.08393822683708396, 3.9491641975630833, 126.0367899279277]
+['python', '/home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py', '206421552404871150229']
+PID  20642  ************
+CANDIDATES
+[0.009698081821229249, 49.665933925781744, -69.77525589824238, -12.670721126526274, -11.821930079087078, 3.120024078765271, 1.7156348148798504, 0.08393822683708396, 3.9491641975630833, 126.0367899279277]
+['python', '/home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py', '2064215524048716039243']
+PID  20642  ************
+CANDIDATES
+[0.009698081821229249, 49.665933925781744, -69.77525589824238, -12.670721126526274, -11.821930079087078, 3.120024078765271, 1.7156348148798504, 0.08393822683708396, 3.9491641975630833, 126.0367899279277]
+['python', '/home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py', '206421552404872054432']
+PID  20642  ************
+CANDIDATES
+[0.009698081821229249, 49.665933925781744, -69.77525589824238, -12.670721126526274, -11.821930079087078, 3.120024078765271, 1.7156348148798504, 0.08393822683708396, 3.9491641975630833, 126.0367899279277]
+['python', '/home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py', '206421552404872512372']
+PID  20642  ************
+CANDIDATES
+[0.009684114048245943, 15.810605287946746, -53.767354433466096, -26.023043229750712, -21.956096513168458, 0.9001797349579804, 0.790026861873665, 0.26958550381944824, 3.0039465225029702, 325.8707747473585]
+['python', '/home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py', '2064215524050275716553']
+PID  20642  ************
+CANDIDATES
+[0.005255442328126658, 43.96126966953368, -68.37474404061571, -22.374144756067917, -35.07990328774116, 3.0079860684866064, -3.5575427839809173, 0.9373070846962247, 3.9694098718389874, 478.89722995120866]
+['python', '/home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py', '2064215524051844483902']
+PID  20642  ************
+CANDIDATES
+[0.0013695652564462673, 44.756517550224544, -59.51223094108923, -29.748766217486384, -15.50610829857309, 2.641707086592777, 2.8289028952240356, 0.4708401253088451, 4.178048030861638, 441.9681233412471]
+['python', '/home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py', '2064215524051755256672']
+PID  20642  ************
+CANDIDATES
+[0.005366810376877914, 83.59606015316236, -50.30825132381745, -20.768709065449286, -29.639532243872196, 3.6619652707174617, 3.0994058373120286, 0.15716958478401755, 4.5859577860199785, 141.9718799460409]
+['python', '/home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py', '206421552404920210714']
+PID  20642  ************
+CANDIDATES
+[0.005366810376877914, 83.59606015316236, -50.30825132381745, -20.768709065449286, -29.639532243872196, 3.6619652707174617, 3.0994058373120286, 0.15716958478401755, 4.5859577860199785, 141.9718799460409]
+['python', '/home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py', '2064215524049206722348']
+PID  20642  ************
+CANDIDATES
+[0.005366810376877914, 83.59606015316236, -50.30825132381745, -20.768709065449286, -29.639532243872196, 3.6619652707174617, 3.0994058373120286, 0.15716958478401755, 4.5859577860199785, 141.9718799460409]
+['python', '/home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py', '206421552404921113404']
+PID  20642  ************
+CANDIDATES
+[0.005366810376877914, 83.59606015316236, -50.30825132381745, -20.768709065449286, -29.639532243872196, 3.6619652707174617, 3.0994058373120286, 0.15716958478401755, 4.5859577860199785, 141.9718799460409]
+['python', '/home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py', '2064215524049215744839']
+PID  20642  ************
+CANDIDATES
+[0.005560433577497298, 17.890101904806343, -42.01523059480586, -19.018381312846117, -30.490419200295683, 4.752729815049125, -4.337723956631149, 0.2574288908876978, 0.8284984089415458, 218.88908643467457]
+['python', '/home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py', '206421552404932436586']
+PID  20642  ************
+CANDIDATES
+[0.0025722092656262686, 62.60606295088966, -60.94668826602903, -15.614458169232506, -23.96977756476541, 2.7481428688695457, 2.7332520448330735, 0.5490306725534498, 2.001911056222617, 74.1571016129518]
+['python', '/home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py', '2064215524048303432806']
+PID  20642  ************
+CANDIDATES
+[0.0029533032280147217, 48.94951407037453, -47.89825432201974, -33.786429918175955, -15.314892230620181, 2.2154048957954915, 3.74285779261748, 0.960024664402363, 2.9186947408564685, 461.3230060728026]
+['python', '/home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py', '2064215524052096730096']
+PID  20642  ************
+CANDIDATES
+[0.004378136057168499, 29.249724125639595, -48.51290095512581, -22.374714523925235, -38.425031375245936, 4.44843670170974, -0.5944491004573491, 0.7768870405145091, 1.2439431712958027, 160.8794097691752]
+['python', '/home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py', '206421552404873729305']
+PID  20642  ************
+CANDIDATES
+[0.0028546118253531642, 56.69778935356776, -42.109819449180875, -26.2774762949835, -19.950684649997864, 3.469294362718796, 3.0134516802145868, 0.72555037936488, 3.4731816470408416, 60.818303251167]
+['python', '/home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py', '206421552404827305019']

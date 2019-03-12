@@ -2,19 +2,25 @@
 # coding: utf-8
 
 # In[158]:
+
 import nest
 import numpy as np
 import sys
 import os
+
 nest.ResetKernel()
+
 
 # In[159]:
 
 unique_ID = sys.argv[1]
 
 params_file = 'params' + unique_ID + '.param' 
-
-params = np.genfromtxt(params_file)
+try:
+	params = np.genfromtxt(params_file)
+except:
+	abspath=os.path.dirname(os.path.abspath(__file__))
+	params = np.genfromtxt(abspath+"/"+params_file)
 
 gL_Bas      = params[0]*1000   #5.0e-3 #7.14293e-3
 tauMem_Bas 	= params[1]   #14.0
@@ -125,9 +131,12 @@ spikes   = nest.GetStatus(spikedetector)[0]['events']['times']
 #plt.plot(times, voltages)
 #plt.show()
 
-
 # In[167]:
 spike_filename = 'spike' + unique_ID + '.dat'
 trace_filename = 'trace' + unique_ID + '.dat'
-np.savetxt(spike_filename, spikes, fmt='%.2f')
-np.savetxt(trace_filename, np.array([times, voltages]).T, fmt='%.2f')
+try:
+	np.savetxt(abspath+"/"+spike_filename, spikes, fmt='%.2f')
+	np.savetxt(abspath+"/"+trace_filename, np.array([times, voltages]).T, fmt='%.2f')
+except:
+	np.savetxt(spike_filename, spikes, fmt='%.2f')
+	np.savetxt(trace_filename, np.array([times, voltages]).T, fmt='%.2f')
