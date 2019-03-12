@@ -1502,7 +1502,6 @@ class Ui_Optimizer(object):
                                     })
                 self.kwargs.update({"weights" : self.weights})
             else:
-                #self.my_list=self.core.data_handler.features_data.keys()[3:-1]
                 self.kwargs.update({"feat":
                                     [{"Spike Detection Thres. (mv)": float(self.spike_tresh.text()), "Spike Window (ms)":float(self.spike_window.text())},
                                     [str(x) for x in self.my_list if x in self.fitset]]
@@ -1613,8 +1612,6 @@ class Ui_Optimizer(object):
             no_traces=self.core.data_handler.number_of_traces()
             t = self.core.option_handler.input_length
             step = self.core.option_handler.run_controll_dt
-            #axes.set_xticks([n for n in range(0, int((t*no_traces)/(step)), int((t*no_traces)/(step)/5.0)) ])
-            #axes.set_xticklabels([str(n) for n in range(0, t*no_traces, (t*no_traces)/5)])
 
             axes.set_xlabel("time [ms]")
             _type=self.core.data_handler.data.type
@@ -1630,8 +1627,6 @@ class Ui_Optimizer(object):
             self.figure2.savefig("result_trace.svg", dpi=None, facecolor='w', edgecolor='w')
             self.canvas2.draw()
             plt.tight_layout()
-            #param_save=wx.Button(self.panel,id=wx.ID_ANY,label="Save\nParameters",pos=(105,5),size=(90,50))
-            #param_save.Bind(wx.EVT_BUTTON,self.SaveParam)
 
         else:
             for n in range(len(self.core.data_handler.features_data["stim_amp"])):
@@ -1639,15 +1634,12 @@ class Ui_Optimizer(object):
             no_traces=len(self.core.data_handler.features_data["stim_amp"])
             t = int(self.core.option_handler.run_controll_tstop)         # instead of input_length
             step = self.core.option_handler.run_controll_dt
-            #axes.set_xticks([n for n in range(0, int((t*no_traces)/(step)), int((t*no_traces)/(step)/5.0)) ])
-            #axes.set_xticklabels([str(n) for n in range(0, t*no_traces, (t*no_traces)/5)])
 
             axes.set_xlabel("time [ms]")
             _type=str(self.kwargs["runparam"][2])       #parameter to record
             _type_ = "Voltage" if _type =="v" else "Current" if _type=="c" else ""
             unit="mV" if _type=="v" else "nA" if _type=="c" else ""
             axes.set_ylabel(_type_+" [" + unit + "]")
-            #axes.plot(range(0, len(exp_data)), exp_data)
             axes.plot(list(range(0, len(model_data))), model_data, 'r')
             axes.legend(["model"])
             self.figure2.savefig("result_trace.png", dpi=None, facecolor='w', edgecolor='w',
@@ -1656,11 +1648,8 @@ class Ui_Optimizer(object):
             self.figure2.savefig("result_trace.eps", dpi=None, facecolor='w', edgecolor='w')
             self.figure2.savefig("result_trace.svg", dpi=None, facecolor='w', edgecolor='w')
             axes.hold(False)
-            axes.plot(list(range(0, len(exp_data))), exp_data)
             self.canvas2.draw()
             plt.tight_layout()
-            #param_save=wx.Button(self.panel,id=wx.ID_ANY,label="Save\nParameters",pos=(105,5),size=(90,50))
-            #param_save.Bind(wx.EVT_BUTTON,self.SaveParam)
         
     def SaveParam(self, e):
         """
