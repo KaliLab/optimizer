@@ -2025,11 +2025,10 @@ class BoundaryWindow(QtWidgets.QMainWindow):
         voffset = 15
         self.min = []
         self.max = []
-        params=parent.core.option_handler.GetObjTOOpt()
-        self.option_handler=parent.option_handler
+        self.option_handler=parent.core.option_handler
 
-        for l in range(len(params)):
-            param=params[l].split()
+        for l in range(len(self.option_handler.GetObjTOOpt())):
+            param=self.option_handler.GetObjTOOpt()[l].split()
             if len(param)==4:
                 label=param[0] + " " + param[1] + " " + param[3]
             else:
