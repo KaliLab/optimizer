@@ -7,7 +7,7 @@
   <cognitive_rate>None</cognitive_rate>
   <cooling_rate>None</cooling_rate>
   <crossover_rate>None</crossover_rate>
-  <evo_strat>Indicator Based (IBEA) - Bluepyopt</evo_strat>
+  <evo_strat>Covariance Matrix Adaptation ES (CMAES) - Pygmo</evo_strat>
   <f_tol>None</f_tol>
   <feats>MSE (excl. spikes), Spike count (stim.), AP amplitude, AP width</feats>
   <force_bounds>False</force_bounds>

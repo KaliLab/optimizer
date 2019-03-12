@@ -831,10 +831,11 @@ class Ui_Optimizer(object):
         descr38 = {'Topology:':0}
         descr39 = {'Crossover Rate:':1}
         descr40 = {'Number of CPU:':1}
+        descr41 = {'Number of Islands:':1}
 
 
         self.algo_dict={
-            "Evolutionary Algorithm (EA) - Inspyred": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
+            "Evolutionary Algorlithm (EA) - Inspyred": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
             "Simulated Annealing - Inspyred": [descr20.copy(),descr21.copy(),descr22.copy(),descr23.copy(),descr24.copy(),descr26.copy(),descr40],
             "Particle Swarm (PSO) - Inspyred" : [descr19.copy(),descr20.copy(),descr34.copy(),descr35.copy(),descr36.copy(),descr40],
             "Basinhopping - Scipy": [descr32.copy(),descr33.copy(),descr25.copy(),descr27.copy(),descr29],
@@ -846,16 +847,16 @@ class Ui_Optimizer(object):
             "Pareto Archived (PAES) - Inspyred": [descr19.copy(),descr20.copy(),descr40],
             "Nondominated Sorted (NSGAII) - Bluepyopt": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
             "Indicator Based (IBEA) - Bluepyopt": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
-            "Differential Evolution (DE) - Pygmo":[descr19.copy(),descr20.copy(),descr40],
-            "Self-Adaptive DE (SADE) - Pygmo":[descr19.copy(),descr20.copy(),descr40],
-            "Exponential Evolution Strategies (XNES) - Pygmo":[descr19.copy(),descr20.copy(),descr40],
-            "Simple Genetic Algorithm (SGA) - Pygmo":[descr19.copy(),descr20.copy(),descr40],
-            "Particle Swarm (PSO) - Pygmo":[descr19.copy(),descr20.copy(),descr40],
-            "Covariance Matrix Adaptation ES (CMAES) - Pygmo":[descr19.copy(),descr20.copy(),descr40],
-            "Single Differential Evolution - Pygmo":[descr19.copy(),descr20.copy(),descr40],
-            "Differential Evolution (DE1220) - Pygmo":[descr19.copy(),descr20.copy(),descr40],
-            "Bee Colony - Pygmo":[descr19.copy(),descr20.copy(),descr40],
-            "FullGrid - Pygmo":[descr19.copy(),descr20.copy(),descr40]
+            "Differential Evolution (DE) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
+            "Self-Adaptive DE (SADE) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
+            "Exponential Evolution Strategies (XNES) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
+            "Simple Genetic Algorithm (SGA) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
+            "Particle Swarm (PSO) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
+            "Covariance Matrix Adaptation ES (CMAES) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
+            "Single Differential Evolution - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
+            "Differential Evolution (DE1220) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
+            "Bee Colony - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
+            "FullGrid - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41]
             }
         
 
