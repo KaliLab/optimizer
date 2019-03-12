@@ -1502,7 +1502,7 @@ class Ui_Optimizer(object):
                                     })
                 self.kwargs.update({"weights" : self.weights})
             else:
-                self.my_list=self.core.data_handler.features_data.keys()[3:-1]
+                #self.my_list=self.core.data_handler.features_data.keys()[3:-1]
                 self.kwargs.update({"feat":
                                     [{"Spike Detection Thres. (mv)": float(self.spike_tresh.text()), "Spike Window (ms)":float(self.spike_window.text())},
                                     [str(x) for x in self.my_list if x in self.fitset]]
