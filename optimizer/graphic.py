@@ -2091,7 +2091,7 @@ class BoundaryWindow(QtWidgets.QMainWindow):
 
         else:
             for i in range(len(self.option_handler.boundaries[0])):
-                if self.option_handler.boundaries[0][i] >= self.core.option_handler.boundaries[1][i] :
+                if self.option_handler.boundaries[0][i] >= self.option_handler.boundaries[1][i] :
                     
                     
                     popup("""Min boundary must be lower than max

@@ -4,7 +4,7 @@
   <f_tol>None</f_tol>
   <max_evaluation>10.0</max_evaluation>
   <spike_window>5.0</spike_window>
-  <evo_strat>Indicator Based (IBEA) - DEAP</evo_strat>
+  <evo_strat>Indicator Based (IBEA) - Bluepyopt</evo_strat>
   <seed>1234.0</seed>
   <m_gauss>None</m_gauss>
   <run_controll_vrest>vrest</run_controll_vrest>
@@ -30,7 +30,7 @@
   <number_of_cpu>4.0</number_of_cpu>
   <feats>MSE (excl. spikes), Spike count (stim.), Latency to 1st spike</feats>
   <input_length>1100</input_length>
-  <sim_command>python /home/nest/Desktop/optimizer/optimizer/tests/adexpif_external_ca3_pc/teststeps_optim5.py 10</sim_command>
+  <sim_command>python /home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py 10</sim_command>
   <init_temp>None</init_temp>
   <num_params>10</num_params>
   <stim_dur>0</stim_dur>
@@ -46,7 +46,7 @@
   <stim_type>&quot;&quot;</stim_type>
   <stim_del>0</stim_del>
   <stim_amp>[0, 0, 0, 0]</stim_amp>
-  <input_dir>/home/nest/Desktop/optimizer/optimizer/tests/adexpif_external_ca3_pc/ca3_pc_v2_4.csv</input_dir>
+  <input_dir>/home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/ca3_pc_v2_4.csv</input_dir>
   <input_freq>5000</input_freq>
   <input_scale>mV</input_scale>
   <u_fun_string>&quot;&quot;</u_fun_string>
@@ -56,5 +56,5 @@
   <run_controll_pos>pos</run_controll_pos>
   <update_freq>None</update_freq>
   <num_iter>None</num_iter>
-  <base_dir>/home/nest/Desktop/optimizer/optimizer/tests/adexpif_external_ca3_pc</base_dir>
+  <base_dir>/home/nest/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc</base_dir>
 </settings>
