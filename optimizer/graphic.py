@@ -835,7 +835,7 @@ class Ui_Optimizer(object):
 
 
         self.algo_dict={
-            "Evolutionary Algorlithm (EA) - Inspyred": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
+            "Evolutionary Algorithm (EA) - Inspyred": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
             "Simulated Annealing - Inspyred": [descr20.copy(),descr21.copy(),descr22.copy(),descr23.copy(),descr24.copy(),descr26.copy(),descr40],
             "Particle Swarm (PSO) - Inspyred" : [descr19.copy(),descr20.copy(),descr34.copy(),descr35.copy(),descr36.copy(),descr40],
             "Basinhopping - Scipy": [descr32.copy(),descr33.copy(),descr25.copy(),descr27.copy(),descr29],
@@ -1399,12 +1399,12 @@ class Ui_Optimizer(object):
                     current_weight=str(self.fitlist.item(row, 1).text())
                     try:
                         self.fitlist.item(row, 1).setText(str(float(current_weight) / sum_o_weights))
-                    except ValueError:
+                    except:
                         continue
                 else:
                     try:
                         self.fitlist.item(row, 1).setText("0")
-                    except ValueError:
+                    except:
                         continue
         except Exception as e:
             popup("Wrong values given. "+e)
@@ -1429,21 +1429,26 @@ class Ui_Optimizer(object):
         Iterates through the selected algorithms options list and writes the names of it to the first column and sets the cell immutable, 
         and the values to the second row.
         """
-        selected_algo = self.algolist.selectionModel().selectedRows()
-        aspects=self.algo_dict.get(str(self.algolist.item(selected_algo[0].row(), 0).text()))
-        self.aspectlist.setRowCount(len(aspects)+1)
-        item = QTableWidgetItem('Seed')
-        item.setFlags( QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled )      
-        self.aspectlist.setItem(0, 0, item)
-        item2 = QTableWidgetItem('1234')   
-        self.aspectlist.setItem(0, 1, item2)
-        for index,elems in enumerate(aspects):
-            key=next(iter(elems))
-            item = QTableWidgetItem(key)
+        try:
+            selected_algo = self.algolist.selectionModel().selectedRows()[0].row()
+            print(selected_algo)
+            aspects=self.algo_dict.get(str(self.algolist.item(selected_algo, 0).text()))
+            print(aspects)
+            self.aspectlist.setRowCount(len(aspects)+1)
+            item = QTableWidgetItem('Seed')
             item.setFlags( QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled )      
-            self.aspectlist.setItem(index+1, 0, item)
-            item2 = QTableWidgetItem(str(elems.get(key)))   
-            self.aspectlist.setItem(index+1, 1, item2)
+            self.aspectlist.setItem(0, 0, item)
+            item2 = QTableWidgetItem('1234')   
+            self.aspectlist.setItem(0, 1, item2)
+            for index,elems in enumerate(aspects):
+                key=next(iter(elems))
+                item = QTableWidgetItem(key)
+                item.setFlags( QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled )      
+                self.aspectlist.setItem(index+1, 0, item)
+                item2 = QTableWidgetItem(str(elems.get(key)))   
+                self.aspectlist.setItem(index+1, 1, item2)
+        except:
+            print('Algorithm selection error')
 
 
     def aspect_changed(self):
