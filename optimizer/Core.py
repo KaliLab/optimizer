@@ -431,7 +431,7 @@ class coreModul():
 		self.cands,self.fits = [],[]
 
 		if self.option_handler.evo_strat.split(" ")[-1] == "Bluepyopt":
-			self.cands=[normalize(hof,self.optimizer) for hof in self.optimizer.hall_of_fame]
+			self.cands=[list(hof) for hof in self.optimizer.hall_of_fame]
 			self.fits=[x.fitness.values for x in self.optimizer.hall_of_fame]
 			print([str(can)+':'+str(fit) for can,fit in zip(self.optimizer.hall_of_fame,self.fits)])
 			

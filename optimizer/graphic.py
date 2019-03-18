@@ -1680,9 +1680,10 @@ class Ui_Optimizer(object):
         """
         Writes out the same fitnesses for parameters as in the previous tab.
         """
-        print(self.core.cands)
+        print(type(self.core.cands))
+        print(type(self.core.cands[0]))
         try:
-            stats = inspyred.ec.analysis.fitness_statistics(list(self.core.cands))
+            stats = inspyred.ec.analysis.fitness_statistics(self.core.cands)
         except AttributeError:
             stats={'best' : "unkown",'worst' : "unkown",'mean' : "unkown",'median' : "unkown", 'std' : "unkown"}
             #print 'type---------------------------------------------------------------'
