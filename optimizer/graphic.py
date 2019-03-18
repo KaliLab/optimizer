@@ -794,7 +794,7 @@ class Ui_Optimizer(object):
                 "Simulated Annealing - Inspyred"]
         self.Scipy=["Basinhopping - Scipy","Nelder-Mead - Scipy","L-BFGS-B - Scipy"]
         self.Bluepyopt=["Nondominated Sorted (NSGAII) - Bluepyopt","Indicator Based (IBEA) - Bluepyopt"]
-        self.Pygmo=["Differential Evolution (DE) - Pygmo","Self-adaptive DE (SADE) - Pygmo",
+        self.Pygmo=["Differential Evolution (DE) - Pygmo","Self-Adaptive DE (SADE) - Pygmo",
                 "Particle Swarm (PSO) - Pygmo","Exponential Evolution Strategies (XNES) - Pygmo",
                 "Simple Genetic Algorithm (SGA) - Pygmo","Covariance Matrix Adaptation ES (CMAES) - Pygmo",
                 "Single Differential Evolution - Pygmo","Differential Evolution (DE1220) - Pygmo",
@@ -1634,6 +1634,7 @@ class Ui_Optimizer(object):
             self.canvas2.draw()
             #plt.hold(False)
             plt.tight_layout()
+            plt.close()
 
         else:
             for n in range(len(self.core.data_handler.features_data["stim_amp"])):
@@ -1657,6 +1658,7 @@ class Ui_Optimizer(object):
             #plt.hold(False)
             self.canvas2.draw()
             plt.tight_layout()
+            plt.close()
         
     def SaveParam(self, e):
         """
@@ -1678,20 +1680,11 @@ class Ui_Optimizer(object):
         """
         Writes out the same fitnesses for parameters as in the previous tab.
         """
-        if self.core.moo_var:
-            try:
-                #print(self.core.optimizer.logbook)
-                self.record=self.core.optimizer.logbook
-                #for key, value in self.record.iteritems():
-                #    print key, value
-            except AttributeError:
-                stats={'best' : "unkown",'worst' : "unkown",'mean' : "unkown",'median' : "unkown", 'std' : "unkown"}
-            string = "Avg: " + str(self.record[-1]['avg']) + "\nStd: " + str(self.record[-1]['std']) + "\nMin: " + str(self.record[-1]['min']) + "\nMax: " + str(self.record[-1]['max'])
-        else:
-            try:
-                stats = inspyred.ec.analysis.fitness_statistics(self.core.optimizer.final_pop)
-            except AttributeError:
-                stats={'best' : "unkown",'worst' : "unkown",'mean' : "unkown",'median' : "unkown", 'std' : "unkown"}
+        print(self.core.cands)
+        try:
+            stats = inspyred.ec.analysis.fitness_statistics(list(self.core.cands))
+        except AttributeError:
+            stats={'best' : "unkown",'worst' : "unkown",'mean' : "unkown",'median' : "unkown", 'std' : "unkown"}
             #print 'type---------------------------------------------------------------'
             #print type(stats['best'])
             #if stats['best'] is tuple:
