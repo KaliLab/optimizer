@@ -293,6 +293,7 @@ class PygmoAlgorithmBasis(baseOptimizer):
 
 	def Optimize(self):
 		
+		print(self.boundaries)
 		self.prob = Problem(self.ffun,self.boundaries, self.num_islands, self.pop_size, self.max_evaluation, self.base_dir)
 		self.archi = pg.archipelago(n=self.num_islands,algo=self.algorithm, prob=self.prob, pop_size=self.pop_size)
 		
@@ -1298,15 +1299,19 @@ class Indicator_Based_Bluepyopt(oldBaseOptimizer):
 		self.number_of_cpu=option_obj.number_of_cpu
 		self.SetBoundaries(option_obj.boundaries)
 		self.param_names=self.option_obj.GetObjTOOpt()
-		self.number_of_traces=reader_obj.number_of_traces()
+		if self.option_obj.type[-1]!="features":
+			self.number_of_traces=reader_obj.number_of_traces()
+		else:
+			self.number_of_traces=len(reader_obj.features_data["stim_amp"])
+		feats=self.get_feat_names(self.option_obj.GetFitnessParam())
+		self.feats_and_weights=[x for x in zip(feats[0],feats[1])]
+		self.params=zip(self.param_names,self.min_max[0],self.min_max[1])
 		
 
 
 
 	def Optimize(self):
-		feats=self.get_feat_names(self.option_obj.GetFitnessParam())
-		feats_and_weights=[x for x in zip(feats[0],feats[1])]
-		params=zip(self.param_names,self.min_max[0],self.min_max[1])
+		
 		try:
 			from ipyparallel import Client
 			print("******************PARALLEL RUN : IBEA *******************")
@@ -1315,13 +1320,13 @@ class Indicator_Based_Bluepyopt(oldBaseOptimizer):
 			view = c.load_balanced_view()
 			view.map_sync(os.chdir, [str(os.path.dirname(os.path.realpath(__file__)))]*int(self.number_of_cpu))
 			map_function=view.map_sync
-			optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(params,self.deapfun,feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),map_function=map_function,selector_name='IBEA')
+			optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(self.params,self.deapfun,self.feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),map_function=map_function,selector_name='IBEA')
 			self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))
 			os.system("ipcluster stop")
 		except Exception:
 			os.system("ipcluster stop")
 			print("*****************Single Run : IBEA *******************")
-			optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(params,self.deapfun,feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),selector_name='IBEA')
+			optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(self.params,self.deapfun,self.feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),selector_name='IBEA')
 			self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))	
 		
 
@@ -1349,7 +1354,10 @@ class Indicator_Based_Bluepyopt(oldBaseOptimizer):
 						"Derivative difference" : "calc_grad_dif",
 						"PPTD" : "pyelectro_pptd"}
 		self.ffun_mapper=dict((v,k) for k,v in list(f_m.items()))
-		feat_names=[self.ffun_mapper[x.__name__] for x in feats[0][1]]
+		if self.option_obj.type[-1]!="features":
+			feat_names=[self.ffun_mapper[x.__name__] for x in feats[0][1]]
+		else:
+			feat_names=[x for x in feats[0][1]]
 		return [feat_names,feats[1]]
 
 

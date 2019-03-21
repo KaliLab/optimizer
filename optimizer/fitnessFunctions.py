@@ -971,7 +971,6 @@ class fF(object):
         #modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
         self.fitnes = []
         features = self.option.feats
-        
         #print self.option.feats   #--> [<bound method fF.AP1_amp_abstr_data of <fitnessFunctions.fF instance at 0x7f669e957128>>] (ezt adja)
         weigths = self.option.weights
         temp_fit = 0
@@ -1107,6 +1106,18 @@ class fF(object):
         if(self.option.simulator == 'Neuron'):
             self.model.load_neuron()
 
+        try:
+            #self.model.load_neuron()
+            s = self.option.GetUFunString()
+            s = str.replace(s, "h.", "self.model.hoc_obj.")
+            exec(compile(str.replace(s, "h(", "self.model.hoc_obj("), '<string>', 'exec'))
+            self.usr_fun_name = self.option.GetUFunString().split("\n")[4][self.option.GetUFunString().split("\n")[4].find(" ") + 1:self.option.GetUFunString().split("\n")[4].find("(")]
+            self.usr_fun = locals()[self.usr_fun_name]
+        except SyntaxError:
+            print("Your function contained syntax errors!! Please fix them!")
+        except IndexError:
+            pass
+
         if self.option.type[-1]!= 'features':
             window = int(self.option.spike_window)
         else:
@@ -1179,6 +1190,18 @@ class fF(object):
         if(self.option.simulator == 'Neuron'):
             self.model.load_neuron()
         
+        try:
+            #self.model.load_neuron()
+            s = self.option.GetUFunString()
+            s = str.replace(s, "h.", "self.model.hoc_obj.")
+            exec(compile(str.replace(s, "h(", "self.model.hoc_obj("), '<string>', 'exec'))
+            self.usr_fun_name = self.option.GetUFunString().split("\n")[4][self.option.GetUFunString().split("\n")[4].find(" ") + 1:self.option.GetUFunString().split("\n")[4].find("(")]
+            self.usr_fun = locals()[self.usr_fun_name]
+        except SyntaxError:
+            print("Your function contained syntax errors!! Please fix them!")
+        except IndexError:
+            pass
+
         if self.option.type[-1]!= 'features':
             window = int(self.option.spike_window)
         else:

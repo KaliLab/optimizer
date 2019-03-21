@@ -847,16 +847,16 @@ class Ui_Optimizer(object):
             "Pareto Archived (PAES) - Inspyred": [descr19.copy(),descr20.copy(),descr40],
             "Nondominated Sorted (NSGAII) - Bluepyopt": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
             "Indicator Based (IBEA) - Bluepyopt": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
-            "Differential Evolution (DE) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
-            "Self-Adaptive DE (SADE) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
-            "Exponential Evolution Strategies (XNES) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
-            "Simple Genetic Algorithm (SGA) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
-            "Particle Swarm (PSO) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
-            "Covariance Matrix Adaptation ES (CMAES) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
-            "Single Differential Evolution - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
-            "Differential Evolution (DE1220) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
-            "Bee Colony - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
-            "FullGrid - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41]
+            "Differential Evolution (DE) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
+            "Self-Adaptive DE (SADE) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
+            "Exponential Evolution Strategies (XNES) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
+            "Simple Genetic Algorithm (SGA) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
+            "Particle Swarm (PSO) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
+            "Covariance Matrix Adaptation ES (CMAES) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
+            "Single Differential Evolution - Pygmo":[descr19.copy(),descr20.copy(),descr41],
+            "Differential Evolution (DE1220) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
+            "Bee Colony - Pygmo":[descr19.copy(),descr20.copy(),descr41],
+            "FullGrid - Pygmo":[descr19.copy(),descr20.copy(),descr41]
             }
         
 
@@ -902,7 +902,7 @@ class Ui_Optimizer(object):
         """
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
-        fileName, _ = QFileDialog.getOpenFileName(None,"QFileDialog.getOpenFileName()", "","Data files (*.dat);;All Files (*);;", options=options)
+        fileName, _ = QFileDialog.getOpenFileName(None,"QFileDialog.getOpenFileName()", "","Data files (*.dat *.json);;All Files (*);;", options=options)
         if fileName:
             self.lineEdit_file.setText(fileName)
             self.lineEdit_folder.setText(os.path.dirname(os.path.realpath(fileName)))
@@ -1095,7 +1095,7 @@ class Ui_Optimizer(object):
                 self.my_list = copy(self.core.ffun_calc_list)
                
         else:
-            self.my_list=list(self.core.data_handler.features_data.keys())[3:-1]
+            self.my_list=list(self.core.data_handler.features_data.keys())[3:]
         self.param_list = [[]] * len(self.my_list)
         if self.core.option_handler.type[-1]!="features":
             self.param_list[2] = [("Spike Detection Thres. (mv)",0.0)]
@@ -1520,11 +1520,6 @@ class Ui_Optimizer(object):
             errpop.append("Fitness Values not right")
         
         try:
-            """
-            allRows = self.aspectlist.rowCount()
-            for row in range(0,allRows):
-                print(self.aspectlist.item(row,1).text())
-            """
             selected_algo = self.algolist.selectionModel().selectedRows()
             algo_name=str(self.algolist.item(selected_algo[0].row(), 0).text())
             tmp = {"seed" : int(self.aspectlist.item(0,1).text()),
@@ -1541,6 +1536,7 @@ class Ui_Optimizer(object):
                 "starting_points" : self.seed
                 })
             self.kwargs.update({"algo_options":tmp})
+            print(self.kwargs)
         except:
             err.append(4)
             errpop.append("You forget to select an algorithm!")
@@ -1578,7 +1574,7 @@ class Ui_Optimizer(object):
         """
         text = "Results:"
         #for n, k in zip(self.core.option_handler.GetObjTOOpt(), self.core.optimizer.fit_obj.ReNormalize(self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)])):
-        for n, k in zip(self.core.option_handler.GetObjTOOpt(), self.core.optimizer.fit_obj.ReNormalize(self.core.cands[0])):
+        for n, k in zip(self.core.option_handler.GetObjTOOpt(), self.core.cands[0]):
             if n.split()[0]==n.split()[-1]:
                 param=[n.split()[0], n.split()[-1]]
                 text += "\n" + param[0] + "\n" + "\t" + str(k)
@@ -1610,7 +1606,7 @@ class Ui_Optimizer(object):
         exp_data = []
         model_data = []
         axes = self.figure2.add_subplot(1,1,1)
-
+        axes.cla()
         if self.core.option_handler.type[-1]!="features":
             for n in range(self.core.data_handler.number_of_traces()):
                 exp_data.extend(self.core.data_handler.data.GetTrace(n))
@@ -1626,15 +1622,15 @@ class Ui_Optimizer(object):
             axes.plot(list(range(0, len(exp_data))), exp_data)
             axes.plot(list(range(0, len(model_data))), model_data, 'r')
             axes.legend(["target", "model"])
-            self.figure2.savefig("result_trace.png", dpi=None, facecolor='w', edgecolor='w',
+            self.figure2.savefig("result_trace.png", dpi=300, facecolor='w', edgecolor='w',
             orientation='portrait', papertype=None, format=None,
             transparent=False, bbox_inches=None, pad_inches=0.1)
-            self.figure2.savefig("result_trace.eps", dpi=None, facecolor='w', edgecolor='w')
-            self.figure2.savefig("result_trace.svg", dpi=None, facecolor='w', edgecolor='w')
+            self.figure2.savefig("result_trace.eps", dpi=300, facecolor='w', edgecolor='w')
+            self.figure2.savefig("result_trace.svg", dpi=300, facecolor='w', edgecolor='w')
             self.canvas2.draw()
             #plt.hold(False)
             plt.tight_layout()
-            plt.close()
+            
 
         else:
             for n in range(len(self.core.data_handler.features_data["stim_amp"])):
@@ -1642,7 +1638,6 @@ class Ui_Optimizer(object):
             no_traces=len(self.core.data_handler.features_data["stim_amp"])
             t = int(self.core.option_handler.run_controll_tstop)         # instead of input_length
             step = self.core.option_handler.run_controll_dt
-
             axes.set_xlabel("time [ms]")
             _type=str(self.kwargs["runparam"][2])       #parameter to record
             _type_ = "Voltage" if _type =="v" else "Current" if _type=="c" else ""
@@ -1650,11 +1645,11 @@ class Ui_Optimizer(object):
             axes.set_ylabel(_type_+" [" + unit + "]")
             axes.plot(list(range(0, len(model_data))), model_data, 'r')
             axes.legend(["model"])
-            self.figure2.savefig("result_trace.png", dpi=None, facecolor='w', edgecolor='w',
+            self.figure2.savefig("result_trace.png", dpi=300, facecolor='w', edgecolor='w',
             orientation='portrait', papertype=None, format=None,
             transparent=False, bbox_inches=None, pad_inches=0.1)
-            self.figure2.savefig("result_trace.eps", dpi=None, facecolor='w', edgecolor='w')
-            self.figure2.savefig("result_trace.svg", dpi=None, facecolor='w', edgecolor='w')
+            self.figure2.savefig("result_trace.eps", dpi=300, facecolor='w', edgecolor='w')
+            self.figure2.savefig("result_trace.svg", dpi=300, facecolor='w', edgecolor='w')
             #plt.hold(False)
             self.canvas2.draw()
             plt.tight_layout()
@@ -1680,8 +1675,6 @@ class Ui_Optimizer(object):
         """
         Writes out the same fitnesses for parameters as in the previous tab.
         """
-        print(type(self.core.cands))
-        print(type(self.core.cands[0]))
         try:
             stats = inspyred.ec.analysis.fitness_statistics(self.core.cands)
         except AttributeError:
@@ -2074,8 +2067,6 @@ class BoundaryWindow(QtWidgets.QMainWindow):
             self.option_handler.boundaries[0] = [float(n.text()) for n in self.min]
             self.option_handler.boundaries[1] = [float(n.text()) for n in self.max]
         except ValueError:
-            
-            
             popup("Invalid Value")
             
 
@@ -2119,7 +2110,7 @@ class BoundaryWindow(QtWidgets.QMainWindow):
             except IOError:
                 popup("Error reading the file!")
             except Exception as e:
-                print("Error:"+ e)
+                print("Error:"+ str(e))
                 
 
 

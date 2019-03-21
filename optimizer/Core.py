@@ -431,7 +431,7 @@ class coreModul():
 		self.cands,self.fits = [],[]
 
 		if self.option_handler.evo_strat.split(" ")[-1] == "Bluepyopt":
-			self.cands=[list(hof) for hof in self.optimizer.hall_of_fame]
+			self.cands=[list(normalize(hof,self.optimizer)) for hof in self.optimizer.hall_of_fame]
 			self.fits=[x.fitness.values for x in self.optimizer.hall_of_fame]
 			print([str(can)+':'+str(fit) for can,fit in zip(self.optimizer.hall_of_fame,self.fits)])
 			
@@ -450,6 +450,8 @@ class coreModul():
 				self.fits.append(self.optimizer.final_pop[i].fitness)
 
 		print(("Optimization lasted for ", stop_time-start_time, " s"))
+		print(self.cands)
+		self.cands[0]=self.optimizer.fit_obj.ReNormalize(self.cands[0])
 		print((self.cands[0],"fitness: ",self.fits[0]))
 		
 
@@ -466,12 +468,12 @@ class coreModul():
 		self.final_result=[]
 		self.error_comps=[]
 		#self.optimal_params=self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])
-		self.optimal_params=self.optimizer.fit_obj.ReNormalize(self.cands[0])
+		self.optimal_params=self.cands[0]
 		if self.option_handler.GetUFunString()=='':
 			if isinstance(self.model_handler, externalHandler):
 				out_handler=open("params.param","w")
 			#for n,k in zip(self.option_handler.GetObjTOOpt(),self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])):
-			for n,k in zip(self.option_handler.GetObjTOOpt(),self.optimizer.fit_obj.ReNormalize(self.cands[0])):
+			for n,k in zip(self.option_handler.GetObjTOOpt(),self.cands[0]):
 				tmp=n.split(" ")
 				if isinstance(self.model_handler, externalHandler):
 					out_handler.write(str(k)+"\n")
@@ -495,7 +497,7 @@ class coreModul():
 
 			self.usr_fun_name=self.option_handler.GetUFunString().split("\n")[4][self.option_handler.GetUFunString().split("\n")[4].find(" ")+1:self.option_handler.GetUFunString().split("\n")[4].find("(")]
 			self.usr_fun=locals()[self.usr_fun_name]
-			self.usr_fun(self,self.optimizer.fit_obj.ReNormalize(self.cands[0]))
+			self.usr_fun(self,self.cands[0])
 			#self.usr_fun(self,self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)]))
 		#the first cell is a vector with all the stimuli in the simulation
 		#the first cell is the current stimulus
@@ -572,7 +574,7 @@ class coreModul():
 		tmp_str+="<p>"+self.htmlStyle("Optimization of <b>"+name+".hoc</b> based on: "+self.option_handler.input_dir,self.htmlAlign("center"))+"</p>\n"
 		tmp_list=[]
 		#tmp_fit=self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])
-		tmp_fit=self.optimizer.fit_obj.ReNormalize(self.cands[0])
+		tmp_fit=self.cands[0]
 		for name,mmin,mmax,f in zip(self.option_handler.GetObjTOOpt(),self.option_handler.boundaries[0],self.option_handler.boundaries[1],tmp_fit):
 			tmp_list.append([str(name),str(mmin),str(mmax),str(f)])
 		tmp_str+="<center><p>"+self.htmlStyle("Results",self.htmlUnderline(),self.htmlResize(200))+"</p></center>\n"

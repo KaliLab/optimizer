@@ -7,7 +7,7 @@
   <cognitive_rate>None</cognitive_rate>
   <cooling_rate>None</cooling_rate>
   <crossover_rate>None</crossover_rate>
-  <evo_strat>Covariance Matrix Adaptation ES (CMAES) - Pygmo</evo_strat>
+  <evo_strat>Indicator Based (IBEA) - Bluepyopt</evo_strat>
   <f_tol>None</f_tol>
   <feats>MSE (excl. spikes), Spike count (stim.), AP amplitude, AP width</feats>
   <force_bounds>False</force_bounds>
@@ -20,7 +20,7 @@
   <input_scale>mV</input_scale>
   <input_size>1</input_size>
   <m_gauss>None</m_gauss>
-  <max_evaluation>20.0</max_evaluation>
+  <max_evaluation>10.0</max_evaluation>
   <model_path>/home/nest/Desktop/optimizer/optimizer/new_test_files/hh_pas_surrogate/hh_pas.hoc</model_path>
   <model_spec_dir>None</model_spec_dir>
   <mutation_rate>0.25</mutation_rate>
@@ -31,7 +31,7 @@
   <num_repet>None</num_repet>
   <number_of_cpu>4.0</number_of_cpu>
   <param_vals>[0, 0, 0]</param_vals>
-  <pop_size>20.0</pop_size>
+  <pop_size>10.0</pop_size>
   <run_controll_dt>0.025</run_controll_dt>
   <run_controll_pos>0.5</run_controll_pos>
   <run_controll_record>v</run_controll_record>
