@@ -1407,7 +1407,7 @@ class Ui_Optimizer(object):
                     except:
                         continue
         except Exception as e:
-            popup("Wrong values given. "+e)
+            popup("Wrong values given. "+str(e))
 
     def packageselect(self,pack_name):
             """
@@ -1514,7 +1514,7 @@ class Ui_Optimizer(object):
                                     })
                 self.kwargs.update({"weights" : self.weights})
             if not(0.99<sum(self.kwargs["weights"])<=1.01):
-                errpop.append("You did not normalize your weights!\nDo you want to continue?")
+                errpop.append("You did not normalize your weights!")
         except:
             err.append(3)
             errpop.append("Fitness Values not right")
@@ -1536,7 +1536,6 @@ class Ui_Optimizer(object):
                 "starting_points" : self.seed
                 })
             self.kwargs.update({"algo_options":tmp})
-            print(self.kwargs)
         except:
             err.append(4)
             errpop.append("You forget to select an algorithm!")

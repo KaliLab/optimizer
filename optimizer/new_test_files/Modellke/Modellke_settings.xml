@@ -7,7 +7,7 @@
   <cognitive_rate>None</cognitive_rate>
   <cooling_rate>None</cooling_rate>
   <crossover_rate>None</crossover_rate>
-  <evo_strat>Evolutionary Algorithm (EA) - Inspyred</evo_strat>
+  <evo_strat>Covariance Matrix Adaptation ES (CMAES) - Pygmo</evo_strat>
   <f_tol>None</f_tol>
   <feats>Spikecount, inv_first_ISI, inv_last_ISI, inv_time_to_first_spike, steady_state_voltage, voltage_base, voltage_deflection, voltage_deflection_begin, AHP_depth_abs, AHP_time_from_peak, AP2_amp, AP_amplitude, AP_begin_voltage, AP_duration_half_width, AP_fall_time, AP_rise_time, APlast_amp, time_to_last_spike, sag_amplitude, sag_ratio1</feats>
   <force_bounds>False</force_bounds>
@@ -23,13 +23,13 @@
   <max_evaluation>2.0</max_evaluation>
   <model_path>/home/nest/Desktop/optimizer/optimizer/new_test_files/Modellke/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc</model_path>
   <model_spec_dir>/home/nest/Desktop/optimizer/optimizer/new_test_files/Modellke/mods</model_spec_dir>
-  <mutation_rate>0.25</mutation_rate>
+  <mutation_rate>None</mutation_rate>
   <neighborhood_size>None</neighborhood_size>
-  <num_islands>None</num_islands>
+  <num_islands>1.0</num_islands>
   <num_iter>None</num_iter>
   <num_params>12</num_params>
   <num_repet>None</num_repet>
-  <number_of_cpu>1.0</number_of_cpu>
+  <number_of_cpu>None</number_of_cpu>
   <param_vals>[0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]</param_vals>
   <pop_size>2.0</pop_size>
   <run_controll_dt>0.05</run_controll_dt>
@@ -44,7 +44,7 @@
   <social_rate>None</social_rate>
   <spike_thres>0.0</spike_thres>
   <spike_window>None</spike_window>
-  <start_time_stamp>1553179142.530693</start_time_stamp>
+  <start_time_stamp>1553462982.5074096</start_time_stamp>
   <starting_points>None</starting_points>
   <std_gauss>None</std_gauss>
   <step_size>None</step_size>
@@ -130,6 +130,6 @@ def usr_fun(self,v):
         sec.e_Leak_pyr = v[7]  
 </u_fun_string>
   <update_freq>None</update_freq>
-  <weights>[0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024]</weights>
+  <weights>[0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999]</weights>
   <x_tol>None</x_tol>
 </settings>

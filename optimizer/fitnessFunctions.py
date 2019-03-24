@@ -930,7 +930,6 @@ class fF(object):
         exp_mean = features_data[feature]["mean"][k]
         exp_std = features_data[feature]["std"][k]
         mod_result=traces_results[0][feature]
-        
 
         if mod_result is not None and mod_result.size > 1 and (feature == 'AP_rise_time' or feature == 'AP_amplitude' or feature == 'AP_duration_half_width' or feature == 'AP_begin_voltage' or feature == 'AP_rise_rate'):
             mod_result = scipy.mean(mod_result[1:])
@@ -1038,6 +1037,8 @@ class fF(object):
                         for f, w in zip(features, weigths):
                             temp_fit += w * self.FFun_for_Features(self.model.record[0],
                                                                 self.reader.features_data, f, k, args)
+                    print((self.model.record[0],"reader:",self.reader.features_data,"f", f,'k', k, "args",args))
+                            
                 else:
                         temp_fit=100
             self.fitnes.append(temp_fit)
@@ -1171,12 +1172,12 @@ class fF(object):
 
             
             self.fitnes.append(ec.emo.Pareto(tuple(temp_fit)))
-            if(self.option.simulator == 'Neuron'):
-                self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
-        
+            
             if self.option.output_level == "1":
                 print("current fitness: ",temp_fit)
             del temp_fit[:] 
+        if(self.option.simulator == 'Neuron'):
+                self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
         
         
         return self.fitnes

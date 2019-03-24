@@ -27,11 +27,11 @@
   <neighborhood_size>None</neighborhood_size>
   <num_islands>None</num_islands>
   <num_iter>None</num_iter>
-  <num_params>12</num_params>
+  <num_params>6</num_params>
   <num_repet>None</num_repet>
-  <number_of_cpu>4.0</number_of_cpu>
+  <number_of_cpu>1.0</number_of_cpu>
   <param_vals>[0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]</param_vals>
-  <pop_size>4.0</pop_size>
+  <pop_size>2.0</pop_size>
   <run_controll_dt>0.05</run_controll_dt>
   <run_controll_pos>0.5</run_controll_pos>
   <run_controll_record>v</run_controll_record>
@@ -44,7 +44,7 @@
   <social_rate>None</social_rate>
   <spike_thres>0.0</spike_thres>
   <spike_window>None</spike_window>
-  <start_time_stamp>1553165582.5061696</start_time_stamp>
+  <start_time_stamp>1553436207.1720552</start_time_stamp>
   <starting_points>None</starting_points>
   <std_gauss>None</std_gauss>
   <step_size>None</step_size>
@@ -130,6 +130,6 @@ def usr_fun(self,v):
         sec.e_Leak_pyr = v[7]  
 </u_fun_string>
   <update_freq>None</update_freq>
-  <weights>[0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024, 0.050000000000000024]</weights>
+  <weights>[0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999, 0.04999999999999999]</weights>
   <x_tol>None</x_tol>
 </settings>

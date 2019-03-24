@@ -365,11 +365,11 @@ class coreModul():
 			#print fit_par
 			self.option_handler.SetFitnesParam(fit_par)
 			tmp=args.get("algo_options")
-
-			'''
+			print(tmp)
+			"""
 			if self.option_handler.type[-1]=='features':
 				tmp.update({"num_params" : len(self.data_handler.features_data['stim_amp'])})
-			'''
+			"""
 			if len(tmp.get("boundaries")[0])<1:
 				raise sizeError("No boundaries were given!")
 			#tmp.append(args.get("starting_points"))
