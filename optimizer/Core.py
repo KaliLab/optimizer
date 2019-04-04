@@ -152,6 +152,7 @@ class coreModul():
 		:param args: dictionary with keys "simulator" and "sim_command"
 
 		"""
+		print(args)
 		self.model_handler=None
 		#print "load"
 		self.option_handler.SetSimParam([args.get("simulator","Neuron"),args.get("sim_command"),None])

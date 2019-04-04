@@ -32,7 +32,7 @@ freq = 100      // Hz, frequency at which AC length constant will be computed
 d_lambda = 0.1
 
 func lambda_f() { local i, x1, x2, d1, d2, lam
-        if (n3d() < 2) {
+	if (n3d() < 2) {
                 return 1e5*sqrt(diam/(4*PI*$1*Ra*cm))
         }
         x1 = arc3d(0)
@@ -42,10 +42,17 @@ func lambda_f() { local i, x1, x2, d1, d2, lam
                 x2 = arc3d(i)
                 d2 = diam3d(i)
                 lam += (x2 - x1)/sqrt(d1 + d2)
+		print lam
                 x1 = x2   d1 = d2
         }
         //  length of the section in units of lambda
         lam *= sqrt(2) * 1e-5*sqrt(4*PI*$1*Ra*cm)
+	print PI
+	print Ra
+	print cm
+	print $1
+	print lam
+	psection()
 
         return L/lam
 }

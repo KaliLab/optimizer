@@ -1037,8 +1037,7 @@ class fF(object):
                         for f, w in zip(features, weigths):
                             temp_fit += w * self.FFun_for_Features(self.model.record[0],
                                                                 self.reader.features_data, f, k, args)
-                    print((self.model.record[0],"reader:",self.reader.features_data,"f", f,'k', k, "args",args))
-                            
+                          
                 else:
                         temp_fit=100
             self.fitnes.append(temp_fit)

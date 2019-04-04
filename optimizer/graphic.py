@@ -17,8 +17,6 @@ import Core
 import numpy
 import os.path
 from functools import partial
-from deap.benchmarks.tools import diversity, convergence, hypervolume
-from deap import tools
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -1039,7 +1037,6 @@ class Ui_Optimizer(object):
             for k in range(self.core.data_handler.number_of_traces()):
                 exp_data.extend(self.core.data_handler.data.GetTrace(k))
             ax = self.figure.add_subplot(111)
-            ax.hold(False)
             ax.plot(list(range(0, len(exp_data))), exp_data)
             self.canvas.draw()
             plt.tight_layout()
@@ -1298,26 +1295,24 @@ class Ui_Optimizer(object):
                                  "sim_command" : self.sim_path.text()})
             self.core.model_handler.load_neuron()
             temp = self.core.model_handler.GetParameters()
-            
             if temp!=None:
                 out = open("model.txt", 'w')
 
                 for i in temp:
                     out.write(str(i))
                     out.write("\n")
-                self.modellist.setRowCount(len(temp[0][1]))
+                index=0
+                self.modellist.setRowCount(self.recursive_len(temp))
                 for row in temp:
-                    #self.model.InsertStringItem(index,row[0])
-                    #print row[1]
                     for k in (row[1]):
                         if k != []:
-                            #.model.InsertStringItem(index, row[0])
-                            #self.model.SetStringItem(index, 2, k[0])
-                            for index,s in enumerate(k[2]):
+                            for s in (k[2]):
                                 self.modellist.setItem(index, 0, QTableWidgetItem(row[0]))
                                 self.modellist.setItem(index, 1, QTableWidgetItem(str(k[0])))
                                 self.modellist.setItem(index, 2, QTableWidgetItem(k[1]))
                                 self.modellist.setItem(index, 3, QTableWidgetItem(s))
+                                index+=1
+                self.modellist.setRowCount(index)
             else:
                 pass
 
@@ -1330,6 +1325,12 @@ class Ui_Optimizer(object):
                 self.section_dur.addItems(tmp)
             except:
                 popup("Section error")
+
+    def recursive_len(self,item):
+        if type(item) == list:
+            return sum(self.recursive_len(subitem) for subitem in item)
+        else:
+            return 1
 
 
     def UF(self):
@@ -1699,11 +1700,14 @@ class Ui_Optimizer(object):
         scroll_area.setGeometry(QtCore.QRect(300,80, 350, 100))
         scroll_area.setWidget(label)
         scroll_area.setWidgetResizable(True)
+        self.errorlist.setRowCount(self.recursive_len(self.core.error_comps))
 
+        idx=0
         for c_idx,c in enumerate(zip(*self.core.error_comps)):
             tmp=[0]*4
             for t_idx in range(len(c)):
                 #print c[t_idx]
+                
                 tmp[1]+=c[t_idx][2]
                 tmp[2]=c[t_idx][0]
                 tmp[3]+=c[t_idx][2]*c[t_idx][0]
@@ -1711,13 +1715,15 @@ class Ui_Optimizer(object):
                 tmp[0]=self.core.ffun_mapper[c[t_idx][1].__name__]
             else:
                 tmp[0]=(c[t_idx][1])
-
+            idx+=1
             tmp=list(map(str,tmp))
             #tmp_list.append(tmp)
             self.errorlist.setItem(c_idx, 0, QTableWidgetItem(tmp[0]))
             self.errorlist.setItem(c_idx, 1, QTableWidgetItem(tmp[1]))
             self.errorlist.setItem(c_idx, 2, QTableWidgetItem(tmp[2]))
             self.errorlist.setItem(c_idx, 3, QTableWidgetItem(tmp[3]))
+
+        self.errorlist.setRowCount(idx)
 
     def PlotGen(self, e):
         """
@@ -1809,11 +1815,15 @@ class Ui_Optimizer(object):
     def PlotGrid(self, e):
         self.prev_bounds=copy(self.core.option_handler.boundaries)
         self.PG=gridwindow(self)
-        self.PG.Show()
+        self.PG.setObjectName("Optimizer")
+        self.PG.resize(400, 500)
+        self.PG.show()
 
     def ShowErrorDialog(self,e):
         self.extra_error_dialog=ErrorDialog(self)
-        self.extra_error_dialog.Show()
+        self.extra_error_dialog.setObjectName("Optimizer")
+        self.extra_error_dialog.resize(400, 500)
+        self.extra_error_dialog.show()
 
     def boundarywindow(self):
         self.BW = BoundaryWindow(self) 
@@ -2335,36 +2345,39 @@ class gridwindow(QtWidgets.QMainWindow):
 class ErrorDialog(QtWidgets.QMainWindow):
     def __init__(self,parent):
         super(ErrorDialog,self).__init__()
-        self.error_comp_table.InsertColumn(0, 'Error Function', width=200)
-        self.error_comp_table.InsertColumn(1, 'Value', width=200)
-        self.error_comp_table.InsertColumn(2, 'Weight', width=200)
-        self.error_comp_table.InsertColumn(3, 'Weighted Value', width=200)
-
+        self.error_comp_table = QtWidgets.QTableWidget(self)
+        self.error_comp_table.setGeometry(QtCore.QRect(10, 200, 441, 261))
+        self.error_comp_table.setObjectName("error_comp_table")
+        self.error_comp_table.setColumnCount(4)
+        self.error_comp_table.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.error_comp_table.setHorizontalHeaderLabels(("Error Function;Value;Weight;Weighted Value").split(";"))
+        self.error_comp_table.setRowCount(parent.recursive_len(parent.core.error_comps))
+        
         tmp_w_sum=0
         c_idx=0
         for t in parent.core.error_comps:
             for c in t:
                 #tmp_str.append( "*".join([str(c[0]),c[1].__name__]))
                 if parent.core.option_handler.type[-1]!="features":
-                    idx=self.error_comp_table.InsertStringItem(c_idx,self.parent.core.ffun_mapper[c[1].__name__])
+                    self.error_comp_table.setItem(c_idx,0,QTableWidgetItem(self.parent.core.ffun_mapper[c[1].__name__]))
                 else:
-                    idx=self.error_comp_table.InsertStringItem(c_idx,c[1])
-                self.error_comp_table.SetStringItem(idx,1,str(c[2]))
-                self.error_comp_table.SetStringItem(idx,2,str(c[0]))
-                self.error_comp_table.SetStringItem(idx,3,str(c[0]*c[2]))
+                    self.error_comp_table.setItem(c_idx,0,QTableWidgetItem(c[1]))
+                self.error_comp_table.setItem(c_idx,1,QTableWidgetItem(str(c[2])))
+                self.error_comp_table.setItem(c_idx,2,QTableWidgetItem(str(c[0])))
+                self.error_comp_table.setItem(c_idx,3,QTableWidgetItem(str(c[0]*c[2])))
                 c_idx+=1
                 tmp_w_sum +=c[0]*c[2]
             c_idx+=1
-            idx=self.error_comp_table.InsertStringItem(c_idx,"Weighted Sum")
-            self.error_comp_table.SetStringItem(idx,1,"-")
-            self.error_comp_table.SetStringItem(idx,2,"-")
-            self.error_comp_table.SetStringItem(idx,3,str(tmp_w_sum))
+            self.error_comp_table.setItem(c_idx,0,QTableWidgetItem("Weighted Sum"))
+            self.error_comp_table.setItem(c_idx,1,QTableWidgetItem("-"))
+            self.error_comp_table.setItem(c_idx,2,QTableWidgetItem("-"))
+            self.error_comp_table.setItem(c_idx,3,QTableWidgetItem(str(tmp_w_sum)))
             #print str(tmp_w_sum)
             tmp_w_sum=0
+            self.error_comp_table.setRowCount(c_idx)
 
 
 def main(param=None):
-    import sys
     if param!=None:
         core=Core.coreModul()
         core.option_handler.output_level=param.lstrip("-v_level=")

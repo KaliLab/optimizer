@@ -1,4 +1,4 @@
-/* Created by Language version: 6.2.0 */
+/* Created by Language version: 7.5.0 */
 /* VECTORIZED */
 #define NRN_VECTORIZED 1
 #include <stdio.h>
@@ -114,7 +114,7 @@ static void nrn_state(_NrnThread*, _Memb_list*, int);
 static void  nrn_jacob(_NrnThread*, _Memb_list*, int);
  /* connect range variables in _p that hoc is supposed to know about */
  static const char *_mechanism[] = {
- "6.2.0",
+ "7.5.0",
 "Leak_pyr",
  "gmax_Leak_pyr",
  "e_Leak_pyr",
@@ -152,7 +152,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
      _nrn_setdata_reg(_mechtype, _setdata);
   hoc_register_prop_size(_mechtype, 5, 0);
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 Leak_pyr /home/nest/Desktop/optimizer/optimizer/tests/ca1_pc_simplification/mod_files/x86_64/Leak_pyr.mod\n");
+ 	ivoc_help("help ?1 Leak_pyr /home/mohacsi/Desktop/optimizer/optimizer/tests/ca1_pc_simplification/mod_files/x86_64/Leak_pyr.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }

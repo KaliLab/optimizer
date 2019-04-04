@@ -4,6 +4,7 @@ from traceHandler import Trace
 import optimizerHandler
 import importlib
 
+
 try:
     import copyreg
 except:
@@ -90,18 +91,14 @@ class modelHandlerNeuron():
     def __init__(self,model_path,special_path,base=os.getcwd()):
         from neuron import h
         import neuron
-
-
-        #print('*********** NEURON LOADED ***********')
+        print('*********** NEURON '+neuron.__version__+' LOADED ***********')
         self.base_directory=base
         self.special= None if special_path == 'None' else special_path
         self.model=model_path
+        self.model_dir=('/').join(self.model.rsplit('/')[0:-1])
         if self.special:
             neuron.load_mechanisms(self.special)
         
-        #os.chdir(self.special)
-        #from neuron import h
-        #from nrn import *
         
 
         self.hoc_obj=None
@@ -112,10 +109,8 @@ class modelHandlerNeuron():
         self.sections={}
 
     def load_neuron(self):
-        #from neuron import h
         from neuron import h
         import neuron
-        
         if self.special:
             neuron.load_mechanisms(self.special)
         self.hoc_obj=h
@@ -130,7 +125,6 @@ class modelHandlerNeuron():
         for n in h.allsec():
             self.sections[str(h.secname())]=n
         self.channels={}
-        #optimizerHandler.setmods(self.hoc_obj,self.sections)
         for sec in h.allsec():
             for seg in sec:
                 for mech in seg:
