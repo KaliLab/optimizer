@@ -458,7 +458,7 @@ class coreModul():
 						cumminfits.append(cumminfits[-1]) if min_e>cumminfits[-1] else cumminfits.append(min_e)
 					else:
 						cumminfits.append(minfits[-1])
-					out_handler.write(str(idx)+","+str(min_e)+","+str(max_e)+","+str(med_e)+","+str(cumminfits[-1])+"\n")
+					out_handler.write(str(int(idx/2+1))+","+str(min_e)+","+str(max_e)+","+str(med_e)+","+str(cumminfits[-1])+"\n")
 			
 			with open(self.option_handler.base_dir + "/bpopt_pop.txt" , "w") as out_handler:
 				out_handler.write("Gen \t Parameters \t \t Fitnesses \n")
@@ -466,7 +466,7 @@ class coreModul():
 					current_fits=self.allfits[idx*popsize:(idx+1)*popsize]
 					current_gen=self.allpop[idx*popsize:(idx+1)*popsize]
 					for gen,fit in zip(current_gen,current_fits):
-						out_handler.write(str(idx)+":"+str(gen)+":"+str(fit)+"\n")
+						out_handler.write(str(int(idx/2+1))+":"+str(gen)+":"+str(fit)+"\n")
 
 					
 					
