@@ -5,6 +5,7 @@ from optionHandler import optionHandler
 from scipy.interpolate import interp1d
 from scipy import linspace
 import time
+import numpy
 
 class coreModul():
 	"""
@@ -434,8 +435,56 @@ class coreModul():
 		if self.option_handler.evo_strat.split(" ")[-1] == "Bluepyopt":
 			self.cands=[list(normalize(hof,self.optimizer)) for hof in self.optimizer.hall_of_fame]
 			self.fits=[x.fitness.values for x in self.optimizer.hall_of_fame]
-			print([str(can)+':'+str(fit) for can,fit in zip(self.optimizer.hall_of_fame,self.fits)])
+			popsize=int(self.option_handler.pop_size)
+			self.allfits=[self.optimizer.hist.genealogy_history[x].fitness.values for x in self.optimizer.hist.genealogy_history]
+			self.allpop=[self.optimizer.hist.genealogy_history[x] for x in self.optimizer.hist.genealogy_history]
+			allgens=[]
+			minfits=[]
+			maxfits=[]
+			medfits=[]
+			cumminfits=[]
+			with open(self.option_handler.base_dir + "/bpopt_stats.txt" , "w") as out_handler:
+				out_handler.write("Gen \t Min \t \t Max \t \t Median \t  Cumulative Min \n")
+				for idx in range(0,int(self.option_handler.max_evaluation*2),2):
+					current_gen=self.allfits[idx*popsize:(idx+1)*popsize]
+					weighted_sum=numpy.dot(current_gen,self.option_handler.weights)
+					min_e=numpy.min(weighted_sum)
+					max_e=numpy.max(weighted_sum)
+					med_e=numpy.median(weighted_sum)
+					minfits.append(min_e)
+					maxfits.append(max_e)
+					medfits.append(med_e)
+					if cumminfits:
+						cumminfits.append(cumminfits[-1]) if min_e>cumminfits[-1] else cumminfits.append(min_e)
+					else:
+						cumminfits.append(minfits[-1])
+					out_handler.write(str(idx)+","+str(min_e)+","+str(max_e)+","+str(med_e)+","+str(cumminfits[-1])+"\n")
 			
+			with open(self.option_handler.base_dir + "/bpopt_pop.txt" , "w") as out_handler:
+				out_handler.write("Gen \t Parameters \t \t Fitnesses \n")
+				for idx in range(0,int(self.option_handler.max_evaluation*2),2):
+					current_fits=self.allfits[idx*popsize:(idx+1)*popsize]
+					current_gen=self.allpop[idx*popsize:(idx+1)*popsize]
+					for gen,fit in zip(current_gen,current_fits):
+						out_handler.write(str(idx)+":"+str(gen)+":"+str(fit)+"\n")
+
+					
+					
+			print(('MIN:',minfits,'MAX:',maxfits,'MED:',medfits,'CUMUL',cumminfits))
+			
+			"""import matplotlib.pyplot as plt
+			plt.plot(range(0,int(self.option_handler.max_evaluation)), minfits)
+			plt.plot(range(0,int(self.option_handler.max_evaluation)), maxfits)
+			plt.plot(range(0,int(self.option_handler.max_evaluation)), medfits)
+			plt.plot(range(0,int(self.option_handler.max_evaluation)), cumminfits)
+			plt.yscale('log')
+			plt.legend(['min','max','med','cumul'])
+			plt.xlabel('Gen')
+			plt.ylabel('Fitness')
+			plt.grid(True)
+			plt.savefig("test.png")
+			plt.show()"""
+
 		elif(self.option_handler.evo_strat.split(" ")[-1] == "Pygmo"):
 			'''
 			Currently only the best individual with its fitness is passed

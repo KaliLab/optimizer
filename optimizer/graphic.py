@@ -807,6 +807,7 @@ class Ui_Optimizer(object):
         for index,item in enumerate(self.Recom): 
             self.algolist.setItem(index, 0, QTableWidgetItem(item))  
 
+
         descr19 = {'Size of Population:':100}
         descr20 = {'Number of Generations:':100}
         descr21 = {'Mutation Rate:':0.25}
@@ -830,6 +831,7 @@ class Ui_Optimizer(object):
         descr39 = {'Crossover Rate:':1}
         descr40 = {'Number of CPU:':1}
         descr41 = {'Number of Islands:':1}
+        descr42 = {'Force bounds:' : False}
 
 
         self.algo_dict={
@@ -847,10 +849,10 @@ class Ui_Optimizer(object):
             "Indicator Based (IBEA) - Bluepyopt": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
             "Differential Evolution (DE) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "Self-Adaptive DE (SADE) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
-            "Exponential Evolution Strategies (XNES) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
+            "Exponential Evolution Strategies (XNES) - Pygmo":[descr19.copy(),descr20.copy(),descr42,descr41],
             "Simple Genetic Algorithm (SGA) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "Particle Swarm (PSO) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
-            "Covariance Matrix Adaptation ES (CMAES) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
+            "Covariance Matrix Adaptation ES (CMAES) - Pygmo":[descr19.copy(),descr20.copy(),descr42,descr41],
             "Single Differential Evolution - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "Differential Evolution (DE1220) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "Bee Colony - Pygmo":[descr19.copy(),descr20.copy(),descr41],
@@ -1432,9 +1434,7 @@ class Ui_Optimizer(object):
         """
         try:
             selected_algo = self.algolist.selectionModel().selectedRows()[0].row()
-            print(selected_algo)
             aspects=self.algo_dict.get(str(self.algolist.item(selected_algo, 0).text()))
-            print(aspects)
             self.aspectlist.setRowCount(len(aspects)+1)
             item = QTableWidgetItem('Seed')
             item.setFlags( QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled )      
@@ -1445,8 +1445,12 @@ class Ui_Optimizer(object):
                 key=next(iter(elems))
                 item = QTableWidgetItem(key)
                 item.setFlags( QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled )      
-                self.aspectlist.setItem(index+1, 0, item)
-                item2 = QTableWidgetItem(str(elems.get(key)))   
+                self.aspectlist.setItem(index+1, 0, item)     
+                item2 = QTableWidgetItem(str(elems.get(key)))
+                if str(key)=='Force bounds:':
+                    item2 = QTableWidgetItem()
+                    item2.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
+                    item2.setCheckState(QtCore.Qt.Unchecked)    
                 self.aspectlist.setItem(index+1, 1, item2)
         except:
             print('Algorithm selection error')
@@ -1530,6 +1534,7 @@ class Ui_Optimizer(object):
                 #tmp.update({str(n[1]) : float(n[0].GetValue())})
             allRows = self.aspectlist.rowCount()
             for row in range(1,allRows):
+                print(self.aspectlist.item(row,1).text())
                 tmp.update({str(self.aspectlist.item(row,0).text()):float(self.aspectlist.item(row,1).text())})
             tmp.update({
                 "num_params" : len(self.core.option_handler.GetObjTOOpt()),
@@ -2015,9 +2020,15 @@ class BoundaryWindow(QtWidgets.QMainWindow):
         vstep = 35
         hoffset = 10
         voffset = 15
-        self.min = []
-        self.max = []
         self.option_handler=parent.core.option_handler
+        self.boundary_table = QtWidgets.QTableWidget(self)
+        self.boundary_table.setGeometry(QtCore.QRect(10, 10, 302, 361))
+        self.boundary_table.setObjectName("boundary_table")
+        self.boundary_table.setColumnCount(3)
+        self.boundary_table.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.boundary_table.setHorizontalHeaderLabels(("Parameters;Minimum;Maximum").split(";"))
+        self.boundary_table.setRowCount(len(self.option_handler.GetObjTOOpt()))
+        
 
         for l in range(len(self.option_handler.GetObjTOOpt())):
             param=self.option_handler.GetObjTOOpt()[l].split()
@@ -2029,31 +2040,21 @@ class BoundaryWindow(QtWidgets.QMainWindow):
                 else:
                     label=param[-1]
            
-            lbl = QtWidgets.QLabel(self)
-            lbl.setGeometry(QtCore.QRect(hoffset, voffset + l * vstep, 121, 16))
-            font = QtGui.QFont()
-            font.setFamily("Ubuntu")
-            font.setPointSize(10)
-            font.setBold(False)
-            font.setWeight(50)
-            lbl.setFont(font)
-            lbl.setObjectName("tmp_min")
-            lbl.setText(QtCore.QCoreApplication.translate("Optimizer", label))
-
-            tmp_min = QtWidgets.QLineEdit(self)
-            tmp_min.setGeometry(QtCore.QRect(hstep, voffset + l * vstep, 61, 22))
-            tmp_min.setObjectName("tmp_min")
-            tmp_max = QtWidgets.QLineEdit(self)
-            tmp_max.setGeometry(QtCore.QRect(hstep + hstep/1.5, voffset + l * vstep, 61, 22))
-            tmp_max.setObjectName("tmp_min")
-            lbl.show()
-            tmp_min.show()
-            self.min.append(tmp_min)
-            self.max.append(tmp_max)
-            if len([1]) == len(self.option_handler.GetObjTOOpt()):
-                tmp_min.setText(str(self.option_handler.boundaries[0][l]))
-                tmp_max.setText(str(self.option_handler.boundaries[1][l]))
+            
+            item = QTableWidgetItem(label)
+            item.setFlags( QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled )      
+            self.boundary_table.setItem(l, 0, item)
+            print(len(self.option_handler.boundaries[1]))
+            print(len(self.option_handler.GetObjTOOpt()))
+            if len(self.option_handler.boundaries[1]) == len(self.option_handler.GetObjTOOpt()):
+                print(('boundary',l))
+                minitem = QTableWidgetItem(str(self.option_handler.boundaries[0][l]))
+                maxitem = QTableWidgetItem(str(self.option_handler.boundaries[1][l]))
+                self.boundary_table.setItem(l, 1, minitem)
+                self.boundary_table.setItem(l, 2, maxitem)
+            
         
+           
         Setbutton = QtWidgets.QPushButton(self)
         Setbutton.setGeometry(QtCore.QRect(10, 400, 80, 22))
         Setbutton.setObjectName("Setbutton")
@@ -2073,21 +2074,18 @@ class BoundaryWindow(QtWidgets.QMainWindow):
 
     def Set(self, e):
         try:
-            self.option_handler.boundaries[0] = [float(n.text()) for n in self.min]
-            self.option_handler.boundaries[1] = [float(n.text()) for n in self.max]
-        except ValueError:
-            popup("Invalid Value")
-            
-
-        else:
+            for idx in range(self.boundary_table.rowCount()):
+                self.option_handler.boundaries[0] = float(self.boundary_table.item(idx,1).text())
+                self.option_handler.boundaries[1] = float(self.boundary_table.item(idx,1).text())
             for i in range(len(self.option_handler.boundaries[0])):
-                if self.option_handler.boundaries[0][i] >= self.option_handler.boundaries[1][i] :
-                    
-                    
+                if self.option_handler.boundaries[0][i] >= self.option_handler.boundaries[1][i]:
                     popup("""Min boundary must be lower than max
                                 Invalid Values""")
-                    
-                    break
+                    raise Exception
+        except ValueError:
+            popup("Invalid Value")
+        except Exception:
+            print('Error Occured')
         self.close()
 
     def Save(self,e):
@@ -2095,10 +2093,10 @@ class BoundaryWindow(QtWidgets.QMainWindow):
             name = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File')
             if name[0]:
                 f = open(name,'w')
-                for _min,_max in zip(self.min,self.max):
-                    f.write(str(_min.text()))
+                for idx in range(self.boundary_table.rowCount()):
+                    f.write(str(self.boundary_table.item(idx,1).text()))
                     f.write("\t")
-                    f.write(str(_max.text()))
+                    f.write(str(self.boundary_table.item(idx,2).text()))
                     f.write("\n")
                 f.close()
         except IOError:
@@ -2114,8 +2112,8 @@ class BoundaryWindow(QtWidgets.QMainWindow):
                 f = open(fileName, "r")
                 for idx,l in enumerate(f):
                     bounds=l.split()
-                    self.min[idx].setText(bounds[0])
-                    self.max[idx].setText(bounds[1])
+                    self.boundary_table.setItem(idx, 1, QTableWidgetItem(str(bounds[0])))
+                    self.boundary_table.setItem(idx, 2, QTableWidgetItem(str(bounds[1])))
             except IOError:
                 popup("Error reading the file!")
             except Exception as e:

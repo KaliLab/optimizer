@@ -1321,14 +1321,14 @@ class Indicator_Based_Bluepyopt(oldBaseOptimizer):
 			view.map_sync(os.chdir, [str(os.path.dirname(os.path.realpath(__file__)))]*int(self.number_of_cpu))
 			map_function=view.map_sync
 			optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(self.params,self.deapfun,self.feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),map_function=map_function,selector_name='IBEA')
-			self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))
+			self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation),cp_filename = 'checkpoint.pkl',cp_frequency=int(self.max_evaluation))
 			os.system("ipcluster stop")
 		except Exception:
 			os.system("ipcluster stop")
 			print("*****************Single Run : IBEA *******************")
 			optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(self.params,self.deapfun,self.feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),selector_name='IBEA')
-			self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))	
-		
+			self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation),cp_filename = 'checkpoint.pkl',cp_frequency=int(self.max_evaluation))	
+			
 
 	def SetBoundaries(self,bounds):
 		"""
@@ -1443,6 +1443,7 @@ class DeapEvaluator(bpop.evaluators.Evaluator):
 
 
 	def evaluate_with_lists(self, param_values):
+		print(param_values)
 		err=self.ffun(normalize(param_values,self))
 		return err
 
