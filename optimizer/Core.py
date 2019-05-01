@@ -367,7 +367,6 @@ class coreModul():
 			#print fit_par
 			self.option_handler.SetFitnesParam(fit_par)
 			tmp=args.get("algo_options")
-			print(tmp)
 			"""
 			if self.option_handler.type[-1]=='features':
 				tmp.update({"num_params" : len(self.data_handler.features_data['stim_amp'])})

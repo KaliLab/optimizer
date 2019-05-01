@@ -1375,7 +1375,13 @@ class Nondominated_Sorted_Bluepyopt(oldBaseOptimizer):
 		self.number_of_cpu=option_obj.number_of_cpu
 		self.SetBoundaries(option_obj.boundaries)
 		self.param_names=self.option_obj.GetObjTOOpt()
-		self.number_of_traces=reader_obj.number_of_traces()
+		if self.option_obj.type[-1]!="features":
+			self.number_of_traces=reader_obj.number_of_traces()
+		else:
+			self.number_of_traces=len(reader_obj.features_data["stim_amp"])
+		feats=self.get_feat_names(self.option_obj.GetFitnessParam())
+		self.feats_and_weights=[x for x in zip(feats[0],feats[1])]
+		self.params=zip(self.param_names,self.min_max[0],self.min_max[1])
 		
 
 
@@ -1392,14 +1398,14 @@ class Nondominated_Sorted_Bluepyopt(oldBaseOptimizer):
 			view = c.load_balanced_view()
 			view.map_sync(os.chdir, [str(os.path.dirname(os.path.realpath(__file__)))]*int(self.number_of_cpu))
 			map_function=view.map_sync
-			optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(params,self.deapfun,feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),map_function=map_function)
-			self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))
+			optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(self.params,self.deapfun,self.feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),map_function=map_function,selector_name='NSGA2')
+			self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation),cp_filename = 'checkpoint.pkl',cp_frequency=int(self.max_evaluation))
 			os.system("ipcluster stop")
 		except Exception:
 			os.system("ipcluster stop")
 			print("*****************Single Run : NSGA2 *******************")
-			optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(params,self.deapfun,feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size))
-			self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))	
+			optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(self.params,self.deapfun,self.feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),selector_name='NSGA2')
+			self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation),cp_filename = 'checkpoint.pkl',cp_frequency=int(self.max_evaluation))	
 			
 
 	def SetBoundaries(self,bounds):
@@ -1443,7 +1449,6 @@ class DeapEvaluator(bpop.evaluators.Evaluator):
 
 
 	def evaluate_with_lists(self, param_values):
-		print(param_values)
 		err=self.ffun(normalize(param_values,self))
 		return err
 

@@ -1534,8 +1534,12 @@ class Ui_Optimizer(object):
                 #tmp.update({str(n[1]) : float(n[0].GetValue())})
             allRows = self.aspectlist.rowCount()
             for row in range(1,allRows):
-                print(self.aspectlist.item(row,1).text())
-                tmp.update({str(self.aspectlist.item(row,0).text()):float(self.aspectlist.item(row,1).text())})
+                aspect=str(self.aspectlist.item(row,0).text())
+                if aspect=='Force bounds:':
+                    value=bool(self.aspectlist.item(row,1).checkState())
+                else:
+                    value=float(self.aspectlist.item(row,1).text())
+                tmp.update({aspect:value})
             tmp.update({
                 "num_params" : len(self.core.option_handler.GetObjTOOpt()),
                 "boundaries" : self.core.option_handler.boundaries ,
@@ -1545,7 +1549,6 @@ class Ui_Optimizer(object):
         except:
             err.append(4)
             errpop.append("You forget to select an algorithm!")
-            
         try:
             self.core.ThirdStep(self.kwargs)
             if self.core.option_handler.output_level=="1":
@@ -2044,10 +2047,7 @@ class BoundaryWindow(QtWidgets.QMainWindow):
             item = QTableWidgetItem(label)
             item.setFlags( QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled )      
             self.boundary_table.setItem(l, 0, item)
-            print(len(self.option_handler.boundaries[1]))
-            print(len(self.option_handler.GetObjTOOpt()))
             if len(self.option_handler.boundaries[1]) == len(self.option_handler.GetObjTOOpt()):
-                print(('boundary',l))
                 minitem = QTableWidgetItem(str(self.option_handler.boundaries[0][l]))
                 maxitem = QTableWidgetItem(str(self.option_handler.boundaries[1][l]))
                 self.boundary_table.setItem(l, 1, minitem)
@@ -2074,9 +2074,13 @@ class BoundaryWindow(QtWidgets.QMainWindow):
 
     def Set(self, e):
         try:
+            min_l=[]
+            max_l=[]
             for idx in range(self.boundary_table.rowCount()):
-                self.option_handler.boundaries[0] = float(self.boundary_table.item(idx,1).text())
-                self.option_handler.boundaries[1] = float(self.boundary_table.item(idx,1).text())
+                min_l.append(float(self.boundary_table.item(idx,1).text()))
+                max_l.append(float(self.boundary_table.item(idx,2).text()))
+            self.option_handler.boundaries[0] = min_l
+            self.option_handler.boundaries[1] = max_l
             for i in range(len(self.option_handler.boundaries[0])):
                 if self.option_handler.boundaries[0][i] >= self.option_handler.boundaries[1][i]:
                     popup("""Min boundary must be lower than max
