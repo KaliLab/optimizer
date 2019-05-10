@@ -4,20 +4,20 @@ import xml.etree.ElementTree as ET
 import subprocess
 import matplotlib.pyplot as plt
 
-optimizer_path 	= '/home/mohacsi/Desktop/optimizer/optimizer/optimizer.py'
+optimizer_path 	= '/home/mohacsi/work/optimizer/optimizer/optimizer.py'
 curr_dir  		= os.getcwd()						# base directory
-orig_name 		= 'hh_pas_surrogate'            # name of the working directory we want to copy
+orig_name 		= 'ca1_pc_simplification'            # name of the working directory we want to copy
 orig_dir  		= curr_dir + '/'+ 'optimizer_multirun/' + orig_name		# path of this directory
 num_runs  		= 10								# how many copies we want
-parallel_runs   = 3									# how many optimizations we allow to run in parallel
+parallel_runs   = 10									# how many optimizations we allow to run in parallel
 
 # define basic things for the xml files
-rnd_start  = 1237							# random seed in the first run
+rnd_start  = 1234							# random seed in the first run
 max_eval   = 100					        # number of iterations
 pop_size   = 100						    # population size
 #csv_name   = '131117-C2_short.dat'			# the csv we want to use
 #sim_script = 'teststeps_optim5.py'			# the script for the external simulator
-num_param  = 3	 					# number of parameters to optimize (needed as a command line argument)
+num_param  = 9	 					# number of parameters to optimize (needed as a command line argument)
 
 
 def MakeCopies():

@@ -2,7 +2,7 @@
 <settings>
   <acc>None</acc>
   <adjusted_params>['parameter0', 'parameter1', 'parameter2', 'parameter3', 'parameter4', 'parameter5', 'parameter6', 'parameter7', 'parameter8', 'parameter9']</adjusted_params>
-  <base_dir>/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc</base_dir>
+  <base_dir>/home/mohacsi/work/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc</base_dir>
   <boundaries>[[0.001, 10.0, -70.0, 0.0, -40.0, 0.5, -5.0, 0.0, 0.5, 10.0], [0.01, 100.0, -40.0, 30.0, -10.0, 5.0, 5.0, 1.0, 5.0, 500.0]]</boundaries>
   <cognitive_rate>None</cognitive_rate>
   <cooling_rate>None</cooling_rate>
@@ -14,7 +14,7 @@
   <inertia>None</inertia>
   <init_temp>None</init_temp>
   <input_cont_t>True</input_cont_t>
-  <input_dir>/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/ca3_pc_v2_4.csv</input_dir>
+  <input_dir>/home/mohacsi/work/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/ca3_pc_v2_4.csv</input_dir>
   <input_freq>5000</input_freq>
   <input_length>1100</input_length>
   <input_scale>mV</input_scale>
@@ -39,7 +39,7 @@
   <run_controll_tstop>1100</run_controll_tstop>
   <run_controll_vrest>vrest</run_controll_vrest>
   <seed>1234.0</seed>
-  <sim_command>python3 /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py 10</sim_command>
+  <sim_command>python3 /home/mohacsi/work/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py 10</sim_command>
   <simulator>external</simulator>
   <social_rate>None</social_rate>
   <spike_thres>0.0</spike_thres>
