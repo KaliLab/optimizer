@@ -3,7 +3,7 @@
   <f_tol>None</f_tol>
   <max_evaluation>100.0</max_evaluation>
   <spike_window>5.0</spike_window>
-  <evo_strat>Indicator Based (IBEA) - Bluepyopt</evo_strat>
+  <evo_strat>Nondominated Sorted (NSGAII) - Bluepyopt</evo_strat>
   <seed>1242.0</seed>
   <m_gauss>None</m_gauss>
   <run_controll_vrest>-65.0</run_controll_vrest>
