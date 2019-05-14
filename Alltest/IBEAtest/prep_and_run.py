@@ -6,18 +6,21 @@ import matplotlib.pyplot as plt
 
 optimizer_path 	= '/home/mohacsi/work/optimizer/optimizer/optimizer.py'
 curr_dir  		= os.getcwd()						# base directory
-orig_name 		= 'ca1_pc_simplification'            # name of the working directory we want to copy
+orig_name 		= 'adexpif_external_ca3_pc'						# name of the working directory we want to copy
 orig_dir  		= curr_dir + '/'+ 'optimizer_multirun/' + orig_name		# path of this directory
-num_runs  		= 10								# how many copies we want
-parallel_runs   = 10									# how many optimizations we allow to run in parallel
+num_runs  		= 10						# how many copies we want
+parallel_runs   = 10								# how many optimizations we allow to run in parallel
 
 # define basic things for the xml files
 rnd_start  = 1234							# random seed in the first run
-max_eval   = 100					        # number of iterations
-pop_size   = 100						    # population size
-#csv_name   = '131117-C2_short.dat'			# the csv we want to use
-#sim_script = 'teststeps_optim5.py'			# the script for the external simulator
-num_param  = 9	 					# number of parameters to optimize (needed as a command line argument)
+max_eval   = 100				# number of iterations
+pop_size   = 100				# population size
+num_islands = 1
+
+csv_name   = 'ca3_pc_v2_4.csv'				# the csv we want to use
+sim_script = 'teststeps_optim5.py'			# the script for the external simulator
+num_param  = 10	
+evo_strat = "Indicator Based (IBEA) - Bluepyopt"		 					# number of parameters to optimize (needed as a command line argument)
 
 
 def MakeCopies():
@@ -33,17 +36,18 @@ def EditXMLs():
 		xml_name = subdir + '/' + '_settings.xml'
 
 		if os.path.exists(subdir):
-		 	tree = ET.parse(xml_name)
-		 	root = tree.getroot()
-		 	
-		 	root.find('max_evaluation').text 	= str(float(max_eval))
-		 	root.find('seed').text 				= str(float(rnd_start + i))
-		 	#root.find('sim_command').text 		= 'python ' + subdir + '/' + sim_script + ' ' + str(int(num_param))
-		 	#root.find('input_dir').text 		= subdir + '/' + csv_name
-		 	root.find('base_dir').text 			= subdir
-		 	root.find('pop_size').text			= str(float(pop_size))
+			tree = ET.parse(xml_name)
+			root = tree.getroot()
 
-		 	tree.write(xml_name)
+			root.find('max_evaluation').text 	= str(float(max_eval))	
+			root.find('num_islands').text		= str(float(num_islands))		
+			root.find('seed').text 				= str(float(rnd_start + i))
+			root.find('sim_command').text 		= 'python ' + subdir + '/' + sim_script + ' ' + str(int(num_param))
+			root.find('input_dir').text 		= subdir + '/' + csv_name
+			root.find('base_dir').text 			= subdir
+			root.find('pop_size').text			= str(float(pop_size))
+			root.find('evo_strat').text		= str(evo_strat)
+			tree.write(xml_name)
 
 		else:
 			print(subdir + "doesn't exist")
@@ -59,14 +63,13 @@ def GenerateCommands():
 		subdir   = orig_dir + '_' + str(i)
 		xml_name = subdir + '/' + '_settings.xml'
 
-		command = 'python3 ' + optimizer_path + ' -c ' + xml_name #+ ' -v_level=1'
+		command = 'python ' + optimizer_path + ' -c ' + xml_name #+ ' -v_level=1'
 		
 		if i % parallel_runs > 0:
 			command += ' &'
 		command += '\n'
 
 		commands.append(command)
-
 	commands.append('wait')		# does not work without this. I don't exactly understand why
 
 	return commands
