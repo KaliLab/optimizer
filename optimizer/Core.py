@@ -437,6 +437,10 @@ class coreModul():
 			popsize=int(self.option_handler.pop_size)
 			self.allfits=[self.optimizer.hist.genealogy_history[x].fitness.values for x in self.optimizer.hist.genealogy_history]
 			self.allpop=[self.optimizer.hist.genealogy_history[x] for x in self.optimizer.hist.genealogy_history]
+			if self.option_handler.type[-1]!="features":
+				number_of_traces=self.data_handler.number_of_traces()
+			else:
+				number_of_traces=len(self.data_handler.features_data["stim_amp"])
 			allgens=[]
 			minfits=[]
 			maxfits=[]
@@ -446,7 +450,7 @@ class coreModul():
 				out_handler.write("Gen \t Min \t \t Max \t \t Median \t  Cumulative Min \n")
 				for idx in range(0,int(self.option_handler.max_evaluation*2),2):
 					current_gen=self.allfits[idx*popsize:(idx+1)*popsize]
-					weighted_sum=numpy.dot(current_gen,self.option_handler.weights)
+					weighted_sum=numpy.dot(current_gen,self.option_handler.weights*int(number_of_traces))
 					min_e=numpy.min(weighted_sum)
 					max_e=numpy.max(weighted_sum)
 					med_e=numpy.median(weighted_sum)

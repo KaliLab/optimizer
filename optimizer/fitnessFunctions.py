@@ -1253,13 +1253,13 @@ class fF(object):
                 temp_fit.append(0)
 
         
-            self.fitnes.append(tuple(temp_fit))
+            self.fitnes.append(list(temp_fit))
                       
             if self.option.output_level == "1":
                 print("current fitness: ",temp_fit)
             del temp_fit[:] 
         if(self.option.simulator == 'Neuron'):
             self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
-        
-        return self.fitnes[0]
+
+        return sum(self.fitnes,[])
 

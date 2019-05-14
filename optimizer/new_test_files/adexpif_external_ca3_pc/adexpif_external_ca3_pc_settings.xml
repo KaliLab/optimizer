@@ -20,7 +20,7 @@
   <input_scale>mV</input_scale>
   <input_size>4</input_size>
   <m_gauss>None</m_gauss>
-  <max_evaluation>100</max_evaluation>
+  <max_evaluation>5</max_evaluation>
   <model_path>&quot;&quot;</model_path>
   <model_spec_dir>&quot;&quot;</model_spec_dir>
   <mutation_rate>0.25</mutation_rate>
@@ -31,7 +31,7 @@
   <num_repet>None</num_repet>
   <number_of_cpu>1</number_of_cpu>
   <param_vals>['']</param_vals>
-  <pop_size>100</pop_size>
+  <pop_size>5</pop_size>
   <run_controll_dt>0.2</run_controll_dt>
   <run_controll_pos>pos</run_controll_pos>
   <run_controll_record>record</run_controll_record>
