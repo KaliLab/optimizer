@@ -1447,8 +1447,6 @@ class DeapEvaluator(bpop.evaluators.Evaluator):
 
 	def evaluate_with_lists(self, param_values):
 		err=self.ffun(normalize(param_values,self))
-		print('******************ERR*****************')
-		print(err)
 		return err
 
 
