@@ -7,7 +7,7 @@
   <cognitive_rate>None</cognitive_rate>
   <cooling_rate>None</cooling_rate>
   <crossover_rate>None</crossover_rate>
-  <evo_strat>Nondominated Sorted (NSGAII) - Bluepyopt</evo_strat>
+  <evo_strat>Random Search - Inspyred</evo_strat>
   <f_tol>None</f_tol>
   <feats>MSE (excl. spikes), Spike count (stim.), Latency to 1st spike</feats>
   <force_bounds>True</force_bounds>
@@ -39,7 +39,7 @@
   <run_controll_tstop>1100</run_controll_tstop>
   <run_controll_vrest>vrest</run_controll_vrest>
   <seed>1234.0</seed>
-  <sim_command>python3 /home/mohacsi/work/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py 10</sim_command>
+  <sim_command>python /home/mohacsi/work/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py 10</sim_command>
   <simulator>external</simulator>
   <social_rate>None</social_rate>
   <spike_thres>0.0</spike_thres>
