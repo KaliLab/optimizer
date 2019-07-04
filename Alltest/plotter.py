@@ -10,7 +10,7 @@ for i in range(1,11):
 	maxl=[]
 	medl=[]
 	cummin=[]
-	with open("/home/mohacsi/Desktop/IBEAtest/optimizer_multirun/hh_pas_surrogate_"+str(i)+"/bpopt_stats.txt" , "r") as out_handler:
+	with open("/home/mohacsi/Desktop/optimizer/Alltest/IBEAtest/optimizer_multirun/ca1_pc_simplification_"+str(i)+"/bpopt_stats.txt" , "r") as out_handler:
 		out_handler.readline()
 		lines=out_handler.readlines()
 		for line in lines:
@@ -31,7 +31,7 @@ medl=[numpy.median(x) for x in zip(*allcummin)]
 plt.plot(numpy.arange(0,101,(101/len(minl))), minl,'r-')
 plt.plot(numpy.arange(0,101,(101/len(maxl))), maxl,'r--')
 plt.plot(numpy.arange(0,101,(101/len(medl))), medl,'r-.')
-
+"""
 for i in range(1,11):
 	minl=[]
 	maxl=[]
@@ -58,8 +58,8 @@ medl=[numpy.median(x) for x in zip(*allcummin)]
 plt.plot(numpy.arange(0,101,(101/len(minl))), minl,'b-')
 plt.plot(numpy.arange(0,101,(101/len(maxl))), maxl,'b--')
 plt.plot(numpy.arange(0,101,(101/len(medl))), medl,'b-.')
-
-legend=['BP_NSGA_min','BP_NSGA_max','BP_NSGA_med','IBEA_min','IBEA_max','IBEA_med']
+"""
+legend=['IBEA_min','IBEA_max','IBEA_med']
 subdirs=list(next(os.walk('.'))[1])
 for color,curr_dir in enumerate(subdirs):
 	with open(str(os.getcwd())+"/"+str(curr_dir)+"/min.txt" , "r") as out_handler:
@@ -82,7 +82,7 @@ for color,curr_dir in enumerate(subdirs):
 
 
 plt.yscale('log')
-plt.title('HH_BP+INSP_10run_MSE(ex),SC,AMP,W')
+plt.title('SIMP_BP+INSP_10run_MSE(ex),SC,AMP,W')
 plt.legend(legend, loc='upper right', ncol=4)
 plt.xlabel('Gen')
 plt.ylabel('Fitness')
