@@ -6,10 +6,10 @@ import matplotlib.pyplot as plt
 
 optimizer_path 	= '/home/mohacsi/work/optimizer/optimizer/optimizer.py'
 curr_dir  		= os.getcwd()						# base directory
-orig_name 		= 'adexpif_external_ca3_pc'						# name of the working directory we want to copy
+orig_name 		= 'hh_pas_surrogate'						# name of the working directory we want to copy
 orig_dir  		= curr_dir + '/'+ 'optimizer_multirun2/' + orig_name		# path of this directory
 num_runs  		= 10						# how many copies we want
-parallel_runs   = 5								# how many optimizations we allow to run in parallel
+parallel_runs   = 10								# how many optimizations we allow to run in parallel
 
 # define basic things for the xml files
 rnd_start  = 1234							# random seed in the first run
@@ -17,10 +17,10 @@ max_eval   = 100				# number of iterations
 pop_size   = 100				# population size
 num_islands = 1
 
-csv_name   = 'ca3_pc_v2_4.csv'				# the csv we want to use
-sim_script = 'teststeps_optim5.py'			# the script for the external simulator
-num_param  = 10	
-evo_strat = "Particle Swarm - Inspyred"		 					# number of parameters to optimize (needed as a command line argument)
+csv_name   = 'input_data2.dat'				# the csv we want to use
+#sim_script = 'teststeps_optim5.py'			# the script for the external simulator
+num_param  = 3
+evo_strat = "Indicator Based - Bluepyopt"		 					# number of parameters to optimize (needed as a command line argument)
 
 
 def MakeCopies():
@@ -42,7 +42,7 @@ def EditXMLs():
 			root.find('max_evaluation').text 	= str(float(max_eval))	
 			root.find('num_islands').text		= str(float(num_islands))		
 			root.find('seed').text 				= str(float(rnd_start + i))
-			root.find('sim_command').text 		= 'python ' + subdir + '/' + sim_script + ' ' + str(int(num_param))
+		#	root.find('sim_command').text 		= 'python ' + subdir + '/' + sim_script + ' ' + str(int(num_param))
 			root.find('input_dir').text 		= subdir + '/' + csv_name
 			root.find('base_dir').text 			= subdir
 			root.find('pop_size').text			= str(float(pop_size))
