@@ -1,8 +1,9 @@
+import matplotlib
+matplotlib.use('Agg')
 import sys
 import Core
 import xml.etree.ElementTree as ET
-import matplotlib
-matplotlib.use('Agg')
+
 matplotlib.interactive(False)
 from pylab import *
 ioff()
