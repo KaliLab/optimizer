@@ -52,7 +52,7 @@ def EditXMLs():
 			root.find('max_evaluation').text 	= str(float(max_eval))	
 			root.find('num_islands').text		= str(float(num_islands))		
 			root.find('seed').text 				= str(float(rnd_start + i))
-			root.find('input_dir').text 		= subdir + '/' + csv_name
+			#root.find('input_dir').text 		= subdir + '/' + csv_name
 			root.find('base_dir').text 			= subdir
 			root.find('pop_size').text			= str(float(pop_size))
 			root.find('evo_strat').text		= str(evo_strat)
