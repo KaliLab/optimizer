@@ -1,36 +1,36 @@
 <settings>
   <acc>None</acc>
   <adjusted_params>['Na_BG_act_inact_shift 0', 'gmax_K_DRS4_params_voltage_dep_dend 1', 'gmax_Na_BG_soma 2', 'gmax_K_DRS4_params_voltage_dep_soma 3', 'gmax_K_DRS4_params_voltage_dep_axon 4', 'gmax_Leak_pyr 5', 'H_ratio 6', 'e_Leak_pyr 7', 'gbar_km_soma_dend 8', 'gbar_km_axon 9', 'KA_ratio 10', 'gbar_kd 11', 'gmax_CaN 12', 'gmax_bk 13', 'CaL_ratio 14', 'gmax_K_AHP 15']</adjusted_params>
-  <base_dir>/home/tarluca/venv_for_optimizer/ca1_pc_makara_data_f_fact_full_soma_pygmo_long_1</base_dir>
+  <base_dir>/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/</base_dir>
   <boundaries>[[5.0, 0.01, 0.02, 0.01, 0.01, 5e-07, 1.0, -70.0, 5e-06, 0.0005, 1.0, 0.0001, 0.002, 0.001, 0.1, 1e-05], [15.0, 0.2, 0.1, 0.5, 1.0, 1e-05, 15.0, -40.0, 0.0005, 0.01, 5.0, 0.01, 0.02, 0.1, 3.0, 0.001]]</boundaries>
-  <cognitive_rate>None</cognitive_rate>
+  <cognitive_rate>2.1</cognitive_rate>
   <cooling_rate>None</cooling_rate>
   <crossover_rate>None</crossover_rate>
-  <evo_strat>Covariance Matrix Adaptation ES (CMAES) - Pygmo</evo_strat>
+  <evo_strat>Particle Swarm (PSO) - Inspyred</evo_strat>
   <f_tol>None</f_tol>
   <feats>Spikecount, inv_first_ISI, inv_last_ISI, inv_time_to_first_spike, steady_state_voltage, voltage_base, voltage_deflection, voltage_deflection_begin, AHP_depth_abs, AHP_time_from_peak, AP2_amp, AP_amplitude, AP_begin_voltage, AP_duration_half_width, AP_fall_time, AP_rise_time, APlast_amp, sag_amplitude, sag_ratio1</feats>
   <force_bounds>True</force_bounds>
-  <inertia>None</inertia>
+  <inertia>0.5</inertia>
   <init_temp>None</init_temp>
   <input_cont_t>None</input_cont_t>
-  <input_dir>/home/tarluca/datasets/opt_data_JMakara_OUR_features_selected_stim.json</input_dir>
+  <input_dir>/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/opt_data_JMakara_OUR_features_selected_stim.json</input_dir>
   <input_freq>None</input_freq>
   <input_length>None</input_length>
   <input_scale>mV</input_scale>
   <input_size>6</input_size>
   <m_gauss>None</m_gauss>
-  <max_evaluation>100.0</max_evaluation>
-  <model_path>/home/tarluca/Luca_modell_python3/load_model_na_inhomo_minimal_model_full_soma_f_fact_no_Na_true_diam.hoc</model_path>
-  <model_spec_dir>/home/tarluca/Luca_modell_python3</model_spec_dir>
+  <max_evaluation>10.0</max_evaluation>
+  <model_path>/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model_full_soma_f_fact_no_Na_true_diam.hoc</model_path>
+  <model_spec_dir>/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3</model_spec_dir>
   <mutation_rate>None</mutation_rate>
   <neighborhood_size>None</neighborhood_size>
   <num_islands>1.0</num_islands>
   <num_iter>None</num_iter>
   <num_params>16</num_params>
   <num_repet>None</num_repet>
-  <number_of_cpu>None</number_of_cpu>
+  <number_of_cpu>10</number_of_cpu>
   <param_vals>[0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]</param_vals>
-  <pop_size>100.0</pop_size>
+  <pop_size>10.0</pop_size>
   <run_controll_dt>0.05</run_controll_dt>
   <run_controll_pos>0.5</run_controll_pos>
   <run_controll_record>v</run_controll_record>
@@ -40,7 +40,7 @@
   <seed>1235.0</seed>
   <sim_command>""</sim_command>
   <simulator>Neuron</simulator>
-  <social_rate>None</social_rate>
+  <social_rate>2.1</social_rate>
   <spike_thres>0.0</spike_thres>
   <spike_window>None</spike_window>
   <start_time_stamp>1565687560.4344544</start_time_stamp>
