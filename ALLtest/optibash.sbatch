@@ -6,7 +6,7 @@
 
 #SBATCH --ntasks-per-node=1  
 
-#SBATCH --cpus-per-task=100  
+#SBATCH --cpus-per-task=10  
 
 #SBATCH --job-name=optimizer  
 
@@ -56,5 +56,5 @@ module load SciPy-Stack/2019a
 export PYTHONPATH=/p/home/jusers/mohacsi1/jureca/.local/lib/python3.6/site-packages:$PYTHONPATH 
 
 echo ok2 
- srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/hh_pas_surrogate_1/_settings.xml &
-srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/hh_pas_surrogate_2/_settings.xml
+ srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_1/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_2/_settings.xml
