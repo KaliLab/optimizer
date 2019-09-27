@@ -1,16 +1,16 @@
 #!/bin/bash -x  
 
-#SBATCH --nodes=2  
+#SBATCH --nodes=1  
 
-#SBATCH --ntasks=2  
-
+#SBATCH --ntasks=1  
+ 
 #SBATCH --ntasks-per-node=1  
 
-#SBATCH --cpus-per-task=10  
+#SBATCH --cpus-per-task=100  
 
 #SBATCH --job-name=optimizer  
 
-#SBATCH --time=0-05:10:00 
+#SBATCH --time=0-10:00:00 
 
 #SBATCH --error=mpi_err.%j 
 
@@ -52,9 +52,9 @@ module load Python/3.6.8
 module load SciPy-Stack/2019a 
 
 
+export OMP_NUM_THREADS=100
 
 export PYTHONPATH=/p/home/jusers/mohacsi1/jureca/.local/lib/python3.6/site-packages:$PYTHONPATH 
 
 echo ok2 
- srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_1/_settings.xml &
-srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_2/_settings.xml
+ srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_1/_settings.xml

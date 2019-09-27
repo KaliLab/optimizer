@@ -28,9 +28,9 @@
   <num_iter>None</num_iter>
   <num_params>16</num_params>
   <num_repet>None</num_repet>
-  <number_of_cpu>10</number_of_cpu>
+  <number_of_cpu>100</number_of_cpu>
   <param_vals>[0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]</param_vals>
-  <pop_size>10.0</pop_size>
+  <pop_size>100.0</pop_size>
   <run_controll_dt>0.05</run_controll_dt>
   <run_controll_pos>0.5</run_controll_pos>
   <run_controll_record>v</run_controll_record>
