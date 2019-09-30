@@ -8,12 +8,12 @@ optimizer_path 	= '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.
 curr_dir  		= os.getcwd()						# base directory
 orig_name 		= 'Luca_modell_python3'						# name of the working directory we want to copy
 orig_dir  		= curr_dir + '/'+ 'optimizer_multirun/' + orig_name		# path of this directory
-num_runs  		= 1						# how many copies we want
-parallel_runs   = 1								# how many optimizations we allow to run in parallel
+num_runs  		= 10						# how many copies we want
+parallel_runs   = 10								# how many optimizations we allow to run in parallel
 
 # define basic things for the xml files
 rnd_start  = 1234							# random seed in the first run
-max_eval   = 10			# number of iterations
+max_eval   = 100		# number of iterations
 pop_size   = 100				# population size
 num_islands = 1
 #csv_name   = 'input_data2.dat'	
@@ -68,12 +68,12 @@ def EditXMLs():
 def GenerateCommands():
 	# create a list containing the commands we want to run
 	commands = ["""#!/bin/bash -x  \n
-#SBATCH --nodes=1  \n
-#SBATCH --ntasks=1  \n 
+#SBATCH --nodes=10  \n
+#SBATCH --ntasks=10  \n 
 #SBATCH --ntasks-per-node=1  \n
 #SBATCH --cpus-per-task=100  \n
 #SBATCH --job-name=optimizer  \n
-#SBATCH --time=0-10:00:00 \n
+#SBATCH --time=0-24:00:00 \n
 #SBATCH --error=mpi_err.%j \n
 #SBATCH --output=mpi_out.%j \n
 #SBATCH --account=vsk25 \n

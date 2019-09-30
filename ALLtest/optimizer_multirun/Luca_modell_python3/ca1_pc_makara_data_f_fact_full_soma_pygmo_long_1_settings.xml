@@ -21,7 +21,7 @@
   <input_size>6</input_size>
   <m_gauss>None</m_gauss>
   <max_evaluation>100.0</max_evaluation>
-  <model_path>/home/tarluca/Luca_modell_python3/load_model_na_inhomo_minimal_model_full_soma_f_fact_no_Na_true_diam.hoc</model_path>
+  <model_path>/home/tarluca/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc</model_path>
   <model_spec_dir>/home/tarluca/Luca_modell_python3</model_spec_dir>
   <mutation_rate>None</mutation_rate>
   <neighborhood_size>None</neighborhood_size>
