@@ -292,14 +292,23 @@ class PygmoAlgorithmBasis(baseOptimizer):
 		self.num_islands = int(option_obj.num_islands)
 
 	def Optimize(self):
-		
 		print(self.boundaries)
 		self.prob = Problem(self.ffun,self.boundaries, self.num_islands, self.pop_size, self.max_evaluation, self.base_dir)
 		self.archi = pg.archipelago(n=self.num_islands,algo=self.algorithm, prob=self.prob, pop_size=self.pop_size)
 		
-		self.archi.evolve()
-		
+		try:
+			self.population = pickle.load(open('pygmo_save.pkl', 'rb'))
+			print('previous loaded')
+		except:
+			print('No previous save found')
 
+		try:		
+			self.evolved_pop=self.archi.evolve(self.population)
+			print('ok1')
+		except:
+			'self.evolved_pop=self.archi.evolve()'
+
+		pickle.dump(self.evolved_pop,open('pygmo_save.pkl', 'wb'))
 		print(self.archi)
 		
 		self.archi.wait()
@@ -375,13 +384,23 @@ class SinglePygmoAlgorithmBasis(baseOptimizer):
 				stat_file.write('\n')
 
 	def Optimize(self):
+		
+		#self.population = pickle.load(open('pygmo_save.pkl', 'rb'))
+		try:
+			self.population = pickle.load(open('pygmo_save.pkl', 'rb'))
+			print('previous save loaded')
+		except:
+			print('no previous save found')
+			self.population = pg.population(self.prob,10)# **self.pop_kwargs)
 
-		self.population = pg.population(self.prob, **self.pop_kwargs)
-
-
+		#self.population = pg.population(self.prob,10)# **self.pop_kwargs)
 		self.algorithm.set_verbosity(1)
 		self.evolved_pop = self.algorithm.evolve(self.population)
+		print(self.population)
+		print(self.evolved_pop)
+		pickle.dump(self.evolved_pop,open('pygmo_save.pkl', 'wb'))
 
+		
 		uda = self.algorithm.extract(self.algo_type)
 		self.log = uda.get_log()
 		print(log)
@@ -505,14 +524,14 @@ class Differential_Evolution_Pygmo(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.algorithm(pg.de(gen=self.max_evaluation, ftol=1e-15, tol=1e-15))
 
-class Covariance_Matrix_Adaptation_ES_Pygmo(PygmoAlgorithmBasis):
+class Covariance_Matrix_Adaptation_ES_Pygmo(SinglePygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
-		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+		SinglePygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
 
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
 		self.force_bounds = option_obj.force_bounds
-
+		self.algo_type = pg.cmaes
 		self.algorithm = pg.algorithm(pg.cmaes(gen=self.max_evaluation, ftol=1e-15, xtol=1e-15, force_bounds=bool(self.force_bounds)))
 
 class Particle_Swarm_Pygmo(PygmoAlgorithmBasis):
