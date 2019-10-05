@@ -18,7 +18,7 @@ pop_size   = 100				# population size
 num_islands = 1
 #csv_name   = 'input_data2.dat'	
 num_param  = 16	
-evo_strat = "Particle Swarm (PSO) - Inspyred"		 					# number of parameters to optimize (needed as a command line argument)
+#evo_strat = "Particle Swarm (PSO) - Inspyred"		 					# number of parameters to optimize (needed as a command line argument)
 """self.Recom=["Evolutionary Algorithm (EA) - Inspyred","Covariance Matrix Adaptation ES (CMAES) - Pygmo",
                 "Particle Swarm (PSO) - Inspyred","Indicator Based (IBEA) - Bluepyopt","L-BFGS-B - Scipy"]
         self.Inspyred=["Evolutionary Algorithm (EA) - Inspyred","Particle Swarm (PSO) - Inspyred",
@@ -33,16 +33,16 @@ evo_strat = "Particle Swarm (PSO) - Inspyred"		 					# number of parameters to o
                 "Single Differential Evolution - Pygmo","Differential Evolution (DE1220) - Pygmo",
                 "Bee Colony - Pygmo","FullGrid - Pygmo"]"""
 
-def MakeCopies():
+def MakeCopies(evo_name):
 	for i in range(1, num_runs+1):
-		new_dir = orig_dir + '_' + str(i)
+		new_dir = orig_dir + evo_name + '_' + str(i)
 	
 		if not os.path.exists(new_dir):
 			shutil.copytree(orig_dir, new_dir)
 
-def EditXMLs():
+def EditXMLs(evo_name,evo_strat):
 	for i in range(1,num_runs+1):
-		subdir   = orig_dir + '_' + str(i)
+		subdir   = orig_dir + evo_name +'_' + str(i)
 		xml_name = subdir + '/' + '_settings.xml'
 
 		if os.path.exists(subdir):
@@ -130,10 +130,14 @@ def RunOptim():
 
 
 def main():
-	MakeCopies()
-	EditXMLs()
-	CreateBashScript()
-	RunOptim()
+	algos = ["Evolutionary Algorithm (EA) - Inspyred","Differential Evolution (DE) - Inspyred","Random Search - Inspyred","Nondominated Sorted (NSGAII) - Inspyred","Pareto Archived (PAES) - Inspyred","Simulated Annealing - Inspyred"]
+	for evo_strat in algos:
+		evo_name=str.split(evo_strat," ")[0]+str.split(evo_strat," ")[-1]
+		print(evo_name)
+		MakeCopies(evo_name)
+		EditXMLs(evo_name,evo_strat)
+		CreateBashScript()
+		RunOptim()
 
 
 if __name__ == '__main__':
