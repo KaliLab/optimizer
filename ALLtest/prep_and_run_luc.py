@@ -65,7 +65,7 @@ def EditXMLs(evo_name,evo_strat):
 ## generate bash script
 ## we could do this in one step without the commands list but I it like this way
 
-def GenerateCommands():
+def GenerateCommands(evo_name):
 	# create a list containing the commands we want to run
 	commands = ["""#!/bin/bash -x  \n
 #SBATCH --nodes=10  \n
@@ -102,7 +102,7 @@ export OMP_NUM_THREADS=100
 export PYTHONPATH=/p/home/jusers/mohacsi1/jureca/.local/lib/python3.6/site-packages:$PYTHONPATH \n
 echo ok2 \n """]
 	for i in range(1, num_runs+1):
-		subdir   = orig_dir + '_' + str(i)
+		subdir   = orig_dir + evo_name + '_' + str(i)
 		xml_name = subdir + '/' + '_settings.xml'
 
 		command = 'srun -N 1 -n 1 python ' + optimizer_path + ' -c ' + xml_name #+ ' -v_level=1'
@@ -116,9 +116,9 @@ echo ok2 \n """]
 
 	return commands
 
-def CreateBashScript():
+def CreateBashScript(evo_name):
 	# write the commands into a file
-	commands = GenerateCommands()
+	commands = GenerateCommands(evo_name)
 	with open('optibash.sbatch', 'w') as bash_script:
 		for line in commands:
 			bash_script.write(line)
@@ -136,7 +136,7 @@ def main():
 		print(evo_name)
 		MakeCopies(evo_name)
 		EditXMLs(evo_name,evo_strat)
-		CreateBashScript()
+		CreateBashScript(evo_name)
 		RunOptim()
 
 
