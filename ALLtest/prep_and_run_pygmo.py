@@ -13,7 +13,7 @@ parallel_runs   = 2								# how many optimizations we allow to run in parallel
 
 # define basic things for the xml files
 rnd_start  = 1234							# random seed in the first run
-max_eval   = 2		# number of iterations
+max_eval   = 4		# number of iterations
 pop_size   = 2				# population size
 num_islands = 1
 #csv_name   = 'input_data2.dat'	
@@ -112,7 +112,7 @@ echo ok2 \n """]
 		command += '\n'
 
 		commands.append(command)
-		commands.append(command)
+		#commands.append(command)
 	#commands.append('wait')		# does not work without this. I don't exactly understand why
 
 	return commands
