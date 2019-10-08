@@ -8,8 +8,8 @@ optimizer_path 	= '/home/mohacsi/work/optimizer/optimizer/optimizer.py'
 curr_dir  		= os.getcwd()						# base directory
 orig_name 		= 'adexpif_external_ca3_pc'						# name of the working directory we want to copy
 orig_dir  		= curr_dir + '/'+ 'optimizer_multirun4/' + orig_name		# path of this directory
-num_runs  		= 10						# how many copies we want
-parallel_runs   = 5								# how many optimizations we allow to run in parallel
+num_runs  		= 2						# how many copies we want
+parallel_runs   = 2								# how many optimizations we allow to run in parallel
 
 # define basic things for the xml files
 rnd_start  = 1234							# random seed in the first run
@@ -20,7 +20,7 @@ num_islands = 1
 csv_name   = 'ca3_pc_v2_4.csv'				# the csv we want to use
 sim_script = 'teststeps_optim5.py'			# the script for the external simulator
 num_param  = 10	
-evo_strat = "Differential Evolution - Inspyred"		 					# number of parameters to optimize (needed as a command line argument)
+evo_strat = "Covariance Matrix Adaptation ES (CMAES) - Pygmo"		 					# number of parameters to optimize (needed as a command line argument)
 
 
 def MakeCopies():

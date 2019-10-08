@@ -20,7 +20,7 @@
   <input_scale>mV</input_scale>
   <input_size>1</input_size>
   <m_gauss>None</m_gauss>
-  <max_evaluation>11.0</max_evaluation>
+  <max_evaluation>10</max_evaluation>
   <model_path>/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/hh_pas_surrogate/hh_pas.hoc</model_path>
   <model_spec_dir>None</model_spec_dir>
   <mutation_rate>0.25</mutation_rate>

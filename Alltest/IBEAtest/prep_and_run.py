@@ -8,17 +8,17 @@ optimizer_path 	= '/home/mohacsi/Desktop/optimizer/optimizer/optimizer.py'
 curr_dir  		= os.getcwd()						# base directory
 orig_name 		= 'hh_pas_surrogate'						# name of the working directory we want to copy
 orig_dir  		= curr_dir + '/'+ 'Ibeatests/' + orig_name		# path of this directory
-num_runs  		= 10						# how many copies we want
-parallel_runs   = 3								# how many optimizations we allow to run in parallel
+num_runs  		= 2						# how many copies we want
+parallel_runs   = 2								# how many optimizations we allow to run in parallel
 
 # define basic things for the xml files
 rnd_start  = 1234							# random seed in the first run
-max_eval   = 100				# number of iterations
-pop_size   = 100				# population size
+max_eval   = 10				# number of iterations
+pop_size   = 10				# population size
 num_islands = 1
 csv_name   = 'input_data2.dat'	
 num_param  = 3	
-evo_strat = "Nondominated Sorted (NSGAII) - Bluepyopt"		 					# number of parameters to optimize (needed as a command line argument)
+evo_strat = "Covariance Matrix Adaptation ES (CMAES) - Pygmo"		 					# number of parameters to optimize (needed as a command line argument)
 
 
 def MakeCopies():
@@ -60,7 +60,7 @@ def GenerateCommands():
 		subdir   = orig_dir + '_' + str(i)
 		xml_name = subdir + '/' + '_settings.xml'
 
-		command = 'python3 ' + optimizer_path + ' -c ' + xml_name #+ ' -v_level=1'
+		command = 'sudo python3 ' + optimizer_path + ' -c ' + xml_name #+ ' -v_level=1'
 		
 		if i % parallel_runs > 0:
 			command += ' &'
