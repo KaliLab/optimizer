@@ -1,0 +1,278 @@
+ok
+ok1
+ok2
+['/p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3CovariancePygmo_1', ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/opt_data_JMakara_OUR_features_selected_stim.json', 6, 'mV', 'None', 'None', 'None', 'features'], ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], ['IClamp', 0.5, 'soma'], [[-0.25, 0.05, 0.1, 0.15, 0.2, 0.25], 200.0, 300.0], ['Na_BG_act_inact_shift 0', 'gmax_K_DRS4_params_voltage_dep_dend 1', 'gmax_Na_BG_soma 2', 'gmax_K_DRS4_params_voltage_dep_soma 3', 'gmax_K_DRS4_params_voltage_dep_axon 4', 'gmax_Leak_pyr 5', 'H_ratio 6', 'e_Leak_pyr 7', 'gbar_km_soma_dend 8', 'gbar_km_axon 9', 'KA_ratio 10', 'gbar_kd 11'], [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], [[{'Spike Detection Thres. (mv)': 0.0, 'Spike Window (ms)': 'None'}, ['Spikecount', 'inv_first_ISI', 'inv_last_ISI', 'inv_time_to_first_spike', 'steady_state_voltage', 'voltage_base', 'voltage_deflection', 'voltage_deflection_begin', 'AHP_depth_abs', 'AHP_time_from_peak', 'AP2_amp', 'AP_amplitude', 'AP_begin_voltage', 'AP_duration_half_width', 'AP_fall_time', 'AP_rise_time', 'APlast_amp', 'time_to_last_spike', 'sag_amplitude']], [0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842]], {'seed': 1235.0, 'evo_strat': 'Covariance Matrix Adaptation ES (CMAES) - Pygmo', 'Size of Population:': 2.0, 'Number of Islands:': 1.0, 'Number of Generations:': 2.0, 'Force bounds:': 'False', 'Mutation Rate:': 0.25, 'Crossover Rate:': 1, 'Cooling Rate:': 0.5, 'Mean of Gaussian:': 0, 'Std. Deviation of Gaussian:': 1, 'Initial Temperature:': 0.1, 'Step Size:': 0.1, 'Temperature:': 0.1, 'Update Frequency:': 50, 'Number of Iterations:': 100, 'Number of Repetition:': 100, 'Error Tolerance for x:': 0.0001, 'Error Tolerance for f:': 0.0001, 'num_params': 12, 'boundaries': [[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]], 'starting_points': 'None', 'Inertia:': 0.5, 'Cognitive Rate:': 2.1, 'Social Rate:': 2.1, 'Neighborhood Size:': 5, 'Number of CPU:': 100.0}]
+
+
+{'simulator': 'Neuron', 'model': ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], 'sim_command': '""'}
+*********** NEURON 7.6.5 LOADED ***********
+*********************Covariance_Matrix_Adaptation_ES_Pygmo
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+[[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]]
+no previous save found
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 1
+['/p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3CovariancePygmo_1', ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/opt_data_JMakara_OUR_features_selected_stim.json', 6, 'mV', 'None', 'None', 'None', 'features'], ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], ['IClamp', 0.5, 'soma'], [[-0.25, 0.05, 0.1, 0.15, 0.2, 0.25], 200.0, 300.0], ['Na_BG_act_inact_shift 0', 'gmax_K_DRS4_params_voltage_dep_dend 1', 'gmax_Na_BG_soma 2', 'gmax_K_DRS4_params_voltage_dep_soma 3', 'gmax_K_DRS4_params_voltage_dep_axon 4', 'gmax_Leak_pyr 5', 'H_ratio 6', 'e_Leak_pyr 7', 'gbar_km_soma_dend 8', 'gbar_km_axon 9', 'KA_ratio 10', 'gbar_kd 11'], [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], [[{'Spike Detection Thres. (mv)': 0.0, 'Spike Window (ms)': 'None'}, ['Spikecount', 'inv_first_ISI', 'inv_last_ISI', 'inv_time_to_first_spike', 'steady_state_voltage', 'voltage_base', 'voltage_deflection', 'voltage_deflection_begin', 'AHP_depth_abs', 'AHP_time_from_peak', 'AP2_amp', 'AP_amplitude', 'AP_begin_voltage', 'AP_duration_half_width', 'AP_fall_time', 'AP_rise_time', 'APlast_amp', 'time_to_last_spike', 'sag_amplitude']], [0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842]], {'seed': 1235.0, 'evo_strat': 'Covariance Matrix Adaptation ES (CMAES) - Pygmo', 'Size of Population:': 2.0, 'Number of Islands:': 1.0, 'Number of Generations:': 2.0, 'Force bounds:': 'False', 'Mutation Rate:': 0.25, 'Crossover Rate:': 1, 'Cooling Rate:': 0.5, 'Mean of Gaussian:': 0, 'Std. Deviation of Gaussian:': 1, 'Initial Temperature:': 0.1, 'Step Size:': 0.1, 'Temperature:': 0.1, 'Update Frequency:': 50, 'Number of Iterations:': 100, 'Number of Repetition:': 100, 'Error Tolerance for x:': 0.0001, 'Error Tolerance for f:': 0.0001, 'num_params': 12, 'boundaries': [[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]], 'starting_points': 'None', 'Inertia:': 0.5, 'Cognitive Rate:': 2.1, 'Social Rate:': 2.1, 'Neighborhood Size:': 5, 'Number of CPU:': 100.0}]
+
+
+{'simulator': 'Neuron', 'model': ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], 'sim_command': '""'}
+*********** NEURON 7.6.5 LOADED ***********
+*********************Covariance_Matrix_Adaptation_ES_Pygmo
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+[[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]]
+no previous save found
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 1
+['/p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3CovariancePygmo_2', ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/opt_data_JMakara_OUR_features_selected_stim.json', 6, 'mV', 'None', 'None', 'None', 'features'], ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], ['IClamp', 0.5, 'soma'], [[-0.25, 0.05, 0.1, 0.15, 0.2, 0.25], 200.0, 300.0], ['Na_BG_act_inact_shift 0', 'gmax_K_DRS4_params_voltage_dep_dend 1', 'gmax_Na_BG_soma 2', 'gmax_K_DRS4_params_voltage_dep_soma 3', 'gmax_K_DRS4_params_voltage_dep_axon 4', 'gmax_Leak_pyr 5', 'H_ratio 6', 'e_Leak_pyr 7', 'gbar_km_soma_dend 8', 'gbar_km_axon 9', 'KA_ratio 10', 'gbar_kd 11'], [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], [[{'Spike Detection Thres. (mv)': 0.0, 'Spike Window (ms)': 'None'}, ['Spikecount', 'inv_first_ISI', 'inv_last_ISI', 'inv_time_to_first_spike', 'steady_state_voltage', 'voltage_base', 'voltage_deflection', 'voltage_deflection_begin', 'AHP_depth_abs', 'AHP_time_from_peak', 'AP2_amp', 'AP_amplitude', 'AP_begin_voltage', 'AP_duration_half_width', 'AP_fall_time', 'AP_rise_time', 'APlast_amp', 'time_to_last_spike', 'sag_amplitude']], [0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842]], {'seed': 1236.0, 'evo_strat': 'Covariance Matrix Adaptation ES (CMAES) - Pygmo', 'Size of Population:': 2.0, 'Number of Islands:': 1.0, 'Number of Generations:': 2.0, 'Force bounds:': 'False', 'Mutation Rate:': 0.25, 'Crossover Rate:': 1, 'Cooling Rate:': 0.5, 'Mean of Gaussian:': 0, 'Std. Deviation of Gaussian:': 1, 'Initial Temperature:': 0.1, 'Step Size:': 0.1, 'Temperature:': 0.1, 'Update Frequency:': 50, 'Number of Iterations:': 100, 'Number of Repetition:': 100, 'Error Tolerance for x:': 0.0001, 'Error Tolerance for f:': 0.0001, 'num_params': 12, 'boundaries': [[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]], 'starting_points': 'None', 'Inertia:': 0.5, 'Cognitive Rate:': 2.1, 'Social Rate:': 2.1, 'Neighborhood Size:': 5, 'Number of CPU:': 100.0}]
+
+
+{'simulator': 'Neuron', 'model': ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], 'sim_command': '""'}
+*********** NEURON 7.6.5 LOADED ***********
+*********************Covariance_Matrix_Adaptation_ES_Pygmo
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+[[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]]
+no previous save found
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 1
+2
+Number of islands: 1
+Status: idle - **error occurred**
+
+Islands summaries:
+
+	#  Type                    Algo                                                        Prob                                Size  Status                     
+	------------------------------------------------------------------------------------------------------------------------------------------------------------
+	0  Multiprocessing island  CMA-ES: Covariance Matrix Adaptation Evolutionary Strategy  <class 'optimizerHandler.Problem'>  2     idle - **error occurred**  
+
+[array([ 1.36573859e+01,  1.21073532e-02,  3.91189338e-02,  3.85685871e-01,
+        7.69766949e+00,  5.69437140e-05,  2.20893419e+00, -5.94404475e+01,
+        8.95942742e-04,  9.13506047e-01,  2.08742393e+00,  7.70543883e-03])]
+[array([370.6577218])]
+([array([0.86573859, 0.01109133, 0.37876463, 0.76670586, 0.76953649,
+       0.52159682, 0.14153921, 0.35198508, 0.08501937, 0.18268486,
+       0.66200886, 0.7703142 ])], 'CANDS')
+([array([370.6577218])], 'FITS')
+('Optimization lasted for ', 1884.098760843277, ' s')
+[array([0.86573859, 0.01109133, 0.37876463, 0.76670586, 0.76953649,
+       0.52159682, 0.14153921, 0.35198508, 0.08501937, 0.18268486,
+       0.66200886, 0.7703142 ])]
+([13.657385868700338, 0.012107353196574046, 0.03911893382387241, 0.3856858710870706, 7.697669494702785, 5.694371397671526e-05, 2.20893418890714, -59.44044754845248, 0.0008959427422531141, 0.9135060470544026, 2.0874239347432657, 0.007705438830070284], 'fitness: ', array([370.6577218]))
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+resulting parameters:  [13.657385868700338, 0.012107353196574046, 0.03911893382387241, 0.3856858710870706, 7.697669494702785, 5.694371397671526e-05, 2.20893418890714, -59.44044754845248, 0.0008959427422531141, 0.9135060470544026, 2.0874239347432657, 0.007705438830070284]
+2
+Number of islands: 1
+Status: idle - **error occurred**
+
+Islands summaries:
+
+	#  Type                    Algo                                                        Prob                                Size  Status                     
+	------------------------------------------------------------------------------------------------------------------------------------------------------------
+	0  Multiprocessing island  CMA-ES: Covariance Matrix Adaptation Evolutionary Strategy  <class 'optimizerHandler.Problem'>  2     idle - **error occurred**  
+
+[array([ 1.36573859e+01,  1.21073532e-02,  3.91189338e-02,  3.85685871e-01,
+        7.69766949e+00,  5.69437140e-05,  2.20893419e+00, -5.94404475e+01,
+        8.95942742e-04,  9.13506047e-01,  2.08742393e+00,  7.70543883e-03])]
+[array([370.6577218])]
+([array([0.86573859, 0.01109133, 0.37876463, 0.76670586, 0.76953649,
+       0.52159682, 0.14153921, 0.35198508, 0.08501937, 0.18268486,
+       0.66200886, 0.7703142 ])], 'CANDS')
+([array([370.6577218])], 'FITS')
+('Optimization lasted for ', 1879.1514070034027, ' s')
+[array([0.86573859, 0.01109133, 0.37876463, 0.76670586, 0.76953649,
+       0.52159682, 0.14153921, 0.35198508, 0.08501937, 0.18268486,
+       0.66200886, 0.7703142 ])]
+([13.657385868700338, 0.012107353196574046, 0.03911893382387241, 0.3856858710870706, 7.697669494702785, 5.694371397671526e-05, 2.20893418890714, -59.44044754845248, 0.0008959427422531141, 0.9135060470544026, 2.0874239347432657, 0.007705438830070284], 'fitness: ', array([370.6577218]))
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+resulting parameters:  [13.657385868700338, 0.012107353196574046, 0.03911893382387241, 0.3856858710870706, 7.697669494702785, 5.694371397671526e-05, 2.20893418890714, -59.44044754845248, 0.0008959427422531141, 0.9135060470544026, 2.0874239347432657, 0.007705438830070284]
+2
+Number of islands: 1
+Status: idle - **error occurred**
+
+Islands summaries:
+
+	#  Type                    Algo                                                        Prob                                Size  Status                     
+	------------------------------------------------------------------------------------------------------------------------------------------------------------
+	0  Multiprocessing island  CMA-ES: Covariance Matrix Adaptation Evolutionary Strategy  <class 'optimizerHandler.Problem'>  2     idle - **error occurred**  
+
+[array([ 5.30805794e+00,  1.30140861e-01,  4.71551206e-02,  2.46176028e-01,
+        7.22898046e-01,  1.06547075e-05,  7.19574592e+00, -6.13044063e+01,
+        2.32853822e-03,  3.56755503e+00,  2.41255903e+00,  9.16786489e-03])]
+[array([372.3195799])]
+([array([0.03080579, 0.63232032, 0.46076654, 0.48199189, 0.07136117,
+       0.00727453, 0.47622456, 0.28985312, 0.22899882, 0.71350528,
+       0.78242927, 0.91670319])], 'CANDS')
+([array([372.3195799])], 'FITS')
+('Optimization lasted for ', 2468.377725839615, ' s')
+[array([0.03080579, 0.63232032, 0.46076654, 0.48199189, 0.07136117,
+       0.00727453, 0.47622456, 0.28985312, 0.22899882, 0.71350528,
+       0.78242927, 0.91670319])]
+([5.308057941074624, 0.13014086100538397, 0.04715512057454555, 0.24617602785380277, 0.7228980458787008, 1.0654707464185958e-05, 7.195745920199135, -61.3044062783805, 0.0023285382200460888, 3.5675550338178352, 2.412559027038976, 0.009167864892746212], 'fitness: ', array([372.3195799]))
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+resulting parameters:  [5.308057941074624, 0.13014086100538397, 0.04715512057454555, 0.24617602785380277, 0.7228980458787008, 1.0654707464185958e-05, 7.195745920199135, -61.3044062783805, 0.0023285382200460888, 3.5675550338178352, 2.412559027038976, 0.009167864892746212]
+['/p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3CovariancePygmo_2', ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/opt_data_JMakara_OUR_features_selected_stim.json', 6, 'mV', 'None', 'None', 'None', 'features'], ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], ['IClamp', 0.5, 'soma'], [[-0.25, 0.05, 0.1, 0.15, 0.2, 0.25], 200.0, 300.0], ['Na_BG_act_inact_shift 0', 'gmax_K_DRS4_params_voltage_dep_dend 1', 'gmax_Na_BG_soma 2', 'gmax_K_DRS4_params_voltage_dep_soma 3', 'gmax_K_DRS4_params_voltage_dep_axon 4', 'gmax_Leak_pyr 5', 'H_ratio 6', 'e_Leak_pyr 7', 'gbar_km_soma_dend 8', 'gbar_km_axon 9', 'KA_ratio 10', 'gbar_kd 11'], [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], [[{'Spike Detection Thres. (mv)': 0.0, 'Spike Window (ms)': 'None'}, ['Spikecount', 'inv_first_ISI', 'inv_last_ISI', 'inv_time_to_first_spike', 'steady_state_voltage', 'voltage_base', 'voltage_deflection', 'voltage_deflection_begin', 'AHP_depth_abs', 'AHP_time_from_peak', 'AP2_amp', 'AP_amplitude', 'AP_begin_voltage', 'AP_duration_half_width', 'AP_fall_time', 'AP_rise_time', 'APlast_amp', 'time_to_last_spike', 'sag_amplitude']], [0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842]], {'seed': 1236.0, 'evo_strat': 'Covariance Matrix Adaptation ES (CMAES) - Pygmo', 'Size of Population:': 2.0, 'Number of Islands:': 1.0, 'Number of Generations:': 2.0, 'Force bounds:': 'False', 'Mutation Rate:': 0.25, 'Crossover Rate:': 1, 'Cooling Rate:': 0.5, 'Mean of Gaussian:': 0, 'Std. Deviation of Gaussian:': 1, 'Initial Temperature:': 0.1, 'Step Size:': 0.1, 'Temperature:': 0.1, 'Update Frequency:': 50, 'Number of Iterations:': 100, 'Number of Repetition:': 100, 'Error Tolerance for x:': 0.0001, 'Error Tolerance for f:': 0.0001, 'num_params': 12, 'boundaries': [[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]], 'starting_points': 'None', 'Inertia:': 0.5, 'Cognitive Rate:': 2.1, 'Social Rate:': 2.1, 'Neighborhood Size:': 5, 'Number of CPU:': 100.0}]
+
+
+{'simulator': 'Neuron', 'model': ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], 'sim_command': '""'}
+*********** NEURON 7.6.5 LOADED ***********
+*********************Covariance_Matrix_Adaptation_ES_Pygmo
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+[[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]]
+save loaded
+2
+Number of islands: 1
+Status: idle - **error occurred**
+
+Islands summaries:
+
+	#  Type                    Algo                                                        Prob                                Size  Status                     
+	------------------------------------------------------------------------------------------------------------------------------------------------------------
+	0  Multiprocessing island  CMA-ES: Covariance Matrix Adaptation Evolutionary Strategy  <class 'optimizerHandler.Problem'>  2     idle - **error occurred**  
+
+[array([ 5.30805794e+00,  1.30140861e-01,  4.71551206e-02,  2.46176028e-01,
+        7.22898046e-01,  1.06547075e-05,  7.19574592e+00, -6.13044063e+01,
+        2.32853822e-03,  3.56755503e+00,  2.41255903e+00,  9.16786489e-03])]
+[array([372.3195799])]
+([array([0.03080579, 0.63232032, 0.46076654, 0.48199189, 0.07136117,
+       0.00727453, 0.47622456, 0.28985312, 0.22899882, 0.71350528,
+       0.78242927, 0.91670319])], 'CANDS')
+([array([372.3195799])], 'FITS')
+('Optimization lasted for ', 0.4809403419494629, ' s')
+[array([0.03080579, 0.63232032, 0.46076654, 0.48199189, 0.07136117,
+       0.00727453, 0.47622456, 0.28985312, 0.22899882, 0.71350528,
+       0.78242927, 0.91670319])]
+([5.308057941074624, 0.13014086100538397, 0.04715512057454555, 0.24617602785380277, 0.7228980458787008, 1.0654707464185958e-05, 7.195745920199135, -61.3044062783805, 0.0023285382200460888, 3.5675550338178352, 2.412559027038976, 0.009167864892746212], 'fitness: ', array([372.3195799]))
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+resulting parameters:  [5.308057941074624, 0.13014086100538397, 0.04715512057454555, 0.24617602785380277, 0.7228980458787008, 1.0654707464185958e-05, 7.195745920199135, -61.3044062783805, 0.0023285382200460888, 3.5675550338178352, 2.412559027038976, 0.009167864892746212]
