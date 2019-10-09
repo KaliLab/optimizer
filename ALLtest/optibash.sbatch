@@ -2,15 +2,15 @@
 
 #SBATCH --nodes=1  
 
-#SBATCH --ntasks=2  
+#SBATCH --ntasks=100  
  
-#SBATCH --ntasks-per-node=2  
+#SBATCH --ntasks-per-node=100  
 
 #SBATCH --cpus-per-task=1  
 
 #SBATCH --job-name=optimizer  
 
-#SBATCH --time=0-01:00:00 
+#SBATCH --time=0-24:00:00 
 
 #SBATCH --error=mpi_err.%j 
 
@@ -52,12 +52,208 @@ module load Python/3.6.8
 module load SciPy-Stack/2019a 
 
 
-export OMP_NUM_THREADS=100
+export OMP_NUM_THREADS=1
 
 export PYTHONPATH=/p/home/jusers/mohacsi1/jureca/.local/lib/python3.6/site-packages:$PYTHONPATH 
 
 echo ok2 
- srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3CovariancePygmo_1/_settings.xml &
-srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3CovariancePygmo_1/_settings.xml &
-srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3CovariancePygmo_2/_settings.xml
-srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3CovariancePygmo_2/_settings.xml
+ srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_1/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_2/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_3/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_4/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_5/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_6/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_7/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_8/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_9/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_10/_settings.xml
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_1/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_2/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_3/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_4/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_5/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_6/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_7/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_8/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_9/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_10/_settings.xml
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_1/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_2/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_3/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_4/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_5/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_6/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_7/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_8/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_9/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_10/_settings.xml
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_1/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_2/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_3/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_4/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_5/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_6/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_7/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_8/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_9/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_10/_settings.xml
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_1/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_2/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_3/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_4/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_5/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_6/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_7/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_8/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_9/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_10/_settings.xml
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_1/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_2/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_3/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_4/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_5/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_6/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_7/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_8/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_9/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_10/_settings.xml
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_1/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_2/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_3/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_4/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_5/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_6/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_7/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_8/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_9/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_10/_settings.xml
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_1/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_2/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_3/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_4/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_5/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_6/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_7/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_8/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_9/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_10/_settings.xml
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_1/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_2/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_3/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_4/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_5/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_6/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_7/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_8/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_9/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_10/_settings.xml
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_1/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_2/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_3/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_4/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_5/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_6/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_7/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_8/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_9/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_10/_settings.xml
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_1/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_2/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_3/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_4/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_5/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_6/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_7/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_8/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_9/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_10/_settings.xml
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_1/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_2/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_3/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_4/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_5/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_6/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_7/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_8/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_9/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_10/_settings.xml
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_1/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_2/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_3/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_4/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_5/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_6/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_7/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_8/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_9/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_10/_settings.xml
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_1/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_2/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_3/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_4/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_5/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_6/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_7/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_8/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_9/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_10/_settings.xml
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_1/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_2/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_3/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_4/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_5/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_6/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_7/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_8/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_9/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_10/_settings.xml
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_1/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_2/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_3/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_4/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_5/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_6/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_7/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_8/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_9/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_10/_settings.xml
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_1/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_2/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_3/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_4/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_5/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_6/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_7/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_8/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_9/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_10/_settings.xml
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_1/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_2/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_3/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_4/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_5/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_6/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_7/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_8/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_9/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_10/_settings.xml
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_1/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_2/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_3/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_4/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_5/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_6/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_7/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_8/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_9/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_10/_settings.xml
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_1/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_2/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_3/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_4/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_5/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_6/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_7/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_8/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_9/_settings.xml &
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_CovariancePygmo_10/_settings.xml

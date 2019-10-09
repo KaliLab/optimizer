@@ -8,13 +8,13 @@ optimizer_path 	= '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.
 curr_dir  		= os.getcwd()						# base directory
 orig_name 		= 'Luca_modell_python3'						# name of the working directory we want to copy
 orig_dir  		= curr_dir + '/'+ 'optimizer_multirun/' + orig_name		# path of this directory
-num_runs  		= 2						# how many copies we want
-parallel_runs   = 2								# how many optimizations we allow to run in parallel
+num_runs  		= 10						# how many copies we want
+parallel_runs   = 10								# how many optimizations we allow to run in parallel
 
 # define basic things for the xml files
 rnd_start  = 1234							# random seed in the first run
-max_eval   = 4		# number of iterations
-pop_size   = 2				# population size
+max_eval   = 5		# number of iterations
+pop_size   = 100				# population size
 num_islands = 1
 #csv_name   = 'input_data2.dat'	
 num_param  = 16	
@@ -69,11 +69,11 @@ def GenerateCommands(evo_name):
 	# create a list containing the commands we want to run
 	commands = ["""#!/bin/bash -x  \n
 #SBATCH --nodes=1  \n
-#SBATCH --ntasks=2  \n 
-#SBATCH --ntasks-per-node=2  \n
+#SBATCH --ntasks=100  \n 
+#SBATCH --ntasks-per-node=100  \n
 #SBATCH --cpus-per-task=1  \n
 #SBATCH --job-name=optimizer  \n
-#SBATCH --time=0-01:00:00 \n
+#SBATCH --time=0-24:00:00 \n
 #SBATCH --error=mpi_err.%j \n
 #SBATCH --output=mpi_out.%j \n
 #SBATCH --account=vsk25 \n
@@ -97,10 +97,11 @@ module load NEURON/7.6.5-Python-3.6.8 \n
 module load Python/3.6.8 \n
 module load SciPy-Stack/2019a \n
 
-export OMP_NUM_THREADS=100
+export OMP_NUM_THREADS=1
 
 export PYTHONPATH=/p/home/jusers/mohacsi1/jureca/.local/lib/python3.6/site-packages:$PYTHONPATH \n
 echo ok2 \n """]
+	coms=[]
 	for i in range(1, num_runs+1):
 		subdir   = orig_dir + evo_name + '_' + str(i)
 		xml_name = subdir + '/' + '_settings.xml'
@@ -111,10 +112,10 @@ echo ok2 \n """]
 			command += ' &'
 		command += '\n'
 
-		commands.append(command)
+		coms.append(command)
 		#commands.append(command)
 	#commands.append('wait')		# does not work without this. I don't exactly understand why
-
+	commands+=coms*20
 	return commands
 
 def CreateBashScript(evo_name):
@@ -133,7 +134,7 @@ def RunOptim():
 def main():
 	algos = ["Covariance Matrix Adaptation ES (CMAES) - Pygmo"]
 	for evo_strat in algos:
-		evo_name=str.split(evo_strat," ")[0]+str.split(evo_strat," ")[-1]
+		evo_name='_'+str.split(evo_strat," ")[0]+str.split(evo_strat," ")[-1]
 		print(evo_name)
 		MakeCopies(evo_name)
 		EditXMLs(evo_name,evo_strat)
