@@ -132,7 +132,7 @@ def RunOptim():
 
 
 def main():
-	algos = ["Covariance Matrix Adaptation ES (CMAES) - Pygmo"]
+	algos = ["Differential Evolution (DE) - Pygmo","Self-Adaptive DE (SADE) - Pygmo","Particle Swarm (PSO) - Pygmo","Exponential Evolution Strategies (XNES) - Pygmo","Covariance Matrix Adaptation ES (CMAES) - Pygmo"]
 	for evo_strat in algos:
 		evo_name='_'+str.split(evo_strat," ")[0]+str.split(evo_strat," ")[-1]
 		print(evo_name)
