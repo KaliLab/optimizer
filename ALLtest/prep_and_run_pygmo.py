@@ -13,7 +13,7 @@ parallel_runs   = 10								# how many optimizations we allow to run in parallel
 
 # define basic things for the xml files
 rnd_start  = 1234							# random seed in the first run
-max_eval   = 5		# number of iterations
+max_eval   = 2		# number of iterations
 pop_size   = 100				# population size
 num_islands = 1
 #csv_name   = 'input_data2.dat'	
@@ -69,8 +69,8 @@ def GenerateCommands(evo_name):
 	# create a list containing the commands we want to run
 	commands = ["""#!/bin/bash -x  \n
 #SBATCH --nodes=1  \n
-#SBATCH --ntasks=100  \n 
-#SBATCH --ntasks-per-node=100  \n
+#SBATCH --ntasks=10  \n 
+#SBATCH --ntasks-per-node=10  \n
 #SBATCH --cpus-per-task=1  \n
 #SBATCH --job-name=optimizer  \n
 #SBATCH --time=0-24:00:00 \n
@@ -115,7 +115,7 @@ echo ok2 \n """]
 		coms.append(command)
 		#commands.append(command)
 	#commands.append('wait')		# does not work without this. I don't exactly understand why
-	commands+=coms*20
+	commands+=coms*50
 	return commands
 
 def CreateBashScript(evo_name):
