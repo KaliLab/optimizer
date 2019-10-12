@@ -115,7 +115,7 @@ echo ok2 \n """]
 		coms.append(command)
 		#commands.append(command)
 	#commands.append('wait')		# does not work without this. I don't exactly understand why
-	#commands+=coms*50
+	commands+=coms*2
 	return commands
 
 def CreateBashScript(evo_name):
