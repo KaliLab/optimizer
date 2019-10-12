@@ -8,15 +8,15 @@ optimizer_path 	= '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.
 curr_dir  		= os.getcwd()						# base directory
 orig_name 		= 'Luca_modell_python3'						# name of the working directory we want to copy
 orig_dir  		= curr_dir + '/'+ 'optimizer_multirun/' + orig_name		# path of this directory
-num_runs  		= 10						# how many copies we want
-parallel_runs   = 10								# how many optimizations we allow to run in parallel
+num_runs  		= 1						# how many copies we want
+parallel_runs   = 1								# how many optimizations we allow to run in parallel
 
 # define basic things for the xml files
 rnd_start  = 1234							# random seed in the first run
-max_eval   = 1		# number of iterations
+max_eval   = 2		# number of iterations
 pop_size   = 100				# population size
 num_islands = 1
-#csv_name   = 'input_data2.dat'	
+#csvname   = 'input_data2.dat'	
 num_param  = 16	
 #evo_strat = "Particle Swarm (PSO) - Inspyred"		 					# number of parameters to optimize (needed as a command line argument)
 """self.Recom=["Evolutionary Algorithm (EA) - Inspyred","Covariance Matrix Adaptation ES (CMAES) - Pygmo",
