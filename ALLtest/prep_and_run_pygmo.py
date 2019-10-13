@@ -8,15 +8,15 @@ optimizer_path 	= '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.
 curr_dir  		= os.getcwd()						# base directory
 orig_name 		= 'Luca_modell_python3'						# name of the working directory we want to copy
 orig_dir  		= curr_dir + '/'+ 'optimizer_multirun/' + orig_name		# path of this directory
-num_runs  		= 1						# how many copies we want
-parallel_runs   = 1								# how many optimizations we allow to run in parallel
+num_runs  		= 10						# how many copies we want
+parallel_runs   = 10								# how many optimizations we allow to run in parallel
 
 # define basic things for the xml files
 rnd_start  = 1234							# random seed in the first run
-max_eval   = 2		# number of iterations
+max_eval   = 1		# number of iterations
 pop_size   = 100				# population size
 num_islands = 1
-#csvname   = 'input_data2.dat'	
+#csv_name   = 'input_data2.dat'	
 num_param  = 16	
 #evo_strat = "Particle Swarm (PSO) - Inspyred"		 					# number of parameters to optimize (needed as a command line argument)
 """self.Recom=["Evolutionary Algorithm (EA) - Inspyred","Covariance Matrix Adaptation ES (CMAES) - Pygmo",
@@ -69,8 +69,8 @@ def GenerateCommands(evo_name):
 	# create a list containing the commands we want to run
 	commands = ["""#!/bin/bash -x  \n
 #SBATCH --nodes=1  \n
-#SBATCH --ntasks=1  \n 
-#SBATCH --ntasks-per-node=1  \n
+#SBATCH --ntasks=10  \n 
+#SBATCH --ntasks-per-node=10  \n
 #SBATCH --cpus-per-task=1  \n
 #SBATCH --job-name=optimizer  \n
 #SBATCH --time=0-24:00:00 \n
@@ -115,31 +115,31 @@ echo ok2 \n """]
 		coms.append(command)
 		#commands.append(command)
 	#commands.append('wait')		# does not work without this. I don't exactly understand why
-	commands+=coms*2
+	commands+=coms*100
 	return commands
 
 def CreateBashScript(evo_name):
 	# write the commands into a file
 	commands = GenerateCommands(evo_name)
-	with open('optibash.sbatch', 'w') as bash_script:
+	with open('optibash'+evo_name+'.sbatch', 'w') as bash_script:
 		for line in commands:
 			bash_script.write(line)
 
-def RunOptim():
+def RunOptim(evo_name):
 	# run the bash script
-	bash_script_name = curr_dir + '/optibash.sbatch'
+	bash_script_name = curr_dir + '/optibash'+evo_name+'.sbatch'
 	subprocess.call(['sbatch', bash_script_name])
 
 
 def main():
-	algos = ["Covariance Matrix Adaptation ES (CMAES) - Pygmo"]
+	algos = ["Differential Evolution (DE) - Pygmo","Self-Adaptive DE (SADE) - Pygmo","Particle Swarm (PSO) - Pygmo","Exponential Evolution Strategies (XNES) - Pygmo","Covariance Matrix Adaptation ES (CMAES) - Pygmo"]
 	for evo_strat in algos:
 		evo_name='_'+str.split(evo_strat," ")[0]+str.split(evo_strat," ")[-1]
 		print(evo_name)
 		MakeCopies(evo_name)
 		EditXMLs(evo_name,evo_strat)
 		CreateBashScript(evo_name)
-		RunOptim()
+		RunOptim(evo_name)
 
 
 if __name__ == '__main__':
