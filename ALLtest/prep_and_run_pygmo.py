@@ -13,7 +13,7 @@ parallel_runs   = 10								# how many optimizations we allow to run in parallel
 
 # define basic things for the xml files
 rnd_start  = 1234							# random seed in the first run
-max_eval   = 1		# number of iterations
+max_eval   = 4		# number of iterations
 pop_size   = 100				# population size
 num_islands = 1
 #csv_name   = 'input_data2.dat'	
@@ -101,21 +101,21 @@ export OMP_NUM_THREADS=1
 
 export PYTHONPATH=/p/home/jusers/mohacsi1/jureca/.local/lib/python3.6/site-packages:$PYTHONPATH \n
 echo ok2 \n """]
-	coms=[]
-	for i in range(1, num_runs+1):
-		subdir   = orig_dir + evo_name + '_' + str(i)
-		xml_name = subdir + '/' + '_settings.xml'
+	#coms=[]
+	#for i in range(1, num_runs+1):
+	subdir   = orig_dir + evo_name + '_' + str(i)
+	xml_name = subdir + '/' + '_settings.xml'
 
-		command = 'srun -N 1 -n 1 python ' + optimizer_path + ' -c ' + xml_name #+ ' -v_level=1'
-		
-		if i % parallel_runs > 0:
-			command += ' &'
-		command += '\n'
+	command = 'srun -N 1 -n 1 python ' + optimizer_path + ' -c ' + xml_name #+ ' -v_level=1'
+	
+	if i % parallel_runs > 0:
+		command += ' &'
+	command += '\n'
 
-		coms.append(command)
-		#commands.append(command)
+	commmands.append(command)
+	#commands.append(command)
 	#commands.append('wait')		# does not work without this. I don't exactly understand why
-	commands+=coms*100
+	#commands+=coms
 	return commands
 
 def CreateBashScript(evo_name):
