@@ -112,7 +112,7 @@ echo ok2 \n """]
 			command += ' &'
 		command += '\n'
 
-		commmands.append(command)
+		commands.append(command)
 	#commands.append(command)
 	#commands.append('wait')		# does not work without this. I don't exactly understand why
 	#commands+=coms
