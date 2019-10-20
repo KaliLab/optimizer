@@ -102,17 +102,17 @@ export OMP_NUM_THREADS=1
 export PYTHONPATH=/p/home/jusers/mohacsi1/jureca/.local/lib/python3.6/site-packages:$PYTHONPATH \n
 echo ok2 \n """]
 	#coms=[]
-	#for i in range(1, num_runs+1):
-	subdir   = orig_dir + evo_name + '_' + str(i)
-	xml_name = subdir + '/' + '_settings.xml'
+	for i in range(1, num_runs+1):
+		subdir   = orig_dir + evo_name + '_' + str(i)
+		xml_name = subdir + '/' + '_settings.xml'
 
-	command = 'srun -N 1 -n 1 python ' + optimizer_path + ' -c ' + xml_name #+ ' -v_level=1'
-	
-	if i % parallel_runs > 0:
-		command += ' &'
-	command += '\n'
+		command = 'srun -N 1 -n 1 python ' + optimizer_path + ' -c ' + xml_name #+ ' -v_level=1'
+		
+		if i % parallel_runs > 0:
+			command += ' &'
+		command += '\n'
 
-	commmands.append(command)
+		commmands.append(command)
 	#commands.append(command)
 	#commands.append('wait')		# does not work without this. I don't exactly understand why
 	#commands+=coms
