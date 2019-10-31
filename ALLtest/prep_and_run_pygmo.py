@@ -13,7 +13,7 @@ parallel_runs   = 10								# how many optimizations we allow to run in parallel
 
 # define basic things for the xml files
 rnd_start  = 1234							# random seed in the first run
-max_eval   = 4		# number of iterations
+max_eval   = 1		# number of iterations
 pop_size   = 100				# population size
 num_islands = 1
 #csv_name   = 'input_data2.dat'	
@@ -132,7 +132,7 @@ def RunOptim(evo_name):
 
 
 def main():
-	algos = ["Differential Evolution (DE) - Pygmo","Self-Adaptive DE (SADE) - Pygmo","Particle Swarm (PSO) - Pygmo","Exponential Evolution Strategies (XNES) - Pygmo","Covariance Matrix Adaptation ES (CMAES) - Pygmo"]
+	algos = ["Differential Evolution (DE) - Pygmo"]
 	for evo_strat in algos:
 		evo_name='_'+str.split(evo_strat," ")[0]+str.split(evo_strat," ")[-1]
 		print(evo_name)
