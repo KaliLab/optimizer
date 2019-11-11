@@ -2,9 +2,9 @@
 
 #SBATCH --nodes=1  
 
-#SBATCH --ntasks=10  
+#SBATCH --ntasks=1  
  
-#SBATCH --ntasks-per-node=10  
+#SBATCH --ntasks-per-node=1  
 
 #SBATCH --cpus-per-task=1  
 
@@ -57,13 +57,4 @@ export OMP_NUM_THREADS=1
 export PYTHONPATH=/p/home/jusers/mohacsi1/jureca/.local/lib/python3.6/site-packages:$PYTHONPATH 
 
 echo ok2 
- srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_DifferentialPygmo_1/_settings.xml &
-srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_DifferentialPygmo_2/_settings.xml &
-srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_DifferentialPygmo_3/_settings.xml &
-srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_DifferentialPygmo_4/_settings.xml &
-srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_DifferentialPygmo_5/_settings.xml &
-srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_DifferentialPygmo_6/_settings.xml &
-srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_DifferentialPygmo_7/_settings.xml &
-srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_DifferentialPygmo_8/_settings.xml &
-srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_DifferentialPygmo_9/_settings.xml &
-srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_DifferentialPygmo_10/_settings.xml
+ srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_DifferentialPygmo_1/_settings.xml
