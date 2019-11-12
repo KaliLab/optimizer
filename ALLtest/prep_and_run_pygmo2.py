@@ -69,9 +69,9 @@ def GenerateCommands(evo_name):
 	# create a list containing the commands we want to run
 	commands = ["""#!/bin/bash -x  \n
 #SBATCH --nodes=1  \n
-#SBATCH --ntasks=3  \n 
-#SBATCH --ntasks-per-node=3  \n
-#SBATCH --cpus-per-task=6  \n
+#SBATCH --ntasks=1  \n 
+#SBATCH --ntasks-per-node=1  \n
+#SBATCH --cpus-per-task=10  \n
 #SBATCH --job-name=optimizer  \n
 #SBATCH --time=0-24:00:00 \n
 #SBATCH --error=mpi_err.%j \n
