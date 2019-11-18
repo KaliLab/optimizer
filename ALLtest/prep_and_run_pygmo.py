@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 optimizer_path 	= '/p/home/jusers/saray1/jureca/ujopti/optimizer/optimizer/optimizer.py'
 curr_dir  		= os.getcwd()						# base directory
-orig_name 		= 'Luca_modell_python3'						# name of the working directory we want to copy
+orig_name 		= 'SLuca_modell_python3'						# name of the working directory we want to copy
 orig_dir  		= curr_dir + '/'+ 'optimizer_multirun/' + orig_name		# path of this directory
 num_runs  		= 3						# how many copies we want
 parallel_runs   = 3								# how many optimizations we allow to run in parallel
