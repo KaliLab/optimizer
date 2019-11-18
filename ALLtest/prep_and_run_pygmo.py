@@ -4,12 +4,12 @@ import xml.etree.ElementTree as ET
 import subprocess
 import matplotlib.pyplot as plt
 
-optimizer_path 	= '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py'
+optimizer_path 	= '/p/home/jusers/saray1/jureca/ujopti/optimizer/optimizer/optimizer.py'
 curr_dir  		= os.getcwd()						# base directory
 orig_name 		= 'Luca_modell_python3'						# name of the working directory we want to copy
 orig_dir  		= curr_dir + '/'+ 'optimizer_multirun/' + orig_name		# path of this directory
-num_runs  		= 1						# how many copies we want
-parallel_runs   = 1								# how many optimizations we allow to run in parallel
+num_runs  		= 3						# how many copies we want
+parallel_runs   = 3								# how many optimizations we allow to run in parallel
 
 # define basic things for the xml files
 rnd_start  = 1234							# random seed in the first run
@@ -69,37 +69,31 @@ def GenerateCommands(evo_name):
 	# create a list containing the commands we want to run
 	commands = ["""#!/bin/bash -x  \n
 #SBATCH --nodes=1  \n
-#SBATCH --ntasks=1  \n 
-#SBATCH --ntasks-per-node=1  \n
-#SBATCH --cpus-per-task=10  \n
+#SBATCH --ntasks=3  \n 
+#SBATCH --ntasks-per-node=3  \n
+#SBATCH --cpus-per-task=1 \n
 #SBATCH --job-name=optimizer  \n
 #SBATCH --time=0-4:00:00 \n
 #SBATCH --error=mpi_err.%j \n
 #SBATCH --output=mpi_out.%j \n
 #SBATCH --account=vsk25 \n
-#SBATCH --partition=booster \n
+#SBATCH --partition=batch \n
 
-set -e \n
-set -x \n
+set -e
+set -x
 
-echo ok \n
+module --force purge all
 
-module --force purge all \n
 
-echo ok1 \n
+module use /usr/local/software/jureca/OtherStages
+module load Stages/Devel-2019a
+module load GCC/8.3.0
+module load ParaStationMPI/5.2.2-1
+module load NEURON/7.6.5-Python-3.6.8
+module load SciPy-Stack/2019a-Python-3.6.8
+module load Jupyter/2019a-rc2-Python-3.6.8
 
-module use /usr/local/software/jureca/OtherStages \n
-module load Architecture/KNL \n
-module load Stages/Devel-2019a \n
-module load GCC/8.3.0 \n
-module load ParaStationMPI/5.2.2-1 \n
-module load NEURON/7.6.5-Python-3.6.8 \n
-module load Python/3.6.8 \n
-module load SciPy-Stack/2019a \n
-
-export OMP_NUM_THREADS=1
-
-export PYTHONPATH=/p/home/jusers/mohacsi1/jureca/.local/lib/python3.6/site-packages:$PYTHONPATH \n
+export PYTHONPATH=/p/home/jusers/saray1/jureca/.local/lib/python3.6/site-packages:$PYTHONPATH \n
 date \n """]
 	#coms=[]
 	for i in range(1, num_runs+1):
