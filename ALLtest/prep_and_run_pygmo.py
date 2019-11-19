@@ -8,13 +8,13 @@ optimizer_path 	= '/p/home/jusers/saray1/jureca/ujopti/optimizer/optimizer/optim
 curr_dir  		= os.getcwd()						# base directory
 orig_name 		= 'SLuca_modell_python3'						# name of the working directory we want to copy
 orig_dir  		= curr_dir + '/'+ 'optimizer_multirun/' + orig_name		# path of this directory
-num_runs  		= 3						# how many copies we want
-parallel_runs   = 3								# how many optimizations we allow to run in parallel
+num_runs  		= 10						# how many copies we want
+parallel_runs   = 10								# how many optimizations we allow to run in parallel
 
 # define basic things for the xml files
 rnd_start  = 1234							# random seed in the first run
-max_eval   = 2	# number of iterations
-pop_size   = 10				# population size
+max_eval   = 10	# number of iterations
+pop_size   = 100				# population size
 num_islands = 1
 #csv_name   = 'input_data2.dat'	
 num_param  = 16	
@@ -67,13 +67,34 @@ def EditXMLs(evo_name,evo_strat):
 
 def GenerateCommands(evo_name):
 	# create a list containing the commands we want to run
+	
+	#coms=[]
+	commands=[]
+	for i in range(1, num_runs+1):
+		subdir   = orig_dir + evo_name + '_' + str(i)
+		xml_name = subdir + '/' + '_settings.xml'
+
+		command = 'srun python ' + optimizer_path + ' -c ' + xml_name #+ ' -v_level=1'
+		
+		#if i % parallel_runs > 0:
+		command += ' &'
+		command += '\n'
+
+		commands.append(command)
+	#commands.append(command)
+	#commands.append('wait')		# does not work without this. I don't exactly understand why
+	#commands+=coms
+	return commands
+
+def CreateBashScript():
+	# write the commands into a file
 	commands = ["""#!/bin/bash -x  \n
 #SBATCH --nodes=1  \n
-#SBATCH --ntasks=3  \n 
-#SBATCH --ntasks-per-node=3  \n
+#SBATCH --ntasks=50  \n 
+#SBATCH --ntasks-per-node=50  \n
 #SBATCH --cpus-per-task=1 \n
 #SBATCH --job-name=optimizer  \n
-#SBATCH --time=0-4:00:00 \n
+#SBATCH --time=0-24:00:00 \n
 #SBATCH --error=mpi_err.%j \n
 #SBATCH --output=mpi_out.%j \n
 #SBATCH --account=vsk25 \n
@@ -92,48 +113,36 @@ module load ParaStationMPI/5.2.2-1
 module load NEURON/7.6.5-Python-3.6.8
 module load SciPy-Stack/2019a-Python-3.6.8
 
-export PYTHONPATH=/p/home/jusers/saray1/jureca/.local/lib/python3.6/site-packages:$PYTHONPATH \n
-date \n """]
-	#coms=[]
-	for i in range(1, num_runs+1):
-		subdir   = orig_dir + evo_name + '_' + str(i)
-		xml_name = subdir + '/' + '_settings.xml'
-
-		command = 'srun python ' + optimizer_path + ' -c ' + xml_name #+ ' -v_level=1'
-		
-		if i % parallel_runs > 0:
-			command += ' &'
-		command += '\n'
-
-		commands.append(command)
-	#commands.append(command)
-	#commands.append('wait')		# does not work without this. I don't exactly understand why
-	#commands+=coms
-	commands.append('date')
-	return commands
-
-def CreateBashScript(evo_name):
-	# write the commands into a file
-	commands = GenerateCommands(evo_name)
-	with open('optibash'+evo_name+'.sbatch', 'w') as bash_script:
+export PYTHONPATH=/p/home/jusers/saray1/jureca/.local/lib/python3.6/site-packages:$PYTHONPATH \n"""]
+	algos = ["Differential Evolution (DE) - Pygmo","Self-Adaptive DE (SADE) - Pygmo",
+                "Particle Swarm (PSO) - Pygmo","Exponential Evolution Strategies (XNES) - Pygmo",
+		"Covariance Matrix Adaptation ES (CMAES) - Pygmo"]
+	command=[]
+	for evo_strat in algos:
+		evo_name='_'+str.split(evo_strat," ")[0]+str.split(evo_strat," ")[-1]
+		command += GenerateCommands(evo_name)
+	command[-1]=command[-1].rstrip('&')
+	commands += command*10
+	with open('optibash.sbatch', 'w') as bash_script:
 		for line in commands:
 			bash_script.write(line)
 
-def RunOptim(evo_name):
+def RunOptim():
 	# run the bash script
-	bash_script_name = curr_dir + '/optibash'+evo_name+'.sbatch'
-	subprocess.call(['sbatch', bash_script_name])
+	bash_script_name = curr_dir + '/optibash.sbatch'
+	#subprocess.call(['sbatch', bash_script_name])
 
 
 def main():
-	algos = ["Particle Swarm (PSO) - Pygmo"]
+	algos = ["Differential Evolution (DE) - Pygmo","Self-Adaptive DE (SADE) - Pygmo",
+                "Particle Swarm (PSO) - Pygmo","Exponential Evolution Strategies (XNES) - Pygmo","Covariance Matrix Adaptation ES (CMAES) - Pygmo"]
 	for evo_strat in algos:
 		evo_name='_'+str.split(evo_strat," ")[0]+str.split(evo_strat," ")[-1]
 		print(evo_name)
 		MakeCopies(evo_name)
 		EditXMLs(evo_name,evo_strat)
-		CreateBashScript(evo_name)
-		RunOptim(evo_name)
+	CreateBashScript()
+	RunOptim()
 
 
 if __name__ == '__main__':

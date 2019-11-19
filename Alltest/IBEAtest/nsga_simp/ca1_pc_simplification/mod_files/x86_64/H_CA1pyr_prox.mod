@@ -1,1 +1,0 @@
-../H_CA1pyr_prox.mod
