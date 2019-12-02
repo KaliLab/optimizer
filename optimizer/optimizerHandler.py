@@ -522,7 +522,7 @@ class Covariance_Matrix_Adaptation_ES_Pygmo(PygmoAlgorithmBasis):
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
 		self.force_bounds = option_obj.force_bounds
-		self.algorithm = pg.algorithm(pg.cmaes(gen=1, ftol=1e-15, xtol=1e-15, force_bounds=bool(self.force_bounds)))
+		self.algorithm = pg.algorithm(pg.cmaes(gen=self.max_evaluation, ftol=1e-15, xtol=1e-15, force_bounds=bool(self.force_bounds)))
 
 class Particle_Swarm_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
