@@ -92,7 +92,7 @@ def CreateBashScript():
 #SBATCH --nodes=20  \n
 #SBATCH --ntasks=20  \n 
 #SBATCH --ntasks-per-node=1  \n
-#SBATCH --cpus-per-task=100 \n
+#SBATCH --cpus-per-task=48 \n
 #SBATCH --job-name=optimizer  \n
 #SBATCH --time=0-24:00:00 \n
 #SBATCH --error=mpi_err.%j \n
