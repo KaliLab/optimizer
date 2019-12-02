@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 import subprocess
 import matplotlib.pyplot as plt
 
-optimizer_path 	= '/p/home/jusers/saray1/jureca/ujopti/optimizer/optimizer/optimizer.py'
+optimizer_path 	= '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py'
 curr_dir  		= os.getcwd()						# base directory
 orig_name 		= 'Luca_modell_python3'						# name of the working directory we want to copy
 orig_dir  		= curr_dir + '/'+ 'optimizer_multirun/' + orig_name		# path of this directory
@@ -113,7 +113,7 @@ module load ParaStationMPI/5.2.2-1
 module load NEURON/7.6.5-Python-3.6.8
 module load SciPy-Stack/2019a-Python-3.6.8
 
-export PYTHONPATH=/p/home/jusers/saray1/jureca/.local/lib/python3.6/site-packages:$PYTHONPATH \n
+export PYTHONPATH=/p/home/jusers/mohacsi1/jureca/.local/lib/python3.6/site-packages:$PYTHONPATH \n
 
 """]
 	algos = ["Nondominated Sorted (NSGAII) - Bluepyopt","Indicator Based (IBEA) - Bluepyopt"]
