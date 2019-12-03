@@ -1334,8 +1334,7 @@ class Indicator_Based_Bluepyopt(oldBaseOptimizer):
 		self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation),cp_filename = 'checkpoint.pkl',cp_frequency=int(self.max_evaluation))
 		os.system("ipcluster stop")
 		#except Exception:
-"""
-		os.system("ipcluster stop")
+		"""os.system("ipcluster stop")
 		print("*****************Single Run : IBEA *******************")
 		optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(self.params,self.deapfun,self.feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),selector_name='IBEA')
 		self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))"""	
