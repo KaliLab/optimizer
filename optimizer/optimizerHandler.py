@@ -1440,7 +1440,10 @@ class Nondominated_Sorted_Bluepyopt(oldBaseOptimizer):
 						"Derivative difference" : "calc_grad_dif",
 						"PPTD" : "pyelectro_pptd"}
 		self.ffun_mapper=dict((v,k) for k,v in list(f_m.items()))
-		feat_names=[self.ffun_mapper[x.__name__] for x in feats[0][1]]
+		if self.option_obj.type[-1]!="features":
+			feat_names=[self.ffun_mapper[x.__name__] for x in feats[0][1]]
+		else:
+			feat_names=[x for x in feats[0][1]]
 		return [feat_names,feats[1]]
 
 

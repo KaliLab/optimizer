@@ -6,7 +6,7 @@
   <cognitive_rate>2.1</cognitive_rate>
   <cooling_rate>0.5</cooling_rate>
   <crossover_rate>1</crossover_rate>
-  <evo_strat>Indicator Based (IBEA) - Bluepyopt</evo_strat>
+  <evo_strat>Nondominated Sorted (NSGAII) - Bluepyopt</evo_strat>
   <f_tol>0.0001</f_tol>
   <feats>Spikecount, inv_first_ISI, inv_last_ISI, inv_time_to_first_spike, steady_state_voltage, voltage_base, voltage_deflection, voltage_deflection_begin, AHP_depth_abs, AHP_time_from_peak, AP2_amp, AP_amplitude, AP_begin_voltage, AP_duration_half_width, AP_fall_time, AP_rise_time, APlast_amp, time_to_last_spike, sag_amplitude</feats>
   <force_bounds>False</force_bounds>
