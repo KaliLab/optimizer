@@ -1,28 +1,27 @@
-<?xml version="1.0" ?>
 <settings>
   <acc>1e-06</acc>
   <adjusted_params>['Na_BG_act_inact_shift 0', 'gmax_K_DRS4_params_voltage_dep_dend 1', 'gmax_Na_BG_soma 2', 'gmax_K_DRS4_params_voltage_dep_soma 3', 'gmax_K_DRS4_params_voltage_dep_axon 4', 'gmax_Leak_pyr 5', 'H_ratio 6', 'e_Leak_pyr 7', 'gbar_km_soma_dend 8', 'gbar_km_axon 9', 'KA_ratio 10', 'gbar_kd 11']</adjusted_params>
-  <base_dir>/home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_IndicatorBluepyopt_1</base_dir>
+  <base_dir>/p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_IndicatorBluepyopt_8</base_dir>
   <boundaries>[[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]]</boundaries>
   <cognitive_rate>2.1</cognitive_rate>
   <cooling_rate>0.5</cooling_rate>
   <crossover_rate>1</crossover_rate>
-  <evo_strat>Nondominated Sorted (NSGAII) - Bluepyopt</evo_strat>
+  <evo_strat>Indicator Based (IBEA) - Bluepyopt</evo_strat>
   <f_tol>0.0001</f_tol>
   <feats>Spikecount, inv_first_ISI, inv_last_ISI, inv_time_to_first_spike, steady_state_voltage, voltage_base, voltage_deflection, voltage_deflection_begin, AHP_depth_abs, AHP_time_from_peak, AP2_amp, AP_amplitude, AP_begin_voltage, AP_duration_half_width, AP_fall_time, AP_rise_time, APlast_amp, time_to_last_spike, sag_amplitude</feats>
   <force_bounds>False</force_bounds>
   <inertia>0.5</inertia>
   <init_temp>0.1</init_temp>
   <input_cont_t>None</input_cont_t>
-  <input_dir>/home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3/opt_data_JMakara_OUR_features_selected_stim.json</input_dir>
+  <input_dir>/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/opt_data_JMakara_OUR_features_selected_stim.json</input_dir>
   <input_freq>None</input_freq>
   <input_length>None</input_length>
   <input_scale>mV</input_scale>
   <input_size>6</input_size>
   <m_gauss>0</m_gauss>
-  <max_evaluation>2.0</max_evaluation>
-  <model_path>/home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc</model_path>
-  <model_spec_dir>/home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3</model_spec_dir>
+  <max_evaluation>100.0</max_evaluation>
+  <model_path>/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc</model_path>
+  <model_spec_dir>/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3</model_spec_dir>
   <mutation_rate>0.25</mutation_rate>
   <neighborhood_size>5</neighborhood_size>
   <num_islands>1.0</num_islands>
@@ -31,15 +30,15 @@
   <num_repet>100</num_repet>
   <number_of_cpu>100</number_of_cpu>
   <param_vals>[0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]</param_vals>
-  <pop_size>10.0</pop_size>
+  <pop_size>100.0</pop_size>
   <run_controll_dt>0.05</run_controll_dt>
   <run_controll_pos>0.5</run_controll_pos>
   <run_controll_record>v</run_controll_record>
   <run_controll_sec>soma</run_controll_sec>
   <run_controll_tstop>600.0</run_controll_tstop>
   <run_controll_vrest>-65.0</run_controll_vrest>
-  <seed>1235.0</seed>
-  <sim_command>&quot;&quot;</sim_command>
+  <seed>1242.0</seed>
+  <sim_command>""</sim_command>
   <simulator>Neuron</simulator>
   <social_rate>2.1</social_rate>
   <spike_thres>0.0</spike_thres>

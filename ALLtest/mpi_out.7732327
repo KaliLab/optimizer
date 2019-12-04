@@ -1,0 +1,2377 @@
+ok
+ok1
+Wed Nov 13 16:41:25 CET 2019
+['/p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_DifferentialPygmo_3', ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/opt_data_JMakara_OUR_features_selected_stim.json', 6, 'mV', 'None', 'None', 'None', 'features'], ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], ['IClamp', 0.5, 'soma'], [[-0.25, 0.05, 0.1, 0.15, 0.2, 0.25], 200.0, 300.0], ['Na_BG_act_inact_shift 0', 'gmax_K_DRS4_params_voltage_dep_dend 1', 'gmax_Na_BG_soma 2', 'gmax_K_DRS4_params_voltage_dep_soma 3', 'gmax_K_DRS4_params_voltage_dep_axon 4', 'gmax_Leak_pyr 5', 'H_ratio 6', 'e_Leak_pyr 7', 'gbar_km_soma_dend 8', 'gbar_km_axon 9', 'KA_ratio 10', 'gbar_kd 11'], [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], [[{'Spike Detection Thres. (mv)': 0.0, 'Spike Window (ms)': 'None'}, ['Spikecount', 'inv_first_ISI', 'inv_last_ISI', 'inv_time_to_first_spike', 'steady_state_voltage', 'voltage_base', 'voltage_deflection', 'voltage_deflection_begin', 'AHP_depth_abs', 'AHP_time_from_peak', 'AP2_amp', 'AP_amplitude', 'AP_begin_voltage', 'AP_duration_half_width', 'AP_fall_time', 'AP_rise_time', 'APlast_amp', 'time_to_last_spike', 'sag_amplitude']], [0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842]], {'seed': 1237.0, 'evo_strat': 'Differential Evolution (DE) - Pygmo', 'Size of Population:': 10.0, 'Number of Islands:': 1.0, 'Number of Generations:': 2.0, 'Force bounds:': 'False', 'Mutation Rate:': 0.25, 'Crossover Rate:': 1, 'Cooling Rate:': 0.5, 'Mean of Gaussian:': 0, 'Std. Deviation of Gaussian:': 1, 'Initial Temperature:': 0.1, 'Step Size:': 0.1, 'Temperature:': 0.1, 'Update Frequency:': 50, 'Number of Iterations:': 100, 'Number of Repetition:': 100, 'Error Tolerance for x:': 0.0001, 'Error Tolerance for f:': 0.0001, 'num_params': 12, 'boundaries': [[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]], 'starting_points': 'None', 'Inertia:': 0.5, 'Cognitive Rate:': 2.1, 'Social Rate:': 2.1, 'Neighborhood Size:': 5, 'Number of CPU:': 100.0}]
+
+
+{'simulator': 'Neuron', 'model': ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], 'sim_command': '""'}
+*********** NEURON 7.6.5 LOADED ***********
+*********************Differential_Evolution_Pygmo
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+[[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]]
+no previous save found
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 1
+['/p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_DifferentialPygmo_2', ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/opt_data_JMakara_OUR_features_selected_stim.json', 6, 'mV', 'None', 'None', 'None', 'features'], ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], ['IClamp', 0.5, 'soma'], [[-0.25, 0.05, 0.1, 0.15, 0.2, 0.25], 200.0, 300.0], ['Na_BG_act_inact_shift 0', 'gmax_K_DRS4_params_voltage_dep_dend 1', 'gmax_Na_BG_soma 2', 'gmax_K_DRS4_params_voltage_dep_soma 3', 'gmax_K_DRS4_params_voltage_dep_axon 4', 'gmax_Leak_pyr 5', 'H_ratio 6', 'e_Leak_pyr 7', 'gbar_km_soma_dend 8', 'gbar_km_axon 9', 'KA_ratio 10', 'gbar_kd 11'], [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], [[{'Spike Detection Thres. (mv)': 0.0, 'Spike Window (ms)': 'None'}, ['Spikecount', 'inv_first_ISI', 'inv_last_ISI', 'inv_time_to_first_spike', 'steady_state_voltage', 'voltage_base', 'voltage_deflection', 'voltage_deflection_begin', 'AHP_depth_abs', 'AHP_time_from_peak', 'AP2_amp', 'AP_amplitude', 'AP_begin_voltage', 'AP_duration_half_width', 'AP_fall_time', 'AP_rise_time', 'APlast_amp', 'time_to_last_spike', 'sag_amplitude']], [0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842]], {'seed': 1236.0, 'evo_strat': 'Differential Evolution (DE) - Pygmo', 'Size of Population:': 10.0, 'Number of Islands:': 1.0, 'Number of Generations:': 2.0, 'Force bounds:': 'False', 'Mutation Rate:': 0.25, 'Crossover Rate:': 1, 'Cooling Rate:': 0.5, 'Mean of Gaussian:': 0, 'Std. Deviation of Gaussian:': 1, 'Initial Temperature:': 0.1, 'Step Size:': 0.1, 'Temperature:': 0.1, 'Update Frequency:': 50, 'Number of Iterations:': 100, 'Number of Repetition:': 100, 'Error Tolerance for x:': 0.0001, 'Error Tolerance for f:': 0.0001, 'num_params': 12, 'boundaries': [[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]], 'starting_points': 'None', 'Inertia:': 0.5, 'Cognitive Rate:': 2.1, 'Social Rate:': 2.1, 'Neighborhood Size:': 5, 'Number of CPU:': 100.0}]
+
+
+{'simulator': 'Neuron', 'model': ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], 'sim_command': '""'}
+*********** NEURON 7.6.5 LOADED ***********
+*********************Differential_Evolution_Pygmo
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+[[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]]
+no previous save found
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 1
+['/p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_DifferentialPygmo_2', ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/opt_data_JMakara_OUR_features_selected_stim.json', 6, 'mV', 'None', 'None', 'None', 'features'], ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], ['IClamp', 0.5, 'soma'], [[-0.25, 0.05, 0.1, 0.15, 0.2, 0.25], 200.0, 300.0], ['Na_BG_act_inact_shift 0', 'gmax_K_DRS4_params_voltage_dep_dend 1', 'gmax_Na_BG_soma 2', 'gmax_K_DRS4_params_voltage_dep_soma 3', 'gmax_K_DRS4_params_voltage_dep_axon 4', 'gmax_Leak_pyr 5', 'H_ratio 6', 'e_Leak_pyr 7', 'gbar_km_soma_dend 8', 'gbar_km_axon 9', 'KA_ratio 10', 'gbar_kd 11'], [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], [[{'Spike Detection Thres. (mv)': 0.0, 'Spike Window (ms)': 'None'}, ['Spikecount', 'inv_first_ISI', 'inv_last_ISI', 'inv_time_to_first_spike', 'steady_state_voltage', 'voltage_base', 'voltage_deflection', 'voltage_deflection_begin', 'AHP_depth_abs', 'AHP_time_from_peak', 'AP2_amp', 'AP_amplitude', 'AP_begin_voltage', 'AP_duration_half_width', 'AP_fall_time', 'AP_rise_time', 'APlast_amp', 'time_to_last_spike', 'sag_amplitude']], [0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842]], {'seed': 1236.0, 'evo_strat': 'Differential Evolution (DE) - Pygmo', 'Size of Population:': 10.0, 'Number of Islands:': 1.0, 'Number of Generations:': 2.0, 'Force bounds:': 'False', 'Mutation Rate:': 0.25, 'Crossover Rate:': 1, 'Cooling Rate:': 0.5, 'Mean of Gaussian:': 0, 'Std. Deviation of Gaussian:': 1, 'Initial Temperature:': 0.1, 'Step Size:': 0.1, 'Temperature:': 0.1, 'Update Frequency:': 50, 'Number of Iterations:': 100, 'Number of Repetition:': 100, 'Error Tolerance for x:': 0.0001, 'Error Tolerance for f:': 0.0001, 'num_params': 12, 'boundaries': [[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]], 'starting_points': 'None', 'Inertia:': 0.5, 'Cognitive Rate:': 2.1, 'Social Rate:': 2.1, 'Neighborhood Size:': 5, 'Number of CPU:': 100.0}]
+
+
+{'simulator': 'Neuron', 'model': ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], 'sim_command': '""'}
+*********** NEURON 7.6.5 LOADED ***********
+*********************Differential_Evolution_Pygmo
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+[[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]]
+no previous save found
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 1
+['/p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_DifferentialPygmo_3', ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/opt_data_JMakara_OUR_features_selected_stim.json', 6, 'mV', 'None', 'None', 'None', 'features'], ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], ['IClamp', 0.5, 'soma'], [[-0.25, 0.05, 0.1, 0.15, 0.2, 0.25], 200.0, 300.0], ['Na_BG_act_inact_shift 0', 'gmax_K_DRS4_params_voltage_dep_dend 1', 'gmax_Na_BG_soma 2', 'gmax_K_DRS4_params_voltage_dep_soma 3', 'gmax_K_DRS4_params_voltage_dep_axon 4', 'gmax_Leak_pyr 5', 'H_ratio 6', 'e_Leak_pyr 7', 'gbar_km_soma_dend 8', 'gbar_km_axon 9', 'KA_ratio 10', 'gbar_kd 11'], [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], [[{'Spike Detection Thres. (mv)': 0.0, 'Spike Window (ms)': 'None'}, ['Spikecount', 'inv_first_ISI', 'inv_last_ISI', 'inv_time_to_first_spike', 'steady_state_voltage', 'voltage_base', 'voltage_deflection', 'voltage_deflection_begin', 'AHP_depth_abs', 'AHP_time_from_peak', 'AP2_amp', 'AP_amplitude', 'AP_begin_voltage', 'AP_duration_half_width', 'AP_fall_time', 'AP_rise_time', 'APlast_amp', 'time_to_last_spike', 'sag_amplitude']], [0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842]], {'seed': 1237.0, 'evo_strat': 'Differential Evolution (DE) - Pygmo', 'Size of Population:': 10.0, 'Number of Islands:': 1.0, 'Number of Generations:': 2.0, 'Force bounds:': 'False', 'Mutation Rate:': 0.25, 'Crossover Rate:': 1, 'Cooling Rate:': 0.5, 'Mean of Gaussian:': 0, 'Std. Deviation of Gaussian:': 1, 'Initial Temperature:': 0.1, 'Step Size:': 0.1, 'Temperature:': 0.1, 'Update Frequency:': 50, 'Number of Iterations:': 100, 'Number of Repetition:': 100, 'Error Tolerance for x:': 0.0001, 'Error Tolerance for f:': 0.0001, 'num_params': 12, 'boundaries': [[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]], 'starting_points': 'None', 'Inertia:': 0.5, 'Cognitive Rate:': 2.1, 'Social Rate:': 2.1, 'Neighborhood Size:': 5, 'Number of CPU:': 100.0}]
+
+
+{'simulator': 'Neuron', 'model': ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], 'sim_command': '""'}
+*********** NEURON 7.6.5 LOADED ***********
+*********************Differential_Evolution_Pygmo
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+[[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]]
+no previous save found
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 1
+['/p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_DifferentialPygmo_2', ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/opt_data_JMakara_OUR_features_selected_stim.json', 6, 'mV', 'None', 'None', 'None', 'features'], ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], ['IClamp', 0.5, 'soma'], [[-0.25, 0.05, 0.1, 0.15, 0.2, 0.25], 200.0, 300.0], ['Na_BG_act_inact_shift 0', 'gmax_K_DRS4_params_voltage_dep_dend 1', 'gmax_Na_BG_soma 2', 'gmax_K_DRS4_params_voltage_dep_soma 3', 'gmax_K_DRS4_params_voltage_dep_axon 4', 'gmax_Leak_pyr 5', 'H_ratio 6', 'e_Leak_pyr 7', 'gbar_km_soma_dend 8', 'gbar_km_axon 9', 'KA_ratio 10', 'gbar_kd 11'], [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], [[{'Spike Detection Thres. (mv)': 0.0, 'Spike Window (ms)': 'None'}, ['Spikecount', 'inv_first_ISI', 'inv_last_ISI', 'inv_time_to_first_spike', 'steady_state_voltage', 'voltage_base', 'voltage_deflection', 'voltage_deflection_begin', 'AHP_depth_abs', 'AHP_time_from_peak', 'AP2_amp', 'AP_amplitude', 'AP_begin_voltage', 'AP_duration_half_width', 'AP_fall_time', 'AP_rise_time', 'APlast_amp', 'time_to_last_spike', 'sag_amplitude']], [0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842]], {'seed': 1236.0, 'evo_strat': 'Differential Evolution (DE) - Pygmo', 'Size of Population:': 10.0, 'Number of Islands:': 1.0, 'Number of Generations:': 2.0, 'Force bounds:': 'False', 'Mutation Rate:': 0.25, 'Crossover Rate:': 1, 'Cooling Rate:': 0.5, 'Mean of Gaussian:': 0, 'Std. Deviation of Gaussian:': 1, 'Initial Temperature:': 0.1, 'Step Size:': 0.1, 'Temperature:': 0.1, 'Update Frequency:': 50, 'Number of Iterations:': 100, 'Number of Repetition:': 100, 'Error Tolerance for x:': 0.0001, 'Error Tolerance for f:': 0.0001, 'num_params': 12, 'boundaries': [[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]], 'starting_points': 'None', 'Inertia:': 0.5, 'Cognitive Rate:': 2.1, 'Social Rate:': 2.1, 'Neighborhood Size:': 5, 'Number of CPU:': 100.0}]
+
+
+{'simulator': 'Neuron', 'model': ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], 'sim_command': '""'}
+*********** NEURON 7.6.5 LOADED ***********
+*********************Differential_Evolution_Pygmo
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+[[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]]
+no previous save found
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 1
+['/p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_DifferentialPygmo_3', ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/opt_data_JMakara_OUR_features_selected_stim.json', 6, 'mV', 'None', 'None', 'None', 'features'], ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], ['IClamp', 0.5, 'soma'], [[-0.25, 0.05, 0.1, 0.15, 0.2, 0.25], 200.0, 300.0], ['Na_BG_act_inact_shift 0', 'gmax_K_DRS4_params_voltage_dep_dend 1', 'gmax_Na_BG_soma 2', 'gmax_K_DRS4_params_voltage_dep_soma 3', 'gmax_K_DRS4_params_voltage_dep_axon 4', 'gmax_Leak_pyr 5', 'H_ratio 6', 'e_Leak_pyr 7', 'gbar_km_soma_dend 8', 'gbar_km_axon 9', 'KA_ratio 10', 'gbar_kd 11'], [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], [[{'Spike Detection Thres. (mv)': 0.0, 'Spike Window (ms)': 'None'}, ['Spikecount', 'inv_first_ISI', 'inv_last_ISI', 'inv_time_to_first_spike', 'steady_state_voltage', 'voltage_base', 'voltage_deflection', 'voltage_deflection_begin', 'AHP_depth_abs', 'AHP_time_from_peak', 'AP2_amp', 'AP_amplitude', 'AP_begin_voltage', 'AP_duration_half_width', 'AP_fall_time', 'AP_rise_time', 'APlast_amp', 'time_to_last_spike', 'sag_amplitude']], [0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842]], {'seed': 1237.0, 'evo_strat': 'Differential Evolution (DE) - Pygmo', 'Size of Population:': 10.0, 'Number of Islands:': 1.0, 'Number of Generations:': 2.0, 'Force bounds:': 'False', 'Mutation Rate:': 0.25, 'Crossover Rate:': 1, 'Cooling Rate:': 0.5, 'Mean of Gaussian:': 0, 'Std. Deviation of Gaussian:': 1, 'Initial Temperature:': 0.1, 'Step Size:': 0.1, 'Temperature:': 0.1, 'Update Frequency:': 50, 'Number of Iterations:': 100, 'Number of Repetition:': 100, 'Error Tolerance for x:': 0.0001, 'Error Tolerance for f:': 0.0001, 'num_params': 12, 'boundaries': [[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]], 'starting_points': 'None', 'Inertia:': 0.5, 'Cognitive Rate:': 2.1, 'Social Rate:': 2.1, 'Neighborhood Size:': 5, 'Number of CPU:': 100.0}]
+
+
+{'simulator': 'Neuron', 'model': ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], 'sim_command': '""'}
+*********** NEURON 7.6.5 LOADED ***********
+*********************Differential_Evolution_Pygmo
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+[[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]]
+no previous save found
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 1
+['/p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_DifferentialPygmo_1', ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/opt_data_JMakara_OUR_features_selected_stim.json', 6, 'mV', 'None', 'None', 'None', 'features'], ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], ['IClamp', 0.5, 'soma'], [[-0.25, 0.05, 0.1, 0.15, 0.2, 0.25], 200.0, 300.0], ['Na_BG_act_inact_shift 0', 'gmax_K_DRS4_params_voltage_dep_dend 1', 'gmax_Na_BG_soma 2', 'gmax_K_DRS4_params_voltage_dep_soma 3', 'gmax_K_DRS4_params_voltage_dep_axon 4', 'gmax_Leak_pyr 5', 'H_ratio 6', 'e_Leak_pyr 7', 'gbar_km_soma_dend 8', 'gbar_km_axon 9', 'KA_ratio 10', 'gbar_kd 11'], [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], [[{'Spike Detection Thres. (mv)': 0.0, 'Spike Window (ms)': 'None'}, ['Spikecount', 'inv_first_ISI', 'inv_last_ISI', 'inv_time_to_first_spike', 'steady_state_voltage', 'voltage_base', 'voltage_deflection', 'voltage_deflection_begin', 'AHP_depth_abs', 'AHP_time_from_peak', 'AP2_amp', 'AP_amplitude', 'AP_begin_voltage', 'AP_duration_half_width', 'AP_fall_time', 'AP_rise_time', 'APlast_amp', 'time_to_last_spike', 'sag_amplitude']], [0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842]], {'seed': 1235.0, 'evo_strat': 'Differential Evolution (DE) - Pygmo', 'Size of Population:': 10.0, 'Number of Islands:': 1.0, 'Number of Generations:': 2.0, 'Force bounds:': 'False', 'Mutation Rate:': 0.25, 'Crossover Rate:': 1, 'Cooling Rate:': 0.5, 'Mean of Gaussian:': 0, 'Std. Deviation of Gaussian:': 1, 'Initial Temperature:': 0.1, 'Step Size:': 0.1, 'Temperature:': 0.1, 'Update Frequency:': 50, 'Number of Iterations:': 100, 'Number of Repetition:': 100, 'Error Tolerance for x:': 0.0001, 'Error Tolerance for f:': 0.0001, 'num_params': 12, 'boundaries': [[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]], 'starting_points': 'None', 'Inertia:': 0.5, 'Cognitive Rate:': 2.1, 'Social Rate:': 2.1, 'Neighborhood Size:': 5, 'Number of CPU:': 100.0}]
+
+
+{'simulator': 'Neuron', 'model': ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], 'sim_command': '""'}
+*********** NEURON 7.6.5 LOADED ***********
+*********************Differential_Evolution_Pygmo
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+[[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]]
+no previous save found
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 1
+['/p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_DifferentialPygmo_1', ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/opt_data_JMakara_OUR_features_selected_stim.json', 6, 'mV', 'None', 'None', 'None', 'features'], ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], ['IClamp', 0.5, 'soma'], [[-0.25, 0.05, 0.1, 0.15, 0.2, 0.25], 200.0, 300.0], ['Na_BG_act_inact_shift 0', 'gmax_K_DRS4_params_voltage_dep_dend 1', 'gmax_Na_BG_soma 2', 'gmax_K_DRS4_params_voltage_dep_soma 3', 'gmax_K_DRS4_params_voltage_dep_axon 4', 'gmax_Leak_pyr 5', 'H_ratio 6', 'e_Leak_pyr 7', 'gbar_km_soma_dend 8', 'gbar_km_axon 9', 'KA_ratio 10', 'gbar_kd 11'], [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], [[{'Spike Detection Thres. (mv)': 0.0, 'Spike Window (ms)': 'None'}, ['Spikecount', 'inv_first_ISI', 'inv_last_ISI', 'inv_time_to_first_spike', 'steady_state_voltage', 'voltage_base', 'voltage_deflection', 'voltage_deflection_begin', 'AHP_depth_abs', 'AHP_time_from_peak', 'AP2_amp', 'AP_amplitude', 'AP_begin_voltage', 'AP_duration_half_width', 'AP_fall_time', 'AP_rise_time', 'APlast_amp', 'time_to_last_spike', 'sag_amplitude']], [0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842]], {'seed': 1235.0, 'evo_strat': 'Differential Evolution (DE) - Pygmo', 'Size of Population:': 10.0, 'Number of Islands:': 1.0, 'Number of Generations:': 2.0, 'Force bounds:': 'False', 'Mutation Rate:': 0.25, 'Crossover Rate:': 1, 'Cooling Rate:': 0.5, 'Mean of Gaussian:': 0, 'Std. Deviation of Gaussian:': 1, 'Initial Temperature:': 0.1, 'Step Size:': 0.1, 'Temperature:': 0.1, 'Update Frequency:': 50, 'Number of Iterations:': 100, 'Number of Repetition:': 100, 'Error Tolerance for x:': 0.0001, 'Error Tolerance for f:': 0.0001, 'num_params': 12, 'boundaries': [[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]], 'starting_points': 'None', 'Inertia:': 0.5, 'Cognitive Rate:': 2.1, 'Social Rate:': 2.1, 'Neighborhood Size:': 5, 'Number of CPU:': 100.0}]
+
+
+{'simulator': 'Neuron', 'model': ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], 'sim_command': '""'}
+*********** NEURON 7.6.5 LOADED ***********
+*********************Differential_Evolution_Pygmo
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+[[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]]
+no previous save found
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 1
+['/p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_DifferentialPygmo_1', ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/opt_data_JMakara_OUR_features_selected_stim.json', 6, 'mV', 'None', 'None', 'None', 'features'], ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], ['IClamp', 0.5, 'soma'], [[-0.25, 0.05, 0.1, 0.15, 0.2, 0.25], 200.0, 300.0], ['Na_BG_act_inact_shift 0', 'gmax_K_DRS4_params_voltage_dep_dend 1', 'gmax_Na_BG_soma 2', 'gmax_K_DRS4_params_voltage_dep_soma 3', 'gmax_K_DRS4_params_voltage_dep_axon 4', 'gmax_Leak_pyr 5', 'H_ratio 6', 'e_Leak_pyr 7', 'gbar_km_soma_dend 8', 'gbar_km_axon 9', 'KA_ratio 10', 'gbar_kd 11'], [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1], [[{'Spike Detection Thres. (mv)': 0.0, 'Spike Window (ms)': 'None'}, ['Spikecount', 'inv_first_ISI', 'inv_last_ISI', 'inv_time_to_first_spike', 'steady_state_voltage', 'voltage_base', 'voltage_deflection', 'voltage_deflection_begin', 'AHP_depth_abs', 'AHP_time_from_peak', 'AP2_amp', 'AP_amplitude', 'AP_begin_voltage', 'AP_duration_half_width', 'AP_fall_time', 'AP_rise_time', 'APlast_amp', 'time_to_last_spike', 'sag_amplitude']], [0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842]], {'seed': 1235.0, 'evo_strat': 'Differential Evolution (DE) - Pygmo', 'Size of Population:': 10.0, 'Number of Islands:': 1.0, 'Number of Generations:': 2.0, 'Force bounds:': 'False', 'Mutation Rate:': 0.25, 'Crossover Rate:': 1, 'Cooling Rate:': 0.5, 'Mean of Gaussian:': 0, 'Std. Deviation of Gaussian:': 1, 'Initial Temperature:': 0.1, 'Step Size:': 0.1, 'Temperature:': 0.1, 'Update Frequency:': 50, 'Number of Iterations:': 100, 'Number of Repetition:': 100, 'Error Tolerance for x:': 0.0001, 'Error Tolerance for f:': 0.0001, 'num_params': 12, 'boundaries': [[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]], 'starting_points': 'None', 'Inertia:': 0.5, 'Cognitive Rate:': 2.1, 'Social Rate:': 2.1, 'Neighborhood Size:': 5, 'Number of CPU:': 100.0}]
+
+
+{'simulator': 'Neuron', 'model': ['/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc', '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3'], 'sim_command': '""'}
+*********** NEURON 7.6.5 LOADED ***********
+*********************Differential_Evolution_Pygmo
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+[[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]]
+no previous save found
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 1
+2
+Number of islands: 1
+Status: idle
+
+Islands summaries:
+
+	#  Type                    Algo                        Prob                                Size  Status  
+	---------------------------------------------------------------------------------------------------------
+	0  Multiprocessing island  DE: Differential Evolution  <class 'optimizerHandler.Problem'>  10    idle    
+
+[array([ 1.33783756e+01,  1.10228580e-01,  8.92717280e-02,  8.36899324e-02,
+        7.47257133e+00,  9.95018758e-05,  9.74623596e+00, -4.51158326e+01,
+        2.50190147e-04,  7.98151770e-01,  2.47840163e+00,  5.65889141e-03])]
+[array([366.38902635])]
+([array([0.83783756, 0.52751884, 0.89052784, 0.15038762, 0.74700414,
+       0.99446529, 0.64739839, 0.82947225, 0.02011961, 0.15961355,
+       0.80681542, 0.5654546 ])], 'CANDS')
+([array([366.38902635])], 'FITS')
+('Optimization lasted for ', 11410.163089036942, ' s')
+[array([0.83783756, 0.52751884, 0.89052784, 0.15038762, 0.74700414,
+       0.99446529, 0.64739839, 0.82947225, 0.02011961, 0.15961355,
+       0.80681542, 0.5654546 ])]
+([13.378375563976402, 0.11022857956068821, 0.08927172802685697, 0.0836899323568471, 7.472571326283774, 9.950187576079381e-05, 9.746235962541212, -45.11583263082392, 0.00025019014655390726, 0.798151769965644, 2.4784016338708104, 0.00565889140943536], 'fitness: ', array([366.38902635]))
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+resulting parameters:  [13.378375563976402, 0.11022857956068821, 0.08927172802685697, 0.0836899323568471, 7.472571326283774, 9.950187576079381e-05, 9.746235962541212, -45.11583263082392, 0.00025019014655390726, 0.798151769965644, 2.4784016338708104, 0.00565889140943536]
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 2
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 3
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 4
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 5
+2
+Number of islands: 1
+Status: idle
+
+Islands summaries:
+
+	#  Type                    Algo                        Prob                                Size  Status  
+	---------------------------------------------------------------------------------------------------------
+	0  Multiprocessing island  DE: Differential Evolution  <class 'optimizerHandler.Problem'>  10    idle    
+
+[array([ 8.68503812e+00,  1.92406982e-01,  1.24280984e-02,  1.67674492e-01,
+        8.33019832e+00,  8.31261765e-05,  3.87295988e+00, -4.17463208e+01,
+        3.61411924e-03,  1.05561671e-01,  2.22069141e+00,  1.70907457e-03])]
+[array([366.99098242])]
+([array([0.36850381, 0.96003675, 0.10640917, 0.32178468, 0.83285268,
+       0.81251307, 0.25321878, 0.94178931, 0.35820294, 0.02109276,
+       0.71136719, 0.17007753])], 'CANDS')
+([array([366.99098242])], 'FITS')
+('Optimization lasted for ', 11812.470997810364, ' s')
+[array([0.36850381, 0.96003675, 0.10640917, 0.32178468, 0.83285268,
+       0.81251307, 0.25321878, 0.94178931, 0.35820294, 0.02109276,
+       0.71136719, 0.17007753])]
+([8.685038115487368, 0.19240698246153387, 0.012428098377870934, 0.16767449213173652, 8.330198319616086, 8.312617649046054e-05, 3.872959880498247, -41.74632077724362, 0.0036141192415050432, 0.10556167052669747, 2.220691408768343, 0.001709074569629741], 'fitness: ', array([366.99098242]))
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+resulting parameters:  [8.685038115487368, 0.19240698246153387, 0.012428098377870934, 0.16767449213173652, 8.330198319616086, 8.312617649046054e-05, 3.872959880498247, -41.74632077724362, 0.0036141192415050432, 0.10556167052669747, 2.220691408768343, 0.001709074569629741]
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 2
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 3
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 4
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 5
+2
+Number of islands: 1
+Status: idle
+
+Islands summaries:
+
+	#  Type                    Algo                        Prob                                Size  Status  
+	---------------------------------------------------------------------------------------------------------
+	0  Multiprocessing island  DE: Differential Evolution  <class 'optimizerHandler.Problem'>  10    idle    
+
+[array([ 1.33783756e+01,  1.10228580e-01,  8.92717280e-02,  8.36899324e-02,
+        7.47257133e+00,  9.95018758e-05,  9.74623596e+00, -4.51158326e+01,
+        2.50190147e-04,  7.98151770e-01,  2.47840163e+00,  5.65889141e-03])]
+[array([366.38902635])]
+([array([0.83783756, 0.52751884, 0.89052784, 0.15038762, 0.74700414,
+       0.99446529, 0.64739839, 0.82947225, 0.02011961, 0.15961355,
+       0.80681542, 0.5654546 ])], 'CANDS')
+([array([366.38902635])], 'FITS')
+('Optimization lasted for ', 11850.317492723465, ' s')
+[array([0.83783756, 0.52751884, 0.89052784, 0.15038762, 0.74700414,
+       0.99446529, 0.64739839, 0.82947225, 0.02011961, 0.15961355,
+       0.80681542, 0.5654546 ])]
+([13.378375563976402, 0.11022857956068821, 0.08927172802685697, 0.0836899323568471, 7.472571326283774, 9.950187576079381e-05, 9.746235962541212, -45.11583263082392, 0.00025019014655390726, 0.798151769965644, 2.4784016338708104, 0.00565889140943536], 'fitness: ', array([366.38902635]))
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+resulting parameters:  [13.378375563976402, 0.11022857956068821, 0.08927172802685697, 0.0836899323568471, 7.472571326283774, 9.950187576079381e-05, 9.746235962541212, -45.11583263082392, 0.00025019014655390726, 0.798151769965644, 2.4784016338708104, 0.00565889140943536]
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 2
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 3
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 4
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 5
+2
+Number of islands: 1
+Status: idle
+
+Islands summaries:
+
+	#  Type                    Algo                        Prob                                Size  Status  
+	---------------------------------------------------------------------------------------------------------
+	0  Multiprocessing island  DE: Differential Evolution  <class 'optimizerHandler.Problem'>  10    idle    
+
+[array([ 1.03209125e+01,  7.65253005e-02,  9.46178083e-02,  2.63167883e-01,
+        1.07469550e+00,  8.06725707e-05,  7.95287009e+00, -4.58395996e+01,
+        2.38647323e-03,  4.29628452e-01,  2.55076861e+00,  5.09986090e-03])]
+[array([368.16582663])]
+([array([0.53209125, 0.35013316, 0.94507968, 0.51666915, 0.10657613,
+       0.78525079, 0.52703826, 0.80534668, 0.23482143, 0.08590741,
+       0.833618  , 0.50949559])], 'CANDS')
+([array([368.16582663])], 'FITS')
+('Optimization lasted for ', 11859.74762582779, ' s')
+[array([0.53209125, 0.35013316, 0.94507968, 0.51666915, 0.10657613,
+       0.78525079, 0.52703826, 0.80534668, 0.23482143, 0.08590741,
+       0.833618  , 0.50949559])]
+([10.320912548163289, 0.07652530049033432, 0.09461780825633724, 0.2631678830412799, 1.0746954997823892, 8.067257066944768e-05, 7.952870085286231, -45.83959963685268, 0.0023864732324130164, 0.42962845206846434, 2.550768608429146, 0.0050998609008061965], 'fitness: ', array([368.16582663]))
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+resulting parameters:  [10.320912548163289, 0.07652530049033432, 0.09461780825633724, 0.2631678830412799, 1.0746954997823892, 8.067257066944768e-05, 7.952870085286231, -45.83959963685268, 0.0023864732324130164, 0.42962845206846434, 2.550768608429146, 0.0050998609008061965]
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 2
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 3
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 4
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 5
+2
+Number of islands: 1
+Status: idle
+
+Islands summaries:
+
+	#  Type                    Algo                        Prob                                Size  Status  
+	---------------------------------------------------------------------------------------------------------
+	0  Multiprocessing island  DE: Differential Evolution  <class 'optimizerHandler.Problem'>  10    idle    
+
+[array([ 1.03209125e+01,  7.65253005e-02,  9.46178083e-02,  2.63167883e-01,
+        1.07469550e+00,  8.06725707e-05,  7.95287009e+00, -4.58395996e+01,
+        2.38647323e-03,  4.29628452e-01,  2.55076861e+00,  5.09986090e-03])]
+[array([368.16582663])]
+([array([0.53209125, 0.35013316, 0.94507968, 0.51666915, 0.10657613,
+       0.78525079, 0.52703826, 0.80534668, 0.23482143, 0.08590741,
+       0.833618  , 0.50949559])], 'CANDS')
+([array([368.16582663])], 'FITS')
+('Optimization lasted for ', 11883.16526556015, ' s')
+[array([0.53209125, 0.35013316, 0.94507968, 0.51666915, 0.10657613,
+       0.78525079, 0.52703826, 0.80534668, 0.23482143, 0.08590741,
+       0.833618  , 0.50949559])]
+([10.320912548163289, 0.07652530049033432, 0.09461780825633724, 0.2631678830412799, 1.0746954997823892, 8.067257066944768e-05, 7.952870085286231, -45.83959963685268, 0.0023864732324130164, 0.42962845206846434, 2.550768608429146, 0.0050998609008061965], 'fitness: ', array([368.16582663]))
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+resulting parameters:  [10.320912548163289, 0.07652530049033432, 0.09461780825633724, 0.2631678830412799, 1.0746954997823892, 8.067257066944768e-05, 7.952870085286231, -45.83959963685268, 0.0023864732324130164, 0.42962845206846434, 2.550768608429146, 0.0050998609008061965]
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 2
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 3
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 4
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 5
+2
+Number of islands: 1
+Status: idle
+
+Islands summaries:
+
+	#  Type                    Algo                        Prob                                Size  Status  
+	---------------------------------------------------------------------------------------------------------
+	0  Multiprocessing island  DE: Differential Evolution  <class 'optimizerHandler.Problem'>  10    idle    
+
+[array([ 8.68503812e+00,  1.92406982e-01,  1.24280984e-02,  1.67674492e-01,
+        8.33019832e+00,  8.31261765e-05,  3.87295988e+00, -4.17463208e+01,
+        3.61411924e-03,  1.05561671e-01,  2.22069141e+00,  1.70907457e-03])]
+[array([366.99098242])]
+([array([0.36850381, 0.96003675, 0.10640917, 0.32178468, 0.83285268,
+       0.81251307, 0.25321878, 0.94178931, 0.35820294, 0.02109276,
+       0.71136719, 0.17007753])], 'CANDS')
+([array([366.99098242])], 'FITS')
+('Optimization lasted for ', 11995.308477401733, ' s')
+[array([0.36850381, 0.96003675, 0.10640917, 0.32178468, 0.83285268,
+       0.81251307, 0.25321878, 0.94178931, 0.35820294, 0.02109276,
+       0.71136719, 0.17007753])]
+([8.685038115487368, 0.19240698246153387, 0.012428098377870934, 0.16767449213173652, 8.330198319616086, 8.312617649046054e-05, 3.872959880498247, -41.74632077724362, 0.0036141192415050432, 0.10556167052669747, 2.220691408768343, 0.001709074569629741], 'fitness: ', array([366.99098242]))
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+resulting parameters:  [8.685038115487368, 0.19240698246153387, 0.012428098377870934, 0.16767449213173652, 8.330198319616086, 8.312617649046054e-05, 3.872959880498247, -41.74632077724362, 0.0036141192415050432, 0.10556167052669747, 2.220691408768343, 0.001709074569629741]
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 2
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 3
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 4
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 5
+2
+Number of islands: 1
+Status: idle
+
+Islands summaries:
+
+	#  Type                    Algo                        Prob                                Size  Status  
+	---------------------------------------------------------------------------------------------------------
+	0  Multiprocessing island  DE: Differential Evolution  <class 'optimizerHandler.Problem'>  10    idle    
+
+[array([ 8.68503812e+00,  1.92406982e-01,  1.24280984e-02,  1.67674492e-01,
+        8.33019832e+00,  8.31261765e-05,  3.87295988e+00, -4.17463208e+01,
+        3.61411924e-03,  1.05561671e-01,  2.22069141e+00,  1.70907457e-03])]
+[array([366.99098242])]
+([array([0.36850381, 0.96003675, 0.10640917, 0.32178468, 0.83285268,
+       0.81251307, 0.25321878, 0.94178931, 0.35820294, 0.02109276,
+       0.71136719, 0.17007753])], 'CANDS')
+([array([366.99098242])], 'FITS')
+('Optimization lasted for ', 12598.274050712585, ' s')
+[array([0.36850381, 0.96003675, 0.10640917, 0.32178468, 0.83285268,
+       0.81251307, 0.25321878, 0.94178931, 0.35820294, 0.02109276,
+       0.71136719, 0.17007753])]
+([8.685038115487368, 0.19240698246153387, 0.012428098377870934, 0.16767449213173652, 8.330198319616086, 8.312617649046054e-05, 3.872959880498247, -41.74632077724362, 0.0036141192415050432, 0.10556167052669747, 2.220691408768343, 0.001709074569629741], 'fitness: ', array([366.99098242]))
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+resulting parameters:  [8.685038115487368, 0.19240698246153387, 0.012428098377870934, 0.16767449213173652, 8.330198319616086, 8.312617649046054e-05, 3.872959880498247, -41.74632077724362, 0.0036141192415050432, 0.10556167052669747, 2.220691408768343, 0.001709074569629741]
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 2
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 3
+	0 
+	1 
+	1 
+	1 
+	1 
+axon[4] { nseg=1  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert morphology { diam=500}
+	insert capacitance { cm=1}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+axon[4] { nseg=7  L=222.548  Ra=35.4
+	axon[0] connect axon[4] (0), 1
+	/* First segment only */
+	insert capacitance { cm=1}
+	insert morphology { diam=500}
+}
+	1 
+	1 
+	1 
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 4
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+*********** NEURON 7.6.5 LOADED ***********
+Mechanisms already loaded from path: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3.  Aborting.
+PYGMO FITNES
+Generation: 5
+Wed Nov 13 20:15:26 CET 2019

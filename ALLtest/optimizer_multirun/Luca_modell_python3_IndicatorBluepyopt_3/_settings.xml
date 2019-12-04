@@ -1,7 +1,7 @@
 <settings>
   <acc>1e-06</acc>
   <adjusted_params>['Na_BG_act_inact_shift 0', 'gmax_K_DRS4_params_voltage_dep_dend 1', 'gmax_Na_BG_soma 2', 'gmax_K_DRS4_params_voltage_dep_soma 3', 'gmax_K_DRS4_params_voltage_dep_axon 4', 'gmax_Leak_pyr 5', 'H_ratio 6', 'e_Leak_pyr 7', 'gbar_km_soma_dend 8', 'gbar_km_axon 9', 'KA_ratio 10', 'gbar_kd 11']</adjusted_params>
-  <base_dir>/home/mohacsi/Desktop/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_IndicatorBluepyopt_3</base_dir>
+  <base_dir>/p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_IndicatorBluepyopt_3</base_dir>
   <boundaries>[[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]]</boundaries>
   <cognitive_rate>2.1</cognitive_rate>
   <cooling_rate>0.5</cooling_rate>
@@ -19,7 +19,7 @@
   <input_scale>mV</input_scale>
   <input_size>6</input_size>
   <m_gauss>0</m_gauss>
-  <max_evaluation>2.0</max_evaluation>
+  <max_evaluation>100.0</max_evaluation>
   <model_path>/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc</model_path>
   <model_spec_dir>/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/Luca_modell_python3</model_spec_dir>
   <mutation_rate>0.25</mutation_rate>
@@ -30,7 +30,7 @@
   <num_repet>100</num_repet>
   <number_of_cpu>100</number_of_cpu>
   <param_vals>[0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]</param_vals>
-  <pop_size>10.0</pop_size>
+  <pop_size>100.0</pop_size>
   <run_controll_dt>0.05</run_controll_dt>
   <run_controll_pos>0.5</run_controll_pos>
   <run_controll_record>v</run_controll_record>
