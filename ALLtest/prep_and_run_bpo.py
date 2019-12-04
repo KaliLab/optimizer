@@ -112,6 +112,7 @@ module load GCC/8.3.0
 module load ParaStationMPI/5.2.2-1
 module load NEURON/7.6.5-Python-3.6.8
 module load SciPy-Stack/2019a-Python-3.6.8
+module load Jupyter/2019a-Python-3.6.8
 
 export PYTHONPATH=/p/home/jusers/mohacsi1/jureca/.local/lib/python3.6/site-packages:$PYTHONPATH \n"""]
 	algos = ["Nondominated Sorted (NSGAII) - Bluepyopt","Indicator Based (IBEA) - Bluepyopt"]

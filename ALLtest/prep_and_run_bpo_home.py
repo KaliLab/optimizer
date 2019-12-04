@@ -9,7 +9,7 @@ curr_dir  		= os.getcwd()						# base directory
 orig_name 		= 'Luca_modell_python3'						# name of the working directory we want to copy
 orig_dir  		= curr_dir + '/'+ 'optimizer_multirun/' + orig_name		# path of this directory
 num_runs  		= 5						# how many copies we want
-parallel_runs   = 5								# how many optimizations we allow to run in parallel
+parallel_runs   = 2								# how many optimizations we allow to run in parallel
 
 # define basic things for the xml files
 rnd_start  = 1234							# random seed in the first run
