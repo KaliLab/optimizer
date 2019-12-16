@@ -9,7 +9,7 @@ curr_dir  		= os.getcwd()						# base directory
 orig_name 		= 'Luca_modell_python3'						# name of the working directory we want to copy
 orig_dir  		= curr_dir + '/'+ 'optimizer_multirun/' + orig_name		# path of this directory
 num_runs  		= 10						# how many copies we want
-parallel_runs   = 1								# how many optimizations we allow to run in parallel
+parallel_runs   = 10								# how many optimizations we allow to run in parallel
 
 # define basic things for the xml files
 rnd_start  = 1234							# random seed in the first run
@@ -89,12 +89,12 @@ def GenerateCommands(evo_name):
 def CreateBashScript():
 	# write the commands into a file
 	commands = ["""#!/bin/bash -x  \n
-#SBATCH --nodes=1  \n
+#SBATCH --nodes=20  \n
 #SBATCH --ntasks=1  \n 
 #SBATCH --ntasks-per-node=1  \n
 #SBATCH --cpus-per-task=48 \n
 #SBATCH --job-name=optimizer  \n
-#SBATCH --time=0-24:00:00 \n
+#SBATCH --time=0-6:00:00 \n
 #SBATCH --error=mpi_err.%j \n
 #SBATCH --output=mpi_out.%j \n
 #SBATCH --account=vsk25 \n
@@ -115,7 +115,7 @@ module load SciPy-Stack/2019a-Python-3.6.8
 module load Jupyter/2019a-Python-3.6.8
 
 export PYTHONPATH=/p/home/jusers/mohacsi1/jureca/.local/lib/python3.6/site-packages:$PYTHONPATH \n"""]
-	algos = ["Indicator Based (IBEA) - Bluepyopt"]
+	algos = ["Nondominated Sorted (NSGAII) - Bluepyopt","Indicator Based (IBEA) - Bluepyopt"]
 	command=[]
 	for evo_strat in algos:
 		evo_name='_'+str.split(evo_strat," ")[0]+str.split(evo_strat," ")[-1]
@@ -133,7 +133,7 @@ def RunOptim():
 
 
 def main():
-	algos = ["Indicator Based (IBEA) - Bluepyopt"]
+	algos = ["Nondominated Sorted (NSGAII) - Bluepyopt","Indicator Based (IBEA) - Bluepyopt"]
 	for evo_strat in algos:
 		evo_name='_'+str.split(evo_strat," ")[0]+str.split(evo_strat," ")[-1]
 		print(evo_name)
