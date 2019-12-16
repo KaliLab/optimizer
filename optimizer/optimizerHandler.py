@@ -1302,6 +1302,7 @@ class Indicator_Based_Bluepyopt(oldBaseOptimizer):
 		self.SetFFun(option_obj)
 		self.option_obj=option_obj
 		self.seed=option_obj.seed
+		self.directory = str(option_obj.base_dir)
 		self.pop_size=option_obj.pop_size
 		self.max_evaluation=option_obj.max_evaluation
 		self.num_params=option_obj.num_params
@@ -1324,14 +1325,14 @@ class Indicator_Based_Bluepyopt(oldBaseOptimizer):
 		#try:
 		from ipyparallel import Client
 		print("******************PARALLEL RUN : IBEA *******************")
-		os.system("ipcluster start -n "+str(int(self.number_of_cpu))+" &")
+		os.system("ipcluster start -n "+str(int(self.number_of_cpu))+" --profile-dir="+self.directory+" &")
 		time.sleep(60)
 		c = Client(profile=os.getenv('IPYTHON_PROFILE'),timeout=60)
 		view = c.load_balanced_view()
 		view.map_sync(os.chdir, [str(os.path.dirname(os.path.realpath(__file__)))]*int(self.number_of_cpu))
 		map_function=view.map_sync
 		optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(self.params,self.deapfun,self.feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),map_function=map_function,selector_name='IBEA')
-		self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation),cp_filename = 'checkpoint.pkl',cp_frequency=int(self.max_evaluation))
+		self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation),cp_frequency=int(self.max_evaluation))
 		os.system("ipcluster stop")
 		#except Exception:
 		"""os.system("ipcluster stop")
@@ -1379,6 +1380,7 @@ class Nondominated_Sorted_Bluepyopt(oldBaseOptimizer):
 		self.SetFFun(option_obj)
 		self.option_obj=option_obj
 		self.seed=option_obj.seed
+		self.directory = str(option_obj.base_dir)
 		self.pop_size=option_obj.pop_size
 		self.max_evaluation=option_obj.max_evaluation
 		self.num_params=option_obj.num_params
@@ -1400,7 +1402,7 @@ class Nondominated_Sorted_Bluepyopt(oldBaseOptimizer):
 		#try:
 		from ipyparallel import Client
 		print("******************PARALLEL RUN : NSGA2 *******************")
-		os.system("ipcluster start -n "+str(int(self.number_of_cpu))+" &")
+		os.system("ipcluster start -n "+str(int(self.number_of_cpu))+" --profile-dir="+self.directory+" &")
 		time.sleep(60)
 		c = Client(profile=os.getenv('IPYTHON_PROFILE'),timeout=60)
 		view = c.load_balanced_view()
