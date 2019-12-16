@@ -77,8 +77,11 @@ def GenerateCommands(evo_name):
 		command = 'srun python ' + optimizer_path + ' -c ' + xml_name #+ ' -v_level=1'
 		
 		#if i % parallel_runs > 0:
-		#command += ' &'
+		command += ' &'
 		command += '\n'
+		command += 'sleep 300'
+		command += '\n'
+
 
 		commands.append(command)
 	#commands.append(command)
@@ -94,7 +97,7 @@ def CreateBashScript():
 #SBATCH --ntasks-per-node=1  \n
 #SBATCH --cpus-per-task=48 \n
 #SBATCH --job-name=optimizer  \n
-#SBATCH --time=0-6:00:00 \n
+#SBATCH --time=0-24:00:00 \n
 #SBATCH --error=mpi_err.%j \n
 #SBATCH --output=mpi_out.%j \n
 #SBATCH --account=vsk25 \n
