@@ -1326,7 +1326,7 @@ class Indicator_Based_Bluepyopt(oldBaseOptimizer):
 		from ipyparallel import Client
 		print("******************PARALLEL RUN : IBEA *******************")
 		os.system("ipcluster start -n "+str(int(self.number_of_cpu))+" --profile-dir="+self.directory+" &")
-		time.sleep(60)
+		time.sleep(300)
 		c = Client(self.directory+"/security/ipcontroller-client.json",timeout=60)
 		view = c.load_balanced_view()
 		view.map_sync(os.chdir, [str(os.path.dirname(os.path.realpath(__file__)))]*int(self.number_of_cpu))
@@ -1403,7 +1403,7 @@ class Nondominated_Sorted_Bluepyopt(oldBaseOptimizer):
 		from ipyparallel import Client
 		print("******************PARALLEL RUN : NSGA2 *******************")
 		os.system("ipcluster start -n "+str(int(self.number_of_cpu))+" --profile-dir="+self.directory+" &")
-		time.sleep(60)
+		time.sleep(300)
 		c = Client(self.directory+"/security/ipcontroller-client.json",timeout=60)
 		view = c.load_balanced_view()
 		view.map_sync(os.chdir, [str(os.path.dirname(os.path.realpath(__file__)))]*int(self.number_of_cpu))
