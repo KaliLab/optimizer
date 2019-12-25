@@ -79,8 +79,6 @@ def GenerateCommands(evo_name):
 		#if i % parallel_runs > 0:
 		command += ' &'
 		command += '\n'
-		command += 'sleep 300'
-		command += '\n'
 
 
 		commands.append(command)
@@ -92,12 +90,12 @@ def GenerateCommands(evo_name):
 def CreateBashScript():
 	# write the commands into a file
 	commands = ["""#!/bin/bash -x  \n
-#SBATCH --nodes=20  \n
+#SBATCH --nodes=10  \n
 #SBATCH --ntasks=1  \n 
 #SBATCH --ntasks-per-node=1  \n
 #SBATCH --cpus-per-task=48 \n
 #SBATCH --job-name=optimizer  \n
-#SBATCH --time=0-24:00:00 \n
+#SBATCH --time=0-10:00:00 \n
 #SBATCH --error=mpi_err.%j \n
 #SBATCH --output=mpi_out.%j \n
 #SBATCH --account=vsk25 \n
@@ -136,7 +134,7 @@ def RunOptim():
 
 
 def main():
-	algos = ["Nondominated Sorted (NSGAII) - Bluepyopt","Indicator Based (IBEA) - Bluepyopt"]
+	algos = ["Random Search - Inspyred"]
 	for evo_strat in algos:
 		evo_name='_'+str.split(evo_strat," ")[0]+str.split(evo_strat," ")[-1]
 		print(evo_name)

@@ -8,8 +8,8 @@ optimizer_path 	= '/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.
 curr_dir  		= os.getcwd()						# base directory
 orig_name 		= 'hh_pas_surrogate'						# name of the working directory we want to copy
 orig_dir  		= curr_dir + '/'+ 'optimizer_multirun/' + orig_name		# path of this directory
-num_runs  		= 2						# how many copies we want
-parallel_runs   = 2								# how many optimizations we allow to run in parallel
+num_runs  		= 10						# how many copies we want
+parallel_runs   = 10								# how many optimizations we allow to run in parallel
 
 # define basic things for the xml files
 rnd_start  = 1234							# random seed in the first run
@@ -18,7 +18,7 @@ pop_size   = 100				# population size
 num_islands = 1
 csv_name   = 'input_data2.dat'	
 num_param  = 3	
-evo_strat = "Particle Swarm (PSO) - Inspyred"		 					# number of parameters to optimize (needed as a command line argument)
+evo_strat = "Random Search - Inspyred"		 					# number of parameters to optimize (needed as a command line argument)
 """self.Recom=["Evolutionary Algorithm (EA) - Inspyred","Covariance Matrix Adaptation ES (CMAES) - Pygmo",
                 "Particle Swarm (PSO) - Inspyred","Indicator Based (IBEA) - Bluepyopt","L-BFGS-B - Scipy"]
         self.Inspyred=["Evolutionary Algorithm (EA) - Inspyred","Particle Swarm (PSO) - Inspyred",
@@ -77,7 +77,7 @@ def GenerateCommands():
 #SBATCH --error=mpi_err.%j \n
 #SBATCH --output=mpi_out.%j \n
 #SBATCH --account=vsk25 \n
-#SBATCH --partition=booster \n
+#SBATCH --partition=batch \n
 
 set -e \n
 set -x \n
