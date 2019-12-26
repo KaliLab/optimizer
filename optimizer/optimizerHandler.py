@@ -1083,6 +1083,7 @@ class Random_Search_Inspyred(InspyredAlgorithmBasis):
 	"""
 	def __init__(self,reader_obj,model_obj,option_obj):
 		InspyredAlgorithmBasis.__init__(self,reader_obj,model_obj,option_obj)
+		self.directory = str(option_obj.base_dir)
 		for file_name in ["stat_file.txt", "ind_file.txt"]:
 			try:
 				os.remove(file_name)
@@ -1094,7 +1095,7 @@ class Random_Search_Inspyred(InspyredAlgorithmBasis):
 		"""
 		Performs the optimization.
 		"""
-		log_f=open("random.txt","w")
+		log_f=open(self.directory+"/random.txt","w")
 		init_candidate=uniform(self.rand, {"self":self,"num_params":self.num_params})
 		self.act_min=my_candidate(array(init_candidate),self.ffun([init_candidate],{}))
 		log_f.write(str(self.act_min.candidate))
