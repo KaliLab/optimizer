@@ -90,7 +90,7 @@ def GenerateCommands(evo_name):
 def CreateBashScript():
 	# write the commands into a file
 	commands = ["""#!/bin/bash -x  \n
-#SBATCH --nodes=10  \n
+#SBATCH --nodes=20  \n
 #SBATCH --ntasks=1  \n 
 #SBATCH --ntasks-per-node=1  \n
 #SBATCH --cpus-per-task=48 \n
@@ -116,7 +116,7 @@ module load SciPy-Stack/2019a-Python-3.6.8
 module load Jupyter/2019a-Python-3.6.8
 
 export PYTHONPATH=/p/home/jusers/mohacsi1/jureca/.local/lib/python3.6/site-packages:$PYTHONPATH \n"""]
-	algos = ["Random Search - Inspyred"]
+	algos = ["Random Search - Inspyred","Pareto Archived (PAES) - Inspyred"]
 	command=[]
 	for evo_strat in algos:
 		evo_name='_'+str.split(evo_strat," ")[0]+str.split(evo_strat," ")[-1]
@@ -134,7 +134,7 @@ def RunOptim():
 
 
 def main():
-	algos = ["Random Search - Inspyred"]
+	algos = ["Random Search - Inspyred","Pareto Archived (PAES) - Inspyred"]
 	for evo_strat in algos:
 		evo_name='_'+str.split(evo_strat," ")[0]+str.split(evo_strat," ")[-1]
 		print(evo_name)

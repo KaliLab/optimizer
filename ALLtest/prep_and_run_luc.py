@@ -68,8 +68,8 @@ def EditXMLs(evo_name,evo_strat):
 def GenerateCommands(evo_name):
 	# create a list containing the commands we want to run
 	commands = ["""#!/bin/bash -x  \n
-#SBATCH --nodes=10  \n
-#SBATCH --ntasks=10  \n 
+#SBATCH --nodes=20  \n
+#SBATCH --ntasks=20  \n 
 #SBATCH --ntasks-per-node=1  \n
 #SBATCH --cpus-per-task=100  \n
 #SBATCH --job-name=optimizer  \n
@@ -130,7 +130,7 @@ def RunOptim():
 
 
 def main():
-	algos = ["Evolutionary Algorithm (EA) - Inspyred","Differential Evolution (DE) - Inspyred","Random Search - Inspyred","Nondominated Sorted (NSGAII) - Inspyred","Pareto Archived (PAES) - Inspyred","Simulated Annealing - Inspyred"]
+	algos = ["Random Search - Inspyred","Nondominated Sorted (NSGAII) - Inspyred","Pareto Archived (PAES) - Inspyred"]
 	for evo_strat in algos:
 		evo_name=str.split(evo_strat," ")[0]+str.split(evo_strat," ")[-1]
 		print(evo_name)
