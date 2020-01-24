@@ -1,8 +1,8 @@
 #!/bin/bash -x  
 
-#SBATCH --nodes=10  
+#SBATCH --nodes=20  
 
-#SBATCH --ntasks=10  
+#SBATCH --ntasks=20  
  
 #SBATCH --ntasks-per-node=1  
 
@@ -33,7 +33,7 @@ module load GCC/8.3.0
 module load ParaStationMPI/5.2.2-1
 module load NEURON/7.6.5-Python-3.6.8
 module load SciPy-Stack/2019a-Python-3.6.8
-
+module load Jupyter/2019a-Python-3.6.8
 
 export PYTHONPATH=/p/home/jusers/mohacsi1/jureca/.local/lib/python3.6/site-packages:$PYTHONPATH 
 srun python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_RandomInspyred_1/_settings.xml &
@@ -45,4 +45,14 @@ srun python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /
 srun python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_RandomInspyred_7/_settings.xml &
 srun python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_RandomInspyred_8/_settings.xml &
 srun python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_RandomInspyred_9/_settings.xml &
-srun python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_RandomInspyred_10/_settings.xml 
+srun python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_RandomInspyred_10/_settings.xml &
+srun python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_ParetoInspyred_1/_settings.xml &
+srun python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_ParetoInspyred_2/_settings.xml &
+srun python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_ParetoInspyred_3/_settings.xml &
+srun python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_ParetoInspyred_4/_settings.xml &
+srun python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_ParetoInspyred_5/_settings.xml &
+srun python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_ParetoInspyred_6/_settings.xml &
+srun python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_ParetoInspyred_7/_settings.xml &
+srun python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_ParetoInspyred_8/_settings.xml &
+srun python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_ParetoInspyred_9/_settings.xml &
+srun python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3_ParetoInspyred_10/_settings.xml 
