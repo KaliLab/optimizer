@@ -1066,7 +1066,7 @@ class Differential_Evolution_Inspyred(InspyredAlgorithmBasis):
 			self.evo_strat.observer=[observers.file_observer]
 
 
-class Random_Search_Inspyred(InspyredAlgorithmBasis):
+class Random_Search_Inspyred(baseOptimizer):
 	"""
 	Implements the ``Differential Evolution Algorithm`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1082,7 +1082,7 @@ class Random_Search_Inspyred(InspyredAlgorithmBasis):
 
 	"""
 	def __init__(self,reader_obj,model_obj,option_obj):
-		InspyredAlgorithmBasis.__init__(self,reader_obj,model_obj,option_obj)
+		baseOptimizer.__init__(self, reader_obj, model_obj, option_obj)		
 		self.directory = str(option_obj.base_dir)
 		self.max_evaluation = option_obj.max_evaluation
 		for file_name in ["stat_file.txt", "ind_file.txt"]:
