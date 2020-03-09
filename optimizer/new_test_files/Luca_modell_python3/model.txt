@@ -162,5 +162,3 @@
 ['axon[2]', [['', 'morphology', ['L', 'cm', 'Ra', 'diam']]], [['', 'morphology', ['L', 'cm', 'Ra', 'diam']]], [['', 'morphology', ['L', 'cm', 'Ra', 'diam']]]]
 ['axon[3]', [['', 'morphology', ['L', 'cm', 'Ra', 'diam']]], [['', 'morphology', ['L', 'cm', 'Ra', 'diam']]], [['', 'morphology', ['L', 'cm', 'Ra', 'diam']]]]
 ['axon[4]', [['', 'morphology', ['L', 'cm', 'Ra', 'diam']]], [['', 'morphology', ['L', 'cm', 'Ra', 'diam']]], [['', 'morphology', ['L', 'cm', 'Ra', 'diam']]], [['', 'morphology', ['L', 'cm', 'Ra', 'diam']]], [['', 'morphology', ['L', 'cm', 'Ra', 'diam']]], [['', 'morphology', ['L', 'cm', 'Ra', 'diam']]], [['', 'morphology', ['L', 'cm', 'Ra', 'diam']]]]
-['shead[0]', [['', 'morphology', ['L', 'cm', 'Ra', 'diam']]]]
-['sneck[0]', [['', 'morphology', ['L', 'cm', 'Ra', 'diam']]]]

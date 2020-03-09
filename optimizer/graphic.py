@@ -887,12 +887,12 @@ class Ui_Optimizer(object):
 
         self.menuMenu.setTitle(_translate("Optimizer", "Menu"))
         self.actionMultiple_Optimization.setText(_translate("Optimizer", "Multiple Optimization"))
-        #self.tabwidget.setTabEnabled(1,False)
-        #self.tabwidget.setTabEnabled(2,False)
-        #self.tabwidget.setTabEnabled(3,False)
-        #self.tabwidget.setTabEnabled(4,False)
-        #self.tabwidget.setTabEnabled(5,False)
-        #self.tabwidget.setTabEnabled(6,False)
+        self.tabwidget.setTabEnabled(1,False)
+        self.tabwidget.setTabEnabled(2,False)
+        self.tabwidget.setTabEnabled(3,False)
+        self.tabwidget.setTabEnabled(4,False)
+        self.tabwidget.setTabEnabled(5,False)
+        self.tabwidget.setTabEnabled(6,False)
     
                 
 
@@ -1286,6 +1286,7 @@ class Ui_Optimizer(object):
         Load the selected Neuron model and displays the sections in a tablewidget
         """
         self.model_file = self.lineEdit_file2.text()
+        self.tabwidget.setTabEnabled(2,True)
         if self.load_mods_checkbox.isChecked():
             self.spec_file = self.lineEdit_folder2.text()
         else:
@@ -1567,6 +1568,8 @@ class Ui_Optimizer(object):
         else:
             #try:
             self.core.FourthStep()
+            self.tabwidget.setTabEnabled(5,True)
+            self.tabwidget.setTabEnabled(6,True)
             self.eval_tab_plot()
             self.plot_tab_fun()
             self.tabwidget.setCurrentIndex(5)
@@ -1936,6 +1939,7 @@ class StimuliWindow(QtWidgets.QMainWindow):
     def __init__(self,parent): 
         super(StimuliWindow, self).__init__()
         _translate = QtCore.QCoreApplication.translate
+        self.parent=parent
         self.core=Core.coreModul()
         self.amplit_edit = QtWidgets.QLineEdit(self)
         self.amplit_edit.setGeometry(QtCore.QRect(120, 10, 61, 22))
@@ -2011,6 +2015,8 @@ class StimuliWindow(QtWidgets.QMainWindow):
     def Accept(self, e):
         for n in range(len(self.temp)):
             self.container.append(float(self.temp[n].text()))
+        self.parent.tabwidget.setTabEnabled(3,True)
+        self.parent.tabwidget.setTabEnabled(4,True)
         self.close()
 
     
