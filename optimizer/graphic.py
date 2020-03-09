@@ -1959,7 +1959,7 @@ class StimuliWindow(QtWidgets.QMainWindow):
         self.pushButton_accept = QtWidgets.QPushButton(self)
         self.pushButton_accept.setGeometry(QtCore.QRect(200, 450, 61, 21))
         self.pushButton_accept.setObjectName("pushButton_accept")
-        self.pushButton_accept.setText(_translate("Optimizer", "Create"))
+        self.pushButton_accept.setText(_translate("Optimizer", "Accept"))
         self.pushButton_accept.clicked.connect(self.Accept)
         self.pushButton_accept.setEnabled(False)
         self.dd_type=parent.dd_type
