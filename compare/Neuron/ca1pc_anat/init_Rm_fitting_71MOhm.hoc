@@ -1,6 +1,0 @@
-load_file("init.hoc")
-load_file("Rm_fitting3_soma-dend.ses")
-
-user_e_pas = 0
-v_init = 0
-IC3_passive()

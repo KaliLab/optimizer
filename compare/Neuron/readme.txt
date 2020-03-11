@@ -1,1 +1,0 @@
-The NEURON examples can be run from the directories containing the model file by loading the appropriate .hoc file into the NEURON GUI, and then loading the corresponding session file. Some cases might require additional mod file to be compiled by the nrnivmodl command (see http://www.anc.ed.ac.uk/school/neuron/tutorial/tutD.html)
