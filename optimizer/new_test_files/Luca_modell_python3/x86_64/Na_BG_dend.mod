@@ -1,1 +1,0 @@
-../Na_BG_dend.mod

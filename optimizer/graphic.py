@@ -55,8 +55,18 @@ class Ui_Optimizer(object):
         self.tabwidget.setGeometry(QtCore.QRect(0, 0, 771, 551))
         self.tabwidget.setObjectName("tabwidget")
                 #filetab 2
+        
         self.filetab = QtWidgets.QWidget()
         self.filetab.setObjectName("filetab")
+        self.size_ctrl = QtWidgets.QLineEdit(self.filetab)
+        self.size_ctrl.setGeometry(QtCore.QRect(10, 230, 221, 22))
+        self.size_ctrl.setObjectName("size_ctrl")
+        self.length_ctrl = QtWidgets.QLineEdit(self.filetab)
+        self.length_ctrl.setGeometry(QtCore.QRect(10, 280, 221, 22))
+        self.length_ctrl.setObjectName("length_ctrl")
+        self.freq_ctrl = QtWidgets.QLineEdit(self.filetab)
+        self.freq_ctrl.setGeometry(QtCore.QRect(10, 330, 221, 22))
+        self.freq_ctrl.setObjectName("freq_ctrl")
         self.label_3 = QtWidgets.QLabel(self.filetab)
         self.label_3.setGeometry(QtCore.QRect(10, 130, 101, 16))
         font = QtGui.QFont()
@@ -66,9 +76,6 @@ class Ui_Optimizer(object):
         font.setWeight(50)
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
-        self.freq_ctrl = QtWidgets.QLineEdit(self.filetab)
-        self.freq_ctrl.setGeometry(QtCore.QRect(10, 330, 221, 22))
-        self.freq_ctrl.setObjectName("freq_ctrl")
         self.label_4 = QtWidgets.QLabel(self.filetab)
         self.label_4.setGeometry(QtCore.QRect(10, 260, 151, 16))
         font = QtGui.QFont()
@@ -78,9 +85,6 @@ class Ui_Optimizer(object):
         font.setWeight(50)
         self.label_4.setFont(font)
         self.label_4.setObjectName("label_4")
-        self.length_ctrl = QtWidgets.QLineEdit(self.filetab)
-        self.length_ctrl.setGeometry(QtCore.QRect(10, 280, 221, 22))
-        self.length_ctrl.setObjectName("length_ctrl")
         self.label_5 = QtWidgets.QLabel(self.filetab)
         self.label_5.setGeometry(QtCore.QRect(10, 210, 121, 16))
         font = QtGui.QFont()
@@ -108,9 +112,6 @@ class Ui_Optimizer(object):
         font.setWeight(50)
         self.label_7.setFont(font)
         self.label_7.setObjectName("label_7")
-        self.size_ctrl = QtWidgets.QLineEdit(self.filetab)
-        self.size_ctrl.setGeometry(QtCore.QRect(10, 230, 221, 22))
-        self.size_ctrl.setObjectName("size_ctrl")
         self.pushButton_3 = QtWidgets.QPushButton(self.filetab)
         self.pushButton_3.setGeometry(QtCore.QRect(10, 400, 80, 22))
         self.pushButton_3.setObjectName("pushButton_3")
@@ -350,7 +351,7 @@ class Ui_Optimizer(object):
         self.label_47.setFont(font)
         self.label_47.setObjectName("label_47")
         self.base_dir_controll9 = QtWidgets.QPushButton(self.simtab)
-        self.base_dir_controll9.setGeometry(QtCore.QRect(10, 180, 91, 22))
+        self.base_dir_controll9.setGeometry(QtCore.QRect(10, 180, 115, 22))
         self.base_dir_controll9.setObjectName("base_dir_controll9")
         self.label_48 = QtWidgets.QLabel(self.simtab)
         self.label_48.setGeometry(QtCore.QRect(220, 130, 111, 16))
@@ -723,6 +724,7 @@ class Ui_Optimizer(object):
         
         self.stimprot.addItems(["IClamp","VClamp"])
         self.stimulus_type.addItems(["Step Protocol","Custom Waveform"])
+        self.stimulus_type.currentIndexChanged.connect(self.typeChange)
         self.param_to_record.addItems(["v","i"])
         #self.stimprot.setItemText(0, _translate("Optimizer", "IClamp"))
         #self.stimprot.setItemText(1, _translate("Optimizer", "VClamp"))
@@ -1287,6 +1289,8 @@ class Ui_Optimizer(object):
         """
         self.model_file = self.lineEdit_file2.text()
         self.tabwidget.setTabEnabled(2,True)
+        self.tabwidget.setTabEnabled(3,True)
+        self.tabwidget.setTabEnabled(4,True)
         if self.load_mods_checkbox.isChecked():
             self.spec_file = self.lineEdit_folder2.text()
         else:
@@ -1328,6 +1332,36 @@ class Ui_Optimizer(object):
                 self.section_dur.addItems(tmp)
             except:
                 popup("Section error")
+
+    def typeChange(self):
+        _translate = QtCore.QCoreApplication.translate
+        if self.stimulus_type.currentIndex()==0:#step prot
+            self.lineEdit_delay.setDisabled(False)
+            self.lineEdit_duration.setDisabled(False)
+            self.base_dir_controll9.clicked.disconnect(self.openFileNameDialogWaveform)
+            self.base_dir_controll9.clicked.connect(self.amplitudes_fun)
+            self.base_dir_controll9.setText(_translate("Optimizer", "Amplitude(s)"))
+        if self.stimulus_type.currentIndex()==1:#wave prot
+            self.lineEdit_delay.setDisabled(True)
+            self.lineEdit_delay.setText("0")
+            self.lineEdit_duration.setDisabled(True)
+            self.lineEdit_duration.setText("1e9")
+            self.base_dir_controll9.setText(_translate("Optimizer", "Load Waveform"))
+            self.base_dir_controll9.clicked.disconnect(self.amplitudes_fun)
+            self.base_dir_controll9.clicked.connect(self.openFileNameDialogWaveform)
+
+    def openFileNameDialogWaveform(self): 
+        """
+        File dialog for the file tab to open file.
+        """
+        options = QtWidgets.QFileDialog.Options()
+        options |= QtWidgets.QFileDialog.DontUseNativeDialog
+        fileName, _ = QFileDialog.getOpenFileName(None,"QFileDialog.getOpenFileName()", "","Data files (*.dat *.json);;All Files (*);;", options=options)
+        if fileName:
+            with open(str(fileName)) as data:
+               self.SiW.container=[float(x) for x in data.read().splitlines()]
+               
+
 
     def recursive_len(self,item):
         if type(item) == list:
@@ -2015,8 +2049,6 @@ class StimuliWindow(QtWidgets.QMainWindow):
     def Accept(self, e):
         for n in range(len(self.temp)):
             self.container.append(float(self.temp[n].text()))
-        self.parent.tabwidget.setTabEnabled(3,True)
-        self.parent.tabwidget.setTabEnabled(4,True)
         self.close()
 
     
