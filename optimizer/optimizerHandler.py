@@ -1190,7 +1190,7 @@ class Pareto_Archived_ES_Inspyred(InspyredAlgorithmBasis):
 			self.evo_strat.observer=[observers.file_observer]
 
 		self.kwargs['mutation_rate'] = option_obj.mutation_rate
-		self.kwargs['num_elites'] = int(self.pop_size/2)
+		self.kwargs['num_elites'] = 4
 
 class FullGrid_Pygmo(InspyredAlgorithmBasis):
 	
