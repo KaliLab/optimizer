@@ -1083,7 +1083,7 @@ class Random_Search_Inspyred(baseOptimizer):
 	"""
 	def __init__(self,reader_obj,model_obj,option_obj):
 		baseOptimizer.__init__(self, reader_obj, model_obj, option_obj)		
-		self.directory = str(option_obj.base_dir)
+		self.directory = str(option_obj.input_dir)
 		self.max_evaluation = option_obj.max_evaluation
 		self.pop_size = option_obj.pop_size
 		for file_name in ["stat_file.txt", "ind_file.txt"]:
