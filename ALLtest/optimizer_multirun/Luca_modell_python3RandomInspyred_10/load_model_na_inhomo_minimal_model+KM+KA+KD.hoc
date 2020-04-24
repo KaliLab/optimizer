@@ -1,0 +1,12 @@
+//Neuron files
+
+nrn_load_dll("./mods/nrnmech.dll")
+load_file("subiter.hoc")
+//load_file("nrngui.hoc")
+load_file("stdrun.hoc")
+
+//Custom files
+
+load_file("morphology2.hoc")
+load_file("biophys_na_inhomo_minimal_model+KM+KA+KD.hoc")
+//load_file("gui_shah_km.hoc")
