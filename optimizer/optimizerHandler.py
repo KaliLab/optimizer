@@ -1109,8 +1109,8 @@ class Random_Search_Inspyred(baseOptimizer):
 		for i in range(int(self.max_evaluation)):
 			act_candidate=[]
 			for j in range(int(self.pop_size)):
-				act_candidate.append([uniform(self.rand, {"self":self,"num_params":self.num_params})])
-			act_fitess=self.pool.map(self.ffun,act_candidate,{})
+				act_candidate.append(uniform(self.rand, {"self":self,"num_params":self.num_params}))
+			act_fitess=self.pool.map(self.ffun,act_candidate)
 			log_f.write(str(act_candidate))
 			log_f.write("\t")
 			log_f.write(str(act_fitess))

@@ -22,6 +22,7 @@ except:
 from types import MethodType
 import os
 
+usr_fun=''
 
 def _pickle_method(method):
     func_name = method.__func__.__name__
@@ -985,8 +986,8 @@ class fF(object):
             s = self.option.GetUFunString()
             s = str.replace(s, "h.", "self.model.hoc_obj.")
             exec(compile(str.replace(s, "h(", "self.model.hoc_obj("), '<string>', 'exec'))
-            self.usr_fun_name = self.option.GetUFunString().split("\n")[4][self.option.GetUFunString().split("\n")[4].find(" ") + 1:self.option.GetUFunString().split("\n")[4].find("(")]
-            self.usr_fun = locals()[self.usr_fun_name]
+            usr_fun_name = self.option.GetUFunString().split("\n")[4][self.option.GetUFunString().split("\n")[4].find(" ") + 1:self.option.GetUFunString().split("\n")[4].find("(")]
+            usr_fun = locals()[usr_fun_name]
         except SyntaxError:
             print("Your function contained syntax errors!! Please fix them!")
         except IndexError:
