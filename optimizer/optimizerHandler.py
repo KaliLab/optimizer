@@ -1086,6 +1086,8 @@ class Random_Search_Inspyred(baseOptimizer):
 		self.directory = str(option_obj.base_dir)
 		self.max_evaluation = option_obj.max_evaluation
 		self.pop_size = option_obj.pop_size
+		from multiprocessing import Pool
+		self.pool=Pool(self.pop_size)
 		for file_name in ["stat_file.txt", "ind_file.txt"]:
 			try:
 				os.remove(file_name)
@@ -1104,15 +1106,18 @@ class Random_Search_Inspyred(baseOptimizer):
 		log_f.write("\t")
 		log_f.write(str(self.act_min.fitness))
 		log_f.write("\n")
-		for i in range(int(self.pop_size)*int(self.max_evaluation)):
-			act_candidate=uniform(self.rand, {"self":self,"num_params":self.num_params})
-			act_fitess=self.ffun([act_candidate],{})
+		for i in range(int(self.max_evaluation)):
+			act_candidate=[]
+			for j in range(int(self.pop_size)):
+				act_candidate.append([uniform(self.rand, {"self":self,"num_params":self.num_params})])
+			act_fitess=self.pool.map(self.ffun,act_candidate,{})
 			log_f.write(str(act_candidate))
 			log_f.write("\t")
 			log_f.write(str(act_fitess))
 			log_f.write("\n")
-			if (act_fitess<self.act_min.fitness):
-				self.act_min=my_candidate(array(act_candidate),act_fitess)
+			for ind,act_fit in enumerate(act_fitess):
+				if (act_fit<self.act_min.fitness):
+					self.act_min=my_candidate(array(act_candidate),act_fitess)
 
 		log_f.close()
 		self.final_pop=[self.act_min]
