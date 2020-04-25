@@ -1087,7 +1087,7 @@ class Random_Search_Inspyred(baseOptimizer):
 		self.max_evaluation = option_obj.max_evaluation
 		self.pop_size = option_obj.pop_size
 		from multiprocessing import Pool
-		self.pool=Pool(self.pop_size)
+		self.pool=Pool(int(self.pop_size))
 		for file_name in ["stat_file.txt", "ind_file.txt"]:
 			try:
 				os.remove(file_name)
