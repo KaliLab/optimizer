@@ -42,7 +42,6 @@ from deap import creator
 from deap import tools
 import queue
 import Core
-import pickle as pickle
 
 from scipy import dot, exp, log, sqrt, floor, ones, randn
 
@@ -54,6 +53,22 @@ from itertools import combinations, product
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
+import functools
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
+
+
+def evaluator(evaluate):
+    @functools.wraps(evaluate)
+    def inspyred_evaluator(candidates, args):
+        fitness = []
+        for candidate in candidates:
+            fitness.append(evaluate(candidate, args))
+        return fitness
+    inspyred_evaluator.single_evaluation = evaluate
+    return inspyred_evaluator
 
 def _pickle_method(method):
 	func_name = method.__func__.__name__
@@ -1119,12 +1134,12 @@ class Random_Search_Inspyred(baseOptimizer):
 					pass
 
 			try:
+				evaluator=self.ffun
 				pool = multiprocessing.Pool(processes=int(self.number_of_cpu))
-				"""results = [pool.apply(self.ffun, ([c], pickled_args)) for c in act_candidate]
+				results = [pool.apply_async(evaluator, ([c], pickled_args)) for c in act_candidate]
 				pool.close()
 				pool.join()
-				act_fitess=[r.get()[0] for r in results]"""
-				pool.map_async(self.ffun, act_candidate)
+				act_fitess=[r.get()[0] for r in results]
 			except (OSError, RuntimeError) as e:
 				raise
 			"""log_f.write(str(act_candidate))
