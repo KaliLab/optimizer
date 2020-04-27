@@ -1110,7 +1110,7 @@ class Random_Search_Inspyred(baseOptimizer):
 			act_fits=self.pool.apply_async(self.ffun,act_candidate)
 			self.pool.close()
 			self.pool.join()
-			act_fitess=[r.get()[0] for r in act_fits]
+			act_fitess=[r.get() for r in act_fits]
 			"""log_f.write(str(act_candidate))
 			log_f.write("\t")
 			log_f.write(str(act_fitess))
