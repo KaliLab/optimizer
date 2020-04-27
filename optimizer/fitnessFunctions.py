@@ -171,7 +171,7 @@ class fF(object):
             exec(compile(str.replace(s, "h(", "self.model.hoc_obj("), '<string>', 'exec'))
             usr_fun_name = self.option.GetUFunString().split("\n")[4][self.option.GetUFunString().split("\n")[4].find(" ") + 1:self.option.GetUFunString().split("\n")[4].find("(")]
             print(usr_fun_name)
-            usr_fun = locals()[usr_fun_name]
+            usr_fun = globals()[usr_fun_name]
             usr_fun(self, params)
 
 
