@@ -1120,7 +1120,7 @@ class Random_Search_Inspyred(baseOptimizer):
 
 			try:
 				pool = multiprocessing.Pool(processes=int(self.number_of_cpu))
-				results = [pool.apply_async(self.ffun, ([c], pickled_args)) for c in act_candidate]
+				results = [pool.apply(self.ffun, ([c], pickled_args)) for c in act_candidate]
 				pool.close()
 				pool.join()
 				act_fitess=[r.get()[0] for r in results]
