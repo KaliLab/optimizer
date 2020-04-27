@@ -1116,7 +1116,6 @@ class Random_Search_Inspyred(baseOptimizer):
 					pickle.dumps(args[key])
 					pickled_args[key] = args[key]
 				except (TypeError, pickle.PickleError, pickle.PicklingError):
-					logger.debug('unable to pickle args parameter {0} in parallel_evaluation_mp'.format(key))
 					pass
 
 			try:
@@ -1126,7 +1125,6 @@ class Random_Search_Inspyred(baseOptimizer):
 				pool.join()
 				act_fitess=[r.get()[0] for r in results]
 			except (OSError, RuntimeError) as e:
-				logger.error('failed parallel_evaluation_mp: {0}'.format(str(e)))
 				raise
 			"""log_f.write(str(act_candidate))
 			log_f.write("\t")
