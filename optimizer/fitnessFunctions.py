@@ -130,8 +130,8 @@ class fF(object):
         try:
             self.model.load_neuron()
             s = self.option.GetUFunString()
-            s = replace(s, "h.", "self.model.hoc_obj.")
-            exec(compile(replace(s, "h(", "self.model.hoc_obj("), '<string>', 'exec'))
+            s = str.replace(s, "h.", "self.model.hoc_obj.")
+            exec(compile(str.replace(s, "h(", "self.model.hoc_obj("), '<string>', 'exec'))
             self.usr_fun_name = self.option.GetUFunString().split("\n")[4][self.option.GetUFunString().split("\n")[4].find(" ") + 1:self.option.GetUFunString().split("\n")[4].find("(")]
             self.usr_fun = locals()[self.usr_fun_name]
         except SyntaxError:
