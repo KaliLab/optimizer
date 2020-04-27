@@ -44,6 +44,8 @@ try:
 except:
 	copyreg.pickle(MethodType, _pickle_method, _unpickle_method)
 
+global usr_fun
+
 def frange(start, stop, step):
         """
         Generates range of real values.
@@ -132,8 +134,8 @@ class fF(object):
             s = self.option.GetUFunString()
             s = str.replace(s, "h.", "self.model.hoc_obj.")
             exec(compile(str.replace(s, "h(", "self.model.hoc_obj("), '<string>', 'exec'))
-            self.usr_fun_name = self.option.GetUFunString().split("\n")[4][self.option.GetUFunString().split("\n")[4].find(" ") + 1:self.option.GetUFunString().split("\n")[4].find("(")]
-            self.usr_fun = locals()[self.usr_fun_name]
+            usr_fun_name = self.option.GetUFunString().split("\n")[4][self.option.GetUFunString().split("\n")[4].find(" ") + 1:self.option.GetUFunString().split("\n")[4].find("(")]
+            usr_fun = locals()[usr_fun_name]
         except SyntaxError:
             print("Your function contained syntax errors!! Please fix them!")
         except IndexError:
@@ -166,7 +168,7 @@ class fF(object):
                     self.model.SetMorphParameters(str.strip(str.split(sec, " ")[0]), str.strip(str.split(sec, " ")[1]), params[section.index(sec)])
         else:
             #cal the user def.ed function
-            self.usr_fun(self, params)
+            usr_fun(self, params)
 
 
 
