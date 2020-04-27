@@ -126,9 +126,9 @@ class fF(object):
                         "AP width": self.AP_width,
                         "Derivative difference" : self.calc_grad_dif,
                         "PPTD" : self.pyelectro_pptd}
-        '''
+        
         try:
-            #self.model.load_neuron()
+            self.model.load_neuron()
             s = self.option.GetUFunString()
             s = replace(s, "h.", "self.model.hoc_obj.")
             exec(compile(replace(s, "h(", "self.model.hoc_obj("), '<string>', 'exec'))
@@ -138,7 +138,7 @@ class fF(object):
             print "Your function contained syntax errors!! Please fix them!"
         except IndexError:
             pass
-        '''
+        
 
 
 
@@ -985,8 +985,8 @@ class fF(object):
             s = self.option.GetUFunString()
             s = str.replace(s, "h.", "self.model.hoc_obj.")
             exec(compile(str.replace(s, "h(", "self.model.hoc_obj("), '<string>', 'exec'))
-            self.usr_fun_name = self.option.GetUFunString().split("\n")[4][self.option.GetUFunString().split("\n")[4].find(" ") + 1:self.option.GetUFunString().split("\n")[4].find("(")]
-            self.usr_fun = locals()[self.usr_fun_name]
+            #self.usr_fun_name = self.option.GetUFunString().split("\n")[4][self.option.GetUFunString().split("\n")[4].find(" ") + 1:self.option.GetUFunString().split("\n")[4].find("(")]
+            #self.usr_fun = locals()[self.usr_fun_name]
         except SyntaxError:
             print("Your function contained syntax errors!! Please fix them!")
         except IndexError:
@@ -1003,11 +1003,9 @@ class fF(object):
 
         for l in candidates:
             if self.option.output_level == "1":
-                print(l)
             l = self.ReNormalize(l)
             
             if self.option.output_level == "1":
-                print(l)
             for k in range(k_range):     #for k in range(self.reader.number_of_traces()):
                 try:
                     add_data = [spike_frame(n - window, self.thres, n, 1, n + window, self.thres) for n in self.reader.additional_data.get(k)]
@@ -1132,10 +1130,8 @@ class fF(object):
         for l in candidates:
 
             if self.option.output_level == "1":
-                print(l)
             l = self.ReNormalize(l)
             if self.option.output_level == "1":
-                print(l)
             for k in range(k_range):
                 try:
                     add_data = [spike_frame(n - window, self.thres, n, 1, n + window, self.thres) for n in self.reader.additional_data.get(k)]
