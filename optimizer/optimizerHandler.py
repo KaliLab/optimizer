@@ -78,7 +78,7 @@ def _unpickle_method(func_name, obj, cls):
 			break
 	return func.__get__(obj, cls)
 
-def evaluator(evaluate,act_candidate,pickled_args):
+def evaluator(evaluate,act_candidate,pickled_args,pool):
 	return [pool.apply_async(evaluate, ([c], pickled_args)) for c in act_candidate]
 
 
@@ -1131,7 +1131,7 @@ class Random_Search_Inspyred(baseOptimizer):
 
 			try:
 				pool = multiprocessing.Pool(processes=int(self.number_of_cpu))
-				results = evaluator(self.ffun,act_candidate,pickled_args)
+				results = evaluator(self.ffun,act_candidate,pickled_args,pool)
 				pool.close()
 				pool.join()
 				act_fitess=[r.get()[0] for r in results]
