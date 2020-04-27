@@ -1087,13 +1087,8 @@ class Random_Search_Inspyred(baseOptimizer):
 		self.max_evaluation = option_obj.max_evaluation
 		self.pop_size = option_obj.pop_size
 		self.pickled_args={}
-		for key in self.kwargs:
-			try:
-				pickle.dumps(self.kwargs[key])
-				self.pickled_args[key]=self.kwargs[key]
-			except:
-				pass
-		self.pool=multiprocessing.Pool(int(self.number_of_cpu))
+		
+		
 		for file_name in ["stat_file.txt", "ind_file.txt"]:
 			try:
 				os.remove(file_name)
@@ -1105,18 +1100,34 @@ class Random_Search_Inspyred(baseOptimizer):
 		"""
 		Performs the optimization.
 		"""
-		
+		args=self.kwargs
 		init_candidate=uniform(self.rand, {"self":self,"num_params":self.num_params})
 		self.act_min=my_candidate(array(init_candidate),self.ffun([init_candidate],{}))
 		
 		for i in range(int(self.max_evaluation)):
 			act_candidate=[]
+			act_fitess=[]
 			for j in range(int(self.pop_size)):
 				act_candidate.append(uniform(self.rand, {"self":self,"num_params":self.num_params}))
-			act_fits=[self.pool.apply_async(self.ffun,([c],self.pickled_args)) for c in act_candidate]
-			self.pool.close()
-			self.pool.join()
-			act_fitess=[r.get() for r in act_fits]
+			
+			pickled_args = {}
+			for key in args:
+				try:
+					pickle.dumps(args[key])
+					pickled_args[key] = args[key]
+				except (TypeError, pickle.PickleError, pickle.PicklingError):
+					logger.debug('unable to pickle args parameter {0} in parallel_evaluation_mp'.format(key))
+					pass
+
+			try:
+				pool = multiprocessing.Pool(processes=int(self.number_of_cpu))
+				results = [pool.apply_async(evaluator, ([c], pickled_args)) for c in acr_candidate]
+				pool.close()
+				pool.join()
+				act_fitess=[r.get()[0] for r in results]
+			except (OSError, RuntimeError) as e:
+				logger.error('failed parallel_evaluation_mp: {0}'.format(str(e)))
+				raise
 			"""log_f.write(str(act_candidate))
 			log_f.write("\t")
 			log_f.write(str(act_fitess))
