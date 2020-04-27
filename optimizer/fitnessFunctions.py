@@ -166,13 +166,7 @@ class fF(object):
                     self.model.SetMorphParameters(str.strip(str.split(sec, " ")[0]), str.strip(str.split(sec, " ")[1]), params[section.index(sec)])
         else:
             #cal the user def.ed function
-            s = self.option.GetUFunString()
-            s = str.replace(s, "h.", "self.model.hoc_obj.")
-            exec(compile(str.replace(s, "h(", "self.model.hoc_obj("), '<string>', 'exec'))
-            usr_fun_name = self.option.GetUFunString().split("\n")[4][self.option.GetUFunString().split("\n")[4].find(" ") + 1:self.option.GetUFunString().split("\n")[4].find("(")]
-            print(usr_fun_name)
-            usr_fun = globals()[usr_fun_name]
-            usr_fun(self, params)
+            self.usr_fun(self, params)
 
 
 
@@ -986,6 +980,18 @@ class fF(object):
         if(self.option.simulator == 'Neuron'):
             self.model.load_neuron()
 
+        try:
+            #self.model.load_neuron()
+            s = self.option.GetUFunString()
+            s = str.replace(s, "h.", "self.model.hoc_obj.")
+            exec(compile(str.replace(s, "h(", "self.model.hoc_obj("), '<string>', 'exec'))
+            self.usr_fun_name = self.option.GetUFunString().split("\n")[4][self.option.GetUFunString().split("\n")[4].find(" ") + 1:self.option.GetUFunString().split("\n")[4].find("(")]
+            print(self.usr_fun_name)
+            self.usr_fun = locals()[self.usr_fun_name]
+        except SyntaxError:
+            print("Your function contained syntax errors!! Please fix them!")
+        except IndexError:
+            pass
 
 
         self.model.CreateStimuli(self.option.GetModelStim())
