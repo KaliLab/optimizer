@@ -1099,13 +1099,10 @@ class Random_Search_Inspyred(baseOptimizer):
 		"""
 		Performs the optimization.
 		"""
-		log_f=open(self.directory+"/random.txt","w")
+		
 		init_candidate=uniform(self.rand, {"self":self,"num_params":self.num_params})
 		self.act_min=my_candidate(array(init_candidate),self.ffun([init_candidate],{}))
-		log_f.write(str(self.act_min.candidate))
-		log_f.write("\t")
-		log_f.write(str(self.act_min.fitness))
-		log_f.write("\n")
+		
 		for i in range(int(self.max_evaluation)):
 			act_candidate=[]
 			for j in range(int(self.pop_size)):
@@ -1117,11 +1114,17 @@ class Random_Search_Inspyred(baseOptimizer):
 			log_f.write("\n")"""
 			for ind,act_fit in enumerate(act_fitess):
 				if (act_fit<self.act_min.fitness):
-					self.act_min=my_candidate(array(act_candidate),act_fitess)
-					log_f.write(str(self.act_min))
-					log_f.write("\n")
+					self.act_min.append(my_candidate(array(act_candidate),act_fitess))
+					
 
-		log_f.close()
+
+		with open(self.directory+"/random.txt","w") as f:
+			for x in self.act_min:
+				f.write(str(x.candidate))
+				f.write("\t")
+				f.write(str(x.fitness))
+				f.write("\n")
+
 		self.final_pop=[self.act_min]
 
 
