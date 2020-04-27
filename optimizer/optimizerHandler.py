@@ -1086,6 +1086,7 @@ class Random_Search_Inspyred(baseOptimizer):
 		self.directory = str(option_obj.base_dir)
 		self.max_evaluation = option_obj.max_evaluation
 		self.pop_size = option_obj.pop_size
+		self.pickled_args={}
 		for key in self.kwargs:
 			try:
 				pickle.dumps(self.kwargs[key])
