@@ -1082,15 +1082,16 @@ class Random_Search_Inspyred(baseOptimizer):
 
 	"""
 	def __init__(self,reader_obj,model_obj,option_obj):
-		baseOptimizer.__init__(self, reader_obj, model_obj, option_obj)		
+		InspyredAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)		
 		self.directory = str(option_obj.base_dir)
 		self.max_evaluation = option_obj.max_evaluation
 		self.pop_size = option_obj.pop_size
-		try:
-			pickle.dumps(fF.usr_fun)
-			self.pickled_arg=fF.usr_fun
-		except:
-			pass
+		for key in self.kwargs:
+			try:
+				pickle.dumps(self.kwargs[key])
+				self.pickled_args[key]=self.kwargs[key]
+			except:
+				pass
 		self.pool=multiprocessing.Pool(int(self.number_of_cpu))
 		for file_name in ["stat_file.txt", "ind_file.txt"]:
 			try:
@@ -1111,7 +1112,7 @@ class Random_Search_Inspyred(baseOptimizer):
 			act_candidate=[]
 			for j in range(int(self.pop_size)):
 				act_candidate.append(uniform(self.rand, {"self":self,"num_params":self.num_params}))
-			act_fits=[self.pool.apply_async(self.ffun,([c],self.pickled_arg)) for c in act_candidate]
+			act_fits=[self.pool.apply_async(self.ffun,([c],self.pickled_args)) for c in act_candidate]
 			self.pool.close()
 			self.pool.join()
 			act_fitess=[r.get() for r in act_fits]
