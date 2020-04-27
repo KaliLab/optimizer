@@ -60,15 +60,7 @@ except ImportError:
     import pickle
 
 
-def evaluator(evaluate):
-    @functools.wraps(evaluate)
-    def inspyred_evaluator(candidates, args):
-        fitness = []
-        for candidate in candidates:
-            fitness.append(evaluate(candidate, args))
-        return fitness
-    inspyred_evaluator.single_evaluation = evaluate
-    return inspyred_evaluator
+				
 
 def _pickle_method(method):
 	func_name = method.__func__.__name__
@@ -85,6 +77,10 @@ def _unpickle_method(func_name, obj, cls):
 		else:
 			break
 	return func.__get__(obj, cls)
+
+def evaluator(evaluate,act_candidate,pickled_args):
+	return [pool.apply_async(evaluate, ([c], pickled_args)) for c in act_candidate]
+
 
 def normalize(values,args):
 	"""
@@ -1134,9 +1130,8 @@ class Random_Search_Inspyred(baseOptimizer):
 					pass
 
 			try:
-				evaluator=self.ffun
 				pool = multiprocessing.Pool(processes=int(self.number_of_cpu))
-				results = [pool.apply_async(evaluator, ([c], pickled_args)) for c in act_candidate]
+				results = evaluator(self.ffun,act_candidate,pickled_args)
 				pool.close()
 				pool.join()
 				act_fitess=[r.get()[0] for r in results]
