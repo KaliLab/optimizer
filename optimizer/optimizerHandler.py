@@ -1086,8 +1086,8 @@ class Random_Search_Inspyred(baseOptimizer):
 		self.directory = str(option_obj.base_dir)
 		self.max_evaluation = option_obj.max_evaluation
 		self.pop_size = option_obj.pop_size
-		from multiprocessing import Pool
-		self.pool=Pool(int(self.pop_size))
+		
+		self.pool=multiprocessing.Pool(int(self.pop_size))
 		for file_name in ["stat_file.txt", "ind_file.txt"]:
 			try:
 				os.remove(file_name)
@@ -1107,7 +1107,10 @@ class Random_Search_Inspyred(baseOptimizer):
 			act_candidate=[]
 			for j in range(int(self.pop_size)):
 				act_candidate.append(uniform(self.rand, {"self":self,"num_params":self.num_params}))
-			act_fitess=self.pool.map(self.ffun,act_candidate)
+			act_fits=self.pool.apply_async(self.ffun,[c] for c in act_candidate)
+			self.pool.close()
+			self.pool.join()
+			act_fitess=[r.get()[0] for r in act_fits]
 			"""log_f.write(str(act_candidate))
 			log_f.write("\t")
 			log_f.write(str(act_fitess))
