@@ -1107,7 +1107,7 @@ class Random_Search_Inspyred(baseOptimizer):
 			act_candidate=[]
 			for j in range(int(self.pop_size)):
 				act_candidate.append(uniform(self.rand, {"self":self,"num_params":self.num_params}))
-			act_fits=self.pool.apply_async(self.ffun,act_candidate)
+			act_fits=[self.pool.apply_async(self.ffun,c) for c in act_candidate]
 			self.pool.close()
 			self.pool.join()
 			act_fitess=[r.get() for r in act_fits]
