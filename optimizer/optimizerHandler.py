@@ -78,9 +78,6 @@ def _unpickle_method(func_name, obj, cls):
 			break
 	return func.__get__(obj, cls)
 
-def evaluator(evaluate,act_candidate,pickled_args,pool):
-	return [pool.apply_async(evaluate, ([c], pickled_args)) for c in act_candidate]
-
 
 def normalize(values,args):
 	"""
@@ -303,29 +300,24 @@ class PygmoAlgorithmBasis(baseOptimizer):
 		self.num_islands = int(option_obj.num_islands)
 
 	def Optimize(self):
-		print(self.boundaries)
 		self.prob = Problem(self.ffun,self.boundaries, self.num_islands, self.pop_size, 1, self.base_dir)
 		
 		
-		try:
+		"""try:
 			self.archi = pickle.load(open(str(self.base_dir)+'/pygmo_save.pkl', 'rb'))
 			print('save loaded')
 		except:
 			print('no previous save found')
 			self.archi = pg.archipelago(n=self.num_islands,algo=self.algorithm, prob=self.prob, pop_size=self.pop_size)
-		print(self.max_evaluation)
+		print(self.max_evaluation)"""
 		self.archi.evolve(self.max_evaluation)
 		self.archi.wait()
 		pickle.dump(self.archi,open(str(self.base_dir)+'/pygmo_save.pkl', 'wb'))
 		self.archi.wait()
 		
 		
-		print(self.archi)
 		self.champions_x = self.archi.get_champions_x()
 		self.champions_f = self.archi.get_champions_f()
-		print(self.champions_x)
-		print(self.champions_f)
-
 		self.best_fitness = min(self.champions_f)
 		self.best = normalize(self.champions_x[self.champions_f.index(self.best_fitness)], self)
 
@@ -349,11 +341,8 @@ class Problem:
 
 	def fitness(self, x):
 
-		#print("individual: {0}".format(x))
-		#print("normalized: {0}".format(normalize(x, self)))
 		fitness = self.fitnes_fun([normalize(x,self)])
 		print('PYGMO FITNES')
-		#print("fitness: {0} at {1}".format(fitness, time.time()))
 		with open(self.directory + '/island_inds.txt', 'a') as inds_file:
 			inds_file.write("{0}, {1}, {2}, {3}, {4}\n".format(self.gen_counter, self.pop_counter, fitness, x, normalize(x, self)))
 		self.pop_counter += 1
@@ -1077,7 +1066,7 @@ class Differential_Evolution_Inspyred(InspyredAlgorithmBasis):
 			self.evo_strat.observer=[observers.file_observer]
 
 
-class Random_Search_Inspyred(baseOptimizer):
+class Random_Search_Inspyred(InspyredAlgorithmBasis):
 	"""
 	Implements the ``Differential Evolution Algorithm`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1098,7 +1087,7 @@ class Random_Search_Inspyred(baseOptimizer):
 		self.max_evaluation = option_obj.max_evaluation
 		self.pop_size = option_obj.pop_size
 		self.pickled_args={}
-		
+		self.gen_min=[]
 		
 		for file_name in ["stat_file.txt", "ind_file.txt"]:
 			try:
@@ -1137,18 +1126,16 @@ class Random_Search_Inspyred(baseOptimizer):
 				act_fitess=[r.get()[0] for r in results]
 			except (OSError, RuntimeError) as e:
 				raise
-			"""log_f.write(str(act_candidate))
-			log_f.write("\t")
-			log_f.write(str(act_fitess))
-			log_f.write("\n")"""
-			for ind,act_fit in enumerate(act_fitess):
+
+			
+			for act_fit in act_fitess:
 				if (act_fit<self.act_min.fitness):
-					self.act_min.append(my_candidate(array(act_candidate),act_fitess))
-					
+					self.act_min=my_candidate(array(act_candidate),act_fitess))
+			self.gen_min.append(self.act_min)		
 
 
 		with open(self.directory+"/random.txt","w") as f:
-			for x in self.act_min:
+			for x in self.gen_min:
 				f.write(str(x.candidate))
 				f.write("\t")
 				f.write(str(x.fitness))
