@@ -1130,7 +1130,7 @@ class Random_Search_Inspyred(InspyredAlgorithmBasis):
 			
 			for act_fit in act_fitess:
 				if (act_fit<self.act_min.fitness):
-					self.act_min=my_candidate(array(act_candidate),act_fitess))
+					self.act_min=my_candidate(array(act_candidate),act_fitess)
 			self.gen_min.append(self.act_min)		
 
 
