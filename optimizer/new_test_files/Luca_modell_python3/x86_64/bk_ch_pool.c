@@ -1,4 +1,4 @@
-/* Created by Language version: 7.7.0 */
+/* Created by Language version: 7.5.0 */
 /* NOT VECTORIZED */
 #define NRN_VECTORIZED 0
 #include <stdio.h>
@@ -84,15 +84,6 @@ extern void hoc_register_limits(int, HocParmLimits*);
 extern void hoc_register_units(int, HocParmUnits*);
 extern void nrn_promote(Prop*, int, int);
 extern Memb_func* memb_func;
- 
-#define NMODL_TEXT 1
-#if NMODL_TEXT
-static const char* nmodl_file_text;
-static const char* nmodl_filename;
-extern void hoc_reg_nmodl_text(int, const char*);
-extern void hoc_reg_nmodl_filename(int, const char*);
-#endif
-
  extern void _nrn_setdata_reg(int, void(*)(Prop*));
  static void _setdata(Prop* _prop) {
  _p = _prop->param; _ppvar = _prop->dparam;
@@ -231,7 +222,7 @@ static void _ode_matsol(_NrnThread*, _Memb_list*, int);
  static void _ode_matsol_instance1(_threadargsproto_);
  /* connect range variables in _p that hoc is supposed to know about */
  static const char *_mechanism[] = {
- "7.7.0",
+ "7.5.0",
 "bk_ch_pool",
  "gbar_bk_ch_pool",
  0,
@@ -292,10 +283,6 @@ extern void _cvode_abstol( Symbol**, double*, int);
  _mechtype = nrn_get_mechtype(_mechanism[1]);
      _nrn_setdata_reg(_mechtype, _setdata);
      _nrn_thread_reg(_mechtype, 2, _update_ion_pointer);
- #if NMODL_TEXT
-  hoc_reg_nmodl_text(_mechtype, nmodl_file_text);
-  hoc_reg_nmodl_filename(_mechtype, nmodl_filename);
-#endif
   hoc_register_prop_size(_mechtype, 11, 5);
   hoc_register_dparam_semantics(_mechtype, 0, "k_ion");
   hoc_register_dparam_semantics(_mechtype, 1, "k_ion");
@@ -305,7 +292,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
  	hoc_register_cvode(_mechtype, _ode_count, _ode_map, _ode_spec, _ode_matsol);
  	hoc_register_tolerance(_mechtype, _hoc_state_tol, &_atollist);
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 bk_ch_pool /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/x86_64/bk_ch_pool.mod\n");
+ 	ivoc_help("help ?1 bk_ch_pool /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3/x86_64/bk_ch_pool.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
@@ -564,108 +551,3 @@ static void _initlists() {
  _slist1[2] = &(z) - _p;  _dlist1[2] = &(Dz) - _p;
 _first = 0;
 }
-
-#if NMODL_TEXT
-static const char* nmodl_filename = "/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/bk_ch_pool.mod";
-static const char* nmodl_file_text = 
-  ": BK-type Purkinje canlcium-activated potassium current\n"
-  ": Created 8/19/02 - nwg\n"
-  "\n"
-  "NEURON {\n"
-  "       SUFFIX bk_ch_pool\n"
-  "       USEION k READ ek WRITE ik\n"
-  "       USEION can READ cani VALENCE 2\n"
-  "       RANGE gbar, ik\n"
-  "       GLOBAL minf, mtau, hinf, htau, zinf, ztau\n"
-  "       GLOBAL m_vh, m_k, mtau_y0, mtau_vh1, mtau_vh2, mtau_k1, mtau_k2\n"
-  "       GLOBAL z_coef, ztau\n"
-  "       GLOBAL h_y0, h_vh, h_k, htau_y0, htau_vh1, htau_vh2, htau_k1, htau_k2\n"
-  "}\n"
-  "\n"
-  "UNITS {\n"
-  "      (mV) = (millivolt)\n"
-  "      (mA) = (milliamp)\n"
-  "      (mM) = (milli/liter)\n"
-  "}\n"
-  "\n"
-  "PARAMETER {\n"
-  "          v            (mV)\n"
-  "          gbar = .007 (mho/cm2)\n"
-  "\n"
-  "          m_vh = -28.9           (mV)\n"
-  "          m_k = 6.2            (mV)\n"
-  "          mtau_y0 = .000505     (s)\n"
-  "          mtau_vh1 = -33.3     (mV)\n"
-  "          mtau_k1 = -10         (mV)\n"
-  "          mtau_vh2 = 86.4       (mV)\n"
-  "          mtau_k2 = 10.1        (mV)\n"
-  "\n"
-  "          z_coef = .001        (mM)\n"
-  "          ztau = 1              (ms)\n"
-  "\n"
-  "          h_y0 = .085\n"
-  "          h_vh = -32          (mV)\n"
-  "          h_k = 5.8             (mV)\n"
-  "          htau_y0 = .0019      (s)\n"
-  "          htau_vh1 = -54.2       (mV)\n"
-  "          htau_k1 = -12.9       (mV)\n"
-  "          htau_vh2 = 48.5      (mV)\n"
-  "          htau_k2 = 5.2        (mV)\n"
-  "\n"
-  "          ek           (mV)\n"
-  "          cani          (mM)\n"
-  "}\n"
-  "\n"
-  "ASSIGNED {\n"
-  "         minf\n"
-  "         mtau          (ms)\n"
-  "         hinf\n"
-  "         htau          (ms)\n"
-  "         zinf\n"
-  "\n"
-  "         ik            (mA/cm2)\n"
-  "}\n"
-  "\n"
-  "STATE {\n"
-  "      m   FROM 0 TO 1\n"
-  "      z   FROM 0 TO 1\n"
-  "      h   FROM 0 TO 1\n"
-  "}\n"
-  "\n"
-  "BREAKPOINT {\n"
-  "           SOLVE states METHOD cnexp\n"
-  "           ik = gbar * m * m * m * z * z * h * (v - ek)\n"
-  "}\n"
-  "\n"
-  "DERIVATIVE states {\n"
-  "        rates(v)\n"
-  "\n"
-  "        m' = (minf - m) / mtau\n"
-  "        h' = (hinf - h) / htau\n"
-  "        z' = (zinf - z) / ztau\n"
-  "}\n"
-  "\n"
-  "PROCEDURE rates(Vm (mV)) {\n"
-  "          LOCAL v\n"
-  "          v = Vm + 5\n"
-  "          minf = 1 / (1 + exp(-(v - (m_vh)) / m_k))\n"
-  "          mtau = (1e3) * (mtau_y0 + 1/(exp((v+ mtau_vh1)/mtau_k1) + exp((v+mtau_vh2)/mtau_k2)))\n"
-  "          zinf = 1/(1 + z_coef / cani)\n"
-  "          hinf = h_y0 + (1-h_y0) / (1+exp((v - h_vh)/h_k))\n"
-  "          htau = (1e3) * (htau_y0 + 1/(exp((v + htau_vh1)/htau_k1)+exp((v+htau_vh2)/htau_k2)))\n"
-  "}\n"
-  "\n"
-  "INITIAL {\n"
-  "        rates(v)\n"
-  "        m = minf\n"
-  "        z = zinf\n"
-  "        h = hinf\n"
-  "}\n"
-  "\n"
-  "\n"
-  "\n"
-  "\n"
-  "\n"
-  "\n"
-  ;
-#endif
