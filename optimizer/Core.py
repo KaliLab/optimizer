@@ -473,21 +473,7 @@ class coreModul():
 						out_handler.write(str(int(idx/2+1))+":"+str(gen)+":"+str(fit)+"\n")
 
 					
-					
-			print(('MIN:',minfits,'MAX:',maxfits,'MED:',medfits,'CUMUL',cumminfits))
-			
-			"""import matplotlib.pyplot as plt
-			plt.plot(range(0,int(self.option_handler.max_evaluation)), minfits)
-			plt.plot(range(0,int(self.option_handler.max_evaluation)), maxfits)
-			plt.plot(range(0,int(self.option_handler.max_evaluation)), medfits)
-			plt.plot(range(0,int(self.option_handler.max_evaluation)), cumminfits)
-			plt.yscale('log')
-			plt.legend(['min','max','med','cumul'])
-			plt.xlabel('Gen')
-			plt.ylabel('Fitness')
-			plt.grid(True)
-			plt.savefig("test.png")
-			plt.show()"""
+		
 
 		elif(self.option_handler.evo_strat.split(" ")[-1] == "Pygmo"):
 			'''
@@ -497,6 +483,14 @@ class coreModul():
 			self.fits = [self.optimizer.best_fitness]
 			print((self.cands, "CANDS"))
 			print((self.fits, "FITS"))
+		elif(self.option_handler.evo_strat.split(" ")[-1] == "Base"):
+			'''
+			Currently only the best individual with its fitness is passed
+			'''
+			self.cands = [x.candidate[0] for x in reversed(self.optimizer.final_pop)]
+			self.fits = [x.fitness[0] for x in reversed(self.optimizer.final_pop)]
+			print((self.cands[0], "CANDS"))
+			print((self.fits[0], "FITS"))
 		else:
 			self.optimizer.final_pop.sort(reverse=True)
 			for i in range(len(self.optimizer.final_pop)):
@@ -521,6 +515,7 @@ class coreModul():
 		"""
 		self.final_result=[]
 		self.error_comps=[]
+		print(4)
 		#self.optimal_params=self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])
 		self.optimal_params=self.cands[0]
 		if self.option_handler.GetUFunString()=='':
@@ -552,6 +547,7 @@ class coreModul():
 			self.usr_fun_name=self.option_handler.GetUFunString().split("\n")[4][self.option_handler.GetUFunString().split("\n")[4].find(" ")+1:self.option_handler.GetUFunString().split("\n")[4].find("(")]
 			self.usr_fun=locals()[self.usr_fun_name]
 			self.usr_fun(self,self.cands[0])
+			print('ok')
 			#self.usr_fun(self,self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)]))
 		#the first cell is a vector with all the stimuli in the simulation
 		#the first cell is the current stimulus

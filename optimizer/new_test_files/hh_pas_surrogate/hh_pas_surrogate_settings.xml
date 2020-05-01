@@ -7,7 +7,7 @@
   <cognitive_rate>None</cognitive_rate>
   <cooling_rate>None</cooling_rate>
   <crossover_rate>None</crossover_rate>
-  <evo_strat>Covariance Matrix Adaptation ES (CMAES) - Pygmo</evo_strat>
+  <evo_strat>Random Search - Inspyred</evo_strat>
   <f_tol>None</f_tol>
   <feats>MSE (excl. spikes), Spike count (stim.), ISI differences</feats>
   <force_bounds>True</force_bounds>
@@ -29,7 +29,7 @@
   <num_iter>None</num_iter>
   <num_params>3</num_params>
   <num_repet>None</num_repet>
-  <number_of_cpu>None</number_of_cpu>
+  <number_of_cpu>2</number_of_cpu>
   <param_vals>[0, 0, 0, 0, 0, 0]</param_vals>
   <pop_size>10.0</pop_size>
   <run_controll_dt>0.025</run_controll_dt>

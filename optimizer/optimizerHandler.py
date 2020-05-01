@@ -15,7 +15,6 @@ import copy
 import array as array1
 import random
 import json
-from functools import partial
 import numpy
 import time
 import os
@@ -23,13 +22,6 @@ import bluepyopt as bpop
 from math import sqrt
 import bluepyopt.ephys as ephys
 
-try:
-	import matplotlib.pyplot as plt
-	from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-	from matplotlib.figure import Figure
-except RuntimeError as re:
-    print(re)
-    sys.exit()
 
 import multiprocessing
 from math import sqrt
@@ -51,15 +43,17 @@ from itertools import combinations, product
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from types import MethodType
+try:
+    import copyreg
+except:
+    import copyreg
 
 import functools
 try:
     import cPickle as pickle
 except ImportError:
     import pickle
-
-
 				
 
 def _pickle_method(method):
@@ -77,6 +71,12 @@ def _unpickle_method(func_name, obj, cls):
 		else:
 			break
 	return func.__get__(obj, cls)
+
+
+try:
+	copyreg.pickle(MethodType, _pickle_method, _unpickle_method)
+except:
+	copyreg.pickle(MethodType, _pickle_method, _unpickle_method)
 
 
 def normalize(values,args):
@@ -310,6 +310,7 @@ class PygmoAlgorithmBasis(baseOptimizer):
 			print('no previous save found')
 			self.archi = pg.archipelago(n=self.num_islands,algo=self.algorithm, prob=self.prob, pop_size=self.pop_size)
 		print(self.max_evaluation)"""
+		self.archi = pg.archipelago(n=self.num_islands,algo=self.algorithm, prob=self.prob, pop_size=self.pop_size)
 		self.archi.evolve(self.max_evaluation)
 		self.archi.wait()
 		pickle.dump(self.archi,open(str(self.base_dir)+'/pygmo_save.pkl', 'wb'))
@@ -448,7 +449,7 @@ class my_candidate():
 	"""
 	def __init__(self,vals, fitn=-1):
 		self.candidate=ndarray.tolist(vals)
-		self.candidate.extend(vals)
+		#self.candidate.extend(vals)
 		self.fitness=fitn
 
 
@@ -948,8 +949,6 @@ class grid(baseOptimizer):
 		self.SetFFun(option_obj)
 		self.num_params=option_obj.num_params
 		self.num_points_per_dim=resolution
-		#self.resolution=5
-		#print self.resolution
 		self.SetBoundaries(option_obj.boundaries)
 
 
@@ -1066,7 +1065,7 @@ class Differential_Evolution_Inspyred(InspyredAlgorithmBasis):
 			self.evo_strat.observer=[observers.file_observer]
 
 
-class Random_Search_Inspyred(InspyredAlgorithmBasis):
+class Random_Search_Base(baseOptimizer):
 	"""
 	Implements the ``Differential Evolution Algorithm`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1082,25 +1081,25 @@ class Random_Search_Inspyred(InspyredAlgorithmBasis):
 
 	"""
 	def __init__(self,reader_obj,model_obj,option_obj):
-		InspyredAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)		
+		baseOptimizer.__init__(self, reader_obj, model_obj, option_obj)		
 		self.directory = str(option_obj.base_dir)
 		self.max_evaluation = option_obj.max_evaluation
 		self.pop_size = option_obj.pop_size
 		self.pickled_args={}
 		self.gen_min=[]
-		
+		self.pool = multiprocessing.Pool(processes=int(self.number_of_cpu))
 		for file_name in ["stat_file.txt", "ind_file.txt"]:
 			try:
 				os.remove(file_name)
 			except OSError:
 				pass
+				
 
 
 	def Optimize(self):
 		"""
 		Performs the optimization.
 		"""
-		args=self.kwargs
 		init_candidate=uniform(self.rand, {"self":self,"num_params":self.num_params})
 		self.act_min=my_candidate(array(init_candidate),self.ffun([init_candidate],{}))
 		
@@ -1108,32 +1107,22 @@ class Random_Search_Inspyred(InspyredAlgorithmBasis):
 			act_candidate=[]
 			act_fitess=[]
 			for j in range(int(self.pop_size)):
-				act_candidate.append(uniform(self.rand, {"self":self,"num_params":self.num_params}))
+				act_candidate.append([uniform(self.rand, {"self":self,"num_params":self.num_params})])
 			
-			pickled_args = {}
-			for key in args:
-				try:
-					pickle.dumps(args[key])
-					pickled_args[key] = args[key]
-				except (TypeError, pickle.PickleError, pickle.PicklingError):
-					pass
-
 			try:
-				pool = multiprocessing.Pool(processes=int(self.number_of_cpu))
-				results = evaluator(self.ffun,act_candidate,pickled_args,pool)
-				pool.close()
-				pool.join()
-				act_fitess=[r.get()[0] for r in results]
+				act_fitess=self.pool.map(self.ffun,act_candidate)
 			except (OSError, RuntimeError) as e:
 				raise
 
 			
-			for act_fit in act_fitess:
+			for act_fit,act_cand in zip(act_fitess,act_candidate):
 				if (act_fit<self.act_min.fitness):
-					self.act_min=my_candidate(array(act_candidate),act_fitess)
+					self.act_min=my_candidate(array(act_cand),act_fit)
+					
+				
 			self.gen_min.append(self.act_min)		
 
-
+		self.pool.close()
 		with open(self.directory+"/random.txt","w") as f:
 			for x in self.gen_min:
 				f.write(str(x.candidate))
@@ -1141,7 +1130,7 @@ class Random_Search_Inspyred(InspyredAlgorithmBasis):
 				f.write(str(x.fitness))
 				f.write("\n")
 
-		self.final_pop=[self.act_min]
+		self.final_pop=list(self.gen_min)
 
 
 # simple NSGA-II

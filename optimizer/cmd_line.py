@@ -75,6 +75,7 @@ def main(fname, param=None):
     axes.set_xticklabels([str(n) for n in range(0, int(t * no_traces), int((t * no_traces) / 5))])
     #print t,step
     #print axes.get_xticks()
+    
     axes.set_xlabel("time [ms]")
     if core.option_handler.type[-1]!= 'features':
         _type = core.data_handler.data.type
