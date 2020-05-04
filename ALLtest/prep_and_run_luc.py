@@ -130,7 +130,7 @@ def RunOptim():
 
 
 def main():
-	algos = ["Pareto Archived ES (PAES) - Inspyred"]
+	algos = ["Nondominated Sorted (NSGAII) - Inspyred"]
 	for evo_strat in algos:
 		evo_name=str.split(evo_strat," ")[0]+str.split(evo_strat," ")[-1]
 		print(evo_name)
