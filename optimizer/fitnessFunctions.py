@@ -982,7 +982,7 @@ class fF(object):
         except SyntaxError:
             print("Your function contained syntax errors!! Please fix them!")
         except IndexError:
-            passs
+            pass
 
 
         self.model.CreateStimuli(self.option.GetModelStim())

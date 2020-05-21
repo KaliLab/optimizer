@@ -435,7 +435,7 @@ class Single_Differential_Evolution_Pygmo(SinglePygmoAlgorithmBasis):
 		self.pop_kwargs['size'] = int(option_obj.pop_size)
 
 		self.algo_type = pg.de        
-		self.algorithm = pg.algorithm(pg.de(gen=self.max_evaluation, ftol=1e-15, tol=1e-15))
+		self.algorithm = pg.algorithm(pg.de(gen=self.max_evaluation))
 
 
 class my_candidate():
@@ -514,7 +514,7 @@ class Differential_Evolution_Pygmo(PygmoAlgorithmBasis):
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
 
-		self.algorithm = pg.algorithm(pg.de(gen=self.max_evaluation, ftol=1e-15, tol=1e-15))
+		self.algorithm = pg.algorithm(pg.de(gen=self.max_evaluation))
 
 class Covariance_Matrix_Adaptation_ES_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
@@ -1205,7 +1205,7 @@ class Pareto_Archived_ES_Inspyred(InspyredAlgorithmBasis):
 			self.evo_strat.observer=[observers.file_observer]
 
 		self.kwargs['mutation_rate'] = option_obj.mutation_rate
-		self.kwargs['num_elites'] = int(4)
+		#self.kwargs['num_elites'] = int(4)
 
 class FullGrid_Pygmo(InspyredAlgorithmBasis):
 	

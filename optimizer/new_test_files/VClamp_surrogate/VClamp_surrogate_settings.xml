@@ -7,7 +7,7 @@
   <cognitive_rate>1</cognitive_rate>
   <cooling_rate>1</cooling_rate>
   <crossover_rate>1</crossover_rate>
-  <evo_strat>Covariance Matrix Adaptation ES - Pygmo</evo_strat>
+  <evo_strat>Pareto Archived ES - Inspyred</evo_strat>
   <f_tol>1</f_tol>
   <feats>MSE, Derivative difference</feats>
   <force_bounds>True</force_bounds>
