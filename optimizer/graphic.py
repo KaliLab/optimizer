@@ -626,6 +626,7 @@ class Ui_Optimizer(object):
         Optimizer.setWindowTitle(_translate("Optimizer", "Optimizer"))
         #self.tabwidget.currentChanged.connect(self.onChange)
         #modeltab 1
+
         self.tabwidget.setTabText(self.tabwidget.indexOf(self.filetab), _translate("Optimizer", "File Tab"))
         self.label_23.setText(_translate("Optimizer", "Load mod files from:"))
         self.label_24.setText(_translate("Optimizer", "Model File"))
@@ -728,7 +729,8 @@ class Ui_Optimizer(object):
         self.param_to_record.addItems(["v","i"])
         #self.stimprot.setItemText(0, _translate("Optimizer", "IClamp"))
         #self.stimprot.setItemText(1, _translate("Optimizer", "VClamp"))
-
+        self.container = []
+        self.temp=[]
 
 
         #fittab 4
@@ -1037,11 +1039,11 @@ class Ui_Optimizer(object):
             #unit="V" if self.type_selector.GetSelection()==0 else "A" if self.type_selector.GetSelection()==1 else ""
             #self.graphicsView.set_ylabel(_type+" [" + self.core.option_handler.input_scale + "]")
             exp_data = []
-            
             for k in range(self.core.data_handler.number_of_traces()):
                 exp_data.extend(self.core.data_handler.data.GetTrace(k))
             ax = self.figure.add_subplot(111)
-            ax.plot(list(range(0, len(exp_data))), exp_data)
+            ax.plot(exp_data)
+            plt.hold(False)
             self.canvas.draw()
             plt.tight_layout()
             #self.graphicsView.set_title('PyQt Matplotlib Example')
@@ -1974,6 +1976,7 @@ class StimuliWindow(QtWidgets.QMainWindow):
         super(StimuliWindow, self).__init__()
         _translate = QtCore.QCoreApplication.translate
         self.parent=parent
+        self.temp=[]
         self.core=Core.coreModul()
         self.amplit_edit = QtWidgets.QLineEdit(self)
         self.amplit_edit.setGeometry(QtCore.QRect(120, 10, 61, 22))
@@ -1985,7 +1988,6 @@ class StimuliWindow(QtWidgets.QMainWindow):
         font.setPointSize(10)
         font.setBold(False)
         font.setWeight(50)
-        self.container = []
         self.label_amplit.setFont(font)
         self.label_amplit.setObjectName("label_amplit")
         self.label_amplit.setText(_translate("Optimizer", "Number of stimuli:"))
@@ -2000,9 +2002,15 @@ class StimuliWindow(QtWidgets.QMainWindow):
         self.pushButton_accept.setText(_translate("Optimizer", "Accept"))
         self.pushButton_accept.clicked.connect(self.Accept)
         self.pushButton_accept.setEnabled(False)
-        self.dd_type=parent.dd_type
         self.option_handler=parent.core.option_handler
         self.data_handler=parent.core.data_handler
+        if self.parent.container:
+            self.amplit_edit.setText(str(len(self.parent.container)))
+            self.container_load(self)
+            for n,v in zip(self.temp,self.parent.container):
+                n.setText(str(v))
+
+        
         try:
             if self.option_handler.type[-1]=="features":
                 self.amplit_edit.setText(str(len(self.data_handler.features_data["stim_amp"])))
@@ -2012,43 +2020,44 @@ class StimuliWindow(QtWidgets.QMainWindow):
 
     def Set(self, e):
         try:
-            self.temp = []
-            hstep = 200
-            vstep = 35
-            hoffset = 10
-            voffset = 50
-            unit="nA" if self.dd_type.currentText()==0 else "mV"
-            for l in range(min(10, int(self.amplit_edit.text()))):
-                label = QtWidgets.QLabel(self)
-                label.setGeometry(QtCore.QRect(hoffset, voffset + l * vstep, 121, 16))
-                font = QtGui.QFont()
-                font.setFamily("Ubuntu")
-                font.setPointSize(10)
-                font.setBold(False)
-                font.setWeight(50)
-                label.setFont(font)
-                label.setObjectName("label_amplit")
-                label.setText(QtCore.QCoreApplication.translate("Optimizer", "Amplitude" + str(l+1) + " ("+unit+"):"))
-                amplitude_edit = QtWidgets.QLineEdit(self)
-                amplitude_edit.setGeometry(QtCore.QRect(hstep / 2+25, voffset + l * vstep, 61, 22))
-                amplitude_edit.setObjectName("amplitude_edit")
-                label.show()
-                amplitude_edit.show()
-                #wx.StaticText(self.panel, label="Amplitude" + str(l+1) + " ("+unit+"):", pos=(hoffset, voffset + l * vstep))
-                #tmp_obj = wx.TextCtrl(self.panel, id=l, pos=(hstep / 2+25, voffset + l * vstep), size=(75, 30))
-                if self.option_handler.type[-1]=="features":
-                    amplitude_edit.setText(str(self.data_handler.features_data["stim_amp"][l]))
-
-                self.temp.append(amplitude_edit)
+            self.container_load(self)
             self.pushButton_accept.setEnabled(True)
         except:
             self.close()
         
-
+        
+    def container_load(self,e):
+        hstep = 200
+        vstep = 35
+        hoffset = 10
+        voffset = 50
+        unit="nA" if self.parent.stimprot.currentText()=="IClamp" else "mV"
+        for l in range(min(10, int(self.amplit_edit.text()))):
+            label = QtWidgets.QLabel(self)
+            label.setGeometry(QtCore.QRect(hoffset, voffset + l * vstep, 121, 16))
+            font = QtGui.QFont()
+            font.setFamily("Ubuntu")
+            font.setPointSize(10)
+            font.setBold(False)
+            font.setWeight(50)
+            label.setFont(font)
+            label.setObjectName("label_amplit")
+            label.setText(QtCore.QCoreApplication.translate("Optimizer", "Amplitude" + str(l+1) + " ("+unit+"):"))
+            amplitude_edit = QtWidgets.QLineEdit(self)
+            amplitude_edit.setGeometry(QtCore.QRect(hstep / 2+25, voffset + l * vstep, 61, 22))
+            amplitude_edit.setObjectName("amplitude_edit")
+            label.show()
+            amplitude_edit.show()
+            #wx.StaticText(self.panel, label="Amplitude" + str(l+1) + " ("+unit+"):", pos=(hoffset, voffset + l * vstep))
+            #tmp_obj = wx.TextCtrl(self.panel, id=l, pos=(hstep / 2+25, voffset + l * vstep), size=(75, 30))
+            if self.option_handler.type[-1]=="features":
+                amplitude_edit.setText(str(self.data_handler.features_data["stim_amp"][l]))
+            self.temp.append(amplitude_edit)
 
     def Accept(self, e):
+        self.parent.container=[]
         for n in range(len(self.temp)):
-            self.container.append(float(self.temp[n].text()))
+            self.parent.container.append(float(self.temp[n].text()))
         self.close()
 
     

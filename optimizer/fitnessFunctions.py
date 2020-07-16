@@ -858,6 +858,10 @@ class fF(object):
         :return: resulting fitness value
 
         """
+        print(self.option.run_controll_tstop)
+        print(self.option.run_controll_dt)
+        print(type(self.option.run_controll_tstop))
+        print(type(self.option.run_controll_dt))
         t_gen = frange(0, self.option.run_controll_tstop + self.option.run_controll_dt, self.option.run_controll_dt)
         t = []
         for n in t_gen:

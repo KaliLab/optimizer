@@ -41,8 +41,8 @@ def main(parameters):
 
 if __name__=="__main__":
     #print sys.argv
-    try:
+    #try:
         parameters=sys.argv[1:]
         main(parameters)
-    except IndexError:
-        sys.exit("Missing arguments!\n Please run the program with either -h, -g,-c arguments!")
+    #except IndexError:
+        #sys.exit("Missing arguments!\n Please run the program with either -h, -g,-c arguments!")
