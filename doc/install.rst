@@ -8,7 +8,7 @@ Get a read only copy of optimizer
 Install `git` and type:
 
 
-    git clone https://github.com/vellamike/optimizer.git
+    git clone https://github.com/KaliLab/optimizer.git
 
 More information on this here: http://rogerdudler.github.com/git-guide/
 
@@ -24,6 +24,7 @@ The following python libraries are required:
   - wxPython 
   - inspyred 
   - pyelectro
+  - eFEL
 
 The following libraries are recommended:
   - neuron
@@ -36,6 +37,12 @@ You can get `numpy`, `scipy` and `inspyred` with `easy_install` or `pip` with th
 or
 
     easy_install install numpy
+
+
+You can get eFEL with `pip`:
+    
+    pip install efel
+
    
 You can get `matplotlib` with the following command:
 
