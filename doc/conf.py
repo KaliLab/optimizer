@@ -257,4 +257,5 @@ class Mock(MagicMock):
 MOCK_MODULES = ['inspyred','wx','ec','inspyred.ec','pyelectro','scipy','numpy','analysis',
                 'pyelectro.analysis','interpolate','scipy.interpolate','matplotlib',
                 'matplotlib.backends.backend_wxagg','backends.backend_wxagg','backend_wxagg','gtk']
-sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
+#sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
+
