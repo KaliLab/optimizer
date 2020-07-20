@@ -904,6 +904,7 @@ class L_BFGS_B_Scipy(baseOptimizer):
 		self.result=optimize.fmin_l_bfgs_b(self.wrapper,
 									  x0=ndarray((self.num_params,),buffer=array(self.starting_points),offset=0,dtype=float),
 #                                      x0=ndarray( (self.num_params,1) ,buffer=array([0.784318808, 4.540607953, -11.919391073,-100]),dtype=float),
+<<<<<<< HEAD
 									  args=[[]],
 									  bounds= [(0,1)]*len(self.min_max[0]),
 									  maxfun= self.max_evaluation,
@@ -915,6 +916,19 @@ class L_BFGS_B_Scipy(baseOptimizer):
 									  )
 		print(self.result[-1]['warnflag'])
 		self.final_pop=[my_candidate(self.result[0],self.result[1])]
+=======
+                                      args=((),),
+                                      bounds= [(0,1)]*len(self.min_max[0]),
+                                      maxfun= self.max_evaluation,
+                                      fprime= None,
+                                      approx_grad= True,
+                                      factr= self.accuracy, #1e7 moderate acc, 10.0 ext high acc
+                                      iprint= 2, #>1 creates log file
+                                      pgtol= 1e-06
+                                      )
+        print self.result[-1]['warnflag']
+        self.final_pop=[my_candidate(self.result[0],self.result[1])]
+>>>>>>> e6570ab5bd74d2a71c4369332796f5a6a9a08fa0
 
 	def SetBoundaries(self,bounds):
 		"""

@@ -927,6 +927,13 @@ class fF(object):
         exp_std = features_data[feature]["std"][k]
         mod_result=traces_results[0][feature]
 
+<<<<<<< HEAD
+=======
+        #print "exp mean", exp_mean
+        #print "exp std", exp_std
+        #print "model", mod_result
+
+>>>>>>> e6570ab5bd74d2a71c4369332796f5a6a9a08fa0
         if mod_result is not None and mod_result.size > 1 and (feature == 'AP_rise_time' or feature == 'AP_amplitude' or feature == 'AP_duration_half_width' or feature == 'AP_begin_voltage' or feature == 'AP_rise_rate'):
             mod_result = scipy.mean(mod_result[1:])
         elif mod_result is not None and mod_result.size > 1:
@@ -963,7 +970,11 @@ class fF(object):
         :return: the ``list`` of fitness values corresponding to the parameter sets
 
         """
+<<<<<<< HEAD
         #modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
+=======
+
+>>>>>>> e6570ab5bd74d2a71c4369332796f5a6a9a08fa0
         self.fitnes = []
         features = self.option.feats
         #print self.option.feats   #--> [<bound method fF.AP1_amp_abstr_data of <fitnessFunctions.fF instance at 0x7f669e957128>>] (ezt adja)
@@ -1041,10 +1052,13 @@ class fF(object):
                 print("current fitness: ",temp_fit)
             temp_fit = 0
 
+<<<<<<< HEAD
         if(self.option.simulator == 'Neuron'):
             self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
 
         
+=======
+>>>>>>> e6570ab5bd74d2a71c4369332796f5a6a9a08fa0
 
         return self.fitnes
 

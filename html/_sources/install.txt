@@ -8,7 +8,7 @@ Get a read only copy of optimizer
 Install `git` and type:
 
 
-    git clone https://github.com/vellamike/optimizer.git
+    git clone https://github.com/KaliLab/optimizer.git
 
 More information on this here: http://rogerdudler.github.com/git-guide/
 
@@ -24,6 +24,7 @@ The following python libraries are required:
   - wxPython 
   - inspyred 
   - pyelectro
+  - eFEL
 
 The following libraries are recommended:
   - neuron
@@ -36,6 +37,12 @@ You can get `numpy`, `scipy` and `inspyred` with `easy_install` or `pip` with th
 or
 
     easy_install install numpy
+
+
+You can get eFEL with `pip`:
+    
+    pip install efel
+
    
 You can get `matplotlib` with the following command:
 
@@ -72,7 +79,7 @@ Installing Neuron as a python package is optional since Optimizer can use any ex
 WARNING: Many features of Optimizer are designed to work with Neuron, so we recommend that you install it!
 Installing Neuron as a python package is beyond the scope of this tutorial as it is somewhat complicated, but you can find a step-by-step guide at:
 
-    http://www.davison.webfactional.com/notes/accessing-hoc-python/
+    http://andrewdavison.info/notes/installation-neuron-python/
 
 Install optimizer
 ------------------
