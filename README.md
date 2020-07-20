@@ -43,10 +43,10 @@ or
 
     easy_install install numpy
 
-
 You can get eFEL with `pip`:
     
     pip install efel
+
 
    
 You can get `matplotlib` with the following command:
