@@ -20,7 +20,7 @@ from functools import partial
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog , QTableWidgetItem
+from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog,QSizePolicy, QLineEdit, QFileDialog , QTableWidgetItem
 from PyQt5.QtGui import *
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -165,7 +165,7 @@ class Ui_Optimizer(object):
         self.input_tree.setGeometry(QtCore.QRect(370, 130, 250, 100))
         self.model = QStandardItemModel(0, 1)
         self.widget = QtWidgets.QWidget(self.filetab)
-        self.widget.setGeometry(QtCore.QRect(290, 270, 331, 200))
+        self.widget.setGeometry(QtCore.QRect(290, 270, 351, 200))
         self.widget.setObjectName("widget")
 
 
@@ -221,7 +221,7 @@ class Ui_Optimizer(object):
         self.label_25.setFont(font)
         self.label_25.setObjectName("label_25")
         self.label_26 = QtWidgets.QLabel(self.modeltab)
-        self.label_26.setGeometry(QtCore.QRect(370, 130, 201, 16))
+        self.label_26.setGeometry(QtCore.QRect(370, 130, 221, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -279,7 +279,7 @@ class Ui_Optimizer(object):
         self.label_44.setFont(font)
         self.label_44.setObjectName("label_44")
         self.label_66 = QtWidgets.QLabel(self.simtab)
-        self.label_66.setGeometry(QtCore.QRect(220, 260, 121, 16))
+        self.label_66.setGeometry(QtCore.QRect(220, 260, 141, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -332,7 +332,7 @@ class Ui_Optimizer(object):
         font.setBold(False)
         font.setWeight(50)
         self.label_71 = QtWidgets.QLabel(self.simtab)
-        self.label_71.setGeometry(QtCore.QRect(10, 370, 160, 16))
+        self.label_71.setGeometry(QtCore.QRect(10, 370, 180, 16))
         self.label_71.setFont(font)
         self.label_71.setObjectName("label_71")
         self.lineEdit_posins = QtWidgets.QLineEdit(self.simtab)
@@ -342,7 +342,7 @@ class Ui_Optimizer(object):
         self.lineEdit_duration.setGeometry(QtCore.QRect(10, 290, 113, 22))
         self.lineEdit_duration.setObjectName("duration")
         self.label_47 = QtWidgets.QLabel(self.simtab)
-        self.label_47.setGeometry(QtCore.QRect(10, 50, 151, 16))
+        self.label_47.setGeometry(QtCore.QRect(10, 50, 171, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(11)
@@ -450,13 +450,13 @@ class Ui_Optimizer(object):
         self.fitlist.setGeometry(QtCore.QRect(10, 80, 301, 401))
         self.fitlist.setObjectName("fitlist")
         self.spike_tresh = QtWidgets.QLineEdit(self.fittab)
-        self.spike_tresh.setGeometry(QtCore.QRect(370,110, 113, 22))
+        self.spike_tresh.setGeometry(QtCore.QRect(370,110, 103, 22))
         self.spike_tresh.setObjectName("spike_tresh")
         self.spike_window = QtWidgets.QLineEdit(self.fittab)
-        self.spike_window.setGeometry(QtCore.QRect(570, 110, 113, 22))
+        self.spike_window.setGeometry(QtCore.QRect(370, 210, 103, 22))
         self.spike_window.setObjectName("spike_window")
         self.label_69 = QtWidgets.QLabel(self.fittab)
-        self.label_69.setGeometry(QtCore.QRect(330, 90, 201, 16))
+        self.label_69.setGeometry(QtCore.QRect(330, 90, 261, 16))
         self.spike_tresh.setText("0.0")
         self.spike_window.setText("1.0")
         font = QtGui.QFont()
@@ -467,7 +467,7 @@ class Ui_Optimizer(object):
         self.label_69.setFont(font)
         self.label_69.setObjectName("label_69")
         self.label_70 = QtWidgets.QLabel(self.fittab)
-        self.label_70.setGeometry(QtCore.QRect(560, 90, 151, 16))
+        self.label_70.setGeometry(QtCore.QRect(330, 190, 181, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(11)
@@ -691,6 +691,7 @@ class Ui_Optimizer(object):
         #self.vbox.setItemText(_translate("Optimizer", "Vbox"))
         self.figure = plt.figure(figsize=(4,2.5), dpi=80)
         self.canvas = FigureCanvas(self.figure)
+        self.canvas.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding)
         self.canvas.setParent(self.widget)
         #enable this later
         self.loaded_input_types=[self.tvoltage ,
@@ -1043,7 +1044,11 @@ class Ui_Optimizer(object):
                 exp_data.extend(self.core.data_handler.data.GetTrace(k))
             ax = self.figure.add_subplot(111)
             ax.cla()
-            ax.plot(exp_data)
+            if self.time_checker.isChecked() and self.freq_ctrl.text():
+                ax.plot([(x/float(self.freq_ctrl.text()))*1000 for x in range(len(exp_data))],exp_data)
+                ax.set_xlabel('time (ms)')
+            else:
+                ax.plot(exp_data)
             self.canvas.draw()
             plt.tight_layout()
             #self.graphicsView.set_title('PyQt Matplotlib Example')
@@ -1524,7 +1529,7 @@ class Ui_Optimizer(object):
         if not self.dd_type.currentIndex():
             try:
                 self.core.SecondStep({"stim" : [str(self.stimprot.currentText()), float(self.lineEdit_pos.text()), str(self.section_box.currentText())],
-                                    "stimparam" : [self.SiW.container, float(self.lineEdit_delay.text()), float(self.lineEdit_duration.text())]})
+                                    "stimparam" : [self.container, float(self.lineEdit_delay.text()), float(self.lineEdit_duration.text())]})
                 self.kwargs = {"runparam":[float(self.lineEdit_tstop.text()),
                                         float(self.lineEdit_dt.text()),
                                         str(self.param_to_record.currentText()),
@@ -1979,7 +1984,7 @@ class StimuliWindow(QtWidgets.QMainWindow):
         self.temp=[]
         self.core=Core.coreModul()
         self.amplit_edit = QtWidgets.QLineEdit(self)
-        self.amplit_edit.setGeometry(QtCore.QRect(120, 10, 61, 22))
+        self.amplit_edit.setGeometry(QtCore.QRect(140, 10, 61, 22))
         self.amplit_edit.setObjectName("amplit_edit")
         self.label_amplit = QtWidgets.QLabel(self)
         self.label_amplit.setGeometry(QtCore.QRect(10, 10, 141, 16))

@@ -1,56 +1,44 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Optimizer tutorial &mdash; optimizer 0.0.1 documentation</title>
-    
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <meta charset="utf-8" />
+    <title>Optimizer tutorial &#8212; optimizer 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.0.1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="optimizer 0.0.1 documentation" href="index.html" />
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="optimizer Package" href="optimizer.html" />
     <link rel="prev" title="Installation" href="install.html" /> 
-  </head>
-  <body>
-    <div class="related">
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="optimizer.html" title="optimizer Package"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="install.html" title="Installation"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">optimizer 0.0.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">optimizer 0.0.1 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="optimizer-tutorial">
 <h1>Optimizer tutorial<a class="headerlink" href="#optimizer-tutorial" title="Permalink to this headline">¶</a></h1>
@@ -67,56 +55,52 @@ but with arbitrary number of traces.</p>
 <div class="figure align-center">
 <img alt="_images/um001.png" src="_images/um001.png" />
 </div>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="2%" />
-<col width="98%" />
+<col style="width: 2%" />
+<col style="width: 98%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>A</td>
-<td>Path to input data.</td>
+<tbody>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>Path to input data.</p></td>
 </tr>
-<tr class="row-even"><td>B</td>
-<td>Browse the location of the input data.</td>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>Browse the location of the input data.</p></td>
 </tr>
-<tr class="row-odd"><td>C</td>
-<td>Input contains time or not.</td>
+<tr class="row-odd"><td><p>C</p></td>
+<td><p>Input contains time or not.</p></td>
 </tr>
-<tr class="row-even"><td>D</td>
-<td>Type of input (voltage or current trace).</td>
+<tr class="row-even"><td><p>D</p></td>
+<td><p>Type of input (voltage or current trace).</p></td>
 </tr>
-<tr class="row-odd"><td>E</td>
-<td>Path to base directory (resulting files will be
-stored here).</td>
+<tr class="row-odd"><td><p>E</p></td>
+<td><p>Path to base directory (resulting files will be
+stored here).</p></td>
 </tr>
-<tr class="row-even"><td>F</td>
-<td>Browse the base location.</td>
+<tr class="row-even"><td><p>F</p></td>
+<td><p>Browse the base location.</p></td>
 </tr>
-<tr class="row-odd"><td>G</td>
-<td>Input data browser (the loaded file is displayed
-under it&#8217;s type).</td>
+<tr class="row-odd"><td><p>G</p></td>
+<td><p>Number of traces in file (trace set).</p></td>
 </tr>
-<tr class="row-even"><td>H</td>
-<td>Number of traces in file (trace set).</td>
+<tr class="row-even"><td><p>H</p></td>
+<td><p>Units of the data.</p></td>
 </tr>
-<tr class="row-odd"><td>I</td>
-<td>Units of the data.</td>
+<tr class="row-odd"><td><p>I</p></td>
+<td><p>Length of trace(s). (in case of multiple traces, they
+must have the same length)</p></td>
 </tr>
-<tr class="row-even"><td>J</td>
-<td>Length of trace(s). (in case of multiple traces, they
-must have the same length)</td>
+<tr class="row-even"><td><p>J</p></td>
+<td><p>Sampling frequency (in case of multiple traces,
+they must have the same).</p></td>
 </tr>
-<tr class="row-odd"><td>K</td>
-<td>Sampling frequency (in case of multiple traces,
-they must have the same).</td>
+<tr class="row-odd"><td><p>K</p></td>
+<td><p>Loads the trace(s) from the given file.</p></td>
 </tr>
-<tr class="row-even"><td>L</td>
-<td>Loads the trace(s) from the given file.</td>
-</tr>
-<tr class="row-odd"><td>M</td>
-<td>Displays the loaded trace (if given file contains
+<tr class="row-even"><td><p>L</p></td>
+<td><p>Displays the loaded trace (if given file contains
 more, the trace will be concatenated for
-displaying).</td>
+displaying).</p></td>
 </tr>
 </tbody>
 </table>
@@ -127,7 +111,7 @@ displaying).</td>
 If the user decided to use Neuron as the simulator then the model file must contain only the necessary
 structure and mechanisms. The model can be loaded simply after selecting the model file and the
 special folder where the necessary .mod files are located (optional).
-As Neuron can not load it&#8217;s .dlls after startup, if the special files were not found, the software must be
+As Neuron can not load it’s .dlls after startup, if the special files were not found, the software must be
 restarted. Once the model is loaded successfully, the content of the model will be displayed, and the
 user can select the parameters by picking them int the list and pressing the “set” button. Removing a
 parameter is done in a similar fashion.
@@ -136,58 +120,58 @@ optimization.</p>
 <div class="figure align-center">
 <img alt="_images/um003.png" src="_images/um003.png" />
 </div>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="1%" />
-<col width="99%" />
+<col style="width: 1%" />
+<col style="width: 99%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>A</td>
-<td>Path to model file.</td>
+<tbody>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>Path to model file.</p></td>
 </tr>
-<tr class="row-even"><td>B</td>
-<td>Browser for model file.</td>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>Browser for model file.</p></td>
 </tr>
-<tr class="row-odd"><td>C</td>
-<td>Loads the specified model.</td>
+<tr class="row-odd"><td><p>C</p></td>
+<td><p>Loads the specified model.</p></td>
 </tr>
-<tr class="row-even"><td>D</td>
-<td>Simulator type selection (Neuron or external)</td>
+<tr class="row-even"><td><p>D</p></td>
+<td><p>Simulator type selection (Neuron or external)</p></td>
 </tr>
-<tr class="row-odd"><td>E</td>
-<td>Path to special files (the compiled mod files for
+<tr class="row-odd"><td><p>E</p></td>
+<td><p>Path to special files (the compiled mod files for
 Neuron), this should point to a folder, which
 contains the folder of the compiled files (e.g.: to a
-folder which has an x86-64 directory)</td>
+folder which has an x86-64 directory)</p></td>
 </tr>
-<tr class="row-even"><td>F</td>
-<td>Browser for special file location.</td>
+<tr class="row-even"><td><p>F</p></td>
+<td><p>Browser for special file location.</p></td>
 </tr>
-<tr class="row-odd"><td>G</td>
-<td>Here you can give the command which invokes
+<tr class="row-odd"><td><p>G</p></td>
+<td><p>Here you can give the command which invokes
 the external simulator. The given command must
 consists of the following:
 - the command that calls the simulator
 - the name of the model
 - options to the simulator (optional)
-- as the last parameter, the number of parameters subject to optimization</td>
+- as the last parameter, the number of parameters subject to optimization</p></td>
 </tr>
-<tr class="row-even"><td>H</td>
-<td>Displays the recognized parameters. These can be
+<tr class="row-even"><td><p>H</p></td>
+<td><p>Displays the recognized parameters. These can be
 selected for optimization. If the parameters you
 need, are missing, you can create a user defined
-function.</td>
+function.</p></td>
 </tr>
-<tr class="row-odd"><td>I</td>
-<td>Opens the window to define/load your own
-function for the optimization.</td>
+<tr class="row-odd"><td><p>I</p></td>
+<td><p>Opens the window to define/load your own
+function for the optimization.</p></td>
 </tr>
-<tr class="row-even"><td>J</td>
-<td>Adds the currently selected parameter to the list of
-parameters subject to optimization.</td>
+<tr class="row-even"><td><p>J</p></td>
+<td><p>Adds the currently selected parameter to the list of
+parameters subject to optimization.</p></td>
 </tr>
-<tr class="row-odd"><td>K</td>
-<td>Removes the parameter from the aforementioned list.</td>
+<tr class="row-odd"><td><p>K</p></td>
+<td><p>Removes the parameter from the aforementioned list.</p></td>
 </tr>
 </tbody>
 </table>
@@ -198,7 +182,7 @@ parameters subject to optimization.</td>
 If the user decided to use Neuron as the simulator then the model file must contain only the necessary
 structure and mechanisms. The model can be loaded simply after selecting the model file and the
 special folder where the necessary .mod files are located (optional).
-As Neuron can not load it&#8217;s .dlls after startup, if the special files were not found, the software must be
+As Neuron can not load it’s .dlls after startup, if the special files were not found, the software must be
 restarted. Once the model is loaded successfully, the content of the model will be displayed, and the
 user can select the parameters by picking them int the list and pressing the “set” button. Removing a
 parameter is done in a similar fashion.
@@ -222,55 +206,55 @@ where the measurement takes place.</p>
 <div class="figure align-center">
 <img alt="_images/um006.png" src="_images/um006.png" />
 </div>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="2%" />
-<col width="98%" />
+<col style="width: 2%" />
+<col style="width: 98%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>A</td>
-<td>Stimulation protocol (Vclamp or Iclamp).</td>
+<tbody>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>Stimulation protocol (Vclamp or Iclamp).</p></td>
 </tr>
-<tr class="row-even"><td>B</td>
-<td>Type of the stimulus (Step protocol or Custom
-Waveform).</td>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>Type of the stimulus (Step protocol or Custom
+Waveform).</p></td>
 </tr>
-<tr class="row-odd"><td>C</td>
-<td>Opens the window for specifying step amplitudes
-or loading custom waveform (depending on the</td>
+<tr class="row-odd"><td><p>C</p></td>
+<td><p>Opens the window for specifying step amplitudes
+or loading custom waveform (depending on the</p></td>
 </tr>
-<tr class="row-even"><td>p</td>
-<td>revious options).</td>
+<tr class="row-even"><td><p>p</p></td>
+<td><p>revious options).</p></td>
 </tr>
-<tr class="row-odd"><td>D</td>
-<td>Delay of stimulus onset.</td>
+<tr class="row-odd"><td><p>D</p></td>
+<td><p>Delay of stimulus onset.</p></td>
 </tr>
-<tr class="row-even"><td>E</td>
-<td>Duration of stimulus.</td>
+<tr class="row-even"><td><p>E</p></td>
+<td><p>Duration of stimulus.</p></td>
 </tr>
-<tr class="row-odd"><td>F</td>
-<td>Section which receives stimulus.</td>
+<tr class="row-odd"><td><p>F</p></td>
+<td><p>Section which receives stimulus.</p></td>
 </tr>
-<tr class="row-even"><td>G</td>
-<td>Point of stimulation inside the section.</td>
+<tr class="row-even"><td><p>G</p></td>
+<td><p>Point of stimulation inside the section.</p></td>
 </tr>
-<tr class="row-odd"><td>H</td>
-<td>The parameter to be recorded.</td>
+<tr class="row-odd"><td><p>H</p></td>
+<td><p>The parameter to be recorded.</p></td>
 </tr>
-<tr class="row-even"><td>I</td>
-<td>The section where the recordings takes place.</td>
+<tr class="row-even"><td><p>I</p></td>
+<td><p>The section where the recordings takes place.</p></td>
 </tr>
-<tr class="row-odd"><td>J</td>
-<td>Position inside the recording section.</td>
+<tr class="row-odd"><td><p>J</p></td>
+<td><p>Position inside the recording section.</p></td>
 </tr>
-<tr class="row-even"><td>K</td>
-<td>Initial membrane potential.</td>
+<tr class="row-even"><td><p>K</p></td>
+<td><p>Initial membrane potential.</p></td>
 </tr>
-<tr class="row-odd"><td>L</td>
-<td>Length of the recording.</td>
+<tr class="row-odd"><td><p>L</p></td>
+<td><p>Length of the recording.</p></td>
 </tr>
-<tr class="row-even"><td>M</td>
-<td>Integration step size.</td>
+<tr class="row-even"><td><p>M</p></td>
+<td><p>Integration step size.</p></td>
 </tr>
 </tbody>
 </table>
@@ -284,23 +268,23 @@ acceptable as well. The user can fine tune the behavior of the functions by givi
 <div class="figure align-center">
 <img alt="_images/um008.png" src="_images/um008.png" />
 </div>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="2%" />
-<col width="98%" />
+<col style="width: 2%" />
+<col style="width: 98%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>A</td>
-<td>List of available fitness function.</td>
+<tbody>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>List of available fitness function.</p></td>
 </tr>
-<tr class="row-even"><td>B</td>
-<td>Weight assigned to the selected function.</td>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>Weight assigned to the selected function.</p></td>
 </tr>
-<tr class="row-odd"><td>C</td>
-<td>Parameters passed to the fitness functions.</td>
+<tr class="row-odd"><td><p>C</p></td>
+<td><p>Parameters passed to the fitness functions.</p></td>
 </tr>
-<tr class="row-even"><td>D</td>
-<td>Normalizes the weights (not necessary).</td>
+<tr class="row-even"><td><p>D</p></td>
+<td><p>Normalizes the weights (not necessary).</p></td>
 </tr>
 </tbody>
 </table>
@@ -316,31 +300,31 @@ local algorithms the algorithm will start form the point specified by the parame
 <div class="figure align-center">
 <img alt="_images/um009.png" src="_images/um009.png" />
 </div>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="2%" />
-<col width="98%" />
+<col style="width: 2%" />
+<col style="width: 98%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>A</td>
-<td>Seed for the random generator.</td>
+<tbody>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>Seed for the random generator.</p></td>
 </tr>
-<tr class="row-even"><td>B</td>
-<td>Selected algorithm.</td>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>Selected algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td>C</td>
-<td>Boundaries of the parameters subject to
-optimization.</td>
+<tr class="row-odd"><td><p>C</p></td>
+<td><p>Boundaries of the parameters subject to
+optimization.</p></td>
 </tr>
-<tr class="row-even"><td>D</td>
-<td>Starting points</td>
+<tr class="row-even"><td><p>D</p></td>
+<td><p>Starting points</p></td>
 </tr>
-<tr class="row-odd"><td>E</td>
-<td>Run the optimization.</td>
+<tr class="row-odd"><td><p>E</p></td>
+<td><p>Run the optimization.</p></td>
 </tr>
-<tr class="row-even"><td>F</td>
-<td>Depending on the selected algorithm, different
-settings will appear here.</td>
+<tr class="row-even"><td><p>F</p></td>
+<td><p>Depending on the selected algorithm, different
+settings will appear here.</p></td>
 </tr>
 </tbody>
 </table>
@@ -350,18 +334,18 @@ settings will appear here.</td>
 <div class="figure align-center">
 <img alt="_images/um011.png" src="_images/um011.png" />
 </div>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="2%" />
-<col width="98%" />
+<col style="width: 2%" />
+<col style="width: 98%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>A</td>
-<td>The resulting parameters.</td>
+<tbody>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>The resulting parameters.</p></td>
 </tr>
-<tr class="row-even"><td>B</td>
-<td>The trace(s) obtained with the resulting
-parameters.</td>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>The trace(s) obtained with the resulting
+parameters.</p></td>
 </tr>
 </tbody>
 </table>
@@ -371,28 +355,28 @@ parameters.</td>
 <div class="figure align-center">
 <img alt="_images/um012.png" src="_images/um012.png" />
 </div>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="1%" />
-<col width="99%" />
+<col style="width: 1%" />
+<col style="width: 99%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>A</td>
-<td>The obtained parameters.</td>
+<tbody>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>The obtained parameters.</p></td>
 </tr>
-<tr class="row-even"><td>B</td>
-<td>Fitness statistics (only in case of inspyred
-algorithms: Classical EO, SA)</td>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>Fitness statistics (only in case of inspyred
+algorithms: Classical EO, SA)</p></td>
 </tr>
-<tr class="row-odd"><td>C</td>
-<td>Fitness components: name of fitness function; fitness value;calculated by the function; weight assigned to the function; the weighted fitness value; the resulting cumulated fitness value.</td>
+<tr class="row-odd"><td><p>C</p></td>
+<td><p>Fitness components: name of fitness function; fitness value;calculated by the function; weight assigned to the function; the weighted fitness value; the resulting cumulated fitness value.</p></td>
 </tr>
-<tr class="row-even"><td>D</td>
-<td>Displays the “state” of the population during the
-evolution. (only for inspyred algorithms)</td>
+<tr class="row-even"><td><p>D</p></td>
+<td><p>Displays the “state” of the population during the
+evolution. (only for inspyred algorithms)</p></td>
 </tr>
-<tr class="row-odd"><td>E</td>
-<td>Displays the given proximity of the optimum.</td>
+<tr class="row-odd"><td><p>E</p></td>
+<td><p>Displays the given proximity of the optimum.</p></td>
 </tr>
 </tbody>
 </table>
@@ -402,69 +386,69 @@ evolution. (only for inspyred algorithms)</td>
 <div class="figure align-center">
 <img alt="_images/um014.png" src="_images/um014.png" />
 </div>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="2%" />
-<col width="98%" />
+<col style="width: 2%" />
+<col style="width: 98%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>A</td>
-<td>Entry field for function definition.</td>
+<tbody>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>Entry field for function definition.</p></td>
 </tr>
-<tr class="row-even"><td>B</td>
-<td>Load a previously defined function from a txt.</td>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>Load a previously defined function from a txt.</p></td>
 </tr>
-<tr class="row-odd"><td>C</td>
-<td>Done editing, save function and continue.</td>
+<tr class="row-odd"><td><p>C</p></td>
+<td><p>Done editing, save function and continue.</p></td>
 </tr>
-<tr class="row-even"><td>D</td>
-<td>Discard function and go back.</td>
+<tr class="row-even"><td><p>D</p></td>
+<td><p>Discard function and go back.</p></td>
 </tr>
 </tbody>
 </table>
 <div class="figure align-center">
 <img alt="_images/um015.png" src="_images/um015.png" />
 </div>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="2%" />
-<col width="98%" />
+<col style="width: 2%" />
+<col style="width: 98%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>A</td>
-<td>Number of stimuli.</td>
+<tbody>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>Number of stimuli.</p></td>
 </tr>
-<tr class="row-even"><td>B</td>
-<td>Create the specified number of stimuli.</td>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>Create the specified number of stimuli.</p></td>
 </tr>
-<tr class="row-odd"><td>C</td>
-<td>Specify the amplitude of the stimuli.</td>
+<tr class="row-odd"><td><p>C</p></td>
+<td><p>Specify the amplitude of the stimuli.</p></td>
 </tr>
 </tbody>
 </table>
 <div class="figure align-center">
 <img alt="_images/um016.png" src="_images/um016.png" />
 </div>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="2%" />
-<col width="98%" />
+<col style="width: 2%" />
+<col style="width: 98%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>A</td>
-<td>The list of selected parameters.</td>
+<tbody>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>The list of selected parameters.</p></td>
 </tr>
-<tr class="row-even"><td>B</td>
-<td>Lower bounds.</td>
+<tr class="row-even"><td><p>B</p></td>
+<td><p>Lower bounds.</p></td>
 </tr>
-<tr class="row-odd"><td>C</td>
-<td>Upper bounds.</td>
+<tr class="row-odd"><td><p>C</p></td>
+<td><p>Upper bounds.</p></td>
 </tr>
-<tr class="row-even"><td>D</td>
-<td>Load boundaries from file.</td>
+<tr class="row-even"><td><p>D</p></td>
+<td><p>Load boundaries from file.</p></td>
 </tr>
-<tr class="row-odd"><td>E</td>
-<td>Boundaries are set, continue.</td>
+<tr class="row-odd"><td><p>E</p></td>
+<td><p>Boundaries are set, continue.</p></td>
 </tr>
 </tbody>
 </table>
@@ -475,9 +459,9 @@ evolution. (only for inspyred algorithms)</td>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
+  <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Optimizer tutorial</a><ul>
 <li><a class="reference internal" href="#layer-1">Layer 1</a></li>
@@ -498,49 +482,45 @@ evolution. (only for inspyred algorithms)</td>
   <h4>Next topic</h4>
   <p class="topless"><a href="optimizer.html"
                         title="next chapter">optimizer Package</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/tutorial.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/tutorial.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="optimizer.html" title="optimizer Package"
              >next</a> |</li>
         <li class="right" >
           <a href="install.html" title="Installation"
              >previous</a> |</li>
-        <li><a href="index.html">optimizer 0.0.1 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">optimizer 0.0.1 documentation</a> &#187;</li> 
       </ul>
     </div>
-    <div class="footer">
-        &copy; Copyright 2013, Szabolcs Káli, Péter Friedrich, Mike Vella.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2013, Szabolcs Káli, Péter Friedrich, Mike Vella.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.2.
     </div>
   </body>
 </html>
