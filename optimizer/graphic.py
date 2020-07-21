@@ -1042,8 +1042,8 @@ class Ui_Optimizer(object):
             for k in range(self.core.data_handler.number_of_traces()):
                 exp_data.extend(self.core.data_handler.data.GetTrace(k))
             ax = self.figure.add_subplot(111)
+            ax.cla()
             ax.plot(exp_data)
-            plt.hold(False)
             self.canvas.draw()
             plt.tight_layout()
             #self.graphicsView.set_title('PyQt Matplotlib Example')
@@ -1098,194 +1098,7 @@ class Ui_Optimizer(object):
                 self.my_list = copy(self.core.ffun_calc_list)
                
         else:
-<<<<<<< HEAD
             self.my_list=list(self.core.data_handler.features_data.keys())[3:]
-=======
-            self.tstop_ctrl.SetValue(str(self.core.data_handler.features_data["stim_delay"] + self.core.data_handler.features_data["stim_duration"]+100))
-        self.column2.Add(descr4, flag=wx.UP, border=15)
-        self.column2.Add(self.tstop_ctrl, flag=wx.UP, border=5)
-
-        descr5 = wx.StaticText(self.panel, label='dt')
-        self.dt_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="dt")
-        self.dt_ctrl.SetValue(str(0.05))
-        self.column2.Add(descr5, flag=wx.UP, border=15)
-        self.column2.Add(self.dt_ctrl, flag=wx.UP, border=5)
-
-
-
-
-        self.final_sizer.Add(self.column2, flag=wx.LEFT, border=75)
-
-
-
-
-
-
-        self.panel.SetSizer(self.final_sizer)
-
-
-
-    def typeChange(self,e):
-        if self.stimuli_type.GetSelection()==0:#step prot
-            self.stimuli.Enable()
-            self.stimuli2.Disable()
-            self.del_ctrl.Enable()
-            self.dur_ctrl.Enable()
-            self.stimuli2.Hide()
-            self.stimuli.Show()
-            self.final_sizer.Layout()
-            #hide wave button
-        if self.stimuli_type.GetSelection()==1:#wave prot
-            self.stimuli2.Enable()
-            self.stimuli.Disable()
-            self.del_ctrl.Disable()
-            self.del_ctrl.SetValue("0")
-            self.dur_ctrl.Disable()
-            self.dur_ctrl.SetValue("1e9")
-            self.stimuli.Hide()
-            self.stimuli2.Show()
-            self.final_sizer.Layout()
-            #hide step button
-
-    def protocolSelection(self,e):
-        if self.dd_type.GetSelection()==1:
-            self.dd_sec.Disable()
-            self.pos_ctrl2.Disable()
-            self.dd_record.SetSelection(1)
-        else:
-            self.dd_sec.Enable()
-            self.pos_ctrl2.Enable()
-
-    def secChange(self,e):
-        if self.dd_type.GetSelection()==1:
-            self.dd_sec.SetSelection(self.dd_sec1.GetSelection())
-
-    def posChange(self,e):
-        if self.dd_type.GetSelection()==1:
-            self.pos_ctrl2.SetValue(self.pos_ctrl.GetValue())
-
-    def Stimuli(self, e):
-        self.stim_window = stimuliwindow(self, self.core)
-
-    def Stimuli2(self,e):
-        self.stim_window = stimuliwindow2(self)
-        dlg = wx.FileDialog(self, "Choose a file", os.getcwd(), "", "*.*", style=wx.OPEN)
-        if dlg.ShowModal() == wx.ID_OK:
-            input_file = dlg.GetDirectory() + "/" + dlg.GetFilename()
-        dlg.Destroy()
-        self.stim_window.container.append(input_file)
-#        self.del_ctrl.SetValue("0")
-#        self.del_ctrl.Disable()
-#        self.dur_ctrl.SetValue("0")
-#        self.dur_ctrl.Disable()
-
-    def Next(self, e):
-        try:
-            self.core.SecondStep({"stim" : [str(self.dd_type.GetItems()[self.dd_type.GetCurrentSelection()]), float(self.pos_ctrl.GetValue()), str(self.dd_sec1.GetItems()[self.dd_sec1.GetCurrentSelection()])],
-                                  "stimparam" : [self.stim_window.container, float(self.del_ctrl.GetValue()), float(self.dur_ctrl.GetValue())]})
-            self.kwargs = {"runparam":[float(self.tstop_ctrl.GetValue()),
-                                    float(self.dt_ctrl.GetValue()),
-                                    str(self.dd_record.GetItems()[self.dd_record.GetCurrentSelection()]),
-                                    str(self.dd_sec.GetItems()[self.dd_sec.GetCurrentSelection()]),
-                                    float(self.pos_ctrl2.GetValue()),
-                                    float(self.vrest_ctrl.GetValue())]}
-            if self.core.option_handler.output_level=="1":
-                print {"stim" : [str(self.dd_type.GetItems()[self.dd_type.GetCurrentSelection()]), float(self.pos_ctrl.GetValue()), str(self.dd_sec1.GetItems()[self.dd_sec1.GetCurrentSelection()])],
-                       "stimparam" : [self.stim_window.container, float(self.del_ctrl.GetValue()), float(self.dur_ctrl.GetValue())]}
-                print self.kwargs
-        except AttributeError:
-            wx.MessageBox("No stimulus amplitude was selected!","Error", wx.OK | wx.ICON_ERROR)
-        except ValueError:
-            wx.MessageBox('Some of the cells are empty. Please fill out all of them!', 'Error', wx.OK | wx.ICON_ERROR)
-        try:
-            #self.layer.Design()
-            self.layer.Show()
-            self.layer.kwargs=self.kwargs
-        except AttributeError:
-            #self.layer = algorithmLayer(self, 4, self.Size, "Select Algorithm", self.core, self.path, self.kwargs)
-            self.layer = ffunctionLayer(self, 4, self.Size, "Fitness Function Selection", self.core, self.path, self.kwargs)
-            #self.layer.Design()
-            self.layer.Show()
-        self.Hide()
-
-    def Prev(self, e):
-        self.Hide()
-        self.parent.Show()
-
-    def my_close(self, e):
-        wx.Exit()
-
-
-
-
-
-
-
-#optimizer settings
-#fittnes function settings
-#might need new interface
-class ffunctionLayer(wx.Frame):
-    def __init__(self, parent, ID, size, title, core, path, kwargs):
-        wx.Frame.__init__(self, parent, ID, title=title, size=size)
-        self.Bind(wx.EVT_CLOSE, self.my_close)
-        self.core = core
-        self.panel = wx.Panel(self)
-        self.parent = parent
-
-        #this will need to be wrapped in a try statement later:
-        import optimizer
-        #print optimizer.__file__
-        path = os.path.dirname(optimizer.__file__)
-
-        self.path = path
-        self.Center()
-        self.ToolbarCreator()
-        self.Design()
-        self.seed = None
-        self.kwargs = kwargs
-
-        #print "ffun",kwargs
-        self.layer = None
-
-    def ToolbarCreator(self):
-        self.toolbar = self.CreateToolBar()
-        button_toolbar_bward = self.toolbar.AddLabelTool(wx.ID_ANY, 'PrevLayer', wx.Bitmap(self.path + "/2leftarrow.png"))
-        button_toolbar_fward = self.toolbar.AddLabelTool(wx.ID_FORWARD, 'NextLayer', wx.Bitmap(self.path + "/2rightarrow.png"))
-        self.toolbar.Realize()
-        self.Bind(wx.EVT_TOOL, self.Next, button_toolbar_fward)
-        self.Bind(wx.EVT_TOOL, self.Prev, button_toolbar_bward)
-        self.toolbar.EnableTool(wx.ID_FORWARD, True)
-
-    def Design(self):
-
-        self.column1 = wx.BoxSizer(wx.VERTICAL)
-        self.column2 = wx.BoxSizer(wx.VERTICAL)
-        self.row0 = wx.BoxSizer(wx.HORIZONTAL)
-
-        descr0 = wx.StaticText(self.panel, label='Fitness Functions')
-        descr0.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
-
-        descr1 = wx.StaticText(self.panel, label='Weights')
-
-        self.row0.Add(descr1)
-
-        #descr2 = wx.StaticText(self.panel, label='Normalized Weights')
-
-
-        #self.row0.Add(descr2, flag=wx.LEFT, border=10)
-
-        descr3 = wx.StaticText(self.panel, label='Function Parameters')
-        descr3.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
-
-        self.row0.Add(descr3, flag=wx.LEFT, border=10)
-        self.column2.Add(self.row0, flag=wx.BOTTOM, border=8)
-
-        if self.core.option_handler.type[-1]!="features":
-            self.my_list = copy(self.core.ffun_calc_list)
-            #self.my_list=["ffun1","ffun","ffun3"]
-        else:
-            self.my_list=self.core.data_handler.features_data.keys()[3:]
->>>>>>> e6570ab5bd74d2a71c4369332796f5a6a9a08fa0
         self.param_list = [[]] * len(self.my_list)
         if self.core.option_handler.type[-1]!="features":
             self.param_list[2] = [("Spike Detection Thres. (mv)",0.0)]
@@ -1730,7 +1543,6 @@ class ffunctionLayer(wx.Frame):
                 errpop.append("There was an error")
 
         try:
-<<<<<<< HEAD
             if self.core.option_handler.type[-1]!="features":
                 self.kwargs.update({"feat":
                                     [{"Spike Detection Thres. (mv)": float(self.spike_tresh.text()), "Spike Window (ms)":float(self.spike_window.text())},
@@ -1754,10 +1566,6 @@ class ffunctionLayer(wx.Frame):
             algo_name=str(self.algolist.item(selected_algo[0].row(), 0).text())
             tmp = {"seed" : int(self.aspectlist.item(0,1).text()),
                 "evo_strat" : str(algo_name)
-=======
-            tmp = {"seed" : int(self.seed_ctrl.GetValue()),
-                "evo_strat" : str(self.dd_evo.GetItems()[self.dd_evo.GetCurrentSelection()])
->>>>>>> e6570ab5bd74d2a71c4369332796f5a6a9a08fa0
                 }
             #for n in self.algo_param:
                 #tmp.update({str(n[1]) : float(n[0].GetValue())})
