@@ -9,7 +9,7 @@
   <crossover_rate>None</crossover_rate>
   <evo_strat>Evolutionary Algorithm (EA) - Inspyred</evo_strat>
   <f_tol>None</f_tol>
-  <feats>MSE, PPTD</feats>
+  <feats>MSE (excl. spikes), Spike count</feats>
   <force_bounds>False</force_bounds>
   <inertia>None</inertia>
   <init_temp>None</init_temp>
@@ -44,18 +44,18 @@
   <social_rate>None</social_rate>
   <spike_thres>0.0</spike_thres>
   <spike_window>40.0</spike_window>
-  <start_time_stamp>1594840658.3187103</start_time_stamp>
+  <start_time_stamp>1595953992.1640356</start_time_stamp>
   <starting_points>None</starting_points>
   <std_gauss>None</std_gauss>
   <step_size>None</step_size>
-  <stim_amp>[0.3]</stim_amp>
+  <stim_amp>[0.3, 0.3]</stim_amp>
   <stim_del>200.0</stim_del>
   <stim_dur>500.0</stim_dur>
   <stim_pos>0.5</stim_pos>
   <stim_sec>soma</stim_sec>
   <stim_type>IClamp</stim_type>
   <temperature>None</temperature>
-  <type>['voltage', 'voltage']</type>
+  <type>['voltage']</type>
   <u_fun_string>&quot;&quot;</u_fun_string>
   <update_freq>None</update_freq>
   <weights>[0.5, 0.5]</weights>

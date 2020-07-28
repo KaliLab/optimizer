@@ -279,7 +279,7 @@ class Ui_Optimizer(object):
         self.label_44.setFont(font)
         self.label_44.setObjectName("label_44")
         self.label_66 = QtWidgets.QLabel(self.simtab)
-        self.label_66.setGeometry(QtCore.QRect(220, 260, 121, 16))
+        self.label_66.setGeometry(QtCore.QRect(220, 260, 141, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -332,7 +332,7 @@ class Ui_Optimizer(object):
         font.setBold(False)
         font.setWeight(50)
         self.label_71 = QtWidgets.QLabel(self.simtab)
-        self.label_71.setGeometry(QtCore.QRect(10, 370, 160, 16))
+        self.label_71.setGeometry(QtCore.QRect(10, 370, 180, 16))
         self.label_71.setFont(font)
         self.label_71.setObjectName("label_71")
         self.lineEdit_posins = QtWidgets.QLineEdit(self.simtab)
@@ -342,7 +342,7 @@ class Ui_Optimizer(object):
         self.lineEdit_duration.setGeometry(QtCore.QRect(10, 290, 113, 22))
         self.lineEdit_duration.setObjectName("duration")
         self.label_47 = QtWidgets.QLabel(self.simtab)
-        self.label_47.setGeometry(QtCore.QRect(10, 50, 151, 16))
+        self.label_47.setGeometry(QtCore.QRect(10, 50, 171, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(11)
@@ -453,10 +453,10 @@ class Ui_Optimizer(object):
         self.spike_tresh.setGeometry(QtCore.QRect(370,110, 113, 22))
         self.spike_tresh.setObjectName("spike_tresh")
         self.spike_window = QtWidgets.QLineEdit(self.fittab)
-        self.spike_window.setGeometry(QtCore.QRect(570, 110, 113, 22))
+        self.spike_window.setGeometry(QtCore.QRect(370, 210, 113, 22))
         self.spike_window.setObjectName("spike_window")
         self.label_69 = QtWidgets.QLabel(self.fittab)
-        self.label_69.setGeometry(QtCore.QRect(330, 90, 201, 16))
+        self.label_69.setGeometry(QtCore.QRect(330, 90, 241, 16))
         self.spike_tresh.setText("0.0")
         self.spike_window.setText("1.0")
         font = QtGui.QFont()
@@ -467,7 +467,7 @@ class Ui_Optimizer(object):
         self.label_69.setFont(font)
         self.label_69.setObjectName("label_69")
         self.label_70 = QtWidgets.QLabel(self.fittab)
-        self.label_70.setGeometry(QtCore.QRect(560, 90, 151, 16))
+        self.label_70.setGeometry(QtCore.QRect(330, 190, 191, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(11)
@@ -1039,11 +1039,16 @@ class Ui_Optimizer(object):
             #unit="V" if self.type_selector.GetSelection()==0 else "A" if self.type_selector.GetSelection()==1 else ""
             #self.graphicsView.set_ylabel(_type+" [" + self.core.option_handler.input_scale + "]")
             exp_data = []
+            
+            freq=int(self.freq_ctrl.text())
             for k in range(self.core.data_handler.number_of_traces()):
                 exp_data.extend(self.core.data_handler.data.GetTrace(k))
             ax = self.figure.add_subplot(111)
-            ax.plot(exp_data)
-            plt.hold(False)
+            ax.cla()
+            if self.time_checker.isChecked():
+               ax.plot([x/freq*1000 for x in range(len(exp_data))],exp_data) 
+            else:
+                ax.plot(exp_data)
             self.canvas.draw()
             plt.tight_layout()
             #self.graphicsView.set_title('PyQt Matplotlib Example')
@@ -1098,194 +1103,7 @@ class Ui_Optimizer(object):
                 self.my_list = copy(self.core.ffun_calc_list)
                
         else:
-<<<<<<< HEAD
             self.my_list=list(self.core.data_handler.features_data.keys())[3:]
-=======
-            self.tstop_ctrl.SetValue(str(self.core.data_handler.features_data["stim_delay"] + self.core.data_handler.features_data["stim_duration"]+100))
-        self.column2.Add(descr4, flag=wx.UP, border=15)
-        self.column2.Add(self.tstop_ctrl, flag=wx.UP, border=5)
-
-        descr5 = wx.StaticText(self.panel, label='dt')
-        self.dt_ctrl = wx.TextCtrl(self.panel, id=wx.ID_ANY, size=(100, 30), name="dt")
-        self.dt_ctrl.SetValue(str(0.05))
-        self.column2.Add(descr5, flag=wx.UP, border=15)
-        self.column2.Add(self.dt_ctrl, flag=wx.UP, border=5)
-
-
-
-
-        self.final_sizer.Add(self.column2, flag=wx.LEFT, border=75)
-
-
-
-
-
-
-        self.panel.SetSizer(self.final_sizer)
-
-
-
-    def typeChange(self,e):
-        if self.stimuli_type.GetSelection()==0:#step prot
-            self.stimuli.Enable()
-            self.stimuli2.Disable()
-            self.del_ctrl.Enable()
-            self.dur_ctrl.Enable()
-            self.stimuli2.Hide()
-            self.stimuli.Show()
-            self.final_sizer.Layout()
-            #hide wave button
-        if self.stimuli_type.GetSelection()==1:#wave prot
-            self.stimuli2.Enable()
-            self.stimuli.Disable()
-            self.del_ctrl.Disable()
-            self.del_ctrl.SetValue("0")
-            self.dur_ctrl.Disable()
-            self.dur_ctrl.SetValue("1e9")
-            self.stimuli.Hide()
-            self.stimuli2.Show()
-            self.final_sizer.Layout()
-            #hide step button
-
-    def protocolSelection(self,e):
-        if self.dd_type.GetSelection()==1:
-            self.dd_sec.Disable()
-            self.pos_ctrl2.Disable()
-            self.dd_record.SetSelection(1)
-        else:
-            self.dd_sec.Enable()
-            self.pos_ctrl2.Enable()
-
-    def secChange(self,e):
-        if self.dd_type.GetSelection()==1:
-            self.dd_sec.SetSelection(self.dd_sec1.GetSelection())
-
-    def posChange(self,e):
-        if self.dd_type.GetSelection()==1:
-            self.pos_ctrl2.SetValue(self.pos_ctrl.GetValue())
-
-    def Stimuli(self, e):
-        self.stim_window = stimuliwindow(self, self.core)
-
-    def Stimuli2(self,e):
-        self.stim_window = stimuliwindow2(self)
-        dlg = wx.FileDialog(self, "Choose a file", os.getcwd(), "", "*.*", style=wx.OPEN)
-        if dlg.ShowModal() == wx.ID_OK:
-            input_file = dlg.GetDirectory() + "/" + dlg.GetFilename()
-        dlg.Destroy()
-        self.stim_window.container.append(input_file)
-#        self.del_ctrl.SetValue("0")
-#        self.del_ctrl.Disable()
-#        self.dur_ctrl.SetValue("0")
-#        self.dur_ctrl.Disable()
-
-    def Next(self, e):
-        try:
-            self.core.SecondStep({"stim" : [str(self.dd_type.GetItems()[self.dd_type.GetCurrentSelection()]), float(self.pos_ctrl.GetValue()), str(self.dd_sec1.GetItems()[self.dd_sec1.GetCurrentSelection()])],
-                                  "stimparam" : [self.stim_window.container, float(self.del_ctrl.GetValue()), float(self.dur_ctrl.GetValue())]})
-            self.kwargs = {"runparam":[float(self.tstop_ctrl.GetValue()),
-                                    float(self.dt_ctrl.GetValue()),
-                                    str(self.dd_record.GetItems()[self.dd_record.GetCurrentSelection()]),
-                                    str(self.dd_sec.GetItems()[self.dd_sec.GetCurrentSelection()]),
-                                    float(self.pos_ctrl2.GetValue()),
-                                    float(self.vrest_ctrl.GetValue())]}
-            if self.core.option_handler.output_level=="1":
-                print {"stim" : [str(self.dd_type.GetItems()[self.dd_type.GetCurrentSelection()]), float(self.pos_ctrl.GetValue()), str(self.dd_sec1.GetItems()[self.dd_sec1.GetCurrentSelection()])],
-                       "stimparam" : [self.stim_window.container, float(self.del_ctrl.GetValue()), float(self.dur_ctrl.GetValue())]}
-                print self.kwargs
-        except AttributeError:
-            wx.MessageBox("No stimulus amplitude was selected!","Error", wx.OK | wx.ICON_ERROR)
-        except ValueError:
-            wx.MessageBox('Some of the cells are empty. Please fill out all of them!', 'Error', wx.OK | wx.ICON_ERROR)
-        try:
-            #self.layer.Design()
-            self.layer.Show()
-            self.layer.kwargs=self.kwargs
-        except AttributeError:
-            #self.layer = algorithmLayer(self, 4, self.Size, "Select Algorithm", self.core, self.path, self.kwargs)
-            self.layer = ffunctionLayer(self, 4, self.Size, "Fitness Function Selection", self.core, self.path, self.kwargs)
-            #self.layer.Design()
-            self.layer.Show()
-        self.Hide()
-
-    def Prev(self, e):
-        self.Hide()
-        self.parent.Show()
-
-    def my_close(self, e):
-        wx.Exit()
-
-
-
-
-
-
-
-#optimizer settings
-#fittnes function settings
-#might need new interface
-class ffunctionLayer(wx.Frame):
-    def __init__(self, parent, ID, size, title, core, path, kwargs):
-        wx.Frame.__init__(self, parent, ID, title=title, size=size)
-        self.Bind(wx.EVT_CLOSE, self.my_close)
-        self.core = core
-        self.panel = wx.Panel(self)
-        self.parent = parent
-
-        #this will need to be wrapped in a try statement later:
-        import optimizer
-        #print optimizer.__file__
-        path = os.path.dirname(optimizer.__file__)
-
-        self.path = path
-        self.Center()
-        self.ToolbarCreator()
-        self.Design()
-        self.seed = None
-        self.kwargs = kwargs
-
-        #print "ffun",kwargs
-        self.layer = None
-
-    def ToolbarCreator(self):
-        self.toolbar = self.CreateToolBar()
-        button_toolbar_bward = self.toolbar.AddLabelTool(wx.ID_ANY, 'PrevLayer', wx.Bitmap(self.path + "/2leftarrow.png"))
-        button_toolbar_fward = self.toolbar.AddLabelTool(wx.ID_FORWARD, 'NextLayer', wx.Bitmap(self.path + "/2rightarrow.png"))
-        self.toolbar.Realize()
-        self.Bind(wx.EVT_TOOL, self.Next, button_toolbar_fward)
-        self.Bind(wx.EVT_TOOL, self.Prev, button_toolbar_bward)
-        self.toolbar.EnableTool(wx.ID_FORWARD, True)
-
-    def Design(self):
-
-        self.column1 = wx.BoxSizer(wx.VERTICAL)
-        self.column2 = wx.BoxSizer(wx.VERTICAL)
-        self.row0 = wx.BoxSizer(wx.HORIZONTAL)
-
-        descr0 = wx.StaticText(self.panel, label='Fitness Functions')
-        descr0.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
-
-        descr1 = wx.StaticText(self.panel, label='Weights')
-
-        self.row0.Add(descr1)
-
-        #descr2 = wx.StaticText(self.panel, label='Normalized Weights')
-
-
-        #self.row0.Add(descr2, flag=wx.LEFT, border=10)
-
-        descr3 = wx.StaticText(self.panel, label='Function Parameters')
-        descr3.SetFont(wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.BOLD))
-
-        self.row0.Add(descr3, flag=wx.LEFT, border=10)
-        self.column2.Add(self.row0, flag=wx.BOTTOM, border=8)
-
-        if self.core.option_handler.type[-1]!="features":
-            self.my_list = copy(self.core.ffun_calc_list)
-            #self.my_list=["ffun1","ffun","ffun3"]
-        else:
-            self.my_list=self.core.data_handler.features_data.keys()[3:]
->>>>>>> e6570ab5bd74d2a71c4369332796f5a6a9a08fa0
         self.param_list = [[]] * len(self.my_list)
         if self.core.option_handler.type[-1]!="features":
             self.param_list[2] = [("Spike Detection Thres. (mv)",0.0)]
@@ -1548,7 +1366,7 @@ class ffunctionLayer(wx.Frame):
         fileName, _ = QFileDialog.getOpenFileName(None,"QFileDialog.getOpenFileName()", "","Data files (*.dat *.json);;All Files (*);;", options=options)
         if fileName:
             with open(str(fileName)) as data:
-               self.SiW.container=[float(x) for x in data.read().splitlines()]
+               self.container=[float(x) for x in data.read().splitlines()]
                
 
 
@@ -1711,7 +1529,7 @@ class ffunctionLayer(wx.Frame):
         if not self.dd_type.currentIndex():
             try:
                 self.core.SecondStep({"stim" : [str(self.stimprot.currentText()), float(self.lineEdit_pos.text()), str(self.section_box.currentText())],
-                                    "stimparam" : [self.SiW.container, float(self.lineEdit_delay.text()), float(self.lineEdit_duration.text())]})
+                                    "stimparam" : [self.container, float(self.lineEdit_delay.text()), float(self.lineEdit_duration.text())]})
                 self.kwargs = {"runparam":[float(self.lineEdit_tstop.text()),
                                         float(self.lineEdit_dt.text()),
                                         str(self.param_to_record.currentText()),
@@ -1730,7 +1548,6 @@ class ffunctionLayer(wx.Frame):
                 errpop.append("There was an error")
 
         try:
-<<<<<<< HEAD
             if self.core.option_handler.type[-1]!="features":
                 self.kwargs.update({"feat":
                                     [{"Spike Detection Thres. (mv)": float(self.spike_tresh.text()), "Spike Window (ms)":float(self.spike_window.text())},
@@ -1754,10 +1571,6 @@ class ffunctionLayer(wx.Frame):
             algo_name=str(self.algolist.item(selected_algo[0].row(), 0).text())
             tmp = {"seed" : int(self.aspectlist.item(0,1).text()),
                 "evo_strat" : str(algo_name)
-=======
-            tmp = {"seed" : int(self.seed_ctrl.GetValue()),
-                "evo_strat" : str(self.dd_evo.GetItems()[self.dd_evo.GetCurrentSelection()])
->>>>>>> e6570ab5bd74d2a71c4369332796f5a6a9a08fa0
                 }
             #for n in self.algo_param:
                 #tmp.update({str(n[1]) : float(n[0].GetValue())})
@@ -1867,7 +1680,6 @@ class ffunctionLayer(wx.Frame):
             self.figure2.savefig("result_trace.eps", dpi=300, facecolor='w', edgecolor='w')
             self.figure2.savefig("result_trace.svg", dpi=300, facecolor='w', edgecolor='w')
             self.canvas2.draw()
-            #plt.hold(False)
             plt.tight_layout()
             
 
@@ -1889,7 +1701,6 @@ class ffunctionLayer(wx.Frame):
             transparent=False, bbox_inches=None, pad_inches=0.1)
             self.figure2.savefig("result_trace.eps", dpi=300, facecolor='w', edgecolor='w')
             self.figure2.savefig("result_trace.svg", dpi=300, facecolor='w', edgecolor='w')
-            #plt.hold(False)
             self.canvas2.draw()
             plt.tight_layout()
             plt.close()
@@ -1918,12 +1729,6 @@ class ffunctionLayer(wx.Frame):
             stats = inspyred.ec.analysis.fitness_statistics(self.core.cands)
         except AttributeError:
             stats={'best' : "unkown",'worst' : "unkown",'mean' : "unkown",'median' : "unkown", 'std' : "unkown"}
-            #print 'type---------------------------------------------------------------'
-            #print type(stats['best'])
-            #if stats['best'] is tuple:
-            #    stats['best']=sum(stats['best'])/len(stats['best'])
-            #if stats['worst'] is tuple:
-            #    stats['worst']=sum(stats['worst'])/len(stats['worst'])
             string = "Best: " + str(stats['best']) + "\nWorst: " + str(stats['worst']) + "\nMean: " + str(stats['mean']) + "\nMedian: " + str(stats['median']) + "\nStd:" + str(stats['std'])
         label = QtWidgets.QLabel(self.plot_tab)
         label.setGeometry(QtCore.QRect(300, 80, 250, 146))
@@ -1945,8 +1750,7 @@ class ffunctionLayer(wx.Frame):
         for c_idx,c in enumerate(zip(*self.core.error_comps)):
             tmp=[0]*4
             for t_idx in range(len(c)):
-                #print c[t_idx]
-                
+      
                 tmp[1]+=c[t_idx][2]
                 tmp[2]=c[t_idx][0]
                 tmp[3]+=c[t_idx][2]*c[t_idx][0]
@@ -1956,7 +1760,6 @@ class ffunctionLayer(wx.Frame):
                 tmp[0]=(c[t_idx][1])
             idx+=1
             tmp=list(map(str,tmp))
-            #tmp_list.append(tmp)
             self.errorlist.setItem(c_idx, 0, QTableWidgetItem(tmp[0]))
             self.errorlist.setItem(c_idx, 1, QTableWidgetItem(tmp[1]))
             self.errorlist.setItem(c_idx, 2, QTableWidgetItem(tmp[2]))
@@ -1995,7 +1798,6 @@ class ffunctionLayer(wx.Frame):
                     line=line.replace(tups2,str(sums2))
                     line=line.replace("(","")
                     line=line.replace(")","")
-                    print(line)
                     textlines+=line
             if textlines:
                 statsd=open("stat_file.txt","w")
@@ -2129,7 +1931,6 @@ class SecondWindow(QtWidgets.QMainWindow):
     
     def OnOk(self, e):
         try:
-            #print self.string.GetValue()
             self.option_handler.u_fun_string = str(self.plaintext.toPlainText())
             self.option_handler.adjusted_params=[]
             self.modellist.setRowCount(0)
@@ -2171,7 +1972,7 @@ class StimuliWindow(QtWidgets.QMainWindow):
         self.temp=[]
         self.core=Core.coreModul()
         self.amplit_edit = QtWidgets.QLineEdit(self)
-        self.amplit_edit.setGeometry(QtCore.QRect(120, 10, 61, 22))
+        self.amplit_edit.setGeometry(QtCore.QRect(140, 10, 61, 22))
         self.amplit_edit.setObjectName("amplit_edit")
         self.label_amplit = QtWidgets.QLabel(self)
         self.label_amplit.setGeometry(QtCore.QRect(10, 10, 141, 16))
@@ -2507,7 +2308,6 @@ class startingpoints(QtWidgets.QMainWindow):
 
         for l in lastlines(file_path, self.size_of_pop, 1):
             s=l.strip()
-            #print s
             params = [float(x.lstrip("[").rstrip("]")) for x in s.split(", ")][3:-1]
             params = params[0:len(params) / 2 + 1]
             self.vals.append(params)
@@ -2613,7 +2413,7 @@ class ErrorDialog(QtWidgets.QMainWindow):
             self.error_comp_table.setItem(c_idx,1,QTableWidgetItem("-"))
             self.error_comp_table.setItem(c_idx,2,QTableWidgetItem("-"))
             self.error_comp_table.setItem(c_idx,3,QTableWidgetItem(str(tmp_w_sum)))
-            #print str(tmp_w_sum)
+            
             tmp_w_sum=0
             self.error_comp_table.setRowCount(c_idx)
 

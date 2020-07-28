@@ -69,8 +69,8 @@ class coreModul():
 						"AP amplitude",
 						"AHP depth",
 						"AP width",
-						"Derivative difference",
-						"PPTD"]
+						"Derivative difference"]
+						#"PPTD"]
 		self.grid_result=None
 
 	def htmlStrBold(self,inp):
