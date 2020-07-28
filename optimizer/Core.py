@@ -57,8 +57,8 @@ class coreModul():
 						"AP amplitude": "AP_overshoot",
 						"AHP depth": "AHP_depth",
 						"AP width": "AP_width",
-						"Derivative difference" : "calc_grad_dif",
-						"PPTD" : "pyelectro_pptd"}
+						"Derivative difference" : "calc_grad_dif"}
+						#"PPTD" : "pyelectro_pptd"}
 		self.ffun_mapper=dict((v,k) for k,v in list(f_m.items()))
 		self.ffun_calc_list=["MSE",
 						"MSE (excl. spikes)",
@@ -69,8 +69,8 @@ class coreModul():
 						"AP amplitude",
 						"AHP depth",
 						"AP width",
-						"Derivative difference",
-						"PPTD"]
+						"Derivative difference"]
+						#"PPTD"]
 		self.grid_result=None
 
 	def htmlStrBold(self,inp):
