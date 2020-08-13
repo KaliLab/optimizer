@@ -8,11 +8,7 @@ python-dateutil>=2.1
 six>=1.4.1
 tornado>=3.1.1
 wsgiref>=0.1.2
-<<<<<<< HEAD
 pyqt5>=5.13.2
 bluepyopt>=1.9.27
 scipy>=1.4.1
 pygmo>=2.15.0
-
-=======
->>>>>>> e6570ab5bd74d2a71c4369332796f5a6a9a08fa0
