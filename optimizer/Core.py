@@ -496,7 +496,7 @@ class coreModul():
 			for i in range(len(self.optimizer.final_pop)):
 				self.cands.append(self.optimizer.final_pop[i].candidate[0:len(self.option_handler.adjusted_params)])
 				self.fits.append(self.optimizer.final_pop[i].fitness)
-
+		self.population=self.optimizer.final_pop
 		print(("Optimization lasted for ", stop_time-start_time, " s"))
 		print(self.cands)
 		self.cands[0]=self.optimizer.fit_obj.ReNormalize(self.cands[0])

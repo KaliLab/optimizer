@@ -255,7 +255,7 @@ class InspyredAlgorithmBasis(baseOptimizer):
 			logger.addHandler(file_handler)
 
 			self.final_pop = self.evo_strat.evolve(**self.kwargs)
-
+			print(self.final_pop)
 			if hasattr(self.evo_strat, "archive"):
 				self.final_archive = self.evo_strat.archive
 

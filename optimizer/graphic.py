@@ -1726,10 +1726,13 @@ class Ui_Optimizer(object):
         Writes out the same fitnesses for parameters as in the previous tab.
         """
         try:
-            stats = inspyred.ec.analysis.fitness_statistics(self.core.cands)
+            stats = inspyred.ec.analysis.fitness_statistics(self.core.population)
         except AttributeError:
             stats={'best' : "unkown",'worst' : "unkown",'mean' : "unkown",'median' : "unkown", 'std' : "unkown"}
-            string = "Best: " + str(stats['best']) + "\nWorst: " + str(stats['worst']) + "\nMean: " + str(stats['mean']) + "\nMedian: " + str(stats['median']) + "\nStd:" + str(stats['std'])
+        except:
+            fits=numpy.mean(self.core.fits,axis=1)
+            stats={'best' : min(fits),'worst' : max(fits),'mean' : numpy.mean(fits),'median': numpy.median(fits) , 'std' : numpy.std(fits)}
+        string = "Best: " + str(stats['best']) + "\nWorst: " + str(stats['worst']) + "\nMean: " + str(stats['mean']) + "\nMedian: " + str(stats['median']) + "\nStd:" + str(stats['std'])
         label = QtWidgets.QLabel(self.plot_tab)
         label.setGeometry(QtCore.QRect(300, 80, 250, 146))
         font = QtGui.QFont()
