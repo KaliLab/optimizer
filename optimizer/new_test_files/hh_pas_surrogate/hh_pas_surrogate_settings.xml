@@ -7,7 +7,7 @@
   <cognitive_rate>None</cognitive_rate>
   <cooling_rate>None</cooling_rate>
   <crossover_rate>None</crossover_rate>
-  <evo_strat>Indicator Based (IBEA) - Bluepyopt</evo_strat>
+  <evo_strat>Evolutionary Algorithm (EA) - Inspyred</evo_strat>
   <f_tol>None</f_tol>
   <feats>MSE (excl. spikes), Spike count</feats>
   <force_bounds>False</force_bounds>
@@ -44,7 +44,7 @@
   <social_rate>None</social_rate>
   <spike_thres>0.0</spike_thres>
   <spike_window>40.0</spike_window>
-  <start_time_stamp>1597439797.992019</start_time_stamp>
+  <start_time_stamp>1595955234.0387764</start_time_stamp>
   <starting_points>None</starting_points>
   <std_gauss>None</std_gauss>
   <step_size>None</step_size>
