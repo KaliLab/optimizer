@@ -1095,6 +1095,7 @@ class fF(object):
             the actual data traces.
         :return: the ``list`` of fitness values corresponding to the parameter sets
         """
+        
         self.fitnes = []
         features = self.option.feats
         weigths = self.option.weights
