@@ -323,7 +323,21 @@ class PygmoAlgorithmBasis(baseOptimizer):
 			self.pgalgo=pg.algorithm(self.algorithm)
 			self.archi = pg.population(prob=self.prob, size=self.pop_size,b=self.bfe)
 			self.pgalgo.evolve(self.archi)
-			
+			with open(self.directory + '/island_inds.txt', 'r') as inds_file:
+				statfile=inds_file.readlines()
+			try:
+				os.remove(self.directory + '/island_inds.txt')
+			except OSError:
+				pass
+			with open(self.directory + '/island_inds.txt', 'a') as inds_file:
+				pop_counter=0
+				gen_counter=0
+				for lines in statfile:
+					pop_counter += 1
+					if (pop_counter * self.num_islands) % (self.pop_size * self.num_islands) == 0:
+						pop_counter = 0
+						gen_counter += 1
+					inds_file.write("{0}, {1}, {2}\n".format(gen_counter, pop_counter, lines[5:-1]))
 			self.mpbfe.shutdown_pool()
 		else:
 			self.pgalgo=pg.algorithm(self.algorithm)
