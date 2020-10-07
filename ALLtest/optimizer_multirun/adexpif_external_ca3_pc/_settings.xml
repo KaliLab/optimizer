@@ -31,7 +31,7 @@
   <x_tol>None</x_tol>
   <feats>MSE (excl. spikes), Spike count (stim.), Latency to 1st spike</feats>
   <input_length>1100</input_length>
-  <sim_command>python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py 10</sim_command>
+  <sim_command>python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py 10</sim_command>
   <init_temp>None</init_temp>
   <num_params>10</num_params>
   <force_bounds>True</force_bounds>
@@ -48,7 +48,7 @@
   <stim_type>&quot;&quot;</stim_type>
   <stim_del>0</stim_del>
   <stim_amp>[0, 0, 0, 0]</stim_amp>
-  <input_dir>/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/ca3_pc_v2_4.csv</input_dir>
+  <input_dir>/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/ca3_pc_v2_4.csv</input_dir>
   <input_freq>5000</input_freq>
   <input_scale>mV</input_scale>
   <u_fun_string>&quot;&quot;</u_fun_string>
@@ -58,5 +58,5 @@
   <run_controll_pos>pos</run_controll_pos>
   <update_freq>None</update_freq>
   <num_iter>2.0</num_iter>
-  <base_dir>/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc</base_dir>
+  <base_dir>/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc</base_dir>
 </settings>

@@ -2,7 +2,7 @@
 <settings>
   <acc>1</acc>
   <adjusted_params>['soma 0 hh gnabar_hh', 'soma 0 hh gkbar_hh', 'soma 0 hh gl_hh']</adjusted_params>
-  <base_dir>/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/hh_pas_surrogate/</base_dir>
+  <base_dir>/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/hh_pas_surrogate/</base_dir>
   <boundaries>[[0.01, 0.01, 1e-05], [1.0, 1.0, 0.001]]</boundaries>
   <cognitive_rate>1</cognitive_rate>
   <cooling_rate>1</cooling_rate>
@@ -13,7 +13,7 @@
   <inertia>1</inertia>
   <init_temp>1</init_temp>
   <input_cont_t>True</input_cont_t>
-  <input_dir>/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/hh_pas_surrogate/input_data2.dat</input_dir>
+  <input_dir>/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/hh_pas_surrogate/input_data2.dat</input_dir>
   <input_freq>40000</input_freq>
   <input_length>1000</input_length>
   <input_scale>mV</input_scale>
@@ -21,8 +21,8 @@
   <input_size>1</input_size>
   <m_gauss>1</m_gauss>
   <max_evaluation>100.0</max_evaluation>
-  <model_path>/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/hh_pas_surrogate/hh_pas.hoc</model_path>
-  <model_spec_dir>/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/hh_pas_surrogate/</model_spec_dir>
+  <model_path>/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/hh_pas_surrogate/hh_pas.hoc</model_path>
+  <model_spec_dir>/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/hh_pas_surrogate/</model_spec_dir>
   <mutation_rate>0.25</mutation_rate>
   <neighborhood_size>1</neighborhood_size>
   <num_islands>1</num_islands>
