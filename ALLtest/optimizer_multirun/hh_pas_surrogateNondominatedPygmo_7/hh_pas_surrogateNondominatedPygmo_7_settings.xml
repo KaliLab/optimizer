@@ -7,7 +7,7 @@
   <cognitive_rate>1</cognitive_rate>
   <cooling_rate>1</cooling_rate>
   <crossover_rate>1</crossover_rate>
-  <evo_strat>Nondominated Sorted Particle Swarm - Pygmo</evo_strat>
+  <evo_strat>Nondominated Sorted GA - Pygmo</evo_strat>
   <f_tol>0.1</f_tol>
   <feats>MSE (excl. spikes), Spike count, AP amplitude, AP width</feats>
   <force_bounds>True</force_bounds>
