@@ -296,7 +296,11 @@ class PygmoAlgorithmBasis(baseOptimizer):
 		pg.set_global_rng_seed(seed = self.seed)
 		self.boundaries = option_obj.boundaries
 		self.base_dir = option_obj.base_dir
-		self.n_obj=len(option_obj.GetFitnessParam()[-1])
+		if self.option_obj.type[-1]!="features":
+				self.number_of_traces=reader_obj.number_of_traces()
+			else:
+				self.number_of_traces=len(reader_obj.features_data["stim_amp"])
+		self.n_obj=len(option_obj.GetFitnessParam()[-1])*int(self.number_of_traces)
 		self.num_islands = int(option_obj.num_islands)
 
 	def Optimize(self):
