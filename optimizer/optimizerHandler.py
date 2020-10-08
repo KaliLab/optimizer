@@ -293,6 +293,7 @@ class PygmoAlgorithmBasis(baseOptimizer):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		baseOptimizer.__init__(self, reader_obj, model_obj, option_obj)
 		self.multiobjective=False
+		self.option_obj=option_obj
 		pg.set_global_rng_seed(seed = self.seed)
 		self.boundaries = option_obj.boundaries
 		self.base_dir = option_obj.base_dir
