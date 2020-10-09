@@ -621,7 +621,7 @@ class Extended_Ant_Colony_Pygmo(PygmoAlgorithmBasis):
 	
 		self.algorithm = pg.gaco(gen=self.max_evaluation)
 
-class Nondominated_Sorted_Particle_Swarm_Pygmo(PygmoAlgorithmBasis):
+class NondominatedSortedParticle_Swarm_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
 		self.multiobjective=True
@@ -631,7 +631,7 @@ class Nondominated_Sorted_Particle_Swarm_Pygmo(PygmoAlgorithmBasis):
 		
 		self.algorithm = pg.nspso(gen=self.max_evaluation)
 
-class Nondominated_Sorted_GA_Pygmo(PygmoAlgorithmBasis):
+class NondominatedSortedGA_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
 		self.multiobjective=True
