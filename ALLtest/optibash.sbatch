@@ -61,5 +61,4 @@ echo ok2
 srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3MultiPygmo_2/_settings.xml &
 srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3MultiPygmo_4/_settings.xml &
 srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3MultiPygmo_5/_settings.xml &
-srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3MultiPygmo_7/_settings.xml &
-
+srun -N 1 -n 1 python /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/optimizer.py -c /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3MultiPygmo_7/_settings.xml 
