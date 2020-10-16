@@ -1,0 +1,261 @@
+load_file("subiter.hoc")
+
+proc celldef() {
+  topol()
+  subsets()
+  geom()
+  biophys()
+  geom_nseg()
+//  biophys_inhomo()
+}
+
+create soma
+create dend2
+create dend2a
+create dend3
+create dend4
+create dend5
+
+proc topol() {
+    connect dend2(0), soma(1.0)
+    connect dend2a(0), dend2(1.0)
+    connect dend3(0), dend2a(1.0)
+    connect dend4(0), dend2a(1.0)
+    connect dend5(0), soma(1.0)
+    basic_shape()
+}
+
+
+
+// these are reasonable values for most models
+freq = 100      // Hz, frequency at which AC length constant will be computed
+d_lambda = 0.1
+
+func lambda_f() { local i, x1, x2, d1, d2, lam
+	if (n3d() < 2) {
+                return 1e5*sqrt(diam/(4*PI*$1*Ra*cm))
+        }
+        x1 = arc3d(0)
+        d1 = diam3d(0)
+        lam = 0
+        for i=1, n3d()-1 {
+                x2 = arc3d(i)
+                d2 = diam3d(i)
+                lam += (x2 - x1)/sqrt(d1 + d2)
+		print lam
+                x1 = x2   d1 = d2
+        }
+        //  length of the section in units of lambda
+        lam *= sqrt(2) * 1e-5*sqrt(4*PI*$1*Ra*cm)
+	print PI
+	print Ra
+	print cm
+	print $1
+	print lam
+	psection()
+
+        return L/lam
+}
+//soma.L=40 last spike, max spike
+proc basic_shape() {
+
+//  Looking at segment number 0: soma, section: soma, ID: 0, ROOT SEGMENT, rad: 10.0, (0.0, 0.0, 0.0) -> (20.0, 0.0, 0.0), len: 20 (FINITE VOLUME)
+    soma {pt3dclear() pt3dadd(0.0, 0.0, 0.0, 20.0) pt3dadd(20.0, 0.0, 0.0, 20.0)}
+
+//  Looking at segment number 1: dend2, section: dend2, ID: 1, parent: soma (0), rad: 1.58, (20.0, 0.0, 0.0) -> (582.0, 0.0, 0.0), len: 562
+    dend2 {pt3dclear() pt3dadd(20.0, 0.0, 0.0, 3.16) pt3dadd(582.0, 0.0, 0.0, 3.16)}
+
+//  Looking at segment number 2: dend2a, section: dend2a, ID: 2, parent: dend2 (1), rad: 1.25, (582.0, 0.0, 0.0) -> (863.0, 0.0, 0.0), len: 281
+    dend2a {pt3dclear() pt3dadd(582.0, 0.0, 0.0, 2.5) pt3dadd(863.0, 0.0, 0.0, 2.5)}
+
+//  Looking at segment number 3: dend3, section: dend3, ID: 3, parent: dend2a (2), rad: 1.0, (863.0, 0.0, 0.0) -> (1473.0, 0.0, 610.0), len: 862.67
+    dend3 {pt3dclear() pt3dadd(863.0, 0.0, 0.0, 2.0) pt3dadd(1473.0, 0.0, 610.0, 2.0)}
+
+//  Looking at segment number 4: dend4, section: dend4, ID: 4, parent: dend2a (2), rad: 0.315, (863.0, 0.0, 0.0) -> (1323.0, 0.0, -460.0), len: 650.538
+    dend4 {pt3dclear() pt3dadd(863.0, 0.0, 0.0, 0.63) pt3dadd(1323.0, 0.0, -460.0, 0.63)}
+
+//  Looking at segment number 5: dend5, section: dend5, ID: 5, parent: soma (0), rad: 1.39, (20.0, 0.0, 0.0) -> (-907.0, 0.0, 0.0), len: 927
+    dend5 {pt3dclear() pt3dadd(20.0, 0.0, 0.0, 2.78) pt3dadd(-907.0, 0.0, 0.0, 2.78)}
+}
+
+objref all, soma_group, dendrite_group, group2, group2a, group3, group4, group5
+proc subsets() { local i
+
+//  The group all is assumed never to change
+    all = new SectionList()
+
+
+    soma_group = new SectionList()
+
+    soma soma_group.append()
+
+
+    dendrite_group = new SectionList()
+
+    dend2 dendrite_group.append()
+    dend2a dendrite_group.append()
+    dend3 dendrite_group.append()
+    dend4 dendrite_group.append()
+    dend5 dendrite_group.append()
+
+
+    group2 = new SectionList()
+
+    dend2 group2.append()
+
+
+    group2a = new SectionList()
+
+    dend2a group2a.append()
+
+
+    group3 = new SectionList()
+
+    dend3 group3.append()
+
+
+    group4 = new SectionList()
+
+    dend4 group4.append()
+
+
+    group5 = new SectionList()
+
+    dend5 group5.append()
+
+
+    soma all.append()
+    dend2 all.append()
+    dend2a all.append()
+    dend3 all.append()
+    dend4 all.append()
+    dend5 all.append()
+}
+
+proc geom() {
+}
+proc geom_nseg() {
+  forsec all { nseg = int((L/(0.1*lambda_f(100))+.9)/2)*2 + 1  }
+}
+proc biophys() {
+  forsec all {
+    insert Leak_pyr
+		gmax_Leak_pyr = 3.4E-7
+		//e_Leak_pyr = -65
+		Ra = 100
+		cm = 0.78
+	}
+  forsec soma_group {
+        insert Na_soma  { gmax_Na_soma =0.131346 }//0.131346 }
+        insert K_DR  { gmax_K_DR = 0.0090 } //0.0090 }
+        insert K_A_prox  { gmax_K_A_prox = 0.0038 }//0.0038 }
+        insert K_M  { gmax_K_M = 0.0155 }//}
+        insert K_C_1D  { gmax_K_C_1D = 0.0159 }// }
+        insert K_AHP  { gmax_K_AHP = 0.0010 }//}
+        insert CaL  { gmax_CaL = 0.0011 }//}
+        insert CaN  { gmax_CaN = 0.0078 }//}
+        insert H_CA1pyr_prox  { gmax_H_CA1pyr_prox = 1.1E-4 }
+        insert Ca_conc_soma  {  }
+
+        ena = 55.0
+        ek = -80.0
+        eca = 80.0
+    }
+
+    forsec group2 {
+        insert Na_dend  { gmax_Na_dend = 0.0050 }
+        insert K_DR  { gmax_K_DR = 0.0040 }
+        insert K_A_prox  { gmax_K_A_prox = 0.0011 }
+        insert K_A_dist  { gmax_K_A_dist = 0.0132 }
+        insert K_M  { gmax_K_M = 0.0030 }
+        insert K_C_1D  { gmax_K_C_1D = 4.2E-4 }
+        insert CaL  { gmax_CaL = 2.1E-4 }
+        insert CaN  { gmax_CaN = 0.0020 }
+        insert CaR  { gmax_CaR = 0.0050 }
+        insert CaT  { gmax_CaT = 0.00148 }
+        insert H_CA1pyr_prox  { gmax_H_CA1pyr_prox = 3.5E-5 }
+        insert H_CA1pyr_dist  { gmax_H_CA1pyr_dist = 4.56E-4 }
+        insert Ca_conc_dend2  {  }
+
+        ena = 55.0
+        ek = -80.0
+        eca = 80.0
+    }
+
+    forsec group2a {
+        insert Na_dend  { gmax_Na_dend = 0.0050 }
+        insert K_DR  { gmax_K_DR = 0.0040 }
+        insert K_A_dist  { gmax_K_A_dist = 0.02 }
+        insert K_M  { gmax_K_M = 0.0030 }
+        insert K_C_1D  { gmax_K_C_1D = 4.2E-4 }
+        insert CaL  { gmax_CaL = 2.1E-4 }
+        insert CaN  { gmax_CaN = 0.0020 }
+        insert CaR  { gmax_CaR = 0.05 }
+        insert CaT  { gmax_CaT = 0.00148 }
+        insert H_CA1pyr_prox  { gmax_H_CA1pyr_prox = 3.5E-5 }
+        insert H_CA1pyr_dist  { gmax_H_CA1pyr_dist = 4.56E-4 }
+        insert Ca_conc_dend2a  {  }
+
+        ena = 55.0
+        ek = -80.0
+        eca = 80.0
+    }
+
+    forsec group3 {
+        insert Na_dend  { gmax_Na_dend = 0.0019 }
+        insert K_DR  { gmax_K_DR = 0.0040 }
+        insert K_A_dist  { gmax_K_A_dist = 0.0246 }
+        insert K_M  { gmax_K_M = 0.0030 }
+        insert CaN  { gmax_CaN = 0.0020 }
+        insert CaR  { gmax_CaR = 0.02 }
+        insert CaT  { gmax_CaT = 0.0024 }
+        insert H_CA1pyr_dist  { gmax_H_CA1pyr_dist = 8.67E-4 }
+        insert Ca_conc_dend3  {  }
+
+        ena = 55.0
+        ek = -80.0
+        eca = 80.0
+    }
+
+    forsec group4 {
+        insert Na_dend  { gmax_Na_dend = 0.0019 }
+        insert K_DR  { gmax_K_DR = 0.0040 }
+        insert K_A_dist  { gmax_K_A_dist = 0.025 }
+        insert K_M  { gmax_K_M = 0.0030 }
+        insert CaN  { gmax_CaN = 0.0020 }
+        insert CaR  { gmax_CaR = 0.02 }
+        insert CaT  { gmax_CaT = 0.0025 }
+        insert H_CA1pyr_dist  { gmax_H_CA1pyr_dist = 8.82E-4 }
+        insert Ca_conc_dend4  {  }
+
+        ena = 55.0
+        ek = -80.0
+        eca = 80.0
+    }
+
+    forsec group5 {
+        insert Na_dend  { gmax_Na_dend = 0.0013 }
+        insert K_DR  { gmax_K_DR = 0.0040 }
+        insert K_A_prox  { gmax_K_A_prox = 0.0017 }
+        insert K_A_dist  { gmax_K_A_dist = 0.0101 }
+        insert K_M  { gmax_K_M = 0.0050 }
+        insert K_C_1D  { gmax_K_C_1D = 6.0E-4 }
+        insert K_AHP  { gmax_K_AHP = 0.0030 }
+        insert CaL  { gmax_CaL = 3.0E-4 }
+        insert CaN  { gmax_CaN = 0.0020 }
+        insert H_CA1pyr_prox  { gmax_H_CA1pyr_prox = 5.5E-5 }
+        insert H_CA1pyr_dist  { gmax_H_CA1pyr_dist = 3.46E-4 }
+        insert Ca_conc_dend5  {  }
+
+        ena = 55.0
+        ek = -80.0
+        eca = 80.0
+    }
+}
+
+
+access soma
+
+celldef()
+
+
