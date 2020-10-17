@@ -1,0 +1,27 @@
+create soma 
+insert hh
+
+access soma
+
+L = 17.84
+diam = 17.84
+
+objref ampasyn, ns, nc, vc
+
+ampasyn = new Exp2Syn(0.5)
+ampasyn.tau1 = 0.3
+ampasyn.tau2 = 3
+
+ns = new NetStim(0.5)
+ns.start = 100
+ns.interval = 100
+
+nc = new NetCon(ns, ampasyn)
+nc.weight = 0.01
+nc.delay = 2.0
+
+// vc = new SEClamp(0.5)
+// vc.rs = 0.01
+// vc.dur1 = 1000
+// vc.amp1= -70
+
