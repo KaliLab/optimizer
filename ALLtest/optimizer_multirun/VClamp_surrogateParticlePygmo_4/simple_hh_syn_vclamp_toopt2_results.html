@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-<p>Sat Oct 17 18:09:30 2020</p>
+<p>Sun Oct 18 00:51:15 2020</p>
 <p><span style="text-align:center;">Optimization of <b>simple_hh_syn_vclamp_toopt2.hoc</b> based on: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/VClamp_surrogate/iclamp_new.dat</span></p>
 <center><p><span style="text-decoration:underline;font-size:200%;">Results</span></p></center>
 <table border="1" align="center">
@@ -34,7 +34,7 @@
 <td>0.9388633928702108</td>
 </tr>
 </table>
-<center><p><b>Fitnes: </b><b>[0.10710647]</b></p></center>
+<center><p><b>Fitnes: </b><b>[0.18585624]</b></p></center>
 <p align="center"><img style="border:none;" src="result_trace.png" ></p>
 <p><b>seed =</b> 1238.0</p>
 <p><b>evo_strat =</b> Particle Swarm Gen - Pygmo</p>
@@ -63,8 +63,8 @@
 <p><b>Social Rate: =</b> None</p>
 <p><b>Neighborhood Size: =</b> None</p>
 <p><b>Number of CPU: =</b> 2</p>
-<p><b>feats =</b> MSE, Derivative difference</p>
-<p><b>weights =</b> [0.5, 0.5]</p>
+<p><b>feats =</b> MSE</p>
+<p><b>weights =</b> [1]</p>
 <p><b>user function =</b></p>
 <p>def usr_fun(self,v):</p><p>#4</p><p>#weight</p><p>#delay</p><p>#tau_rise</p><p>#tau_decay</p><p>    h.nc.weight[0] = v[0]</p><p>    h.nc.delay = v[1]</p><p>    h.ampasyn.tau1 = v[2]</p></body>
 </html>
@@ -78,15 +78,8 @@
 <tr>
 <td>MSE</td>
 <td>0.1858562442063257</td>
-<td>0.5</td>
-<td>0.09292812210316286</td>
-<td></td>
-</tr>
-<tr>
-<td>Derivative difference</td>
-<td>0.02835670290755148</td>
-<td>0.5</td>
-<td>0.01417835145377574</td>
+<td>1</td>
+<td>0.1858562442063257</td>
 <td></td>
 </tr>
 <tr>
@@ -94,7 +87,7 @@
 <td></td>
 <td></td>
 <td></td>
-<td>0.1071064735569386</td>
+<td>0.1858562442063257</td>
 </tr>
 </table>
 <table border="1" align="center">
@@ -105,13 +98,7 @@
 <tr>
 <td>MSE</td>
 <td>0.1858562442063257</td>
-<td>0.5</td>
-<td>0.09292812210316286</td>
-</tr>
-<tr>
-<td>Derivative difference</td>
-<td>0.02835670290755148</td>
-<td>0.5</td>
-<td>0.01417835145377574</td>
+<td>1</td>
+<td>0.1858562442063257</td>
 </tr>
 </table>

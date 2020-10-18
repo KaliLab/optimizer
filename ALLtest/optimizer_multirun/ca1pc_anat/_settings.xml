@@ -60,7 +60,7 @@ def usr_fun(self,v):
   <run_controll_record>v</run_controll_record>
   <init_temp>1</init_temp>
   <force_bounds>True</force_bounds>
-  <base_dir>/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/ca1pc_anat/final</base_dir>
+  <base_dir>/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/ca1pc_anat</base_dir>
   <seed>1234.0</seed>
   <sim_command>&quot;&quot;</sim_command>
   <num_iter>1</num_iter>

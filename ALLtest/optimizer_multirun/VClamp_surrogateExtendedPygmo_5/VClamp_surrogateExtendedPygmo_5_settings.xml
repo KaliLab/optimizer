@@ -9,7 +9,7 @@
   <crossover_rate>None</crossover_rate>
   <evo_strat>Extended Ant Colony - Pygmo</evo_strat>
   <f_tol>None</f_tol>
-  <feats>MSE, Derivative difference</feats>
+  <feats>MSE</feats>
   <force_bounds>True</force_bounds>
   <inertia>None</inertia>
   <init_temp>None</init_temp>
@@ -71,6 +71,6 @@ def usr_fun(self,v):
     h.ampasyn.tau1 = v[2]
     h.ampasyn.tau2 = v[3]</u_fun_string>
   <update_freq>None</update_freq>
-  <weights>[0.5, 0.5]</weights>
+  <weights>[1]</weights>
   <x_tol>None</x_tol>
 </settings>

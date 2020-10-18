@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <body>
-<p>Fri Oct  2 18:08:21 2020</p>
-<p><span style="text-align:center;">Optimization of <b>simple_hh_syn_vclamp_toopt2.hoc</b> based on: /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/VClamp_surrogate/iclamp_new.dat</span></p>
+<p>Sun Oct 18 00:51:19 2020</p>
+<p><span style="text-align:center;">Optimization of <b>simple_hh_syn_vclamp_toopt2.hoc</b> based on: /p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/VClamp_surrogate/iclamp_new.dat</span></p>
 <center><p><span style="text-decoration:underline;font-size:200%;">Results</span></p></center>
 <table border="1" align="center">
 <th>Parameter Name</th>
@@ -13,34 +13,34 @@
 <td>weight</td>
 <td>0.001</td>
 <td>1.0</td>
-<td>0.011088105715241079</td>
+<td>0.028831444972572264</td>
 </tr>
 <tr>
 <td>delay</td>
 <td>0.0</td>
 <td>5.0</td>
-<td>3.1575532832223727</td>
+<td>2.0811159190417574</td>
 </tr>
 <tr>
 <td>tau_rise</td>
 <td>0.001</td>
 <td>1.0</td>
-<td>0.06753617641647428</td>
+<td>0.1545303862332427</td>
 </tr>
 <tr>
 <td>tau_decay</td>
 <td>0.1</td>
 <td>5.0</td>
-<td>3.8539063117903334</td>
+<td>1.6749852710964714</td>
 </tr>
 </table>
-<center><p><b>Fitnes: </b><b>[0.00724394]</b></p></center>
+<center><p><b>Fitnes: </b><b>[0.02770786]</b></p></center>
 <p align="center"><img style="border:none;" src="result_trace.png" ></p>
-<p><b>seed =</b> 1234.0</p>
-<p><b>evo_strat =</b> Particle Swarm Gen_ Pygmo</p>
+<p><b>seed =</b> 1242.0</p>
+<p><b>evo_strat =</b> Particle Swarm Gen - Pygmo</p>
 <p><b>Size of Population: =</b> 100.0</p>
-<p><b>Number of Islands: =</b> 1</p>
-<p><b>Number of Generations: =</b> 10.0</p>
+<p><b>Number of Islands: =</b> 1.0</p>
+<p><b>Number of Generations: =</b> 100.0</p>
 <p><b>Force bounds: =</b> True</p>
 <p><b>Mutation Rate: =</b> 0.25</p>
 <p><b>Crossover Rate: =</b> None</p>
@@ -62,9 +62,9 @@
 <p><b>Cognitive Rate: =</b> None</p>
 <p><b>Social Rate: =</b> None</p>
 <p><b>Neighborhood Size: =</b> None</p>
-<p><b>Number of CPU: =</b> 4</p>
-<p><b>feats =</b> MSE, Derivative difference</p>
-<p><b>weights =</b> [0.5, 0.5]</p>
+<p><b>Number of CPU: =</b> 2</p>
+<p><b>feats =</b> MSE</p>
+<p><b>weights =</b> [1]</p>
 <p><b>user function =</b></p>
 <p>def usr_fun(self,v):</p><p>#4</p><p>#weight</p><p>#delay</p><p>#tau_rise</p><p>#tau_decay</p><p>    h.nc.weight[0] = v[0]</p><p>    h.nc.delay = v[1]</p><p>    h.ampasyn.tau1 = v[2]</p></body>
 </html>
@@ -77,16 +77,9 @@
 <th>Weighted Sum</th>
 <tr>
 <td>MSE</td>
-<td>0.009334999100151202</td>
-<td>0.5</td>
-<td>0.004667499550075601</td>
-<td></td>
-</tr>
-<tr>
-<td>Derivative difference</td>
-<td>0.00515287992524523</td>
-<td>0.5</td>
-<td>0.002576439962622615</td>
+<td>0.027707862904776098</td>
+<td>1</td>
+<td>0.027707862904776098</td>
 <td></td>
 </tr>
 <tr>
@@ -94,7 +87,7 @@
 <td></td>
 <td></td>
 <td></td>
-<td>0.007243939512698216</td>
+<td>0.027707862904776098</td>
 </tr>
 </table>
 <table border="1" align="center">
@@ -104,14 +97,8 @@
 <th>Weighted Value</th>
 <tr>
 <td>MSE</td>
-<td>0.009334999100151202</td>
-<td>0.5</td>
-<td>0.004667499550075601</td>
-</tr>
-<tr>
-<td>Derivative difference</td>
-<td>0.00515287992524523</td>
-<td>0.5</td>
-<td>0.002576439962622615</td>
+<td>0.027707862904776098</td>
+<td>1</td>
+<td>0.027707862904776098</td>
 </tr>
 </table>

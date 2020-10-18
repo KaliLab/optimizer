@@ -10,7 +10,7 @@
   <param_vals>[0, 0.1, 0.1, 0.1, 0.1]</param_vals>
   <crossover_rate>None</crossover_rate>
   <update_freq>None</update_freq>
-  <feats>MSE, Derivative difference</feats>
+  <feats>MSE</feats>
   <stim_amp>[-70.0]</stim_amp>
   <pop_size>20.0</pop_size>
   <sim_command>&quot;&quot;</sim_command>
@@ -46,7 +46,7 @@ def usr_fun(self,v):
   <model_path>/p/home/jusers/mohacsi1/jureca/optimizer/optimizer/new_test_files/VClamp_surrogate/simple_hh_syn_vclamp_toopt2.hoc</model_path>
   <x_tol>None</x_tol>
   <run_controll_tstop>500.0</run_controll_tstop>
-  <weights>[0.5, 0.5]</weights>
+  <weights>[1]</weights>
   <acc>None</acc>
   <spike_window>40.0</spike_window>
   <stim_dur>500.0</stim_dur>
