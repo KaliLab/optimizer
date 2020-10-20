@@ -72,5 +72,5 @@ def usr_fun(self,v):
   <neighborhood_size>None</neighborhood_size>
   <run_controll_vrest>-70.0</run_controll_vrest>
   <start_time_stamp>1480436113.67</start_time_stamp>
-  <number_of_cpu>2</number_of_cpu>
+  <number_of_cpu>100</number_of_cpu>
 </settings>

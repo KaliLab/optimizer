@@ -130,7 +130,7 @@ def RunOptim():
 	
 
 def main():
-	algos = ["Particle Swarm Gen - Pygmo","Extended Ant Colony - Pygmo"]
+	algos = ["Evolutionary Algorithm - Inspyred"]
 	for evo_strat in algos:
 		evo_name=str.split(evo_strat," ")[0]+str.split(evo_strat," ")[-1]
 		print(evo_name)
