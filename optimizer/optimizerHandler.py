@@ -350,7 +350,7 @@ class PygmoAlgorithmBasis(baseOptimizer):
 				self.champions_x = self.archi.get_x()
 				self.champions_f = list(np.mean(self.archi.get_f(),axis=1))
 				self.best_fitness = min(self.champions_f)
-				self.best = self.best = normalize(self.champions_x[self.champions_f.index(self.best_fitness)], self)
+				self.best = normalize(self.champions_x[self.champions_f.index(self.best_fitness)], self)
 			else:
 				self.champions_x = self.archi.champion_x
 				self.champions_f = self.archi.champion_f
