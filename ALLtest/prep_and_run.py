@@ -4,20 +4,20 @@ import xml.etree.ElementTree as ET
 import subprocess
 import matplotlib.pyplot as plt
 
-optimizer_path 	= '/home/mohacsi/Desktop/optimizer/optimizer/optimizer.py'
+optimizer_path 	= '/home/mohacsi/work/optimizer/optimizer/optimizer.py'
 curr_dir  		= os.getcwd()						# base directory
-orig_name 		= 'hh_pas_surrogate'						# name of the working directory we want to copy
+orig_name 		= 'adexpif_external_ca3_pc'						# name of the working directory we want to copy
 orig_dir  		= curr_dir + '/'+ 'optimizer_multirun/' + orig_name		# path of this directory
-num_runs  		= 1						# how many copies we want
-parallel_runs   = 1								# how many optimizations we allow to run in parallel
+num_runs  		= 10						# how many copies we want
+parallel_runs   = 10								# how many optimizations we allow to run in parallel
 
 # define basic things for the xml files
 rnd_start  = 1234							# random seed in the first run
 max_eval   = 100		# number of iterations
 pop_size   = 100				# population size
 num_islands = 1
-csv_name   = 'input_data2.dat'	
-num_param  = 3
+#csv_name   = 'input_data2.dat'	
+num_param  = 10
 #evo_strat = "Non Dominated Particle Swarm - Pygmo"		 					# number of parameters to optimize (needed as a command line argument)
 """self.Recom=["Evolutionary Algorithm (EA) - Inspyred","Covariance Matrix Adaptation ES (CMAES) - Pygmo",
                 "Particle Swarm (PSO) - Inspyred","Indicator Based (IBEA) - Bluepyopt","L-BFGS-B - Scipy"]
@@ -97,7 +97,7 @@ def RunOptim():
 
 
 def main():
-	algos = ["Non Dominated Particle Swarm - Pygmo"]
+	algos = ["Particle Swarm Gen - Pygmo"]
 	for evo_strat in algos:
 		evo_name=str.split(evo_strat," ")[0]+str.split(evo_strat," ")[-1]
 		print(evo_name)
