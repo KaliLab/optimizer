@@ -383,15 +383,10 @@ class Problem:
 
 	def fitness(self, x):
 		if self.nobj!=1:
-			try:
-			    fitness = self.fitnes_fun([normalize(x,self)])[0]
-			except:
-			    fitness = [1000]*self.nobj
+			fitness = self.fitnes_fun([normalize(x,self)])[0]
 		else:
-			try:
-			    fitness = self.fitnes_fun([normalize(x,self)])
-			except:
-			    fitness = [1000]
+			fitness = self.fitnes_fun([normalize(x,self)])
+
 		with open(self.directory + '/island_inds.txt', 'a') as inds_file:
 			inds_file.write("{0}, {1}, {2}, {3}, {4}\n".format(self.gen_counter, self.pop_counter, fitness, x, normalize(x, self)))
 		self.pop_counter += 1

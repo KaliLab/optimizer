@@ -192,12 +192,12 @@ class fF(object):
                 for c in candidates:
                     out_handler.write(str(c) + "\n")
                 out_handler.write(str(act_trace_idx))
-            
+
+            os.chdir(self.option.base_dir)
+
             from subprocess import call
-            try:
-                error=call(self.model.GetExec(unique_ID))
-            except:
-                pass
+            error=call(self.model.GetExec(unique_ID))
+            
             params_file = 'params' + unique_ID + '.param' 
             
             try:
@@ -223,11 +223,11 @@ class fF(object):
                 pass
             
             
-            
             try:
                 os.remove(self.option.base_dir + '/trace' + unique_ID + '.dat')
             except OSError:
                 pass
+
 
             try:
                 os.remove(self.option.base_dir + '/spike' + unique_ID + '.dat')

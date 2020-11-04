@@ -10,15 +10,12 @@ import os
 
 nest.ResetKernel()
 
-
 # In[159]:
 
 unique_ID = sys.argv[1]
 
 params_file = 'params' + unique_ID + '.param' 
-
 params = np.genfromtxt(params_file)
-
 gL_Bas      = params[0]*1000   #5.0e-3 #7.14293e-3
 tauMem_Bas 	= params[1]   #14.0
 Cm_Bas      = tauMem_Bas * gL_Bas
@@ -85,7 +82,6 @@ current_list = [150., 200., 300., 600.]
 trace_num = int(round(params[10]))
 current   = current_list[trace_num]
 
-
 # In[162]:
 
 current_gen = nest.Create('step_current_generator')
@@ -104,7 +100,6 @@ nest.Connect(current_gen, neuron)
 nest.Connect(voltmeter,   neuron)
 nest.Connect(neuron,      spikedetector)
 
-
 # In[165]:
 try:
     nest.Simulate(1100.1)
@@ -114,14 +109,13 @@ try:
     voltages = nest.GetStatus(voltmeter)[0]['events']['V_m']
     voltages = np.insert(voltages, 0, -60.)
 
-except nest.NESTError:
+except:
     print("NESTERROR COUGHT")
 
     times = list(np.linspace(0.0,1100.0, 5501))
     voltages = list(np.linspace(-100, 0, 5501))
 
 # In[166]:
-
 
 spikes   = nest.GetStatus(spikedetector)[0]['events']['times']
 
@@ -132,5 +126,6 @@ spikes   = nest.GetStatus(spikedetector)[0]['events']['times']
 # In[167]:
 spike_filename = 'spike' + unique_ID + '.dat'
 trace_filename = 'trace' + unique_ID + '.dat'
+
 np.savetxt(spike_filename, spikes, fmt='%.2f')
 np.savetxt(trace_filename, np.array([times, voltages]).T, fmt='%.2f')

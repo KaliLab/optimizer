@@ -10,7 +10,7 @@
   <run_controll_vrest>vrest</run_controll_vrest>
   <starting_points>None</starting_points>
   <cooling_rate>None</cooling_rate>
-  <number_of_cpu>4</number_of_cpu>
+  <number_of_cpu>1</number_of_cpu>
   <pop_size>100.0</pop_size>
   <adjusted_params>['parameter0', 'parameter1', 'parameter2', 'parameter3', 'parameter4', 'parameter5', 'parameter6', 'parameter7', 'parameter8', 'parameter9']</adjusted_params>
   <num_repet>None</num_repet>
