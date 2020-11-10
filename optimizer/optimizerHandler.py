@@ -321,15 +321,15 @@ class PygmoAlgorithmBasis(baseOptimizer):
 		print(self.max_evaluation)"""
 		
 		if self.multiprocessing:
-			"""self.mpbfe=pg.mp_bfe()
+			self.mpbfe=pg.mp_bfe()
 			self.mpbfe.init_pool(self.number_of_cpu)
 			self.bfe=pg.bfe(self.mpbfe)
-			self.algorithm.set_bfe(self.bfe)"""
+			self.algorithm.set_bfe(self.bfe)
 			self.pgalgo=pg.algorithm(self.algorithm)
-			self.archi = pg.population(prob=self.prob, size=self.pop_size)#,b=self.bfe)
+			self.archi = pg.population(prob=self.prob, size=self.pop_size,b=self.bfe)
 			self.pgalgo.evolve(self.archi)
 			
-			#self.mpbfe.shutdown_pool()
+			self.mpbfe.shutdown_pool()
 		else:
 			self.pgalgo=pg.algorithm(self.algorithm)
 			self.archi = pg.archipelago(n=self.num_islands,t = pg.fully_connected(),algo=self.pgalgo, prob=self.prob, pop_size=self.pop_size)#,b=self.bfe)

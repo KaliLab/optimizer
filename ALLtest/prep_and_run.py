@@ -9,7 +9,7 @@ curr_dir  		= os.getcwd()						# base directory
 orig_name 		= 'adexpif_external_ca3_pc'						# name of the working directory we want to copy
 orig_dir  		= curr_dir + '/'+ 'optimizer_multirun/' + orig_name		# path of this directory
 num_runs  		= 10						# how many copies we want
-parallel_runs   = 10								# how many optimizations we allow to run in parallel
+parallel_runs   = 1								# how many optimizations we allow to run in parallel
 
 # define basic things for the xml files
 rnd_start  = 1234							# random seed in the first run
@@ -75,7 +75,7 @@ def GenerateCommands(evo_name):
 		command = 'python ' + optimizer_path + ' -c ' + xml_name #+ ' -v_level=1'
 		
 		if i % parallel_runs > 0:
-			command += ' &'
+			command += ' '
 		command += '\n'
 
 		commands.append(command)
@@ -97,7 +97,7 @@ def RunOptim():
 
 
 def main():
-	algos = ["Particle Swarm Gen - Pygmo","Extended Ant Colony - Pygmo", "Multi Objective Ant Colony - Pygmo", "NondominatedParticle Swarm - Pygmo", "NondominatedSortedGA - Pygmo"]
+	algos = ["NondominatedSortedParticle Swarm - Pygmo", "NondominatedSortedGA - Pygmo"]
 	for evo_strat in algos:
 		evo_name=str.split(evo_strat," ")[0]+str.split(evo_strat," ")[-1]
 		print(evo_name)
