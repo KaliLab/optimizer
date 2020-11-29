@@ -292,16 +292,25 @@ class PygmoAlgorithmBasis(baseOptimizer):
 
 	def __init__(self, reader_obj, model_obj, option_obj):
 		baseOptimizer.__init__(self, reader_obj, model_obj, option_obj)
-
+		self.multiobjective=False
+		self.option_obj=option_obj
 		pg.set_global_rng_seed(seed = self.seed)
 		self.boundaries = option_obj.boundaries
 		self.base_dir = option_obj.base_dir
-		
+		if self.option_obj.type[-1]!="features":
+			self.number_of_traces=reader_obj.number_of_traces()
+		else:
+			self.number_of_traces=len(reader_obj.features_data["stim_amp"])
+		self.n_obj=len(option_obj.GetFitnessParam()[-1])*int(self.number_of_traces)
 		self.num_islands = int(option_obj.num_islands)
 
 	def Optimize(self):
-		self.prob = Problem(self.ffun,self.boundaries, self.num_islands, self.pop_size, 1, self.base_dir)
-		
+		if self.multiobjective:
+			fitfun=self.mfun
+		else:
+			fitfun=self.ffun
+			self.n_obj=1
+		self.prob = Problem(fitfun,self.boundaries, self.num_islands, self.pop_size,1,self.n_obj,self.base_dir)		
 		
 		"""try:
 			self.archi = pickle.load(open(str(self.base_dir)+'/pygmo_save.pkl', 'rb'))
@@ -310,21 +319,53 @@ class PygmoAlgorithmBasis(baseOptimizer):
 			print('no previous save found')
 			self.archi = pg.archipelago(n=self.num_islands,algo=self.algorithm, prob=self.prob, pop_size=self.pop_size)
 		print(self.max_evaluation)"""
-		self.archi = pg.archipelago(n=self.num_islands,algo=self.algorithm, prob=self.prob, pop_size=self.pop_size)
-		self.archi.evolve(self.max_evaluation)
-		self.archi.wait()
-		pickle.dump(self.archi,open(str(self.base_dir)+'/pygmo_save.pkl', 'wb'))
-		self.archi.wait()
+		
+		if self.multiprocessing:
+			self.mpbfe=pg.mp_bfe()
+			self.mpbfe.init_pool(self.number_of_cpu)
+			self.bfe=pg.bfe(self.mpbfe)
+			self.algorithm.set_bfe(self.bfe)
+			self.pgalgo=pg.algorithm(self.algorithm)
+			self.archi = pg.population(prob=self.prob, size=self.pop_size,b=self.bfe)
+			self.pgalgo.evolve(self.archi)
+			
+			self.mpbfe.shutdown_pool()
+		else:
+			self.pgalgo=pg.algorithm(self.algorithm)
+			self.archi = pg.archipelago(n=self.num_islands,t = pg.fully_connected(),algo=self.pgalgo, prob=self.prob, pop_size=self.pop_size)#,b=self.bfe)
+			self.archi.evolve()
+			self.archi.wait()
+			for x in range(self.num_islands):
+				self.archi.push_back()
 		
 		
-		self.champions_x = self.archi.get_champions_x()
-		self.champions_f = self.archi.get_champions_f()
-		self.best_fitness = min(self.champions_f)
-		self.best = normalize(self.champions_x[self.champions_f.index(self.best_fitness)], self)
+		
+		
+		#pickle.dump(self.archi,open(str(self.base_dir)+'/pygmo_save.pkl', 'wb'))
+		#self.archi.wait()
+		
+		#try:
+		if self.multiprocessing:
+			if self.multiobjective:
+				self.champions_x = self.archi.get_x()
+				self.champions_f = list(np.mean(self.archi.get_f(),axis=1))
+				self.best_fitness = min(self.champions_f)
+				self.best = self.best = normalize(self.champions_x[self.champions_f.index(self.best_fitness)], self)
+			else:
+				self.champions_x = self.archi.champion_x
+				self.champions_f = self.archi.champion_f
+				self.best_fitness = self.champions_f
+				self.best = normalize(self.champions_x, self)
+		else:		
+			self.champions_x = self.archi.get_champions_x()
+			self.champions_f = self.archi.get_champions_f()
+			self.best_fitness = min(self.champions_f)
+			self.best = normalize(self.champions_x[self.champions_f.index(self.best_fitness)], self)
 
+		
 class Problem:
 	
-	def __init__(self, fitnes_fun, bounds, num_islands=1, pop_size=1, max_evaluations=1, directory=''):
+	def __init__(self, fitnes_fun, bounds, num_islands=1, pop_size=1, max_evaluations=1,n_obj=1, directory=''):
 		self.bounds = bounds
 		self.min_max = bounds
 		self.fitnes_fun = fitnes_fun
@@ -334,16 +375,19 @@ class Problem:
 		self.pop_counter = 0
 		self.gen_counter = 0
 		self.directory = directory
-
+		self.nobj=n_obj
 		try:
 			os.remove(self.directory + '/island_inds.txt')
 		except OSError:
 			pass
 
 	def fitness(self, x):
-
-		fitness = self.fitnes_fun([normalize(x,self)])
-		print('PYGMO FITNES')
+		
+		if self.nobj!=1:
+			fitness = self.fitnes_fun([normalize(x,self)])[0]
+		else:
+			fitness = self.fitnes_fun([normalize(x,self)])
+			
 		with open(self.directory + '/island_inds.txt', 'a') as inds_file:
 			inds_file.write("{0}, {1}, {2}, {3}, {4}\n".format(self.gen_counter, self.pop_counter, fitness, x, normalize(x, self)))
 		self.pop_counter += 1
@@ -352,8 +396,11 @@ class Problem:
 			self.gen_counter += 1
 			print("Generation: {0}".format(self.gen_counter))
 
-
 		return fitness
+
+	
+	def get_nobj(self):
+		return self.nobj
 
 	def get_bounds(self):
 		return(self.bounds[0], self.bounds[1])
@@ -429,13 +476,13 @@ class Single_Differential_Evolution_Pygmo(SinglePygmoAlgorithmBasis):
 	def __init__(self,reader_obj,model_obj,option_obj):
 
 		SinglePygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
-	
+		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		
 		self.pop_kwargs['size'] = int(option_obj.pop_size)
 
 		self.algo_type = pg.de        
-		self.algorithm = pg.algorithm(pg.de(gen=self.max_evaluation))
+		self.algorithm = pg.de(gen=self.max_evaluation)
 
 
 class my_candidate():
@@ -510,65 +557,114 @@ class Simulated_Annealing_Inspyred(InspyredAlgorithmBasis):
 class Differential_Evolution_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
-
+		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
 
-		self.algorithm = pg.algorithm(pg.de(gen=self.max_evaluation))
+		self.algorithm = pg.de(gen=self.max_evaluation)
 
 class Covariance_Matrix_Adaptation_ES_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
-
+		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
 		self.force_bounds = option_obj.force_bounds
-		self.algorithm = pg.algorithm(pg.cmaes(gen=self.max_evaluation, ftol=1e-15, xtol=1e-15, force_bounds=bool(self.force_bounds)))
+		self.algorithm = pg.cmaes(gen=self.max_evaluation,ftol=1e-15, xtol=1e-15, force_bounds=bool(self.force_bounds))
 
 class Particle_Swarm_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
-
+		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
 
-		self.algorithm = pg.algorithm(pg.pso(gen=self.max_evaluation))
+		self.algorithm = pg.pso(gen=self.max_evaluation)
+
+class Particle_Swarm_Gen_Pygmo(PygmoAlgorithmBasis):
+	def __init__(self, reader_obj, model_obj, option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+		self.multiprocessing=True
+		self.max_evaluation=int(option_obj.max_evaluation)
+		self.pop_size = int(option_obj.pop_size)
+		
+		self.algorithm = pg.pso_gen(gen=self.max_evaluation)
+
+class Multi_Objective_Ant_Colony_Pygmo(PygmoAlgorithmBasis):
+	def __init__(self, reader_obj, model_obj, option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+		self.multiobjective=True
+		self.multiprocessing=True
+		self.max_evaluation=int(option_obj.max_evaluation)
+		self.pop_size = int(option_obj.pop_size)
+		
+		self.algorithm = pg.maco(gen=self.max_evaluation)
+
+class Extended_Ant_Colony_Pygmo(PygmoAlgorithmBasis):
+	def __init__(self, reader_obj, model_obj, option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+		self.multiprocessing=True
+		self.max_evaluation=int(option_obj.max_evaluation)
+		self.pop_size = int(option_obj.pop_size)
+	
+		self.algorithm = pg.gaco(gen=self.max_evaluation)
+
+class Nondominated_Sorted_Particle_Swarm_Pygmo(PygmoAlgorithmBasis):
+	def __init__(self, reader_obj, model_obj, option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+		self.multiobjective=True
+		self.multiprocessing=True
+		self.max_evaluation=int(option_obj.max_evaluation)
+		self.pop_size = int(option_obj.pop_size)
+		
+		self.algorithm = pg.nspso(gen=self.max_evaluation)
+
+class Nondominated_Sorted_GA_Pygmo(PygmoAlgorithmBasis):
+	def __init__(self, reader_obj, model_obj, option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+		self.multiobjective=True
+		self.multiprocessing=True
+		self.max_evaluation=int(option_obj.max_evaluation)
+		self.pop_size = int(option_obj.pop_size)
+		
+		self.algorithm = pg.nsga2(gen=self.max_evaluation)
+
 
 class Exponential_Evolution_Strategies_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
-
+		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
 		self.force_bounds = option_obj.force_bounds if option_obj.force_bounds else False
 		print('BOUND :', self.force_bounds)
 
-		self.algorithm = pg.algorithm(pg.xnes(gen=self.max_evaluation, ftol=1e-15, xtol=1e-15, force_bounds=bool(self.force_bounds)))
+		self.algorithm = pg.xnes(gen=self.max_evaluation,ftol=1e-15, xtol=1e-15, force_bounds=bool(self.force_bounds))
 
 class Bee_Colony_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
-
+		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
 
-		self.algorithm = pg.algorithm(pg.bee_colony(gen=self.max_evaluation))
+		self.algorithm = pg.bee_colony(gen=self.max_evaluation)
 
 class Simple_Genetic_Algorithm_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
-
+		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
 
-		self.algorithm = pg.algorithm(pg.sga(gen=self.max_evaluation))
+		self.algorithm = pg.sga(gen=self.max_evaluation)
 
 class Self_adaptive_DE_Pygmo(PygmoAlgorithmBasis):
 
 	def __init__(self,reader_obj,model_obj,option_obj):
 
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
-
+		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 
 		if int(option_obj.pop_size)<7:
@@ -579,14 +675,14 @@ class Self_adaptive_DE_Pygmo(PygmoAlgorithmBasis):
 		else:
 			self.pop_size = int(option_obj.pop_size)
 
-		self.algorithm = pg.algorithm(pg.sade(gen=self.max_evaluation, ftol=1e-15, xtol=1e-15))
+		self.algorithm = pg.sade(gen=self.max_evaluation,ftol=1e-15, xtol=1e-15)
 
 class Differential_Evolution_1220_Pygmo(PygmoAlgorithmBasis):
 
 	def __init__(self,reader_obj,model_obj,option_obj):
 
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
-
+		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 
 		if int(option_obj.pop_size)<7:
@@ -597,7 +693,7 @@ class Differential_Evolution_1220_Pygmo(PygmoAlgorithmBasis):
 		else:
 			self.pop_size = int(option_obj.pop_size)
 
-		self.algorithm = pg.algorithm(pg.de1220(gen=self.max_evaluation, ftol=1e-15, xtol=1e-15))
+		self.algorithm = pg.de1220(gen=self.max_evaluation,ftol=1e-15, xtol=1e-15)
 
 
 class Particle_Swarm_Inspyred(InspyredAlgorithmBasis):

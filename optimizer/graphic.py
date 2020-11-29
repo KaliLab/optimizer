@@ -20,7 +20,7 @@ from functools import partial
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog , QTableWidgetItem
+from PyQt5.QtWidgets import QApplication, QWidget, QInputDialog, QLineEdit, QFileDialog , QTableWidgetItem , QSizePolicy , QVBoxLayout, QGroupBox
 from PyQt5.QtGui import *
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -40,24 +40,35 @@ def popup(message):
 
 
 class Ui_Optimizer(object):
+    def __init__(self,*args):
+        super().__init__(*args)
+
+
     def setupUi(self, Optimizer):
         """
         Implements the widgets from the PyQT package.
         """
-
-
+        
 
         Optimizer.setObjectName("Optimizer")
-        Optimizer.resize(771, 589)
+        Optimizer.resize(800, 589)
+        Optimizer.setSizePolicy(QtWidgets.QSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding))
         self.centralwidget = QtWidgets.QWidget(Optimizer)
         self.centralwidget.setObjectName("centralwidget")
+        Optimizer.setCentralWidget(self.centralwidget)
+        self.laybox = QtWidgets.QVBoxLayout(self.centralwidget)
+        
         self.tabwidget = QtWidgets.QTabWidget(self.centralwidget)
         self.tabwidget.setGeometry(QtCore.QRect(0, 0, 771, 551))
         self.tabwidget.setObjectName("tabwidget")
+        self.laybox.addWidget(self.tabwidget)
+        self.tabwidget.setSizePolicy(QtWidgets.QSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding))
                 #filetab 2
         
         self.filetab = QtWidgets.QWidget()
+       
         self.filetab.setObjectName("filetab")
+        
         self.size_ctrl = QtWidgets.QLineEdit(self.filetab)
         self.size_ctrl.setGeometry(QtCore.QRect(10, 230, 221, 22))
         self.size_ctrl.setObjectName("size_ctrl")
@@ -68,7 +79,7 @@ class Ui_Optimizer(object):
         self.freq_ctrl.setGeometry(QtCore.QRect(10, 330, 221, 22))
         self.freq_ctrl.setObjectName("freq_ctrl")
         self.label_3 = QtWidgets.QLabel(self.filetab)
-        self.label_3.setGeometry(QtCore.QRect(10, 130, 101, 16))
+        self.label_3.setGeometry(QtCore.QRect(10, 130, 200, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -77,7 +88,7 @@ class Ui_Optimizer(object):
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
         self.label_4 = QtWidgets.QLabel(self.filetab)
-        self.label_4.setGeometry(QtCore.QRect(10, 260, 151, 16))
+        self.label_4.setGeometry(QtCore.QRect(10, 260, 250, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -86,7 +97,7 @@ class Ui_Optimizer(object):
         self.label_4.setFont(font)
         self.label_4.setObjectName("label_4")
         self.label_5 = QtWidgets.QLabel(self.filetab)
-        self.label_5.setGeometry(QtCore.QRect(10, 210, 121, 16))
+        self.label_5.setGeometry(QtCore.QRect(10, 210, 250, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -95,7 +106,7 @@ class Ui_Optimizer(object):
         self.label_5.setFont(font)
         self.label_5.setObjectName("label_5")
         self.label = QtWidgets.QLabel(self.filetab)
-        self.label.setGeometry(QtCore.QRect(10, 50, 91, 16))
+        self.label.setGeometry(QtCore.QRect(10, 50, 180, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(11)
@@ -104,7 +115,7 @@ class Ui_Optimizer(object):
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.label_7 = QtWidgets.QLabel(self.filetab)
-        self.label_7.setGeometry(QtCore.QRect(250, 210, 61, 16))
+        self.label_7.setGeometry(QtCore.QRect(250, 210, 120, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -116,7 +127,7 @@ class Ui_Optimizer(object):
         self.pushButton_3.setGeometry(QtCore.QRect(10, 400, 80, 22))
         self.pushButton_3.setObjectName("pushButton_3")
         self.label_2 = QtWidgets.QLabel(self.filetab)
-        self.label_2.setGeometry(QtCore.QRect(10, 80, 91, 16))
+        self.label_2.setGeometry(QtCore.QRect(10, 80, 180, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -128,7 +139,7 @@ class Ui_Optimizer(object):
         self.base_dir_controll.setGeometry(QtCore.QRect(240, 150, 80, 22))
         self.base_dir_controll.setObjectName("base_dir_controll")
         self.label_6 = QtWidgets.QLabel(self.filetab)
-        self.label_6.setGeometry(QtCore.QRect(10, 310, 161, 16))
+        self.label_6.setGeometry(QtCore.QRect(10, 310, 320, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -161,12 +172,17 @@ class Ui_Optimizer(object):
         self.lineEdit_file = QtWidgets.QLineEdit(self.filetab)
         self.lineEdit_file.setGeometry(QtCore.QRect(10, 100, 221, 22))
         self.lineEdit_file.setObjectName("lineEdit")
-        self.input_tree=QtWidgets.QTreeView(self.filetab)
-        self.input_tree.setGeometry(QtCore.QRect(370, 130, 250, 100))
         self.model = QStandardItemModel(0, 1)
         self.widget = QtWidgets.QWidget(self.filetab)
         self.widget.setGeometry(QtCore.QRect(290, 270, 331, 200))
         self.widget.setObjectName("widget")
+        self.input_tree = QtWidgets.QScrollArea(self.filetab)
+        self.input_tree.setGeometry(QtCore.QRect(370, 130, 250, 100))
+        self.input_label = QtWidgets.QLabel(self.filetab)
+        self.input_label.setGeometry(QtCore.QRect(370, 130, 250, 100))
+        
+
+        
 
 
         #model tab 
@@ -176,7 +192,7 @@ class Ui_Optimizer(object):
         self.load_mods_checkbox = QtWidgets.QCheckBox(self.modeltab)
         self.load_mods_checkbox.setGeometry(QtCore.QRect(10, 130, 20, 20))
         self.label_23 = QtWidgets.QLabel(self.modeltab)
-        self.label_23.setGeometry(QtCore.QRect(30, 130, 121, 16))
+        self.label_23.setGeometry(QtCore.QRect(30, 130, 240, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -185,7 +201,7 @@ class Ui_Optimizer(object):
         self.label_23.setFont(font)
         self.label_23.setObjectName("label_23")
         self.label_24 = QtWidgets.QLabel(self.modeltab)
-        self.label_24.setGeometry(QtCore.QRect(10, 80, 91, 16))
+        self.label_24.setGeometry(QtCore.QRect(10, 80, 180, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -221,7 +237,7 @@ class Ui_Optimizer(object):
         self.label_25.setFont(font)
         self.label_25.setObjectName("label_25")
         self.label_26 = QtWidgets.QLabel(self.modeltab)
-        self.label_26.setGeometry(QtCore.QRect(370, 130, 201, 16))
+        self.label_26.setGeometry(QtCore.QRect(370, 130, 300, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -230,7 +246,7 @@ class Ui_Optimizer(object):
         self.label_26.setFont(font)
         self.label_26.setObjectName("label_26")
         self.label_27 = QtWidgets.QLabel(self.modeltab)
-        self.label_27.setGeometry(QtCore.QRect(10, 180, 231, 16))
+        self.label_27.setGeometry(QtCore.QRect(10, 180, 300, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(11)
@@ -279,7 +295,7 @@ class Ui_Optimizer(object):
         self.label_44.setFont(font)
         self.label_44.setObjectName("label_44")
         self.label_66 = QtWidgets.QLabel(self.simtab)
-        self.label_66.setGeometry(QtCore.QRect(220, 260, 141, 16))
+        self.label_66.setGeometry(QtCore.QRect(220, 260, 200, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -288,7 +304,7 @@ class Ui_Optimizer(object):
         self.label_66.setFont(font)
         self.label_66.setObjectName("label_66")
         self.label_67 = QtWidgets.QLabel(self.simtab)
-        self.label_67.setGeometry(QtCore.QRect(220, 310, 111, 16))
+        self.label_67.setGeometry(QtCore.QRect(220, 310, 200, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -297,7 +313,7 @@ class Ui_Optimizer(object):
         self.label_67.setFont(font)
         self.label_67.setObjectName("label_67")
         self.label_45 = QtWidgets.QLabel(self.simtab)
-        self.label_45.setGeometry(QtCore.QRect(10, 320, 111, 16))
+        self.label_45.setGeometry(QtCore.QRect(10, 320, 200, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -312,7 +328,7 @@ class Ui_Optimizer(object):
         self.section_dur.setGeometry(QtCore.QRect(10, 340, 121, 23))
         self.section_dur.setObjectName("section dur")
         self.label_46 = QtWidgets.QLabel(self.simtab)
-        self.label_46.setGeometry(QtCore.QRect(10, 270, 111, 16))
+        self.label_46.setGeometry(QtCore.QRect(10, 270, 200, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -332,7 +348,7 @@ class Ui_Optimizer(object):
         font.setBold(False)
         font.setWeight(50)
         self.label_71 = QtWidgets.QLabel(self.simtab)
-        self.label_71.setGeometry(QtCore.QRect(10, 370, 180, 16))
+        self.label_71.setGeometry(QtCore.QRect(10, 370, 300, 16))
         self.label_71.setFont(font)
         self.label_71.setObjectName("label_71")
         self.lineEdit_posins = QtWidgets.QLineEdit(self.simtab)
@@ -342,7 +358,7 @@ class Ui_Optimizer(object):
         self.lineEdit_duration.setGeometry(QtCore.QRect(10, 290, 113, 22))
         self.lineEdit_duration.setObjectName("duration")
         self.label_47 = QtWidgets.QLabel(self.simtab)
-        self.label_47.setGeometry(QtCore.QRect(10, 50, 171, 16))
+        self.label_47.setGeometry(QtCore.QRect(10, 50, 300, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(11)
@@ -354,7 +370,7 @@ class Ui_Optimizer(object):
         self.base_dir_controll9.setGeometry(QtCore.QRect(10, 180, 115, 22))
         self.base_dir_controll9.setObjectName("base_dir_controll9")
         self.label_48 = QtWidgets.QLabel(self.simtab)
-        self.label_48.setGeometry(QtCore.QRect(220, 130, 111, 16))
+        self.label_48.setGeometry(QtCore.QRect(220, 130, 200, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -366,7 +382,7 @@ class Ui_Optimizer(object):
         self.lineEdit_tstop.setGeometry(QtCore.QRect(220, 330, 113, 22))
         self.lineEdit_tstop.setObjectName("tstop")
         self.label_49 = QtWidgets.QLabel(self.simtab)
-        self.label_49.setGeometry(QtCore.QRect(10, 130, 111, 16))
+        self.label_49.setGeometry(QtCore.QRect(10, 130, 200, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -375,7 +391,7 @@ class Ui_Optimizer(object):
         self.label_49.setFont(font)
         self.label_49.setObjectName("label_49")
         self.label_68 = QtWidgets.QLabel(self.simtab)
-        self.label_68.setGeometry(QtCore.QRect(220, 360, 111, 16))
+        self.label_68.setGeometry(QtCore.QRect(220, 360, 200, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -384,7 +400,7 @@ class Ui_Optimizer(object):
         self.label_68.setFont(font)
         self.label_68.setObjectName("label_68")
         self.label_50 = QtWidgets.QLabel(self.simtab)
-        self.label_50.setGeometry(QtCore.QRect(220, 240, 151, 16))
+        self.label_50.setGeometry(QtCore.QRect(220, 240, 300, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(11)
@@ -396,7 +412,7 @@ class Ui_Optimizer(object):
         self.lineEdit_delay.setGeometry(QtCore.QRect(10, 240, 113, 22))
         self.lineEdit_delay.setObjectName("Delay")
         self.label_51 = QtWidgets.QLabel(self.simtab)
-        self.label_51.setGeometry(QtCore.QRect(220, 180, 111, 16))
+        self.label_51.setGeometry(QtCore.QRect(220, 180, 200, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -405,7 +421,7 @@ class Ui_Optimizer(object):
         self.label_51.setFont(font)
         self.label_51.setObjectName("label_51")
         self.label_52 = QtWidgets.QLabel(self.simtab)
-        self.label_52.setGeometry(QtCore.QRect(220, 80, 141, 16))
+        self.label_52.setGeometry(QtCore.QRect(220, 80, 200, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -423,7 +439,7 @@ class Ui_Optimizer(object):
         self.lineEdit_initv.setGeometry(QtCore.QRect(220, 280, 113, 22))
         self.lineEdit_initv.setObjectName("initv")
         self.label_55 = QtWidgets.QLabel(self.simtab)
-        self.label_55.setGeometry(QtCore.QRect(10, 80, 131, 16))
+        self.label_55.setGeometry(QtCore.QRect(10, 80, 200, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -438,7 +454,7 @@ class Ui_Optimizer(object):
         self.fittab = QtWidgets.QWidget()
         self.fittab.setObjectName("fittab")
         self.label_56 = QtWidgets.QLabel(self.fittab)
-        self.label_56.setGeometry(QtCore.QRect(10, 50, 151, 16))
+        self.label_56.setGeometry(QtCore.QRect(10, 50, 270, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(11)
@@ -456,7 +472,7 @@ class Ui_Optimizer(object):
         self.spike_window.setGeometry(QtCore.QRect(370, 210, 113, 22))
         self.spike_window.setObjectName("spike_window")
         self.label_69 = QtWidgets.QLabel(self.fittab)
-        self.label_69.setGeometry(QtCore.QRect(330, 90, 241, 16))
+        self.label_69.setGeometry(QtCore.QRect(330, 90, 300, 16))
         self.spike_tresh.setText("0.0")
         self.spike_window.setText("1.0")
         font = QtGui.QFont()
@@ -467,7 +483,7 @@ class Ui_Optimizer(object):
         self.label_69.setFont(font)
         self.label_69.setObjectName("label_69")
         self.label_70 = QtWidgets.QLabel(self.fittab)
-        self.label_70.setGeometry(QtCore.QRect(330, 190, 191, 16))
+        self.label_70.setGeometry(QtCore.QRect(330, 190, 300, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(11)
@@ -490,7 +506,7 @@ class Ui_Optimizer(object):
         self.pushButton_30.setGeometry(QtCore.QRect(630, 460, 80, 22))
         self.pushButton_30.setObjectName("pushButton_30")
         self.label_57 = QtWidgets.QLabel(self.runtab)
-        self.label_57.setGeometry(QtCore.QRect(10, 50, 151, 16))
+        self.label_57.setGeometry(QtCore.QRect(10, 50, 250, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(11)
@@ -505,7 +521,7 @@ class Ui_Optimizer(object):
         self.pushButton_32.setGeometry(QtCore.QRect(10, 460, 80, 22))
         self.pushButton_32.setObjectName("pushButton_32")
         self.label_59 = QtWidgets.QLabel(self.runtab)
-        self.label_59.setGeometry(QtCore.QRect(10, 70, 131, 16))
+        self.label_59.setGeometry(QtCore.QRect(10, 70, 200, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -537,7 +553,7 @@ class Ui_Optimizer(object):
         self.aspectlist.setGeometry(QtCore.QRect(470, 90, 241, 351))
         self.aspectlist.setObjectName("aspectlist")
         self.label_60 = QtWidgets.QLabel(self.runtab)
-        self.label_60.setGeometry(QtCore.QRect(470, 70, 131, 16))
+        self.label_60.setGeometry(QtCore.QRect(470, 70, 200, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -556,7 +572,7 @@ class Ui_Optimizer(object):
         font.setBold(False)
         font.setWeight(75)
         self.label_72 = QtWidgets.QLabel(self.eval_tab)
-        self.label_72.setGeometry(QtCore.QRect(10, 50, 131, 16))
+        self.label_72.setGeometry(QtCore.QRect(10, 50, 200, 16))
         self.label_72.setFont(font)
         self.label_72.setObjectName("label_72")
         self.tabwidget.addTab(self.eval_tab, "")
@@ -581,7 +597,7 @@ class Ui_Optimizer(object):
         self.pushButton_37.setGeometry(QtCore.QRect(300, 400, 111, 22))
         self.pushButton_37.setObjectName("pushButton_34")
         self.label_74 = QtWidgets.QLabel(self.plot_tab)
-        self.label_74.setGeometry(QtCore.QRect(10, 50, 131, 16))
+        self.label_74.setGeometry(QtCore.QRect(10, 50, 200, 16))
         self.label_74.setFont(font)
         self.label_74.setObjectName("label_74")
         self.errorlist = QtWidgets.QTableWidget(self.plot_tab)
@@ -655,6 +671,16 @@ class Ui_Optimizer(object):
         self.modellist.horizontalHeader().setStretchLastSection(True)
         self.modellist.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.modellist.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        
+        self.input_tree.setWidgetResizable(True)
+        font = QtGui.QFont()
+        font.setFamily("Ubuntu")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        self.input_label.setFont(font)
+        self.input_label.setObjectName("label")
+        self.input_tree.setWidget(self.input_label)
 
 
         #filetab 2
@@ -746,7 +772,12 @@ class Ui_Optimizer(object):
         #self.fitlist.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.fitlist.setColumnWidth(0,200)
         self.fitlist.setColumnWidth(1,101)
+        self.fitlist.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         self.fitlist.itemSelectionChanged.connect(self.fitselect)
+        self.fitlist.cellEntered.connect(self.fitselect)
+        self.fitlist.cellClicked.connect(self.fitselect)
+        self.fitlist.cellPressed.connect(self.fitselect)
+        self.fitlist.cellActivated.connect(self.fitselect)
         self.fitlist.horizontalHeader().setStretchLastSection(True)
         self.fitset=set()
         self.label_69.setText(_translate("Optimizer", "Spike Detection Tresh. (mv)"))
@@ -796,7 +827,9 @@ class Ui_Optimizer(object):
                 "Simulated Annealing - Inspyred"]
         self.Scipy=["Basinhopping - Scipy","Nelder-Mead - Scipy","L-BFGS-B - Scipy"]
         self.Bluepyopt=["Nondominated Sorted (NSGAII) - Bluepyopt","Indicator Based (IBEA) - Bluepyopt"]
-        self.Pygmo=["Differential Evolution (DE) - Pygmo","Self-Adaptive DE (SADE) - Pygmo",
+        self.Pygmo=["Particle Swarm Gen (PSOG) - Pygmo","Nondominated Sorted Particle Swarm (NSPSO) - Pygmo",
+                "Nondominated Sorted GA (NSGAII) - Pygmo","Differential Evolution (DE) - Pygmo",
+                "Extended Ant Colony (GACO) - Pygmo","Multi-Objective Ant Colony (MACO) - Pygmo","Self-Adaptive DE (SADE) - Pygmo",
                 "Particle Swarm (PSO) - Pygmo","Exponential Evolution Strategies (XNES) - Pygmo",
                 "Simple Genetic Algorithm (SGA) - Pygmo","Covariance Matrix Adaptation ES (CMAES) - Pygmo",
                 "Single Differential Evolution - Pygmo","Differential Evolution (DE1220) - Pygmo",
@@ -856,6 +889,11 @@ class Ui_Optimizer(object):
             "Exponential Evolution Strategies (XNES) - Pygmo":[descr19.copy(),descr20.copy(),descr42,descr41],
             "Simple Genetic Algorithm (SGA) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "Particle Swarm (PSO) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
+            "Particle Swarm Gen (PSOG) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
+            "Nondominated Sorted Particle Swarm (NSPSO) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
+            "Nondominated Sorted GA (NSGAII) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
+            "Extended Ant Colony (GACO) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
+            "Multi-Objective Ant Colony (MACO) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "Covariance Matrix Adaptation ES (CMAES) - Pygmo":[descr19.copy(),descr20.copy(),descr42,descr41],
             "Single Differential Evolution - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "Differential Evolution (DE1220) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
@@ -891,12 +929,12 @@ class Ui_Optimizer(object):
 
         self.menuMenu.setTitle(_translate("Optimizer", "Menu"))
         self.actionMultiple_Optimization.setText(_translate("Optimizer", "Multiple Optimization"))
-        self.tabwidget.setTabEnabled(1,False)
+        """self.tabwidget.setTabEnabled(1,False)
         self.tabwidget.setTabEnabled(2,False)
         self.tabwidget.setTabEnabled(3,False)
         self.tabwidget.setTabEnabled(4,False)
         self.tabwidget.setTabEnabled(5,False)
-        self.tabwidget.setTabEnabled(6,False)
+        self.tabwidget.setTabEnabled(6,False)"""
     
                 
 
@@ -972,20 +1010,25 @@ class Ui_Optimizer(object):
         self.dropdown.setCurrentIndex(1)
 
         
-    def add_data_dict(self,data_dict, root):
+    def add_data_dict(self,data_dict):
         """
         Creates Input tree *not implemented yet*
         :param data_dict:
         :param root:
         """
-        stack = data_dict.items()
+        
+        stack = data_dict
+        string=""
         while stack:
-            key, value = stack.pop()
+            key, value = stack.popitem()
             if isinstance(value, dict):
-                self.input_tree.AppendItem(root, "{0} : ".format(key))
-                stack.extend(value.iteritems())
+                string+=str("{0} : ".format(key))+"\n"
+                stack.update(value)
             else:
-                self.input_tree.AppendItem(root, "  {0} : {1}".format(key, value))   
+                string+=str("  {0} : {1}".format(key, value))+"\n"  
+        
+        
+        return string
         
 
     def Load(self):
@@ -1062,19 +1105,19 @@ class Ui_Optimizer(object):
             if self.type_selector.currentIndex()==0:
                 for n in [x for x in enumerate(self.loaded_input_types) if x[1]!=None and x[0]!=2]:
                     self.loaded_input_types[n[0]]=None
-                #self.tvoltage=self.input_tree.AppendItem(self.troot,"Voltage trace")
+                input_string="Voltage trace \n" 
                 self.loaded_input_types[0]=self.tvoltage
                 
                 #self.model.setData(self.model.index(0), self.tvoltage,self.input_file_controll.GetValue().split("/")[-1])
-                #self.input_tree.AppendItem(self.tvoltage,self.input_file_controll.GetValue().split("/")[-1])
+                input_string+=str(str(self.lineEdit_file.text()).split("/")[-1])+"\n"
             elif self.type_selector.currentIndex()==1:
                 for n in [x for x in enumerate(self.loaded_input_types) if x[1]!=None and x[0]!=2]:
                     #self.input_tree.Delete(n[1])
                     self.loaded_input_types[n[0]]=None
-                #self.tcurrent=self.input_tree.AppendItem(self.troot,"Current trace")
+                input_string="Current trace"
                 self.loaded_input_types[1]=self.tcurrent
                 #self.model.setData(self.model.index(0),self.tcurrent,self.input_file_controll.GetValue().split("/")[-1])
-                #self.input_tree.AppendItem(self.tcurrent,self.input_file_controll.GetValue().split("/")[-1])
+                input_string+=str(str(self.lineEdit_file.text()).split("/")[-1])+"\n"
 
             '''
             elif self.type_selector.GetSelection()==3:
@@ -1090,15 +1133,15 @@ class Ui_Optimizer(object):
             for n in [x for x in enumerate(self.loaded_input_types) if x[1]!=None and x[0]!=2]:
                 #self.input_tree.Delete(n[1])
                 self.loaded_input_types[n[0]]=None
-            #self.tfeatures=self.input_tree.AppendItem(self.troot,"Features")
+            input_string="Features"
             #self.loaded_input_types[2]=self.tfeatures
-            #features_file=self.model.setData(self.model.index(0, self.FROM),self.tfeatures,self.input_file_controll.GetValue().split("/")[-1])
-            #features_file=self.input_tree.AppendItem(self.tfeatures,self.input_file_controll.GetValue().split("/")[-1])
-            #self.add_data_dict(self.core.data_handler.features_dict, features_file)
+            input_string+=str(str(self.lineEdit_file.text()).split("/")[-1])+"\n"
+            input_string+=self.add_data_dict(self.core.data_handler.features_dict)
 
         else:
             pass
-    
+        
+        self.input_label.setText(QtCore.QCoreApplication.translate("Optimizer", input_string))
         if self.core.option_handler.type[-1]!="features":
                 self.my_list = copy(self.core.ffun_calc_list)
                
@@ -1110,7 +1153,11 @@ class Ui_Optimizer(object):
             self.param_list[1] = [("Spike Detection Thres. (mv)",0.0), ("Spike Window (ms)",1.0)]
         else:
             self.param_list[0] = [("Spike Detection Thres. (mv)",0.0)]
-
+	
+        if self.core.option_handler.type[-1]=="features":
+            for l in range(len(self.core.data_handler.features_data["stim_amp"])):
+                self.container.append(float(self.core.data_handler.features_data["stim_amp"][l]))
+	
         self.fitlist.setRowCount(len(self.my_list))
         for index,elems in enumerate(self.my_list):  
             item = QTableWidgetItem(elems)
@@ -1212,7 +1259,7 @@ class Ui_Optimizer(object):
                                 self.modellist.item(idx,j).setBackground(QtGui.QColor(0,255,0))
 
                     self.core.SetModel(kwargs)
-                print(kwargs)
+                
             
 
     def Remove(self, e):
@@ -1436,14 +1483,16 @@ class Ui_Optimizer(object):
         Iterates through all fitness functions and scans the ones contained in the fitness set (selected ones) with an 'if' statement.
         """
         try:
-            sum_o_weights = sum(self.weights)
+            self.fitselect()
+            self.fitchanged()
             allRows = self.fitlist.rowCount()
+            sum_o_weights = float(sum(self.weights))
             for row in range(0,allRows):
                 current_fun=str(self.fitlist.item(row, 0).text())
                 if current_fun in self.fitset:
-                    current_weight=str(self.fitlist.item(row, 1).text())
+                    current_weight=float(str(self.fitlist.item(row, 1).text()))
                     try:
-                        self.fitlist.item(row, 1).setText(str(float(current_weight) / sum_o_weights))
+                        self.fitlist.item(row, 1).setText(str(round(current_weight / sum_o_weights,4)))
                     except:
                         continue
                 else:
@@ -1561,7 +1610,11 @@ class Ui_Optimizer(object):
                                     })
                 self.kwargs.update({"weights" : self.weights})
             if not(0.99<sum(self.kwargs["weights"])<=1.01):
-                errpop.append("You did not normalize your weights!")
+                ret = QtGui.QMessageBox.question("You did not normalize your weights! \n Would you like to continue anyway?")
+                if ret == QtGui.QMessageBox.No:
+                    err.append(3)
+                    errpop.append("Normalize")
+                    
         except:
             err.append(3)
             errpop.append("Fitness Values not right")
@@ -1592,10 +1645,14 @@ class Ui_Optimizer(object):
             err.append(4)
             errpop.append("You forget to select an algorithm!")
         try:
+            self.seed = None
             self.core.ThirdStep(self.kwargs)
             if self.core.option_handler.output_level=="1":
                 self.core.Print()
-            self.seed = None
+        except TypeError:
+            self.core.ThirdStep(self.kwargs)
+            if self.core.option_handler.output_level=="1":
+                self.core.Print()
         except sizeError as sE:
             err.append(4)
             errpop.append("There was an error during the optimization: "+sE.m)
@@ -1604,7 +1661,8 @@ class Ui_Optimizer(object):
             print(e)
             errpop.append("There was an error")
         if err:
-            popup(errpop[0])
+            if not errpop[0]=="Normalize":
+                popup(errpop[0])
             self.tabwidget.setCurrentIndex(int(min(err)))
         else:
             #try:
@@ -1653,7 +1711,20 @@ class Ui_Optimizer(object):
             scroll_area = QtWidgets.QScrollArea(tabs)
             scroll_area.setGeometry(QtCore.QRect(10, 100, 170, 256))
             scroll_area.setWidget(label)
-            scroll_area.setWidgetResizable(True)
+            label = QtWidgets.QLabel(self.plot_tab)
+        label.setGeometry(QtCore.QRect(300, 80, 250, 146))
+        font = QtGui.QFont()
+        font.setFamily("Ubuntu")
+        font.setPointSize(10)
+        font.setBold(False)
+        font.setWeight(50)
+        label.setFont(font)
+        label.setObjectName("label")
+        label.setText(QtCore.QCoreApplication.translate("Optimizer", text))
+        scroll_area = QtWidgets.QScrollArea(self.plot_tab)
+        scroll_area.setGeometry(QtCore.QRect(300,80, 350, 100))
+        scroll_area.setWidget(label)
+        scroll_area.setWidgetResizable(True)
 
         exp_data = []
         model_data = []
@@ -1726,10 +1797,11 @@ class Ui_Optimizer(object):
         Writes out the same fitnesses for parameters as in the previous tab.
         """
         try:
-            stats = inspyred.ec.analysis.fitness_statistics(self.core.cands)
+            fits=self.core.fits
+            stats={'best' : str(min(fits)),'worst' : str(max(fits)),'mean' : str(numpy.mean(fits)),'median' : str(numpy.median(fits)), 'std' : str(numpy.std(fits))}
         except AttributeError:
             stats={'best' : "unkown",'worst' : "unkown",'mean' : "unkown",'median' : "unkown", 'std' : "unkown"}
-            string = "Best: " + str(stats['best']) + "\nWorst: " + str(stats['worst']) + "\nMean: " + str(stats['mean']) + "\nMedian: " + str(stats['median']) + "\nStd:" + str(stats['std'])
+        string = "Best: " + str(stats['best']) + "\nWorst: " + str(stats['worst']) + "\nMean: " + str(stats['mean']) + "\nMedian: " + str(stats['median']) + "\nStd:" + str(stats['std'])
         label = QtWidgets.QLabel(self.plot_tab)
         label.setGeometry(QtCore.QRect(300, 80, 250, 146))
         font = QtGui.QFont()
@@ -2001,7 +2073,7 @@ class StimuliWindow(QtWidgets.QMainWindow):
             self.amplit_edit.setText(str(len(self.parent.container)))
             self.container_load(self)
             for n,v in zip(self.temp,self.parent.container):
-                n.setText(str(v))
+                n[1].setText(str(v))
 
         
         try:
@@ -2025,6 +2097,11 @@ class StimuliWindow(QtWidgets.QMainWindow):
         hoffset = 10
         voffset = 50
         unit="nA" if self.parent.stimprot.currentText()=="IClamp" else "mV"
+        if self.temp:
+            for n in self.temp:
+                n[0]=None
+                n[1]=None
+            self.temp=[]
         for l in range(min(10, int(self.amplit_edit.text()))):
             label = QtWidgets.QLabel(self)
             label.setGeometry(QtCore.QRect(hoffset, voffset + l * vstep, 121, 16))
@@ -2045,12 +2122,12 @@ class StimuliWindow(QtWidgets.QMainWindow):
             #tmp_obj = wx.TextCtrl(self.panel, id=l, pos=(hstep / 2+25, voffset + l * vstep), size=(75, 30))
             if self.option_handler.type[-1]=="features":
                 amplitude_edit.setText(str(self.data_handler.features_data["stim_amp"][l]))
-            self.temp.append(amplitude_edit)
+            self.temp.append([label,amplitude_edit])
 
     def Accept(self, e):
         self.parent.container=[]
         for n in range(len(self.temp)):
-            self.parent.container.append(float(self.temp[n].text()))
+            self.parent.container.append(float(self.temp[n][1].text()))
         self.close()
 
     
