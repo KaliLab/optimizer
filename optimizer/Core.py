@@ -471,10 +471,6 @@ class coreModul():
 					current_gen=self.allpop[idx*popsize:(idx+1)*popsize]
 					for gen,fit in zip(current_gen,current_fits):
 						out_handler.write(str(int(idx/2+1))+":"+str(gen)+":"+str(fit)+"\n")
-
-					
-		
-
 		elif(self.option_handler.evo_strat.split(" ")[-1] == "Pygmo"):
 			'''
 			Currently only the best individual with its fitness is passed
@@ -498,7 +494,7 @@ class coreModul():
 				self.fits.append(self.optimizer.final_pop[i].fitness)
 
 		print(("Optimization lasted for ", stop_time-start_time, " s"))
-		print(self.cands)
+		print(self.cands)	
 		self.cands[0]=self.optimizer.fit_obj.ReNormalize(self.cands[0])
 		print((self.cands[0],"fitness: ",self.fits[0]))
 		

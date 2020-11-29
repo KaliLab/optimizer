@@ -1,4 +1,4 @@
-/* Created by Language version: 7.5.0 */
+/* Created by Language version: 7.7.0 */
 /* VECTORIZED */
 #define NRN_VECTORIZED 1
 #include <stdio.h>
@@ -91,6 +91,15 @@ extern void hoc_register_limits(int, HocParmLimits*);
 extern void hoc_register_units(int, HocParmUnits*);
 extern void nrn_promote(Prop*, int, int);
 extern Memb_func* memb_func;
+ 
+#define NMODL_TEXT 1
+#if NMODL_TEXT
+static const char* nmodl_file_text;
+static const char* nmodl_filename;
+extern void hoc_reg_nmodl_text(int, const char*);
+extern void hoc_reg_nmodl_filename(int, const char*);
+#endif
+
  extern void _nrn_setdata_reg(int, void(*)(Prop*));
  static void _setdata(Prop* _prop) {
  _extcall_prop = _prop;
@@ -152,7 +161,7 @@ static void _ode_matsol(_NrnThread*, _Memb_list*, int);
  static void _ode_matsol_instance1(_threadargsproto_);
  /* connect range variables in _p that hoc is supposed to know about */
  static const char *_mechanism[] = {
- "7.5.0",
+ "7.7.0",
 "K_DRS4_params_voltage_dep",
  "gmax_K_DRS4_params_voltage_dep",
  "X_tau0_K_DRS4_params_voltage_dep",
@@ -218,6 +227,10 @@ extern void _cvode_abstol( Symbol**, double*, int);
      _nrn_setdata_reg(_mechtype, _setdata);
      _nrn_thread_reg(_mechtype, 2, _update_ion_pointer);
      _nrn_thread_table_reg(_mechtype, _check_table_thread);
+ #if NMODL_TEXT
+  hoc_reg_nmodl_text(_mechtype, nmodl_file_text);
+  hoc_reg_nmodl_filename(_mechtype, nmodl_filename);
+#endif
   hoc_register_prop_size(_mechtype, 15, 4);
   hoc_register_dparam_semantics(_mechtype, 0, "k_ion");
   hoc_register_dparam_semantics(_mechtype, 1, "k_ion");
@@ -226,7 +239,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
  	hoc_register_cvode(_mechtype, _ode_count, _ode_map, _ode_spec, _ode_matsol);
  	hoc_register_tolerance(_mechtype, _hoc_state_tol, &_atollist);
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 K_DRS4_params_voltage_dep /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3/x86_64/K_DRS4_params_voltage_dep.mod\n");
+ 	ivoc_help("help ?1 K_DRS4_params_voltage_dep /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/x86_64/K_DRS4_params_voltage_dep.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
@@ -565,4 +578,164 @@ _first = 0;
 
 #if defined(__cplusplus)
 } /* extern "C" */
+#endif
+
+#if NMODL_TEXT
+static const char* nmodl_filename = "/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/K_DRS4_params_voltage_dep.mod";
+static const char* nmodl_file_text = 
+  "TITLE Channel: K_DR\n"
+  "\n"
+  "COMMENT\n"
+  "    K delayed rectifier channel for hippocampal CA1 pyramidal neurons\n"
+  "ENDCOMMENT\n"
+  "\n"
+  "\n"
+  "UNITS {\n"
+  "    (mA) = (milliamp)\n"
+  "    (mV) = (millivolt)\n"
+  "    (S) = (siemens)\n"
+  "    (um) = (micrometer)\n"
+  "    (molar) = (1/liter)\n"
+  "    (mM) = (millimolar)\n"
+  "    (l) = (liter)\n"
+  "}\n"
+  "\n"
+  "\n"
+  "    \n"
+  "NEURON {\n"
+  "      \n"
+  "\n"
+  "    SUFFIX K_DRS4_params_voltage_dep\n"
+  "    USEION k READ ek WRITE ik VALENCE 1  ? reversal potential of ion is read, outgoing current is written\n"
+  "           \n"
+  "        \n"
+  "    RANGE gmax, gion\n"
+  "    \n"
+  "    RANGE Xinf, Xtau, X_v0, X_k0, X_tau0, X_gamma, X_kt\n"
+  "    \n"
+  "}\n"
+  "\n"
+  "PARAMETER { \n"
+  "      \n"
+  "\n"
+  "    gmax = 0.0090 (S/cm2)  ? default value, should be overwritten when conductance placed on cell\n"
+  "	\n"
+  "	X_tau0 = 2 :Note units of this will be determined by its usage in the generic functions (ms)\n"
+  "	\n"
+  "	X_v0 = -20.0 : Note units of this will be determined by its usage in the generic functions (mV)\n"
+  "\n"
+  "    X_k0 = 9 : Note units of this will be determined by its usage in the generic functions (mV)\n"
+  "\n"
+  "	X_gamma= 0.9\n"
+  "	\n"
+  "	X_kt=0.05\n"
+  "    \n"
+  "}\n"
+  "\n"
+  "\n"
+  "\n"
+  "ASSIGNED {\n"
+  "      \n"
+  "\n"
+  "    v (mV)\n"
+  "    \n"
+  "    celsius (degC)\n"
+  "          \n"
+  "\n"
+  "    ? Reversal potential of k\n"
+  "    ek (mV)\n"
+  "    ? The outward flow of ion: k calculated by rate equations...\n"
+  "    ik (mA/cm2)\n"
+  "    \n"
+  "    \n"
+  "    gion (S/cm2)\n"
+  "    Xinf\n"
+  "    Xtau (ms)\n"
+  "    \n"
+  "}\n"
+  "\n"
+  "BREAKPOINT { \n"
+  "                        \n"
+  "    SOLVE states METHOD cnexp\n"
+  "         \n"
+  "\n"
+  "    gion = gmax*((X)^4)      \n"
+  "\n"
+  "    ik = gion*(v - ek)\n"
+  "            \n"
+  "\n"
+  "}\n"
+  "\n"
+  "\n"
+  "\n"
+  "INITIAL {\n"
+  "    \n"
+  "    ek = -80\n"
+  "        \n"
+  "    rates(v)\n"
+  "    X = Xinf\n"
+  "        \n"
+  "    \n"
+  "}\n"
+  "    \n"
+  "STATE {\n"
+  "    X\n"
+  "    \n"
+  "}\n"
+  "\n"
+  "DERIVATIVE states {\n"
+  "    rates(v)\n"
+  "    X' = (Xinf - X)/Xtau\n"
+  "    \n"
+  "}\n"
+  "\n"
+  "PROCEDURE rates(v(mV)) {  \n"
+  "    \n"
+  "    LOCAL tau, inf, temp_adj_X\n"
+  "        \n"
+  "    TABLE Xinf, Xtau\n"
+  "	DEPEND celsius, X_v0, X_k0, X_tau0, X_gamma, X_kt\n"
+  "	FROM -100 TO 50 WITH 3000\n"
+  "    \n"
+  "    \n"
+  "    UNITSOFF\n"
+  "    temp_adj_X = 1\n"
+  "    \n"
+  "            \n"
+  "                \n"
+  "           \n"
+  "\n"
+  "        \n"
+  "    ?      ***  Adding rate equations for gate: X  ***\n"
+  "        \n"
+  "    ? Note: Equation (and all ChannelML file values) in SI Units so need to convert v first...\n"
+  "    \n"
+  "   : v = v * 0.0010   ? temporarily set v to units of equation...\n"
+  "            \n"
+  "    :tau = 0.002\n"
+  "\n"
+  "    ? Set correct units of tau for NEURON\n"
+  "    :tau = tau * 1000 \n"
+  "    \n"
+  "	\n"
+  "	tau = 1 / ( (X_kt * (exp (X_gamma * (v - X_v0) / X_k0))) + (X_kt * (exp ((X_gamma - 1)  * (v - X_v0) / X_k0)))) + X_tau0\n"
+  "        \n"
+  "    Xtau = tau/temp_adj_X\n"
+  "     \n"
+  "    inf = 1/(1 + exp (-(v - X_v0)/X_k0))\n"
+  "    \n"
+  "   : v = v * 1000   ? reset v\n"
+  "        \n"
+  "    Xinf = inf\n"
+  "    \n"
+  "    ?     *** Finished rate equations for gate: X ***\n"
+  "         \n"
+  "\n"
+  "}\n"
+  "\n"
+  "\n"
+  "UNITSON\n"
+  "\n"
+  "\n"
+  ;
 #endif

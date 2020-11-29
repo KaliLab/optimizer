@@ -1,4 +1,4 @@
-/* Created by Language version: 7.5.0 */
+/* Created by Language version: 7.7.0 */
 /* VECTORIZED */
 #define NRN_VECTORIZED 1
 #include <stdio.h>
@@ -91,6 +91,15 @@ extern void hoc_register_limits(int, HocParmLimits*);
 extern void hoc_register_units(int, HocParmUnits*);
 extern void nrn_promote(Prop*, int, int);
 extern Memb_func* memb_func;
+ 
+#define NMODL_TEXT 1
+#if NMODL_TEXT
+static const char* nmodl_file_text;
+static const char* nmodl_filename;
+extern void hoc_reg_nmodl_text(int, const char*);
+extern void hoc_reg_nmodl_filename(int, const char*);
+#endif
+
  extern void _nrn_setdata_reg(int, void(*)(Prop*));
  static void _setdata(Prop* _prop) {
  _extcall_prop = _prop;
@@ -164,7 +173,7 @@ static void _ode_matsol(_NrnThread*, _Memb_list*, int);
  static void _ode_matsol_instance1(_threadargsproto_);
  /* connect range variables in _p that hoc is supposed to know about */
  static const char *_mechanism[] = {
- "7.5.0",
+ "7.7.0",
 "kd_params3",
  "gkd_kd_params3",
  "theta_a_kd_params3",
@@ -231,6 +240,10 @@ extern void _cvode_abstol( Symbol**, double*, int);
  _mechtype = nrn_get_mechtype(_mechanism[1]);
      _nrn_setdata_reg(_mechtype, _setdata);
      _nrn_thread_reg(_mechtype, 2, _update_ion_pointer);
+ #if NMODL_TEXT
+  hoc_reg_nmodl_text(_mechtype, nmodl_file_text);
+  hoc_reg_nmodl_filename(_mechtype, nmodl_filename);
+#endif
   hoc_register_prop_size(_mechtype, 16, 4);
   hoc_register_dparam_semantics(_mechtype, 0, "k_ion");
   hoc_register_dparam_semantics(_mechtype, 1, "k_ion");
@@ -239,7 +252,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
  	hoc_register_cvode(_mechtype, _ode_count, _ode_map, _ode_spec, _ode_matsol);
  	hoc_register_tolerance(_mechtype, _hoc_state_tol, &_atollist);
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 kd_params3 /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3/x86_64/kd_params3.mod\n");
+ 	ivoc_help("help ?1 kd_params3 /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/x86_64/kd_params3.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
@@ -527,4 +540,91 @@ _first = 0;
 
 #if defined(__cplusplus)
 } /* extern "C" */
+#endif
+
+#if NMODL_TEXT
+static const char* nmodl_filename = "/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/kd_params3.mod";
+static const char* nmodl_file_text = 
+  "COMMENT\n"
+  "Conceptual model:  D current for a model of a fast-spiking cortical interneuron.\n"
+  "\n"
+  "Authors and citation:\n"
+  "  Golomb D, Donner K, Shacham L, Shlosberg D, Amitai Y, Hansel D (2007).\n"
+  "  Mechanisms of Firing Patterns in Fast-Spiking Cortical Interneurons. \n"
+  "  PLoS Comput Biol 3:e156.\n"
+  "\n"
+  "Original implementation and programming language/simulation environment:\n"
+  "  by Golomb et al. for XPP\n"
+  "  Available from http://senselab.med.yale.edu/modeldb/ShowModel.asp?model=97747\n"
+  "\n"
+  "This implementation is by N.T. Carnevale and V. Yamini for NEURON.\n"
+  "ENDCOMMENT\n"
+  "\n"
+  "NEURON {\n"
+  "  SUFFIX kd_params3\n"
+  "  USEION k READ ek WRITE ik\n"
+  "  RANGE gkd, g, ainfi, binfi, theta_a, theta_b, sigma_a, sigma_b, tau_a, tau_b, ik, b_kt\n"
+  "}\n"
+  "\n"
+  "UNITS {\n"
+  "  (S) = (siemens)\n"
+  "  (mV) = (millivolt)\n"
+  "  (mA) = (milliamp)\n"
+  "}\n"
+  "\n"
+  "PARAMETER {\n"
+  "  gkd = 0.00039 (S/cm2)\n"
+  "  theta_a = -60 (mV)\n"
+  "  sigma_a = 10 (mV)\n"
+  "  theta_b = -90 (mV)\n"
+  "  sigma_b = -10 (mV)\n"
+  "  tau_a = 2 (ms)\n"
+  "  tau0_b = 1 (ms)\n"
+  "  b_gamma = 0.5\n"
+  "  b_kt = 0.006\n"
+  "}\n"
+  "\n"
+  "ASSIGNED {\n"
+  "  v (mV)\n"
+  "  ek (mV)\n"
+  "  ik (mA/cm2)\n"
+  "  g (S/cm2)\n"
+  "}\n"
+  "\n"
+  "STATE {a b}\n"
+  "\n"
+  "BREAKPOINT {\n"
+  "  SOLVE states METHOD cnexp\n"
+  "  g = gkd * a^3 * b\n"
+  "  ik = g * (v-ek)\n"
+  "}\n"
+  "\n"
+  "INITIAL {\n"
+  "  a = ainfi(v)\n"
+  "  b = binfi(v)\n"
+  "}\n"
+  "\n"
+  "DERIVATIVE states {\n"
+  "  a' = (ainfi(v)-a)/tau_a\n"
+  "  b' = (binfi(v)-b)/tau_b(v)\n"
+  "}\n"
+  "\n"
+  "FUNCTION ainfi(v (mV)) {\n"
+  "  UNITSOFF\n"
+  "  ainfi=1/(1 + exp(-(v-theta_a)/sigma_a))\n"
+  "  UNITSON\n"
+  "}\n"
+  "\n"
+  "FUNCTION binfi(v (mV)) {\n"
+  "  UNITSOFF\n"
+  "  binfi=1/(1 + exp(-(v-theta_b)/sigma_b))\n"
+  "  UNITSON\n"
+  "}\n"
+  "\n"
+  "FUNCTION tau_b (v (mV)){\n"
+  "	UNITSOFF\n"
+  "	tau_b = 1 / ( (b_kt * (exp (b_gamma * (v - theta_b) / sigma_b))) + (b_kt * (exp ((b_gamma - 1) * (v - theta_b) / sigma_b)))) + tau0_b\n"
+  "	UNITSON\n"
+  "}\n"
+  ;
 #endif

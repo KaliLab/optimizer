@@ -1,4 +1,4 @@
-/* Created by Language version: 7.5.0 */
+/* Created by Language version: 7.7.0 */
 /* NOT VECTORIZED */
 #define NRN_VECTORIZED 0
 #include <stdio.h>
@@ -85,6 +85,15 @@ extern void hoc_register_limits(int, HocParmLimits*);
 extern void hoc_register_units(int, HocParmUnits*);
 extern void nrn_promote(Prop*, int, int);
 extern Memb_func* memb_func;
+ 
+#define NMODL_TEXT 1
+#if NMODL_TEXT
+static const char* nmodl_file_text;
+static const char* nmodl_filename;
+extern void hoc_reg_nmodl_text(int, const char*);
+extern void hoc_reg_nmodl_filename(int, const char*);
+#endif
+
  extern Prop* nrn_point_prop_;
  static int _pointtype;
  static void* _hoc_create_pnt(_ho) Object* _ho; { void* create_point_process();
@@ -179,7 +188,7 @@ static void _ode_matsol(_NrnThread*, _Memb_list*, int);
  static void _ode_matsol_instance1(_threadargsproto_);
  /* connect range variables in _p that hoc is supposed to know about */
  static const char *_mechanism[] = {
- "7.5.0",
+ "7.7.0",
 "nmda_Grunditz",
  "tau1",
  "tau2",
@@ -247,6 +256,10 @@ extern void _cvode_abstol( Symbol**, double*, int);
 	 _hoc_create_pnt, _hoc_destroy_pnt, _member_func);
  _mechtype = nrn_get_mechtype(_mechanism[1]);
      _nrn_setdata_reg(_mechtype, _setdata);
+ #if NMODL_TEXT
+  hoc_reg_nmodl_text(_mechtype, nmodl_file_text);
+  hoc_reg_nmodl_filename(_mechtype, nmodl_filename);
+#endif
   hoc_register_prop_size(_mechtype, 17, 3);
   hoc_register_dparam_semantics(_mechtype, 0, "area");
   hoc_register_dparam_semantics(_mechtype, 1, "pntproc");
@@ -256,7 +269,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
  pnt_receive[_mechtype] = _net_receive;
  pnt_receive_size[_mechtype] = 1;
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 nmda_Grunditz /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3/x86_64/nmda_Grunditz.mod\n");
+ 	ivoc_help("help ?1 nmda_Grunditz /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/x86_64/nmda_Grunditz.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
@@ -517,3 +530,140 @@ static void _initlists() {
  _slist1[2] = &(C) - _p;  _dlist1[2] = &(DC) - _p;
 _first = 0;
 }
+
+#if NMODL_TEXT
+static const char* nmodl_filename = "/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/nmda_Grunditz.mod";
+static const char* nmodl_file_text = 
+  "TITLE NMDA receptor--one of the two input stimulation of our model\n"
+  "\n"
+  ": This mechanism is taken from the Neuron data base \"exp2syn.mod\" \n"
+  ": The original comment are below between \"COMMENT\" and \"ENDCOMMENT\".\n"
+  ": \n"
+  ": Our modifications:\n"
+  ": \n"
+  ": 1.We added a single receptor conductance factor: \"g_max=0.000045 (uS)\".\n"
+  ":   An event of weight 1 generates a peak conductance of 1*g_max.\n"
+  ":   The weight is equal to the number of ampa receptors open at peak conductance\n"
+  ":\n"
+  ": 2.The NMDA receptors are simulated using a slow rise time constant \n"
+  ":   and a double-expontial decay time constant\n"
+  "\n"
+  ": The kinetic rate constants and channel conductance are taken from Franks KM, Bartol TM and Sejnowski TJ \n"
+  ": A Monte Carlo model reveals independent signaling at central glutamatergic synapses \n"
+  ": J Biophys (2002) 83(5):2333-48\n"
+  ": and Spruston N, Jonas P and Sakmann B\n"
+  ": Dendritic glutamate receptor channels in rat hippocampal CA3 and CA1 neurons\n"
+  ": J Physiol (1995) 482(2): 325-352\n"
+  ": correctd for physiological tempterature with Q10 from Hestrin S, Sah P and Nicoll RA  \n"
+  ": Mechanisms generating the time course of dual component excitatory synaptic currents \n"
+  ": recorded in hippocampal slices\n"
+  ": Neuron (1990) 5: 247-253\n"
+  ":\n"
+  ": Written by Lei Tian on 04/12/06 \n"
+  "\n"
+  "\n"
+  "\n"
+  "COMMENT\n"
+  "Two state kinetic scheme synapse described by rise time tau1,\n"
+  "and decay time constant tau2. The normalized peak condunductance is 1.\n"
+  "Decay time MUST be greater than rise time.\n"
+  "\n"
+  "The solution of A->G->bath with rate constants 1/tau1 and 1/tau2 is\n"
+  " A = a*exp(-t/tau1) and\n"
+  " G = a*tau2/(tau2-tau1)*(-exp(-t/tau1) + exp(-t/tau2))\n"
+  "	where tau1 < tau2\n"
+  "\n"
+  "If tau2-tau1 -> 0 then we have a alphasynapse.\n"
+  "and if tau1 -> 0 then we have just single exponential decay.\n"
+  "\n"
+  "The factor is evaluated in the\n"
+  "initial block such that an event of weight 1 generates a\n"
+  "peak conductance of 1.\n"
+  "\n"
+  "Because the solution is a sum of exponentials, the\n"
+  "coupled equations can be solved as a pair of independent equations\n"
+  "by the more efficient cnexp method.\n"
+  "\n"
+  "ENDCOMMENT\n"
+  "\n"
+  "\n"
+  "NEURON {\n"
+  "	POINT_PROCESS nmda_Grunditz\n"
+  "	RANGE tau1, tau2, tau3, e, i, g_max, g, A, B, C	,k\n"
+  "	NONSPECIFIC_CURRENT i\n"
+  "	GLOBAL total\n"
+  "}\n"
+  "\n"
+  "UNITS {\n"
+  "	(nA) = (nanoamp)\n"
+  "	(mA) = (milliamp)\n"
+  "	(mV) = (millivolt)\n"
+  "	(uS) = (microsiemens)\n"
+  "}\n"
+  "\n"
+  "PARAMETER {\n"
+  "	tau1 = 3.18     (ms) <1e-9,1e9>     :rise time constant\n"
+  "	tau2 = 57.14      (ms) <1e-9,1e9>	:decay time constant\n"
+  "	tau3 = 2000     (ms) <1e-9,1e9>	    :decay time constant\n"
+  "	\n"
+  "	g_max= 0.000045 (uS)			: single channel conductance\n"
+  "	e    = 0 (mV)\n"
+  "	mg   = 1 (mM)\n"
+  "\n"
+  "	k = 1e-06 (mA/nA)\n"
+  "}\n"
+  "\n"
+  "ASSIGNED {\n"
+  "	v (mV)\n"
+  "	i (nA)\n"
+  "	factor\n"
+  "	total (uS)\n"
+  "	g (uS)\n"
+  "	\n"
+  "}\n"
+  "\n"
+  "STATE {\n"
+  "	A (uS)\n"
+  "	B (uS)\n"
+  "	C (uS)\n"
+  "}\n"
+  "\n"
+  "INITIAL {\n"
+  "	LOCAL t_peak\n"
+  "	total = 0\n"
+  "	if (tau1/tau2 > .9999) {\n"
+  "		tau1 = .9999*tau2\n"
+  "	}\n"
+  "	A = 0\n"
+  "	B = 0\n"
+  "	C = 0\n"
+  "	\n"
+  "	factor=0.8279	:from matlab to make the peak of the conductance curve shape to be 1*weight (then multiply with g_max)\n"
+  "	factor = 1/factor\n"
+  "	\n"
+  "}\n"
+  "\n"
+  "BREAKPOINT {\n"
+  "	SOLVE state METHOD cnexp\n"
+  "	\n"
+  "	g = g_max*(B*0.8+C*0.2-A)\n"
+  "	i = g*(v - e)*1/(1+(exp(0.08(/mV) * -v)*(mg / 0.69)))	\n"
+  "	\n"
+  "}\n"
+  "\n"
+  "DERIVATIVE state {\n"
+  "	A' = -A/tau1\n"
+  "	B' = -B/tau2\n"
+  "	C' = -C/tau3\n"
+  "}\n"
+  "\n"
+  "NET_RECEIVE(weight (uS)) {\n"
+  "	A=A+weight*factor\n"
+  "	B=B+ weight*factor\n"
+  "	C=C+weight*factor\n"
+  "	total = total+weight\n"
+  "	\n"
+  "}\n"
+  "\n"
+  ;
+#endif

@@ -1,4 +1,4 @@
-/* Created by Language version: 7.5.0 */
+/* Created by Language version: 7.7.0 */
 /* NOT VECTORIZED */
 #define NRN_VECTORIZED 0
 #include <stdio.h>
@@ -83,6 +83,15 @@ extern void hoc_register_limits(int, HocParmLimits*);
 extern void hoc_register_units(int, HocParmUnits*);
 extern void nrn_promote(Prop*, int, int);
 extern Memb_func* memb_func;
+ 
+#define NMODL_TEXT 1
+#if NMODL_TEXT
+static const char* nmodl_file_text;
+static const char* nmodl_filename;
+extern void hoc_reg_nmodl_text(int, const char*);
+extern void hoc_reg_nmodl_filename(int, const char*);
+#endif
+
  extern void _nrn_setdata_reg(int, void(*)(Prop*));
  static void _setdata(Prop* _prop) {
  _p = _prop->param; _ppvar = _prop->dparam;
@@ -179,7 +188,7 @@ static void _ode_matsol(_NrnThread*, _Memb_list*, int);
  static void _ode_matsol_instance1(_threadargsproto_);
  /* connect range variables in _p that hoc is supposed to know about */
  static const char *_mechanism[] = {
- "7.5.0",
+ "7.7.0",
 "km_q10_2",
  "gbar_km_q10_2",
  0,
@@ -232,6 +241,10 @@ extern void _cvode_abstol( Symbol**, double*, int);
  _mechtype = nrn_get_mechtype(_mechanism[1]);
      _nrn_setdata_reg(_mechtype, _setdata);
      _nrn_thread_reg(_mechtype, 2, _update_ion_pointer);
+ #if NMODL_TEXT
+  hoc_reg_nmodl_text(_mechtype, nmodl_file_text);
+  hoc_reg_nmodl_filename(_mechtype, nmodl_filename);
+#endif
   hoc_register_prop_size(_mechtype, 8, 4);
   hoc_register_dparam_semantics(_mechtype, 0, "k_ion");
   hoc_register_dparam_semantics(_mechtype, 1, "k_ion");
@@ -240,7 +253,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
  	hoc_register_cvode(_mechtype, _ode_count, _ode_map, _ode_spec, _ode_matsol);
  	hoc_register_tolerance(_mechtype, _hoc_state_tol, &_atollist);
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 km_q10_2 /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3/x86_64/km_q10_2.mod\n");
+ 	ivoc_help("help ?1 km_q10_2 /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/x86_64/km_q10_2.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
@@ -505,3 +518,109 @@ static void _initlists() {
  _slist1[0] = &(m) - _p;  _dlist1[0] = &(Dm) - _p;
 _first = 0;
 }
+
+#if NMODL_TEXT
+static const char* nmodl_filename = "/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/km_q10_2.mod";
+static const char* nmodl_file_text = 
+  "TITLE CA1 KM channel from Mala Shah\n"
+  ": M. Migliore June 2006\n"
+  "\n"
+  "UNITS {\n"
+  "	(mA) = (milliamp)\n"
+  "	(mV) = (millivolt)\n"
+  "\n"
+  "}\n"
+  "\n"
+  "PARAMETER {\n"
+  "	v 		(mV)\n"
+  "	ek\n"
+  "	celsius 	(degC)\n"
+  "	gbar=.0001 	(mho/cm2)\n"
+  "        vhalfl=-35   	(mV)\n"
+  "	kl=-10\n"
+  "        vhalft=-35   	(mV)\n"
+  "        a0t=0.009      	(/ms)\n"
+  "        zetat=7    	(1)\n"
+  "        gmt=.4   	(1)\n"
+  "	q10=2\n"
+  "	b0=60\n"
+  "	st=1\n"
+  "}\n"
+  "\n"
+  "\n"
+  "NEURON {\n"
+  "	SUFFIX km_q10_2\n"
+  "	USEION k READ ek WRITE ik\n"
+  "        RANGE  gbar,ik\n"
+  "      GLOBAL inf, tau\n"
+  "}\n"
+  "\n"
+  "STATE {\n"
+  "        m\n"
+  "}\n"
+  "\n"
+  "ASSIGNED {\n"
+  "	ik (mA/cm2)\n"
+  "        inf\n"
+  "	tau\n"
+  "        taua\n"
+  "	taub\n"
+  "}\n"
+  "\n"
+  "INITIAL {\n"
+  "	rate(v)\n"
+  "	m=inf\n"
+  "}\n"
+  "\n"
+  "\n"
+  "BREAKPOINT {\n"
+  "	SOLVE state METHOD cnexp\n"
+  "	ik = gbar*m^st*(v-ek)\n"
+  "}\n"
+  "\n"
+  "\n"
+  "FUNCTION alpt(v(mV)) {\n"
+  "  alpt = exp(0.0378*zetat*(v-vhalft)) \n"
+  "}\n"
+  "\n"
+  "FUNCTION bett(v(mV)) {\n"
+  "  bett = exp(0.0378*zetat*gmt*(v-vhalft)) \n"
+  "}\n"
+  "\n"
+  "DERIVATIVE state {\n"
+  "        rate(v)\n"
+  ":        if (m<inf) {tau=taua} else {tau=taub}\n"
+  "	m' = (inf - m)/tau\n"
+  "}\n"
+  "\n"
+  "PROCEDURE rate(v (mV)) { :callable from hoc\n"
+  "        LOCAL a,qt\n"
+  "        qt=q10^((celsius-35)/10)\n"
+  "        inf = (1/(1 + exp((v-vhalfl)/kl)))\n"
+  "        a = alpt(v)\n"
+  "        tau = b0 + bett(v)/(a0t*(1+a))\n"
+  ":        taua = 50\n"
+  ":        taub = 300\n"
+  "}\n"
+  "\n"
+  "\n"
+  "\n"
+  "\n"
+  "\n"
+  "\n"
+  "\n"
+  "\n"
+  "\n"
+  "\n"
+  "\n"
+  "\n"
+  "\n"
+  "\n"
+  "\n"
+  "\n"
+  "\n"
+  "\n"
+  "\n"
+  "\n"
+  ;
+#endif

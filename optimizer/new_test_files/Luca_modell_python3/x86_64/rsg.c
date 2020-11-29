@@ -1,4 +1,4 @@
-/* Created by Language version: 7.5.0 */
+/* Created by Language version: 7.7.0 */
 /* NOT VECTORIZED */
 #define NRN_VECTORIZED 0
 #include <stdio.h>
@@ -139,6 +139,15 @@ extern void hoc_register_limits(int, HocParmLimits*);
 extern void hoc_register_units(int, HocParmUnits*);
 extern void nrn_promote(Prop*, int, int);
 extern Memb_func* memb_func;
+ 
+#define NMODL_TEXT 1
+#if NMODL_TEXT
+static const char* nmodl_file_text;
+static const char* nmodl_filename;
+extern void hoc_reg_nmodl_text(int, const char*);
+extern void hoc_reg_nmodl_filename(int, const char*);
+#endif
+
  extern void _nrn_setdata_reg(int, void(*)(Prop*));
  static void _setdata(Prop* _prop) {
  _p = _prop->param; _ppvar = _prop->dparam;
@@ -267,7 +276,7 @@ static void _ode_matsol(_NrnThread*, _Memb_list*, int);
  static void _ode_matsol_instance1(_threadargsproto_);
  /* connect range variables in _p that hoc is supposed to know about */
  static const char *_mechanism[] = {
- "7.5.0",
+ "7.7.0",
 "naRsg",
  "gbar_naRsg",
  0,
@@ -332,6 +341,10 @@ extern void _cvode_abstol( Symbol**, double*, int);
  _mechtype = nrn_get_mechtype(_mechanism[1]);
      _nrn_setdata_reg(_mechtype, _setdata);
      _nrn_thread_reg(_mechtype, 2, _update_ion_pointer);
+ #if NMODL_TEXT
+  hoc_reg_nmodl_text(_mechtype, nmodl_file_text);
+  hoc_reg_nmodl_filename(_mechtype, nmodl_filename);
+#endif
   hoc_register_prop_size(_mechtype, 67, 4);
   hoc_register_dparam_semantics(_mechtype, 0, "na_ion");
   hoc_register_dparam_semantics(_mechtype, 1, "na_ion");
@@ -340,7 +353,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
  	hoc_register_cvode(_mechtype, _ode_count, _ode_map, _ode_spec, _ode_matsol);
  	hoc_register_tolerance(_mechtype, _hoc_state_tol, &_atollist);
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 naRsg /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3/x86_64/rsg.mod\n");
+ 	ivoc_help("help ?1 naRsg /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/x86_64/rsg.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
@@ -1296,3 +1309,205 @@ static void _initlists() {
  _slist1[12] = &(O) - _p;  _dlist1[12] = &(DO) - _p;
 _first = 0;
 }
+
+#if NMODL_TEXT
+static const char* nmodl_filename = "/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/rsg.mod";
+static const char* nmodl_file_text = 
+  "TITLE Rsg sodium channel\n"
+  ": Resurgent sodium channel (with blocking particle)\n"
+  ": with updated kinetic parameters from Raman and Bean  \n"
+  "\n"
+  "NEURON {\n"
+  "  SUFFIX naRsg\n"
+  "  USEION na READ ena WRITE ina\n"
+  "  RANGE g, gbar\n"
+  "}\n"
+  "\n"
+  "UNITS { \n"
+  "	(mV) = (millivolt)\n"
+  "	(S) = (siemens)\n"
+  "}\n"
+  "\n"
+  "PARAMETER {\n"
+  "	gbar = .015			(S/cm2)\n"
+  "\n"
+  "	: kinetic parameters\n"
+  "	Con = 0.005			(/ms)					: closed -> inactivated transitions\n"
+  "	Coff = 0.5			(/ms)					: inactivated -> closed transitions\n"
+  "	Oon = .75			(/ms)					: open -> Ineg transition\n"
+  "	Ooff = 0.005		(/ms)					: Ineg -> open transition\n"
+  "	alpha = 150			(/ms)					: activation\n"
+  "	beta = 3			(/ms)					: deactivation\n"
+  "	gamma = 150			(/ms)					: opening\n"
+  "	delta = 40			(/ms)					: closing, greater than BEAN/KUO = 0.2\n"
+  "	epsilon = 1.75		(/ms)					: open -> Iplus for tau = 0.3 ms at +30 with x5\n"
+  "	zeta = 0.03			(/ms)					: Iplus -> open for tau = 25 ms at -30 with x6\n"
+  "\n"
+  "	: Vdep\n"
+  "	x1 = 20				(mV)								: Vdep of activation (alpha)\n"
+  "	x2 = -20			(mV)								: Vdep of deactivation (beta)\n"
+  "	x3 = 1e12			(mV)								: Vdep of opening (gamma)\n"
+  "	x4 = -1e12			(mV)								: Vdep of closing (delta)\n"
+  "	x5 = 1e12			(mV)								: Vdep into Ipos (epsilon)\n"
+  "	x6 = -25			(mV)								: Vdep out of Ipos (zeta)\n"
+  "}\n"
+  "\n"
+  "ASSIGNED {\n"
+  "	alfac   				: microscopic reversibility factors\n"
+  "	btfac				\n"
+  "\n"
+  "	: rates\n"
+  "	f01  		(/ms)\n"
+  "	f02  		(/ms)\n"
+  "	f03 		(/ms)\n"
+  "	f04			(/ms)\n"
+  "	f0O 		(/ms)\n"
+  "	fip 		(/ms)\n"
+  "	f11 		(/ms)\n"
+  "	f12 		(/ms)\n"
+  "	f13 		(/ms)\n"
+  "	f14 		(/ms)\n"
+  "	f1n 		(/ms)\n"
+  "	fi1 		(/ms)\n"
+  "	fi2 		(/ms)\n"
+  "	fi3 		(/ms)\n"
+  "	fi4 		(/ms)\n"
+  "	fi5 		(/ms)\n"
+  "	fin 		(/ms)\n"
+  "\n"
+  "	b01 		(/ms)\n"
+  "	b02 		(/ms)\n"
+  "	b03 		(/ms)\n"
+  "	b04		(/ms)\n"
+  "	b0O 		(/ms)\n"
+  "	bip 		(/ms)\n"
+  "	b11  		(/ms)\n"
+  "	b12 		(/ms)\n"
+  "	b13 		(/ms)\n"
+  "	b14 		(/ms)\n"
+  "	b1n 		(/ms)\n"
+  "	bi1 		(/ms)\n"
+  "	bi2 		(/ms)\n"
+  "	bi3 		(/ms)\n"
+  "	bi4 		(/ms)\n"
+  "	bi5 		(/ms)\n"
+  "	bin 		(/ms)\n"
+  "	\n"
+  "	v					(mV)\n"
+  " 	ena					(mV)\n"
+  "	ina 					(milliamp/cm2)\n"
+  "	g					(S/cm2)\n"
+  "}\n"
+  "\n"
+  "STATE {\n"
+  "	C1 FROM 0 TO 1\n"
+  "	C2 FROM 0 TO 1\n"
+  "	C3 FROM 0 TO 1\n"
+  "	C4 FROM 0 TO 1\n"
+  "	C5 FROM 0 TO 1\n"
+  "	I1 FROM 0 TO 1\n"
+  "	I2 FROM 0 TO 1\n"
+  "	I3 FROM 0 TO 1\n"
+  "	I4 FROM 0 TO 1\n"
+  "	I5 FROM 0 TO 1\n"
+  "	O FROM 0 TO 1\n"
+  "	B FROM 0 TO 1\n"
+  "	I6 FROM 0 TO 1\n"
+  "}\n"
+  "\n"
+  "BREAKPOINT {\n"
+  " SOLVE activation METHOD sparse\n"
+  " g = gbar * O\n"
+  " ina = g * (v - ena)\n"
+  "}\n"
+  "\n"
+  "INITIAL {\n"
+  " rates(v)\n"
+  " SOLVE seqinitial\n"
+  "}\n"
+  "\n"
+  "KINETIC activation\n"
+  "{\n"
+  "	rates(v)\n"
+  "	~ C1 <-> C2					(f01,b01)\n"
+  "	~ C2 <-> C3					(f02,b02)\n"
+  "	~ C3 <-> C4					(f03,b03)\n"
+  "	~ C4 <-> C5					(f04,b04)\n"
+  "	~ C5 <-> O					(f0O,b0O)\n"
+  "	~ O <-> B					(fip,bip)\n"
+  "	~ O <-> I6					(fin,bin)\n"
+  "	~ I1 <-> I2					(f11,b11)\n"
+  "	~ I2 <-> I3					(f12,b12)\n"
+  "	~ I3 <-> I4					(f13,b13)\n"
+  "	~ I4 <-> I5					(f14,b14)\n"
+  "	~ I5 <-> I6					(f1n,b1n)\n"
+  "	~ C1 <-> I1					(fi1,bi1)\n"
+  "	~ C2 <-> I2					(fi2,bi2)\n"
+  "	~ C3 <-> I3					(fi3,bi3)\n"
+  " 	~ C4 <-> I4					(fi4,bi4)\n"
+  " 	~ C5 <-> I5					(fi5,bi5)\n"
+  "\n"
+  "CONSERVE C1 + C2 + C3 + C4 + C5 + O + B + I1 + I2 + I3 + I4 + I5 + I6 = 1\n"
+  "}\n"
+  "\n"
+  "LINEAR seqinitial { : sets initial equilibrium\n"
+  " ~          I1*bi1 + C2*b01 - C1*(    fi1+f01) = 0\n"
+  " ~ C1*f01 + I2*bi2 + C3*b02 - C2*(b01+fi2+f02) = 0\n"
+  " ~ C2*f02 + I3*bi3 + C4*b03 - C3*(b02+fi3+f03) = 0\n"
+  " ~ C3*f03 + I4*bi4 + C5*b04 - C4*(b03+fi4+f04) = 0\n"
+  " ~ C4*f04 + I5*bi5 + O*b0O - C5*(b04+fi5+f0O) = 0\n"
+  " ~ C5*f0O + B*bip + I6*bin - O*(b0O+fip+fin) = 0\n"
+  " ~ O*fip + B*bip = 0\n"
+  "\n"
+  " ~          C1*fi1 + I2*b11 - I1*(    bi1+f11) = 0\n"
+  " ~ I1*f11 + C2*fi2 + I3*b12 - I2*(b11+bi2+f12) = 0\n"
+  " ~ I2*f12 + C3*fi3 + I4*bi3 - I3*(b12+bi3+f13) = 0\n"
+  " ~ I3*f13 + C4*fi4 + I5*b14 - I4*(b13+bi4+f14) = 0\n"
+  " ~ I4*f14 + C5*fi5 + I6*b1n - I5*(b14+bi5+f1n) = 0\n"
+  " \n"
+  " ~ C1 + C2 + C3 + C4 + C5 + O + B + I1 + I2 + I3 + I4 + I5 + I6 = 1\n"
+  "}\n"
+  "\n"
+  "PROCEDURE rates(v(mV) )\n"
+  "{\n"
+  " alfac = (Oon/Con)^(1/4)\n"
+  " btfac = (Ooff/Coff)^(1/4) \n"
+  " f01 = 4 * alpha * exp(v/x1)\n"
+  " f02 = 3 * alpha * exp(v/x1)\n"
+  " f03 = 2 * alpha * exp(v/x1)\n"
+  " f04 = 1 * alpha * exp(v/x1)\n"
+  " f0O = gamma * exp(v/x3)\n"
+  " fip = epsilon * exp(v/x5)\n"
+  " f11 = 4 * alpha * alfac * exp(v/x1)\n"
+  " f12 = 3 * alpha * alfac * exp(v/x1)\n"
+  " f13 = 2 * alpha * alfac * exp(v/x1)\n"
+  " f14 = 1 * alpha * alfac * exp(v/x1)\n"
+  " f1n = gamma * exp(v/x3)\n"
+  " fi1 = Con\n"
+  " fi2 = Con * alfac\n"
+  " fi3 = Con * alfac^2\n"
+  " fi4 = Con * alfac^3\n"
+  " fi5 = Con * alfac^4\n"
+  " fin = Oon\n"
+  "\n"
+  " b01 = 1 * beta * exp(v/x2)\n"
+  " b02 = 2 * beta * exp(v/x2)\n"
+  " b03 = 3 * beta * exp(v/x2)\n"
+  " b04 = 4 * beta * exp(v/x2)\n"
+  " b0O = delta * exp(v/x4)\n"
+  " bip = zeta * exp(v/x6)\n"
+  " b11 = 1 * beta * btfac * exp(v/x2)\n"
+  " b12 = 2 * beta * btfac * exp(v/x2)\n"
+  " b13 = 3 * beta * btfac * exp(v/x2)\n"
+  " b14 = 4 * beta * btfac * exp(v/x2)\n"
+  " b1n = delta * exp(v/x4)\n"
+  " bi1 = Coff\n"
+  " bi2 = Coff * btfac\n"
+  " bi3 = Coff * btfac^2\n"
+  " bi4 = Coff * btfac^3\n"
+  " bi5 = Coff * btfac^4\n"
+  " bin = Ooff\n"
+  "}\n"
+  "\n"
+  ;
+#endif

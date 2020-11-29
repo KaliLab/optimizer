@@ -1,4 +1,4 @@
-/* Created by Language version: 7.5.0 */
+/* Created by Language version: 7.7.0 */
 /* VECTORIZED */
 #define NRN_VECTORIZED 1
 #include <stdio.h>
@@ -104,6 +104,15 @@ extern void hoc_register_limits(int, HocParmLimits*);
 extern void hoc_register_units(int, HocParmUnits*);
 extern void nrn_promote(Prop*, int, int);
 extern Memb_func* memb_func;
+ 
+#define NMODL_TEXT 1
+#if NMODL_TEXT
+static const char* nmodl_file_text;
+static const char* nmodl_filename;
+extern void hoc_reg_nmodl_text(int, const char*);
+extern void hoc_reg_nmodl_filename(int, const char*);
+#endif
+
  extern void _nrn_setdata_reg(int, void(*)(Prop*));
  static void _setdata(Prop* _prop) {
  _extcall_prop = _prop;
@@ -169,7 +178,7 @@ static void _ode_matsol(_NrnThread*, _Memb_list*, int);
  static void _ode_matsol_instance1(_threadargsproto_);
  /* connect range variables in _p that hoc is supposed to know about */
  static const char *_mechanism[] = {
- "7.5.0",
+ "7.7.0",
 "Na_BG_soma",
  "gmax_Na_BG_soma",
  "X_v0_Na_BG_soma",
@@ -251,6 +260,10 @@ extern void _cvode_abstol( Symbol**, double*, int);
      _nrn_setdata_reg(_mechtype, _setdata);
      _nrn_thread_reg(_mechtype, 2, _update_ion_pointer);
      _nrn_thread_table_reg(_mechtype, _check_table_thread);
+ #if NMODL_TEXT
+  hoc_reg_nmodl_text(_mechtype, nmodl_file_text);
+  hoc_reg_nmodl_filename(_mechtype, nmodl_filename);
+#endif
   hoc_register_prop_size(_mechtype, 28, 4);
   hoc_register_dparam_semantics(_mechtype, 0, "na_ion");
   hoc_register_dparam_semantics(_mechtype, 1, "na_ion");
@@ -259,7 +272,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
  	hoc_register_cvode(_mechtype, _ode_count, _ode_map, _ode_spec, _ode_matsol);
  	hoc_register_tolerance(_mechtype, _hoc_state_tol, &_atollist);
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 Na_BG_soma /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3/x86_64/Na_BG_soma.mod\n");
+ 	ivoc_help("help ?1 Na_BG_soma /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/x86_64/Na_BG_soma.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
@@ -667,4 +680,207 @@ _first = 0;
 
 #if defined(__cplusplus)
 } /* extern "C" */
+#endif
+
+#if NMODL_TEXT
+static const char* nmodl_filename = "/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/Na_BG_soma.mod";
+static const char* nmodl_file_text = 
+  "TITLE Channel: Na_BG_soma\n"
+  "\n"
+  "COMMENT\n"
+  "    Generic HH-type Na channel model in Borg-Graham format\n"
+  "ENDCOMMENT\n"
+  "\n"
+  "\n"
+  "UNITS {\n"
+  "    (mA) = (milliamp)\n"
+  "    (mV) = (millivolt)\n"
+  "    (S) = (siemens)\n"
+  "    (um) = (micrometer)\n"
+  "    (molar) = (1/liter)\n"
+  "    (mM) = (millimolar)\n"
+  "    (l) = (liter)\n"
+  "}\n"
+  "\n"
+  "\n"
+  "NEURON {\n"
+  "    \n"
+  "    SUFFIX Na_BG_soma\n"
+  "    USEION na READ ena WRITE ina VALENCE 1  ? reversal potential of ion is read, outgoing current is written\n"
+  "           \n"
+  "        \n"
+  "    RANGE gmax, gion\n"
+  "    \n"
+  "    RANGE Xinf, Xtau\n"
+  "    RANGE Yinf, Ytau\n"
+  "	RANGE Zinf, Ztau\n"
+  "        \n"
+  "    RANGE X_v0, X_k0, X_kt, X_gamma, X_tau0\n"
+  "    RANGE Y_v0, Y_k0, Y_kt, Y_gamma, Y_tau0\n"
+  "\n"
+  "}\n"
+  "\n"
+  "PARAMETER { \n"
+  "    \n"
+  "    gmax = 0.0050 (S/cm2)  ? default value, should be overwritten when conductance placed on cell\n"
+  "    \n"
+  "    X_v0 = -35.0 : Note units of this will be determined by its usage in the generic functions (mV)\n"
+  "\n"
+  "    X_k0 = 7 : Note units of this will be determined by its usage in the generic functions (mV)\n"
+  "\n"
+  "    X_kt = 20 : Note units of this will be determined by its usage in the generic functions (1/ms)\n"
+  "\n"
+  "    X_gamma = 0.45 : Note units of this will be determined by its usage in the generic functions\n"
+  "\n"
+  "    X_tau0 = 0.02 : Note units of this will be determined by its usage in the generic functions (ms)\n"
+  "    \n"
+  "    Y_v0 = -50 : Note units of this will be determined by its usage in the generic functions (mV)\n"
+  "\n"
+  "    Y_k0 = -2 : Note units of this will be determined by its usage in the generic functions (mV)\n"
+  "\n"
+  "    Y_kt = 0.1 : Note units of this will be determined by its usage in the generic functions (1/ms)\n"
+  "\n"
+  "    Y_gamma = 0.2 : Note units of this will be determined by its usage in the generic functions\n"
+  "\n"
+  "    Y_tau0 = 0.5 : Note units of this will be determined by its usage in the generic functions (ms)\n"
+  "\n"
+  "}\n"
+  "\n"
+  "\n"
+  "\n"
+  "ASSIGNED {\n"
+  "    \n"
+  "    v (mV)\n"
+  "    \n"
+  "    celsius (degC)\n"
+  "          \n"
+  "\n"
+  "    ? Reversal potential of na\n"
+  "    ena (mV)\n"
+  "    ? The outward flow of ion: na calculated by rate equations...\n"
+  "    ina (mA/cm2)\n"
+  "    \n"
+  "    \n"
+  "    gion (S/cm2)\n"
+  "    Xinf\n"
+  "    Xtau (ms)\n"
+  "    Yinf\n"
+  "    Ytau (ms)\n"
+  "    Zinf\n"
+  "    Ztau (ms)\n"
+  "}\n"
+  "\n"
+  "BREAKPOINT { \n"
+  "                        \n"
+  "    SOLVE states METHOD cnexp\n"
+  "         \n"
+  "\n"
+  "    gion = gmax*((X)^3)*((Y)^1)*((Z)^1)\n"
+  "\n"
+  "    ina = gion*(v - ena)\n"
+  "            \n"
+  "\n"
+  "}\n"
+  "\n"
+  "\n"
+  "\n"
+  "INITIAL {\n"
+  "    \n"
+  "    ena = 55\n"
+  "        \n"
+  "    rates(v)\n"
+  "    X = Xinf\n"
+  "    Y = Yinf\n"
+  "    Z = Zinf\n"
+  "    \n"
+  "}\n"
+  "    \n"
+  "STATE {\n"
+  "    X\n"
+  "    Y\n"
+  "	Z\n"
+  "}\n"
+  "\n"
+  "DERIVATIVE states {\n"
+  "    rates(v)\n"
+  "    X' = (Xinf - X)/Xtau\n"
+  "    Y' = (Yinf - Y)/Ytau\n"
+  "	Z' = (Zinf - Z)/Ztau\n"
+  "}\n"
+  "\n"
+  "PROCEDURE rates(v(mV)) {  \n"
+  "    \n"
+  "    LOCAL alpha, beta, tau, inf, temp_adj_X, temp_adj_Y, temp_adj_Z, A_alpha_Z, B_alpha_Z, Vhalf_alpha_Z, A_beta_Z, B_beta_Z, Vhalf_beta_Z\n"
+  "        \n"
+  "    TABLE Xinf, Xtau,Yinf, Ytau,Zinf, Ztau\n"
+  "    DEPEND celsius, X_v0, X_k0, X_kt, X_gamma, X_tau0, Y_v0, Y_k0, Y_kt, Y_gamma, Y_tau0\n"
+  "    FROM -100 TO 50 WITH 3000\n"
+  "    \n"
+  "    \n"
+  "    UNITSOFF\n"
+  "\n"
+  "    temp_adj_X = 1\n"
+  "    temp_adj_Y = 1\n"
+  "	temp_adj_Z = 1\n"
+  "\n"
+  "        \n"
+  "    ?      ***  Adding rate equations for gate: X  ***\n"
+  "            \n"
+  "    tau = 1 / ( (X_kt * (exp (X_gamma * (v - X_v0) / X_k0))) + (X_kt * (exp ((X_gamma - 1)  * (v - X_v0) / X_k0)))) + X_tau0\n"
+  "        \n"
+  "    Xtau = tau/temp_adj_X\n"
+  "    \n"
+  "    \n"
+  "    inf = 1 / ( 1 + exp (-(v - X_v0) / X_k0)) \n"
+  "        \n"
+  "    Xinf = inf\n"
+  "    \n"
+  "    ?     *** Finished rate equations for gate: X ***\n"
+  "    \n"
+  "    \n"
+  "    ?      ***  Adding rate equations for gate: Y  ***\n"
+  "    \n"
+  "    tau = 1 / ( (Y_kt * (exp (Y_gamma * (v - Y_v0) / Y_k0))) + (Y_kt * (exp ((Y_gamma - 1)  * (v - Y_v0) / Y_k0)))) + Y_tau0\n"
+  "    \n"
+  "    Ytau = tau/temp_adj_Y\n"
+  "    \n"
+  "    \n"
+  "    inf = 1 / ( 1 + exp (-(v - Y_v0) / Y_k0)) \n"
+  "    \n"
+  "    Yinf = inf\n"
+  "    \n"
+  "    ?     *** Finished rate equations for gate: Y ***\n"
+  "    \n"
+  "	\n"
+  "	\n"
+  "	?      ***  Adding rate equations for gate: Z  ***\n"
+  "    \n"
+  "    ? Note: Equation (and all ChannelML file values) in SI Units so need to convert v first...\n"
+  "    \n"
+  "    v = v * 0.0010   ? temporarily set v to units of equation...\n"
+  "            \n"
+  "    alpha = (1+0.7*( exp ((v+0.03)/0.002)))/(1+( exp ((v+0.03)/0.002)))*(1+(exp (450*(v+0.045))))/(5*(exp (90*(v+0.045))) + 0.002*(exp (450*(v+0.045))))\n"
+  "        \n"
+  "    ? Set correct units of alpha for NEURON\n"
+  "    alpha = alpha * 0.0010 \n"
+  "    \n"
+  "    beta = (1+(exp (450*(v+0.045))))/(5*(exp (90*(v+0.045))) + 0.002*(exp (450*(v+0.045)))) - (1+0.7*( exp ((v+0.03)/0.002)))/(1+( exp ((v+0.03)/0.002)))*(1+(exp (450*(v+0.045))))/(5*(exp (90*(v+0.045))) + 0.002*(exp (450*(v+0.045))))\n"
+  "        \n"
+  "    ? Set correct units of beta for NEURON\n"
+  "    beta = beta * 0.0010 \n"
+  "    \n"
+  "    v = v * 1000   ? reset v\n"
+  "        \n"
+  "    Ztau = 1/(temp_adj_Z*(alpha + beta))\n"
+  "    Zinf = alpha/(alpha + beta)\n"
+  "    \n"
+  "    ?     *** Finished rate equations for gate: Z ***\n"
+  "\n"
+  "}\n"
+  "\n"
+  "\n"
+  "UNITSON\n"
+  "\n"
+  "\n"
+  ;
 #endif

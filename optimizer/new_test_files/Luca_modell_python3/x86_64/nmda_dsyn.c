@@ -1,4 +1,4 @@
-/* Created by Language version: 7.5.0 */
+/* Created by Language version: 7.7.0 */
 /* VECTORIZED */
 #define NRN_VECTORIZED 1
 #include <stdio.h>
@@ -90,6 +90,15 @@ extern void hoc_register_limits(int, HocParmLimits*);
 extern void hoc_register_units(int, HocParmUnits*);
 extern void nrn_promote(Prop*, int, int);
 extern Memb_func* memb_func;
+ 
+#define NMODL_TEXT 1
+#if NMODL_TEXT
+static const char* nmodl_file_text;
+static const char* nmodl_filename;
+extern void hoc_reg_nmodl_text(int, const char*);
+extern void hoc_reg_nmodl_filename(int, const char*);
+#endif
+
  extern Prop* nrn_point_prop_;
  static int _pointtype;
  static void* _hoc_create_pnt(_ho) Object* _ho; { void* create_point_process();
@@ -193,7 +202,7 @@ static void _ode_matsol(_NrnThread*, _Memb_list*, int);
  static void _ode_matsol_instance1(_threadargsproto_);
  /* connect range variables in _p that hoc is supposed to know about */
  static const char *_mechanism[] = {
- "7.5.0",
+ "7.7.0",
 "NMDA_dsyn",
  "gmax",
  "tau1",
@@ -258,6 +267,10 @@ extern void _cvode_abstol( Symbol**, double*, int);
  _mechtype = nrn_get_mechtype(_mechanism[1]);
      _nrn_setdata_reg(_mechtype, _setdata);
      _nrn_thread_table_reg(_mechtype, _check_table_thread);
+ #if NMODL_TEXT
+  hoc_reg_nmodl_text(_mechtype, nmodl_file_text);
+  hoc_reg_nmodl_filename(_mechtype, nmodl_filename);
+#endif
   hoc_register_prop_size(_mechtype, 17, 3);
   hoc_register_dparam_semantics(_mechtype, 0, "area");
   hoc_register_dparam_semantics(_mechtype, 1, "pntproc");
@@ -267,7 +280,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
  pnt_receive[_mechtype] = _net_receive;
  pnt_receive_size[_mechtype] = 1;
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 NMDA_dsyn /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3/x86_64/nmda_dsyn.mod\n");
+ 	ivoc_help("help ?1 NMDA_dsyn /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/x86_64/nmda_dsyn.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
@@ -602,4 +615,97 @@ _first = 0;
 
 #if defined(__cplusplus)
 } /* extern "C" */
+#endif
+
+#if NMODL_TEXT
+static const char* nmodl_filename = "/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/nmda_dsyn.mod";
+static const char* nmodl_file_text = 
+  "COMMENT\n"
+  "\n"
+  "2002 Alon Polsky\n"
+  "2007 Bardia F Behabadi\n"
+  "\n"
+  "ENDCOMMENT\n"
+  "\n"
+  "TITLE Diff-of-Exponential NMDA Synapse\n"
+  "\n"
+  "NEURON {\n"
+  "    POINT_PROCESS NMDA_dsyn\n"
+  "    RANGE gmax\n"
+  "    NONSPECIFIC_CURRENT i\n"
+  "    RANGE tau1,tau2, factor\n"
+  "    RANGE g, mgB\n"
+  "    RANGE t_last\n"
+  "    GLOBAL Deadtime, Prethresh\n"
+  "    GLOBAL vmin, vmax\n"
+  "}\n"
+  "\n"
+  "UNITS {\n"
+  "    (nA) = (nanoamp)\n"
+  "    (mV) = (millivolt)\n"
+  "    (nS) = (nanosiemens)\n"
+  "}\n"
+  "\n"
+  "PARAMETER {\n"
+  "    gmax = 1.5 (nS)\n"
+  "    tau1 = 75 (ms) \n"
+  "    tau2 = 2 (ms)\n"
+  "    Prethresh = 0 (mV)  : voltage threshold for release\n"
+  "    Deadtime = 0 (ms)  : minimum time between release events\n"
+  "    vmin = -120 (mV)\n"
+  "    vmax = 100 (mV)\n"
+  "}\n"
+  "\n"
+  "ASSIGNED { \n"
+  "    i (nA)  \n"
+  "    g (nS)  : conductance\n"
+  "    v (mV)  : postsynaptic voltage\n"
+  "    factor\n"
+  "    tp (ms)\n"
+  "    t_last (ms)  : start time of current/last event\n"
+  "}\n"
+  "\n"
+  "STATE {\n"
+  "    A  : opening\n"
+  "    B  : closing\n"
+  "    mgB  : fraction free of Mg2+ block\n"
+  "}\n"
+  "\n"
+  "INITIAL {\n"
+  "    i=0 \n"
+  "    A=0\n"
+  "    B=0\n"
+  "    t_last = -1 - Deadtime\n"
+  "    tp = (tau2*tau1)/(tau1 - tau2) * log(tau1/tau2)\n"
+  "    factor = -exp(-tp/tau2) + exp(-tp/tau1)\n"
+  "    factor = 1/factor\n"
+  "    mgblock(v)\n"
+  "}    \n"
+  "\n"
+  "BREAKPOINT {  \n"
+  "    mgblock(v)\n"
+  "    SOLVE state METHOD cnexp\n"
+  "    g=gmax*mgB*(A-B)\n"
+  "    i=(1e-3)*g*v\n"
+  "}\n"
+  "\n"
+  "DERIVATIVE state {\n"
+  "    A'=-A/tau1\n"
+  "    B'=-B/tau2\n"
+  "}\n"
+  "\n"
+  "PROCEDURE mgblock(v(mV)) {\n"
+  "    TABLE mgB\n"
+  "    FROM vmin TO vmax WITH 400\n"
+  "    mgB = 1/(1 + 0.3*exp(-0.1 (/mV) *(v)))\n"
+  "}\n"
+  "\n"
+  "NET_RECEIVE(trgr) {\n"
+  "    if (t_last + Deadtime <= t) {\n"
+  "        t_last = t\n"
+  "        A = A + trgr*factor\n"
+  "        B = B + trgr*factor\n"
+  "    }\n"
+  "}\n"
+  ;
 #endif

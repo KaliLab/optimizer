@@ -14,7 +14,6 @@ nest.ResetKernel()
 # In[159]:
 
 unique_ID = sys.argv[1]
-
 params_file = 'params' + unique_ID + '.param' 
 
 params = np.genfromtxt(params_file)
@@ -113,17 +112,19 @@ try:
     times    = np.insert(times, 0, 0.)
     voltages = nest.GetStatus(voltmeter)[0]['events']['V_m']
     voltages = np.insert(voltages, 0, -60.)
+    
 
 except nest.NESTError:
     print("NESTERROR COUGHT")
 
     times = list(np.linspace(0.0,1100.0, 5501))
     voltages = list(np.linspace(-100, 0, 5501))
-
+    
 # In[166]:
 
-
 spikes   = nest.GetStatus(spikedetector)[0]['events']['times']
+
+#spikes   = nest.GetStatus(spikedetector)[0]['events']['times']
 
 #import matplotlib.pyplot as plt
 #plt.plot(times, voltages)
@@ -132,5 +133,8 @@ spikes   = nest.GetStatus(spikedetector)[0]['events']['times']
 # In[167]:
 spike_filename = 'spike' + unique_ID + '.dat'
 trace_filename = 'trace' + unique_ID + '.dat'
+
+
 np.savetxt(spike_filename, spikes, fmt='%.2f')
-np.savetxt(trace_filename, np.array([times, voltages]).T, fmt='%.2f')
+
+

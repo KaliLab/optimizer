@@ -1,4 +1,4 @@
-/* Created by Language version: 7.5.0 */
+/* Created by Language version: 7.7.0 */
 /* VECTORIZED */
 #define NRN_VECTORIZED 1
 #include <stdio.h>
@@ -94,6 +94,15 @@ extern void hoc_register_limits(int, HocParmLimits*);
 extern void hoc_register_units(int, HocParmUnits*);
 extern void nrn_promote(Prop*, int, int);
 extern Memb_func* memb_func;
+ 
+#define NMODL_TEXT 1
+#if NMODL_TEXT
+static const char* nmodl_file_text;
+static const char* nmodl_filename;
+extern void hoc_reg_nmodl_text(int, const char*);
+extern void hoc_reg_nmodl_filename(int, const char*);
+#endif
+
  extern void _nrn_setdata_reg(int, void(*)(Prop*));
  static void _setdata(Prop* _prop) {
  _extcall_prop = _prop;
@@ -159,7 +168,7 @@ static void _ode_matsol(_NrnThread*, _Memb_list*, int);
  static void _ode_matsol_instance1(_threadargsproto_);
  /* connect range variables in _p that hoc is supposed to know about */
  static const char *_mechanism[] = {
- "7.5.0",
+ "7.7.0",
 "Na_dend13",
  "gmax_Na_dend13",
  0,
@@ -221,6 +230,10 @@ extern void _cvode_abstol( Symbol**, double*, int);
      _nrn_setdata_reg(_mechtype, _setdata);
      _nrn_thread_reg(_mechtype, 2, _update_ion_pointer);
      _nrn_thread_table_reg(_mechtype, _check_table_thread);
+ #if NMODL_TEXT
+  hoc_reg_nmodl_text(_mechtype, nmodl_file_text);
+  hoc_reg_nmodl_filename(_mechtype, nmodl_filename);
+#endif
   hoc_register_prop_size(_mechtype, 18, 4);
   hoc_register_dparam_semantics(_mechtype, 0, "na_ion");
   hoc_register_dparam_semantics(_mechtype, 1, "na_ion");
@@ -229,7 +242,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
  	hoc_register_cvode(_mechtype, _ode_count, _ode_map, _ode_spec, _ode_matsol);
  	hoc_register_tolerance(_mechtype, _hoc_state_tol, &_atollist);
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 Na_dend13 /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3/x86_64/Na_dend13.mod\n");
+ 	ivoc_help("help ?1 Na_dend13 /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/x86_64/Na_dend13.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
@@ -624,4 +637,226 @@ _first = 0;
 
 #if defined(__cplusplus)
 } /* extern "C" */
+#endif
+
+#if NMODL_TEXT
+static const char* nmodl_filename = "/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/Na_dend13.mod";
+static const char* nmodl_file_text = 
+  "TITLE Channel: Na_dend\n"
+  "\n"
+  "COMMENT\n"
+  "    Na channel in dendrite of CA1 pyramid cell\n"
+  "ENDCOMMENT\n"
+  "\n"
+  "UNITS {\n"
+  "    (mA) = (milliamp)\n"
+  "    (mV) = (millivolt)\n"
+  "    (S) = (siemens)\n"
+  "    (um) = (micrometer)\n"
+  "    (molar) = (1/liter)\n"
+  "    (mM) = (millimolar)\n"
+  "    (l) = (liter)\n"
+  "}\n"
+  "    \n"
+  "NEURON {\n"
+  "\n"
+  "    SUFFIX Na_dend13\n"
+  "    USEION na READ ena WRITE ina VALENCE 1  ? reversal potential of ion is read, outgoing current is written\n"
+  "           \n"
+  "        \n"
+  "    RANGE gmax, gion\n"
+  "    \n"
+  "    RANGE Xinf, Xtau\n"
+  "    \n"
+  "    RANGE Yinf, Ytau\n"
+  "    \n"
+  "    RANGE Zinf, Ztau\n"
+  "    \n"
+  "}\n"
+  "\n"
+  "PARAMETER { \n"
+  "      \n"
+  "\n"
+  "    gmax = 0.05 (S/cm2)  ? default value, should be overwritten when conductance placed on cell\n"
+  "    \n"
+  "}\n"
+  "\n"
+  "\n"
+  "\n"
+  "ASSIGNED {\n"
+  "      \n"
+  "\n"
+  "    v (mV)\n"
+  "    \n"
+  "    celsius (degC)\n"
+  "          \n"
+  "\n"
+  "    ? Reversal potential of na\n"
+  "    ena (mV)\n"
+  "    ? The outward flow of ion: na calculated by rate equations...\n"
+  "    ina (mA/cm2)\n"
+  "    \n"
+  "    \n"
+  "    gion (S/cm2)\n"
+  "    Xinf\n"
+  "    Xtau (ms)\n"
+  "    Yinf\n"
+  "    Ytau (ms)\n"
+  "    Zinf\n"
+  "    Ztau (ms)\n"
+  "    \n"
+  "}\n"
+  "\n"
+  "BREAKPOINT { \n"
+  "                        \n"
+  "    SOLVE states METHOD cnexp\n"
+  "         \n"
+  "\n"
+  "    gion = gmax*((X)^3)*((Y)^1)*((Z)^1)      \n"
+  "\n"
+  "    ina = gion*(v - ena)\n"
+  "            \n"
+  "\n"
+  "}\n"
+  "\n"
+  "\n"
+  "\n"
+  "INITIAL {\n"
+  "    \n"
+  "    ena = 55\n"
+  "        \n"
+  "    rates(v)\n"
+  "    X = Xinf\n"
+  "    Y = Yinf\n"
+  "    Z = Zinf\n"
+  "    \n"
+  "}\n"
+  "    \n"
+  "STATE {\n"
+  "    X\n"
+  "    Y\n"
+  "    Z\n"
+  "    \n"
+  "}\n"
+  "\n"
+  "DERIVATIVE states {\n"
+  "    rates(v)\n"
+  "    X' = (Xinf - X)/Xtau\n"
+  "    Y' = (Yinf - Y)/Ytau\n"
+  "    Z' = (Zinf - Z)/Ztau\n"
+  "    \n"
+  "}\n"
+  "\n"
+  "PROCEDURE rates(v(mV)) {  \n"
+  "    \n"
+  "    ? Note: not all of these may be used, depending on the form of rate equations\n"
+  "    LOCAL  alpha, beta, tau, inf, gamma, zeta, temp_adj_X, A_alpha_X, B_alpha_X, Vhalf_alpha_X, A_beta_X, B_beta_X, Vhalf_beta_X, temp_adj_Y, A_tau_Y, B_tau_Y, Vhalf_tau_Y, A_inf_Y, B_inf_Y, Vhalf_inf_Y, temp_adj_Z, A_alpha_Z, B_alpha_Z, Vhalf_alpha_Z, A_beta_Z, B_beta_Z, Vhalf_beta_Z\n"
+  "        \n"
+  "    TABLE Xinf, Xtau,Yinf, Ytau,Zinf, Ztau\n"
+  " DEPEND celsius\n"
+  " FROM -100 TO 50 WITH 3000\n"
+  "    \n"
+  "    \n"
+  "    UNITSOFF\n"
+  "    temp_adj_X = 1\n"
+  "    temp_adj_Y = 1\n"
+  "    temp_adj_Z = 1\n"
+  "    \n"
+  "        \n"
+  "    ?      ***  Adding rate equations for gate: X  ***\n"
+  "        \n"
+  "    ? Found a parameterised form of rate equation for alpha, using expression: A*exp((v-Vhalf)/B)\n"
+  "    A_alpha_X = 20000\n"
+  "    B_alpha_X = 0.01\n"
+  "    Vhalf_alpha_X = -0.03   \n"
+  "    \n"
+  "    ? Unit system in ChannelML file is SI units, therefore need to convert these to NEURON quanities...\n"
+  "    \n"
+  "    A_alpha_X = A_alpha_X * 0.0010   ? 1/ms\n"
+  "    B_alpha_X = B_alpha_X * 1000   ? mV\n"
+  "    Vhalf_alpha_X = Vhalf_alpha_X * 1000   ? mV\n"
+  "          \n"
+  "                     \n"
+  "    alpha = A_alpha_X * exp((v - Vhalf_alpha_X) / B_alpha_X)\n"
+  "    \n"
+  "    \n"
+  "    ? Found a parameterised form of rate equation for beta, using expression: A*exp((v-Vhalf)/B)\n"
+  "    A_beta_X = 20000\n"
+  "    B_beta_X = -0.00818182\n"
+  "    Vhalf_beta_X = -0.03   \n"
+  "    \n"
+  "    ? Unit system in ChannelML file is SI units, therefore need to convert these to NEURON quanities...\n"
+  "    \n"
+  "    A_beta_X = A_beta_X * 0.0010   ? 1/ms\n"
+  "    B_beta_X = B_beta_X * 1000   ? mV\n"
+  "    Vhalf_beta_X = Vhalf_beta_X * 1000   ? mV\n"
+  "          \n"
+  "                     \n"
+  "    beta = A_beta_X * exp((v - Vhalf_beta_X) / B_beta_X)\n"
+  "    \n"
+  "    Xtau = 1/(temp_adj_X*(alpha + beta))\n"
+  "    Xinf = alpha/(alpha + beta)\n"
+  "          \n"
+  "       \n"
+  "    \n"
+  "    ?     *** Finished rate equations for gate: X ***\n"
+  "    \n"
+  "\n"
+  "    ?      ***  Adding rate equations for gate: Y  ***\n"
+  "    \n"
+  "    ? Note: Equation (and all ChannelML file values) in SI Units so need to convert v first...\n"
+  "    \n"
+  "    v = v * 0.0010   ? temporarily set v to units of equation...\n"
+  "            \n"
+  "    tau = (1/((300*( exp (0.2*(v + 0.036)/(-0.005)))) + (300*( exp ((0.2 - 1)*(v + 0.036)/(-0.005))))) + 0.0001)\n"
+  "\n"
+  "    ? Set correct units of tau for NEURON\n"
+  "    tau = tau * 1000 \n"
+  "    \n"
+  "    v = v * 1000   ? reset v\n"
+  "        \n"
+  "    Ytau = tau/temp_adj_Y\n"
+  "     \n"
+  "    ? Note: Equation (and all ChannelML file values) in SI Units so need to convert v first...\n"
+  "    \n"
+  "    v = v * 0.0010   ? temporarily set v to units of equation...\n"
+  "            \n"
+  "    inf = 1/(1 + exp (-(v + 0.036)/(-0.003)))\n"
+  "    \n"
+  "    v = v * 1000   ? reset v\n"
+  "        \n"
+  "    Yinf = inf\n"
+  "    \n"
+  "    ?     *** Finished rate equations for gate: Y ***\n"
+  "\n"
+  "        \n"
+  "    ?      ***  Adding rate equations for gate: Z  ***\n"
+  "    \n"
+  "    ? Note: Equation (and all ChannelML file values) in SI Units so need to convert v first...\n"
+  "    \n"
+  "    v = v * 0.0010   ? temporarily set v to units of equation...\n"
+  "            \n"
+  "    alpha = (1+0.3*( exp ((v+0.03)/0.002)))/(1+( exp ((v+0.03)/0.002)))*(1+(exp (450*(v+0.045))))/(5*(exp (90*(v+0.045))) + 0.002*(exp (450*(v+0.045))))\n"
+  "        \n"
+  "    ? Set correct units of alpha for NEURON\n"
+  "    alpha = alpha * 0.0010 \n"
+  "    \n"
+  "    beta = (1+(exp (450*(v+0.045))))/(5*(exp (90*(v+0.045))) + 0.002*(exp (450*(v+0.045)))) - (1+0.3*( exp ((v+0.03)/0.002)))/(1+( exp ((v+0.03)/0.002)))*(1+(exp (450*(v+0.045))))/(5*(exp (90*(v+0.045))) + 0.002*(exp (450*(v+0.045))))\n"
+  "        \n"
+  "    ? Set correct units of beta for NEURON\n"
+  "    beta = beta * 0.0010 \n"
+  "    \n"
+  "    v = v * 1000   ? reset v\n"
+  "        \n"
+  "    Ztau = 1/(temp_adj_Z*(alpha + beta))\n"
+  "    Zinf = alpha/(alpha + beta)\n"
+  "    \n"
+  "    ?     *** Finished rate equations for gate: Z ***\n"
+  "\n"
+  "}\n"
+  "\n"
+  "\n"
+  "UNITSON\n"
+  "\n"
+  ;
 #endif

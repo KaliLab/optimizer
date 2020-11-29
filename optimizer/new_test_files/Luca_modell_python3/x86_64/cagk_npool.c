@@ -1,4 +1,4 @@
-/* Created by Language version: 7.5.0 */
+/* Created by Language version: 7.7.0 */
 /* NOT VECTORIZED */
 #define NRN_VECTORIZED 0
 #include <stdio.h>
@@ -85,6 +85,15 @@ extern void hoc_register_limits(int, HocParmLimits*);
 extern void hoc_register_units(int, HocParmUnits*);
 extern void nrn_promote(Prop*, int, int);
 extern Memb_func* memb_func;
+ 
+#define NMODL_TEXT 1
+#if NMODL_TEXT
+static const char* nmodl_file_text;
+static const char* nmodl_filename;
+extern void hoc_reg_nmodl_text(int, const char*);
+extern void hoc_reg_nmodl_filename(int, const char*);
+#endif
+
  extern void _nrn_setdata_reg(int, void(*)(Prop*));
  static void _setdata(Prop* _prop) {
  _p = _prop->param; _ppvar = _prop->dparam;
@@ -180,7 +189,7 @@ static void _ode_matsol(_NrnThread*, _Memb_list*, int);
  static void _ode_matsol_instance1(_threadargsproto_);
  /* connect range variables in _p that hoc is supposed to know about */
  static const char *_mechanism[] = {
- "7.5.0",
+ "7.7.0",
 "cagk_npool",
  "gbar_cagk_npool",
  0,
@@ -240,6 +249,10 @@ extern void _cvode_abstol( Symbol**, double*, int);
  _mechtype = nrn_get_mechtype(_mechanism[1]);
      _nrn_setdata_reg(_mechtype, _setdata);
      _nrn_thread_reg(_mechtype, 2, _update_ion_pointer);
+ #if NMODL_TEXT
+  hoc_reg_nmodl_text(_mechtype, nmodl_file_text);
+  hoc_reg_nmodl_filename(_mechtype, nmodl_filename);
+#endif
   hoc_register_prop_size(_mechtype, 8, 5);
   hoc_register_dparam_semantics(_mechtype, 0, "can_ion");
   hoc_register_dparam_semantics(_mechtype, 1, "k_ion");
@@ -249,7 +262,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
  	hoc_register_cvode(_mechtype, _ode_count, _ode_map, _ode_spec, _ode_matsol);
  	hoc_register_tolerance(_mechtype, _hoc_state_tol, &_atollist);
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 cagk_npool /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3/x86_64/cagk_npool.mod\n");
+ 	ivoc_help("help ?1 cagk_npool /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/x86_64/cagk_npool.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
@@ -535,3 +548,97 @@ static void _initlists() {
  _slist1[0] = &(o) - _p;  _dlist1[0] = &(Do) - _p;
 _first = 0;
 }
+
+#if NMODL_TEXT
+static const char* nmodl_filename = "/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/cagk_npool.mod";
+static const char* nmodl_file_text = 
+  "TITLE CaGk\n"
+  ": Calcium activated K channel.\n"
+  ": Modified from Moczydlowski and Latorre (1983) J. Gen. Physiol. 82\n"
+  "\n"
+  "UNITS {\n"
+  "	(molar) = (1/liter)\n"
+  "}\n"
+  "\n"
+  "UNITS {\n"
+  "	(mV) =	(millivolt)\n"
+  "	(mA) =	(milliamp)\n"
+  "	(mM) =	(millimolar)\n"
+  "}\n"
+  "\n"
+  "\n"
+  "NEURON {\n"
+  "	SUFFIX cagk_npool\n"
+  "	USEION can READ cani\n"
+  "	USEION k READ ek WRITE ik\n"
+  "	RANGE gbar,gkca,ik\n"
+  "	GLOBAL oinf, tau\n"
+  "}\n"
+  "\n"
+  "UNITS {\n"
+  "	FARADAY = (faraday)  (kilocoulombs)\n"
+  "	R = 8.313424 (joule/degC)\n"
+  "}\n"
+  "\n"
+  "PARAMETER {\n"
+  "	celsius		(degC)\n"
+  "	v		(mV)\n"
+  "	gbar=.01	(mho/cm2)	: Maximum Permeability\n"
+  "	cani 		(mM)\n"
+  "	ek		(mV)\n"
+  "\n"
+  "	d1 = .84\n"
+  "	d2 = 1.\n"
+  "	k1 = .48e-3	(mM)\n"
+  "	k2 = .13e-6	(mM)\n"
+  "	abar = .28	(/ms)\n"
+  "	bbar = .48	(/ms)\n"
+  "        st=1            (1)\n"
+  "}\n"
+  "\n"
+  "ASSIGNED {\n"
+  "	ik		(mA/cm2)\n"
+  "	oinf\n"
+  "	tau		(ms)\n"
+  "        gkca          (mho/cm2)\n"
+  "}\n"
+  "\n"
+  "INITIAL {\n"
+  "        rate(v,cani)\n"
+  "        o=oinf\n"
+  "}\n"
+  "\n"
+  "STATE {	o }		: fraction of open channels\n"
+  "\n"
+  "BREAKPOINT {\n"
+  "	SOLVE state METHOD cnexp\n"
+  "	gkca = gbar*o^st\n"
+  "	ik = gkca*(v - ek)\n"
+  "}\n"
+  "\n"
+  "DERIVATIVE state {	: exact when v held constant; integrates over dt step\n"
+  "	rate(v, cani)\n"
+  "	o' = (oinf - o)/tau\n"
+  "}\n"
+  "\n"
+  "FUNCTION alp(v (mV), c (mM)) (1/ms) { :callable from hoc\n"
+  "	alp = c*abar/(c + exp1(k1,d1,v))\n"
+  "}\n"
+  "\n"
+  "FUNCTION bet(v (mV), c (mM)) (1/ms) { :callable from hoc\n"
+  "	bet = bbar/(1 + c/exp1(k2,d2,v))\n"
+  "}\n"
+  "\n"
+  "FUNCTION exp1(k (mM), d, v (mV)) (mM) { :callable from hoc\n"
+  "	exp1 = k*exp(-2*d*FARADAY*v/R/(273.15 + celsius))\n"
+  "}\n"
+  "\n"
+  "PROCEDURE rate(v (mV), c (mM)) { :callable from hoc\n"
+  "	LOCAL a\n"
+  "	a = alp(v,c)\n"
+  "	tau = 1/(a + bet(v, c))\n"
+  "	oinf = a*tau\n"
+  "}\n"
+  "\n"
+  ;
+#endif

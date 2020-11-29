@@ -1,4 +1,4 @@
-/* Created by Language version: 7.5.0 */
+/* Created by Language version: 7.7.0 */
 /* NOT VECTORIZED */
 #define NRN_VECTORIZED 0
 #include <stdio.h>
@@ -102,6 +102,15 @@ extern void hoc_register_limits(int, HocParmLimits*);
 extern void hoc_register_units(int, HocParmUnits*);
 extern void nrn_promote(Prop*, int, int);
 extern Memb_func* memb_func;
+ 
+#define NMODL_TEXT 1
+#if NMODL_TEXT
+static const char* nmodl_file_text;
+static const char* nmodl_filename;
+extern void hoc_reg_nmodl_text(int, const char*);
+extern void hoc_reg_nmodl_filename(int, const char*);
+#endif
+
  extern Prop* nrn_point_prop_;
  static int _pointtype;
  static void* _hoc_create_pnt(_ho) Object* _ho; { void* create_point_process();
@@ -335,7 +344,7 @@ static void _ode_matsol(_NrnThread*, _Memb_list*, int);
  static void _ode_matsol_instance1(_threadargsproto_);
  /* connect range variables in _p that hoc is supposed to know about */
  static const char *_mechanism[] = {
- "7.5.0",
+ "7.7.0",
 "NMDA_Mg_T",
  "gmax",
  0,
@@ -408,6 +417,10 @@ extern void _cvode_abstol( Symbol**, double*, int);
 	 _hoc_create_pnt, _hoc_destroy_pnt, _member_func);
  _mechtype = nrn_get_mechtype(_mechanism[1]);
      _nrn_setdata_reg(_mechtype, _setdata);
+ #if NMODL_TEXT
+  hoc_reg_nmodl_text(_mechtype, nmodl_file_text);
+  hoc_reg_nmodl_filename(_mechtype, nmodl_filename);
+#endif
   hoc_register_prop_size(_mechtype, 32, 4);
   hoc_register_dparam_semantics(_mechtype, 0, "area");
   hoc_register_dparam_semantics(_mechtype, 1, "pntproc");
@@ -416,7 +429,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
  	hoc_register_cvode(_mechtype, _ode_count, _ode_map, _ode_spec, _ode_matsol);
  	hoc_register_tolerance(_mechtype, _hoc_state_tol, &_atollist);
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 NMDA_Mg_T /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3/x86_64/NMDA_Mg_T.mod\n");
+ 	ivoc_help("help ?1 NMDA_Mg_T /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/x86_64/NMDA_Mg_T.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
@@ -1095,3 +1108,210 @@ static void _initlists() {
  _slist1[9] = &(U) - _p;  _dlist1[9] = &(DU) - _p;
 _first = 0;
 }
+
+#if NMODL_TEXT
+static const char* nmodl_filename = "/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/NMDA_Mg_T.mod";
+static const char* nmodl_file_text = 
+  "TITLE kinetic NMDA receptor model\n"
+  "\n"
+  "COMMENT\n"
+  "-----------------------------------------------------------------------------\n"
+  "\n"
+  "	Kinetic model of NMDA receptors\n"
+  "	===============================\n"
+  "\n"
+  "	10-state gating model:\n"
+  "	Kampa et al. (2004) J Physiol\n"
+  "  \n"
+  "	  U -- Cl  --  O\n"
+  "         \\   | \\	    \\\n"
+  "          \\  |  \\      \\\n"
+  "         UMg --  ClMg - OMg\n"
+  "		 |	|\n"
+  "		D1	|\n"
+  "		 | \\	|\n"
+  "		D2  \\	|\n"
+  "		   \\	D1Mg\n"
+  "		    \\	|\n"
+  "			D2Mg\n"
+  "-----------------------------------------------------------------------------\n"
+  "\n"
+  "  Based on voltage-clamp recordings of NMDA receptor-mediated currents in \n"
+  "  nucleated patches of  rat neocortical layer 5 pyramidal neurons (Kampa 2004), \n"
+  "  this model was fit with AxoGraph directly to experimental recordings in \n"
+  "  order to obtain the optimal values for the parameters.\n"
+  "\n"
+  "-----------------------------------------------------------------------------\n"
+  "\n"
+  "  This mod file does not include mechanisms for the release and time course\n"
+  "  of transmitter; it should to be used in conjunction with a sepearate mechanism\n"
+  "  to describe the release of transmitter and tiemcourse of the concentration\n"
+  "  of transmitter in the synaptic cleft (to be connected to pointer C here).\n"
+  "\n"
+  "-----------------------------------------------------------------------------\n"
+  "\n"
+  "  See details of NEURON kinetic models in:\n"
+  "\n"
+  "  Destexhe, A., Mainen, Z.F. and Sejnowski, T.J.  Kinetic models of \n"
+  "  synaptic transmission.  In: Methods in Neuronal Modeling (2nd edition; \n"
+  "  edited by Koch, C. and Segev, I.), MIT press, Cambridge, 1996.\n"
+  "\n"
+  "\n"
+  "  Written by Bjoern Kampa in 2004 \n"
+  "\n"
+  "-----------------------------------------------------------------------------\n"
+  "  \n"
+  "  Rates modified for near physiological temperatures with Q10 values from\n"
+  "  O.Cais et al 2008, Mg unbinding from Vargas-Caballero 2003, opening and\n"
+  "  closing from Lester and Jahr 1992.\n"
+  "\n"
+  "  Tiago Branco 2010\n"
+  "  \n"
+  "-----------------------------------------------------------------------------\n"
+  "\n"
+  "ENDCOMMENT\n"
+  "\n"
+  "\n"
+  "INDEPENDENT {t FROM 0 TO 1 WITH 1 (ms)}\n"
+  "\n"
+  "NEURON {\n"
+  "	POINT_PROCESS NMDA_Mg_T\n"
+  "	POINTER C\n"
+  "	RANGE U, Cl, D1, D2, O, UMg, ClMg, D1Mg, D2Mg, OMg\n"
+  "	RANGE g, gmax, rb, rmb, rmu, rbMg,rmc1b,rmc1u,rmc2b,rmc2u\n"
+  "	GLOBAL Erev, mg, Rb, Ru, Rd1, Rr1, Rd2, Rr2, Ro, Rc, Rmb, Rmu\n"
+  "	GLOBAL RbMg, RuMg, Rd1Mg, Rr1Mg, Rd2Mg, Rr2Mg, RoMg, RcMg\n"
+  "	GLOBAL Rmd1b,Rmd1u,Rmd2b,Rmd2u,rmd1b,rmd1u,rmd2b,rmd2u\n"
+  "	GLOBAL Rmc1b,Rmc1u,Rmc2b,Rmc2u\n"
+  "	GLOBAL vmin, vmax, valence, memb_fraction\n"
+  "	NONSPECIFIC_CURRENT i\n"
+  "}\n"
+  "\n"
+  "UNITS {\n"
+  "	(nA) = (nanoamp)\n"
+  "	(mV) = (millivolt)\n"
+  "	(pS) = (picosiemens)\n"
+  "	(umho) = (micromho)\n"
+  "	(mM) = (milli/liter)\n"
+  "	(uM) = (micro/liter)\n"
+  "}\n"
+  "\n"
+  "PARAMETER {\n"
+  "\n"
+  "	Erev	= 5    	(mV)	: reversal potential\n"
+  "	gmax	= 500  	(pS)	: maximal conductance\n"
+  "	mg	= 1  	(mM)	: external magnesium concentration\n"
+  "	vmin 	= -120	(mV)\n"
+  "	vmax 	= 100	(mV)\n"
+  "	valence = -2		: parameters of voltage-dependent Mg block\n"
+  "	memb_fraction = 0.8\n"
+  "\n"
+  ": Rates\n"
+  "\n"
+  "	Rb		= 10e-3    	(/uM /ms)	: binding 		\n"
+  "	Ru		= 0.02016 	(/ms)	: unbinding		\n"
+  "	Ro		= 46.5e-3   	(/ms)	: opening\n"
+  "	Rc		= 91.6e-3   	(/ms)	: closing \n"
+  "	Rd1		= 0.02266  	(/ms)	: fast desensitisation\n"
+  "	Rr1		= 0.00736  	(/ms)	: fast resensitisation\n"
+  "	Rd2 		= 0.004429	(/ms)	: slow desensitisation\n"
+  "	Rr2 		= 0.0023	(/ms)	: slow resensitisation\n"
+  "	Rmb		= 0.05e-3	(/uM /ms)	: Mg binding Open\n"
+  "	Rmu		= 12800e-3	(/ms)	: Mg unbinding Open\n"
+  "	Rmc1b		= 0.00005e-3	(/uM /ms)	: Mg binding Closed\n"
+  "	Rmc1u		= 0.06	(/ms)	: Mg unbinding Closed\n"
+  "	Rmc2b		= 0.00005e-3	(/uM /ms)	: Mg binding Closed2\n"
+  "	Rmc2u		= 0.06	(/ms)	: Mg unbinding Closed2\n"
+  "	Rmd1b		= 0.00005e-3	(/uM /ms)	: Mg binding Desens1\n"
+  "	Rmd1u		= 0.06	(/ms)	: Mg unbinding Desens1\n"
+  "	Rmd2b		= 0.00005e-3	(/uM /ms)	: Mg binding Desens2\n"
+  "	Rmd2u		= 0.06	(/ms)	: Mg unbinding Desens2\n"
+  "	RbMg		= 10e-3		(/uM /ms)	: binding with Mg\n"
+  "	RuMg		= 0.06156	(/ms)	: unbinding with Mg\n"
+  "	RoMg		= 46.5e-3		(/ms)	: opening with Mg\n"
+  "	RcMg		= 91.6e-3	(/ms)	: closing with Mg\n"
+  "	Rd1Mg		= 0.02163	(/ms)	: fast desensitisation with Mg\n"
+  "	Rr1Mg		= 0.004002	(/ms)	: fast resensitisation with Mg\n"
+  "	Rd2Mg		= 0.002678	(/ms)	: slow desensitisation with Mg\n"
+  "	Rr2Mg		= 0.001932	(/ms)	: slow resensitisation with Mg\n"
+  "}\n"
+  "\n"
+  "ASSIGNED {\n"
+  "	v		(mV)	: postsynaptic voltage\n"
+  "	i 		(nA)	: current = g*(v - Erev)\n"
+  "	g 		(pS)	: conductance\n"
+  "	C 		(mM)	: pointer to glutamate concentration\n"
+  "\n"
+  "	rb		(/ms)   : binding, [glu] dependent\n"
+  "	rmb		(/ms)	: blocking V and [Mg] dependent\n"
+  "	rmu		(/ms)	: unblocking V and [Mg] dependent\n"
+  "	rbMg		(/ms)	: binding, [glu] dependent\n"
+  "	rmc1b		(/ms)	: blocking V and [Mg] dependent\n"
+  "	rmc1u		(/ms)	: unblocking V and [Mg] dependent\n"
+  "	rmc2b		(/ms)	: blocking V and [Mg] dependent\n"
+  "	rmc2u		(/ms)	: unblocking V and [Mg] dependent\n"
+  "	rmd1b		(/ms)	: blocking V and [Mg] dependent\n"
+  "	rmd1u		(/ms)	: unblocking V and [Mg] dependent\n"
+  "	rmd2b		(/ms)	: blocking V and [Mg] dependent\n"
+  "	rmd2u		(/ms)	: unblocking V and [Mg] dependent\n"
+  "}\n"
+  "\n"
+  "STATE {\n"
+  "	: Channel states (all fractions)\n"
+  "	U		: unbound\n"
+  "	Cl		: closed\n"
+  "	D1		: desensitised 1\n"
+  "	D2		: desensitised 2\n"
+  "	O		: open\n"
+  "	UMg		: unbound with Mg\n"
+  "	ClMg		: closed with Mg\n"
+  "	D1Mg		: desensitised 1 with Mg\n"
+  "	D2Mg		: desensitised 2 with Mg\n"
+  "	OMg		: open with Mg\n"
+  "}\n"
+  "\n"
+  "INITIAL {\n"
+  "	U = 1\n"
+  "}\n"
+  "\n"
+  "BREAKPOINT {\n"
+  "	SOLVE kstates METHOD sparse\n"
+  "\n"
+  "	g = gmax * O\n"
+  "	i = (1e-6) * g * (v - Erev)\n"
+  "}\n"
+  "\n"
+  "KINETIC kstates {\n"
+  "\n"
+  "	rb 	= Rb 	* (1e3) * C\n"
+  "	rbMg 	= RbMg 	* (1e3) * C\n"
+  "	rmb 	= Rmb 	* mg * (1e3) * exp((v-40) * valence * memb_fraction /25)\n"
+  "	rmu 	= Rmu 	* exp((-1)*(v-40) * valence * (1-memb_fraction) /25)\n"
+  "	rmc1b 	= Rmc1b * mg * (1e3) * exp((v-40) * valence * memb_fraction /25)\n"
+  "	rmc1u 	= Rmc1u * exp((-1)*(v-40) * valence * (1-memb_fraction) /25)\n"
+  "	rmc2b 	= Rmc2b * mg * (1e3) * exp((v-40) * valence * memb_fraction /25)\n"
+  "	rmc2u 	= Rmc2u * exp((-1)*(v-40) * valence * (1-memb_fraction) /25)\n"
+  "	rmd1b 	= Rmd1b * mg * (1e3) * exp((v-40) * valence * memb_fraction /25)\n"
+  "	rmd1u 	= Rmd1u * exp((-1)*(v-40) * valence * (1-memb_fraction) /25)\n"
+  "	rmd2b 	= Rmd2b * mg * (1e3) * exp((v-40) * valence * memb_fraction /25)\n"
+  "	rmd2u 	= Rmd2u * exp((-1)*(v-40) * valence * (1-memb_fraction) /25)\n"
+  "\n"
+  "	~ U <-> Cl	(rb,Ru)\n"
+  "	~ Cl <-> O	(Ro,Rc)\n"
+  "	~ Cl <-> D1	(Rd1,Rr1)\n"
+  "	~ D1 <-> D2	(Rd2,Rr2)\n"
+  "	~ O <-> OMg	(rmb,rmu)\n"
+  "	~ UMg <-> ClMg 	(rbMg,RuMg)\n"
+  "	~ ClMg <-> OMg 	(RoMg,RcMg)\n"
+  "	~ ClMg <-> D1Mg (Rd1Mg,Rr1Mg)\n"
+  "	~ D1Mg <-> D2Mg (Rd2Mg,Rr2Mg)\n"
+  "	~ U <-> UMg     (rmc1b,rmc1u)\n"
+  "	~ Cl <-> ClMg	(rmc2b,rmc2u)\n"
+  "	~ D1 <-> D1Mg	(rmd1b,rmd1u)\n"
+  "	~ D2 <-> D2Mg	(rmd2b,rmd2u)\n"
+  "\n"
+  "	CONSERVE U+Cl+D1+D2+O+UMg+ClMg+D1Mg+D2Mg+OMg = 1\n"
+  "}\n"
+  "\n"
+  ;
+#endif

@@ -382,10 +382,12 @@ class Problem:
 			pass
 
 	def fitness(self, x):
+		
 		if self.nobj!=1:
 			fitness = self.fitnes_fun([normalize(x,self)])[0]
 		else:
 			fitness = self.fitnes_fun([normalize(x,self)])
+			
 		with open(self.directory + '/island_inds.txt', 'a') as inds_file:
 			inds_file.write("{0}, {1}, {2}, {3}, {4}\n".format(self.gen_counter, self.pop_counter, fitness, x, normalize(x, self)))
 		self.pop_counter += 1
@@ -607,7 +609,7 @@ class Extended_Ant_Colony_Pygmo(PygmoAlgorithmBasis):
 	
 		self.algorithm = pg.gaco(gen=self.max_evaluation)
 
-class NondominatedSortedParticle_Swarm_Pygmo(PygmoAlgorithmBasis):
+class Nondominated_Sorted_Particle_Swarm_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
 		self.multiobjective=True
@@ -617,7 +619,7 @@ class NondominatedSortedParticle_Swarm_Pygmo(PygmoAlgorithmBasis):
 		
 		self.algorithm = pg.nspso(gen=self.max_evaluation)
 
-class NondominatedSortedGA_Pygmo(PygmoAlgorithmBasis):
+class Nondominated_Sorted_GA_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
 		self.multiobjective=True

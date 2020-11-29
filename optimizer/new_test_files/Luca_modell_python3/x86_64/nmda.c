@@ -1,4 +1,4 @@
-/* Created by Language version: 7.5.0 */
+/* Created by Language version: 7.7.0 */
 /* VECTORIZED */
 #define NRN_VECTORIZED 1
 #include <stdio.h>
@@ -91,6 +91,15 @@ extern void hoc_register_limits(int, HocParmLimits*);
 extern void hoc_register_units(int, HocParmUnits*);
 extern void nrn_promote(Prop*, int, int);
 extern Memb_func* memb_func;
+ 
+#define NMODL_TEXT 1
+#if NMODL_TEXT
+static const char* nmodl_file_text;
+static const char* nmodl_filename;
+extern void hoc_reg_nmodl_text(int, const char*);
+extern void hoc_reg_nmodl_filename(int, const char*);
+#endif
+
  extern Prop* nrn_point_prop_;
  static int _pointtype;
  static void* _hoc_create_pnt(_ho) Object* _ho; { void* create_point_process();
@@ -190,7 +199,7 @@ static void _ode_matsol(_NrnThread*, _Memb_list*, int);
  static void _ode_matsol_instance1(_threadargsproto_);
  /* connect range variables in _p that hoc is supposed to know about */
  static const char *_mechanism[] = {
- "7.5.0",
+ "7.7.0",
 "NMDA",
  "Alpha",
  "Beta",
@@ -264,6 +273,10 @@ extern void _cvode_abstol( Symbol**, double*, int);
      _nrn_setdata_reg(_mechtype, _setdata);
      _nrn_thread_reg(_mechtype, 2, _update_ion_pointer);
      _nrn_thread_table_reg(_mechtype, _check_table_thread);
+ #if NMODL_TEXT
+  hoc_reg_nmodl_text(_mechtype, nmodl_file_text);
+  hoc_reg_nmodl_filename(_mechtype, nmodl_filename);
+#endif
   hoc_register_prop_size(_mechtype, 18, 6);
   hoc_register_dparam_semantics(_mechtype, 0, "area");
   hoc_register_dparam_semantics(_mechtype, 1, "pntproc");
@@ -276,7 +289,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
  pnt_receive[_mechtype] = _net_receive;
  pnt_receive_size[_mechtype] = 5;
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 NMDA /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3/x86_64/nmda.mod\n");
+ 	ivoc_help("help ?1 NMDA /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/x86_64/nmda.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
@@ -648,4 +661,174 @@ _first = 0;
 
 #if defined(__cplusplus)
 } /* extern "C" */
+#endif
+
+#if NMODL_TEXT
+static const char* nmodl_filename = "/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/nmda.mod";
+static const char* nmodl_file_text = 
+  "TITLE simple NMDA receptors\n"
+  "\n"
+  "COMMENT\n"
+  "-----------------------------------------------------------------------------\n"
+  "     YIOTA GAVE THIS FILE TO ME (JOSE GOMEZ)\n"
+  "Essentially the same as /examples/nrniv/netcon/ampa.mod in the NEURON\n"
+  "distribution - i.e. Alain Destexhe's simple AMPA model - but with\n"
+  "different binding and unbinding rates and with a magnesium block.\n"
+  "Modified by Andrew Davison, The Babraham Institute, May 2000\n"
+  "\n"
+  "\n"
+  "       Simple model for glutamate AMPA receptors\n"
+  "       =========================================\n"
+  "\n"
+  " - FIRST-ORDER KINETICS, FIT TO WHOLE-CELL RECORDINGS\n"
+  "\n"
+  "   Whole-cell recorded postsynaptic currents mediated by AMPA/Kainate\n"
+  "   receptors (Xiang et al., J. Neurophysiol. 71: 2552-2556, 1994) were used\n"
+  "   to estimate the parameters of the present model; the fit was performed\n"
+  "   using a simplex algorithm (see Destexhe et al., J. Computational Neurosci.\n"
+  "   1: 195-230, 1994).\n"
+  "\n"
+  " - SHORT PULSES OF TRANSMITTER (0.3 ms, 0.5 mM)\n"
+  "\n"
+  "   The simplified model was obtained from a detailed synaptic model that\n"
+  "   included the release of transmitter in adjacent terminals, its lateral\n"
+  "   diffusion and uptake, and its binding on postsynaptic receptors (Destexhe\n"
+  "   and Sejnowski, 1995).  Short pulses of transmitter with first-order\n"
+  "   kinetics were found to be the best fast alternative to represent the more\n"
+  "   detailed models.\n"
+  "\n"
+  " - ANALYTIC EXPRESSION\n"
+  "\n"
+  "   The first-order model can be solved analytically, leading to a very fast\n"
+  "   mechanism for simulating synapses, since no differential equation must be\n"
+  "   solved (see references below).\n"
+  "\n"
+  "\n"
+  "\n"
+  "References\n"
+  "\n"
+  "  Destexhe, A., Mainen, Z.F. and Sejnowski, T.J.  An efficient method for\n"
+  "  computing synaptic conductances based on a kinetic model of receptor binding\n"
+  "  Neural Computation 6: 10-14, 1994.\n"
+  "\n"
+  "  Destexhe, A., Mainen, Z.F. and Sejnowski, T.J. Synthesis of models for\n"
+  "  excitable membranes, synaptic transmission and neuromodulation using a\n"
+  "  common kinetic formalism, Journal of Computational Neuroscience 1:\n"
+  "  195-230, 1994.\n"
+  "\n"
+  "-----------------------------------------------------------------------------\n"
+  "ENDCOMMENT\n"
+  "\n"
+  "\n"
+  "\n"
+  "NEURON {\n"
+  "       POINT_PROCESS NMDA\n"
+  "       RANGE g, Alpha, Beta, e, gmax, ica\n"
+  "       USEION ca WRITE ica\n"
+  "       NONSPECIFIC_CURRENT  iNMDA            : i\n"
+  "       GLOBAL Cdur, mg, Cmax\n"
+  "}\n"
+  "UNITS {\n"
+  "       (nA) = (nanoamp)\n"
+  "       (mV) = (millivolt)\n"
+  "       (umho) = (micromho)\n"
+  "       (mM) = (milli/liter)\n"
+  "}\n"
+  "\n"
+  "PARAMETER {\n"
+  "       Cmax    = 1      (mM)           : max transmitter concentration\n"
+  "       Cdur    = 1      (ms)           : transmitter duration (rising phase)\n"
+  ":       Cdur    = 10     (ms)           : transmitter duration (rising phase)\n"
+  "       Alpha   = 2  : 10     (/ms /mM)      : forward (binding) rate :used\n"
+  ":       Alpha   = 4      (/ms /mM)      : forward (binding) rate\n"
+  ":       Beta    = 0.0125 (/ms)          : backward (unbinding) rate :used\n"
+  "       Beta    = 0.01 :0.02 (/ms)            : 0.05 gives 150 ms 2P backward (unbinding) rate\n"
+  ":       e       = 45     (mV)           : reversal potential\n"
+  "       e       = 0      (mV)           : reversal potential\n"
+  "       mg      =1 (mM): 1      (mM)           : external magnesium concentration\n"
+  "\n"
+  "}\n"
+  "\n"
+  "\n"
+  "ASSIGNED {\n"
+  "       v               (mV)            : postsynaptic voltage\n"
+  "       iNMDA           (nA)            : current = g*(v - e)\n"
+  "       g               (umho)          : conductance\n"
+  "       Rinf                            : steady state channels open\n"
+  "       Rtau            (ms)            : time constant of channel binding\n"
+  "       synon\n"
+  "       B\n"
+  "       gmax                              : magnesium block\n"
+  "       ica\n"
+  "}\n"
+  "\n"
+  "STATE {Ron Roff}\n"
+  "\n"
+  "INITIAL {\n"
+  "       Rinf = Cmax*Alpha / (Cmax*Alpha + Beta)\n"
+  "       Rtau = 1 / (Cmax*Alpha + Beta)\n"
+  "       synon = 0\n"
+  "}\n"
+  "\n"
+  "BREAKPOINT {\n"
+  "       SOLVE release METHOD cnexp\n"
+  "       B = mgblock(v)\n"
+  "       g = (Ron + Roff)*1(umho) * B\n"
+  ":g = (Ron + Roff)*1(umho) : No Mg2+ effect\n"
+  "\n"
+  "       iNMDA = g*(v - e)\n"
+  "       ica = 7*iNMDA/10   :(5-10 times more permeable to Ca++ than Na+ or K+, Ascher and Nowak, 1988)\n"
+  ":        ica = 0\n"
+  "       iNMDA = 3*iNMDA/10\n"
+  "\n"
+  "}\n"
+  "\n"
+  "DERIVATIVE release {\n"
+  "       Ron' = (synon*Rinf - Ron)/Rtau\n"
+  "       Roff' = -Beta*Roff\n"
+  "}\n"
+  "\n"
+  "FUNCTION mgblock(v(mV)) {\n"
+  "       TABLE\n"
+  "       DEPEND mg\n"
+  "       FROM -140 TO 80 WITH 1000\n"
+  "\n"
+  "       : from Jahr & Stevens\n"
+  "\n"
+  "       mgblock = 1 / (1 + exp(0.062 (/mV) * -v) * (mg / 3.57 (mM)))\n"
+  "}\n"
+  "\n"
+  ": following supports both saturation from single input and\n"
+  ": summation from multiple inputs\n"
+  ": if spike occurs during CDur then new off time is t + CDur\n"
+  ": ie. transmitter concatenates but does not summate\n"
+  ": Note: automatic initialization of all reference args to 0 except first\n"
+  "\n"
+  "\n"
+  "NET_RECEIVE(weight, on, nspike, r0, t0 (ms)) {\n"
+  "       : flag is an implicit argument of NET_RECEIVE and  normally 0\n"
+  "       if (flag == 0) { : a spike, so turn on if not already in a Cdur pulse\n"
+  "               nspike = nspike + 1\n"
+  "               if (!on) {\n"
+  "                       r0 = r0*exp(-Beta*(t - t0))\n"
+  "                       t0 = t\n"
+  "                       on = 1\n"
+  "                       synon = synon + weight\n"
+  "                       state_discontinuity(Ron, Ron + r0)\n"
+  "                       state_discontinuity(Roff, Roff - r0)\n"
+  "               }\n"
+  ":                come again in Cdur with flag = current value of nspike\n"
+  "               net_send(Cdur, nspike)\n"
+  "      }\n"
+  "       if (flag == nspike) { : if this associated with last spike then turn off\n"
+  "               r0 = weight*Rinf + (r0 - weight*Rinf)*exp(-(t - t0)/Rtau)\n"
+  "               t0 = t\n"
+  "               synon = synon - weight\n"
+  "               state_discontinuity(Ron, Ron - r0)\n"
+  "               state_discontinuity(Roff, Roff + r0)\n"
+  "               on = 0\n"
+  "       }\n"
+  "gmax = weight\n"
+  "}\n"
+  ;
 #endif

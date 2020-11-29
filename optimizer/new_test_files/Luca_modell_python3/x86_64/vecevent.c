@@ -1,4 +1,4 @@
-/* Created by Language version: 7.5.0 */
+/* Created by Language version: 7.7.0 */
 /* NOT VECTORIZED */
 #define NRN_VECTORIZED 0
 #include <stdio.h>
@@ -75,6 +75,15 @@ extern void hoc_register_limits(int, HocParmLimits*);
 extern void hoc_register_units(int, HocParmUnits*);
 extern void nrn_promote(Prop*, int, int);
 extern Memb_func* memb_func;
+ 
+#define NMODL_TEXT 1
+#if NMODL_TEXT
+static const char* nmodl_file_text;
+static const char* nmodl_filename;
+extern void hoc_reg_nmodl_text(int, const char*);
+extern void hoc_reg_nmodl_filename(int, const char*);
+#endif
+
  extern Prop* nrn_point_prop_;
  static int _pointtype;
  static void* _hoc_create_pnt(_ho) Object* _ho; { void* create_point_process();
@@ -135,7 +144,7 @@ static void nrn_state(_NrnThread*, _Memb_list*, int);
 }
  /* connect range variables in _p that hoc is supposed to know about */
  static const char *_mechanism[] = {
- "7.5.0",
+ "7.7.0",
 "VecStim",
  0,
  0,
@@ -183,6 +192,10 @@ extern void _cvode_abstol( Symbol**, double*, int);
 	 _hoc_create_pnt, _hoc_destroy_pnt, _member_func);
  _mechtype = nrn_get_mechtype(_mechanism[1]);
      _nrn_setdata_reg(_mechtype, _setdata);
+ #if NMODL_TEXT
+  hoc_reg_nmodl_text(_mechtype, nmodl_file_text);
+  hoc_reg_nmodl_filename(_mechtype, nmodl_filename);
+#endif
   hoc_register_prop_size(_mechtype, 4, 3);
   hoc_register_dparam_semantics(_mechtype, 0, "area");
   hoc_register_dparam_semantics(_mechtype, 1, "pntproc");
@@ -192,7 +205,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
  pnt_receive[_mechtype] = _net_receive;
  pnt_receive_size[_mechtype] = 1;
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 VecStim /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3/x86_64/vecevent.mod\n");
+ 	ivoc_help("help ?1 VecStim /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/x86_64/vecevent.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
@@ -328,3 +341,80 @@ static void _initlists() {
   if (!_first) return;
 _first = 0;
 }
+
+#if NMODL_TEXT
+static const char* nmodl_filename = "/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/vecevent.mod";
+static const char* nmodl_file_text = 
+  ":  Vector stream of events\n"
+  "\n"
+  "NEURON {\n"
+  "	ARTIFICIAL_CELL VecStim\n"
+  "}\n"
+  "\n"
+  "ASSIGNED {\n"
+  "	index\n"
+  "	etime (ms)\n"
+  "	space\n"
+  "}\n"
+  "\n"
+  "INITIAL {\n"
+  "	index = 0\n"
+  "	element()\n"
+  "	if (index > 0) {\n"
+  "		net_send(etime - t, 1)\n"
+  "	}\n"
+  "}\n"
+  "\n"
+  "NET_RECEIVE (w) {\n"
+  "	if (flag == 1) {\n"
+  "		net_event(t)\n"
+  "		element()\n"
+  "		if (index > 0) {\n"
+  "			net_send(etime - t, 1)\n"
+  "		}\n"
+  "	}\n"
+  "}\n"
+  "\n"
+  "VERBATIM\n"
+  "extern double* vector_vec();\n"
+  "extern int vector_capacity();\n"
+  "extern void* vector_arg();\n"
+  "ENDVERBATIM\n"
+  "\n"
+  "PROCEDURE element() {\n"
+  "VERBATIM	\n"
+  "  { void* vv; int i, size; double* px;\n"
+  "	i = (int)index;\n"
+  "	if (i >= 0) {\n"
+  "		vv = *((void**)(&space));\n"
+  "		if (vv) {\n"
+  "			size = vector_capacity(vv);\n"
+  "			px = vector_vec(vv);\n"
+  "			if (i < size) {\n"
+  "				etime = px[i];\n"
+  "				index += 1.;\n"
+  "			}else{\n"
+  "				index = -1.;\n"
+  "			}\n"
+  "		}else{\n"
+  "			index = -1.;\n"
+  "		}\n"
+  "	}\n"
+  "  }\n"
+  "ENDVERBATIM\n"
+  "}\n"
+  "\n"
+  "PROCEDURE play() {\n"
+  "VERBATIM\n"
+  "	void** vv;\n"
+  "	vv = (void**)(&space);\n"
+  "	*vv = (void*)0;\n"
+  "	if (ifarg(1)) {\n"
+  "		*vv = vector_arg(1);\n"
+  "	}\n"
+  "ENDVERBATIM\n"
+  "}\n"
+  "        \n"
+  "\n"
+  ;
+#endif

@@ -1,4 +1,4 @@
-/* Created by Language version: 7.5.0 */
+/* Created by Language version: 7.7.0 */
 /* VECTORIZED */
 #define NRN_VECTORIZED 1
 #include <stdio.h>
@@ -80,6 +80,15 @@ extern void hoc_register_limits(int, HocParmLimits*);
 extern void hoc_register_units(int, HocParmUnits*);
 extern void nrn_promote(Prop*, int, int);
 extern Memb_func* memb_func;
+ 
+#define NMODL_TEXT 1
+#if NMODL_TEXT
+static const char* nmodl_file_text;
+static const char* nmodl_filename;
+extern void hoc_reg_nmodl_text(int, const char*);
+extern void hoc_reg_nmodl_filename(int, const char*);
+#endif
+
  extern void _nrn_setdata_reg(int, void(*)(Prop*));
  static void _setdata(Prop* _prop) {
  _extcall_prop = _prop;
@@ -134,7 +143,7 @@ static void _ode_matsol(_NrnThread*, _Memb_list*, int);
  static void _ode_matsol_instance1(_threadargsproto_);
  /* connect range variables in _p that hoc is supposed to know about */
  static const char *_mechanism[] = {
- "7.5.0",
+ "7.7.0",
 "cacum_lpool",
  "depth_cacum_lpool",
  "tau_cacum_lpool",
@@ -196,6 +205,10 @@ extern void _cvode_abstol( Symbol**, double*, int);
      _nrn_thread_reg(_mechtype, 1, _thread_mem_init);
      _nrn_thread_reg(_mechtype, 0, _thread_cleanup);
      _nrn_thread_reg(_mechtype, 2, _update_ion_pointer);
+ #if NMODL_TEXT
+  hoc_reg_nmodl_text(_mechtype, nmodl_file_text);
+  hoc_reg_nmodl_filename(_mechtype, nmodl_filename);
+#endif
   hoc_register_prop_size(_mechtype, 8, 4);
   hoc_register_dparam_semantics(_mechtype, 0, "cal_ion");
   hoc_register_dparam_semantics(_mechtype, 1, "cal_ion");
@@ -205,7 +218,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
  	hoc_register_cvode(_mechtype, _ode_count, _ode_map, _ode_spec, _ode_matsol);
  	hoc_register_tolerance(_mechtype, _hoc_state_tol, &_atollist);
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 cacum_lpool /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3/x86_64/cacum_lpool.mod\n");
+ 	ivoc_help("help ?1 cacum_lpool /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/x86_64/cacum_lpool.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
@@ -465,4 +478,56 @@ _first = 0;
 
 #if defined(__cplusplus)
 } /* extern "C" */
+#endif
+
+#if NMODL_TEXT
+static const char* nmodl_filename = "/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/cacum_lpool.mod";
+static const char* nmodl_file_text = 
+  "COMMENT\n"
+  "	calcium accumulation into a volume of area*depth next to the\n"
+  "	membrane with a decay (time constant tau) to resting level\n"
+  "	given by the global calcium variable cai0_ca_ion\n"
+  "ENDCOMMENT\n"
+  "\n"
+  "NEURON {\n"
+  "	SUFFIX cacum_lpool\n"
+  "	USEION cal READ ical WRITE cali VALENCE 2\n"
+  "	RANGE depth, tau, cali0\n"
+  "}\n"
+  "\n"
+  "UNITS {\n"
+  "	(mM) = (milli/liter)\n"
+  "	(mA) = (milliamp)\n"
+  "	F = (faraday) (coulombs)\n"
+  "}\n"
+  "\n"
+  "PARAMETER {\n"
+  "	depth = 1 (nm)	: assume volume = area*depth\n"
+  "	tau = 10 (ms)\n"
+  "	cani0 = 50e-6 (mM)	: Requires explicit use in INITIAL\n"
+  "			: block for it to take precedence over cai0_ca_ion\n"
+  "			: Do not forget to initialize in hoc if different\n"
+  "			: from this default.\n"
+  "}\n"
+  "\n"
+  "ASSIGNED {\n"
+  "	ical (mA/cm2)\n"
+  "}\n"
+  "\n"
+  "STATE {\n"
+  "	cali (mM)\n"
+  "}\n"
+  "\n"
+  "INITIAL {\n"
+  "	cali = cali0\n"
+  "}\n"
+  "\n"
+  "BREAKPOINT {\n"
+  "	SOLVE integrate METHOD derivimplicit\n"
+  "}\n"
+  "\n"
+  "DERIVATIVE integrate {\n"
+  "	cali' = -ical/depth/F/2 * (1e7) + (cali0 - cali)/tau\n"
+  "}\n"
+  ;
 #endif

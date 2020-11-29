@@ -195,7 +195,7 @@ class fF(object):
             
             from subprocess import call
             error=call(self.model.GetExec(unique_ID))
-
+         
             params_file = 'params' + unique_ID + '.param' 
             
             try:
@@ -220,7 +220,7 @@ class fF(object):
             except OSError:
                 pass
             
-            os.remove(self.option.base_dir + '/trace' + unique_ID + '.dat')
+            #os.remove(self.option.base_dir + '/trace' + unique_ID + '.dat')
             
             try:
                 os.remove(self.option.base_dir + '/spike' + unique_ID + '.dat')

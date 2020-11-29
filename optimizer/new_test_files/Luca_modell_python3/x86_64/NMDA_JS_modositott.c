@@ -1,4 +1,4 @@
-/* Created by Language version: 7.5.0 */
+/* Created by Language version: 7.7.0 */
 /* VECTORIZED */
 #define NRN_VECTORIZED 1
 #include <stdio.h>
@@ -92,6 +92,15 @@ extern void hoc_register_limits(int, HocParmLimits*);
 extern void hoc_register_units(int, HocParmUnits*);
 extern void nrn_promote(Prop*, int, int);
 extern Memb_func* memb_func;
+ 
+#define NMODL_TEXT 1
+#if NMODL_TEXT
+static const char* nmodl_file_text;
+static const char* nmodl_filename;
+extern void hoc_reg_nmodl_text(int, const char*);
+extern void hoc_reg_nmodl_filename(int, const char*);
+#endif
+
  extern Prop* nrn_point_prop_;
  static int _pointtype;
  static void* _hoc_create_pnt(_ho) Object* _ho; { void* create_point_process();
@@ -188,7 +197,7 @@ static void _ode_matsol(_NrnThread*, _Memb_list*, int);
  static void _ode_matsol_instance1(_threadargsproto_);
  /* connect range variables in _p that hoc is supposed to know about */
  static const char *_mechanism[] = {
- "7.5.0",
+ "7.7.0",
 "NMDA_JS_modositott",
  "tau1",
  "tau2",
@@ -265,6 +274,10 @@ extern void _cvode_abstol( Symbol**, double*, int);
      _nrn_setdata_reg(_mechtype, _setdata);
      _nrn_thread_reg(_mechtype, 2, _update_ion_pointer);
      _nrn_thread_table_reg(_mechtype, _check_table_thread);
+ #if NMODL_TEXT
+  hoc_reg_nmodl_text(_mechtype, nmodl_file_text);
+  hoc_reg_nmodl_filename(_mechtype, nmodl_filename);
+#endif
   hoc_register_prop_size(_mechtype, 18, 6);
   hoc_register_dparam_semantics(_mechtype, 0, "area");
   hoc_register_dparam_semantics(_mechtype, 1, "pntproc");
@@ -277,7 +290,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
  pnt_receive[_mechtype] = _net_receive;
  pnt_receive_size[_mechtype] = 1;
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 NMDA_JS_modositott /p/home/jusers/mohacsi1/jureca/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3/x86_64/NMDA_JS_modositott.mod\n");
+ 	ivoc_help("help ?1 NMDA_JS_modositott /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/x86_64/NMDA_JS_modositott.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
@@ -624,4 +637,132 @@ _first = 0;
 
 #if defined(__cplusplus)
 } /* extern "C" */
+#endif
+
+#if NMODL_TEXT
+static const char* nmodl_filename = "/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/NMDA_JS_modositott.mod";
+static const char* nmodl_file_text = 
+  "COMMENT\n"
+  "Two state kinetic scheme synapse described by rise time tau1,\n"
+  "and decay time constant tau2. The normalized peak condunductance is 1.\n"
+  "Decay time MUST be greater than rise time.\n"
+  "\n"
+  "The solution of A->G->bath with rate constants 1/tau1 and 1/tau2 is\n"
+  " A = a*exp(-t/tau1) and\n"
+  " G = a*tau2/(tau2-tau1)*(-exp(-t/tau1) + exp(-t/tau2))\n"
+  "	where tau1 < tau2\n"
+  "\n"
+  "If tau2-tau1 == 0 then we have a alphasynapse.\n"
+  "and if tau1 == 0 then we have just single exponential decay.\n"
+  "\n"
+  "The factor is evaluated in the\n"
+  "initial block such that an event of weight 1 generates a\n"
+  "peak conductance of 1.\n"
+  "\n"
+  "Because the solution is a sum of exponentials, the\n"
+  "coupled equations can be solved as a pair of independent equations\n"
+  "by the more efficient cnexp method.\n"
+  "\n"
+  "***\n"
+  "Modified to separate ica from i\n"
+  "T Branco 2012\n"
+  "***\n"
+  "\n"
+  "ENDCOMMENT\n"
+  "\n"
+  "NEURON {\n"
+  "	POINT_PROCESS NMDA_JS_modositott\n"
+  "	USEION ca READ eca WRITE ica\n"
+  "	RANGE tau1, tau2, e, i, mg, pf, icc\n"
+  "	NONSPECIFIC_CURRENT i\n"
+  "	RANGE g, caf\n"
+  "}\n"
+  "\n"
+  ": caf is the fraction to total current carried by calcium\n"
+  "\n"
+  "UNITS {\n"
+  "	(nA) = (nanoamp)\n"
+  "	(mV) = (millivolt)\n"
+  "	(uS) = (microsiemens)\n"
+  "}\n"
+  "\n"
+  "PARAMETER {\n"
+  "	tau1= 2 (ms) <1e-9,1e9>\n"
+  "	tau2 = 75 (ms) <1e-9,1e9>\n"
+  "	e=0	(mV)\n"
+  "	mg=1    (mM)		: 1 - external magnesium concentration\n"
+  "	pf = 0.03  (1)      : 0.03 adjusted to give 15% ica at -60 mV\n"
+  "}\n"
+  "\n"
+  "ASSIGNED {\n"
+  "	v (mV)\n"
+  "	i (nA)\n"
+  "	icc (nA)\n"
+  "	g (uS)\n"
+  "	eca (mV)\n"
+  "	ica (nA)\n"
+  "	factor\n"
+  "}\n"
+  "\n"
+  "STATE {\n"
+  "	A (uS)\n"
+  "	B (uS)\n"
+  "}\n"
+  "\n"
+  "INITIAL {\n"
+  "	LOCAL tp\n"
+  "	if (tau1/tau2 > .9999) {\n"
+  "		tau1 = .9999*tau2\n"
+  "	}\n"
+  "	A = 0\n"
+  "	B = 0\n"
+  "	tp = (tau1*tau2)/(tau2 - tau1) * log(tau2/tau1)\n"
+  "	factor = -exp(-tp/tau1) + exp(-tp/tau2)\n"
+  "	factor = 1/factor\n"
+  "}\n"
+  "\n"
+  "BREAKPOINT {\n"
+  "	SOLVE state METHOD cnexp\n"
+  "	g = (B - A)*mgblock(v)\n"
+  "	i = g*(v - (e-pf*eca)/(1-pf))*(1-pf)\n"
+  "	icc = g*(v - eca)*pf\n"
+  "	ica = icc\n"
+  "}\n"
+  "\n"
+  "DERIVATIVE state {\n"
+  "	A' = -A/tau1\n"
+  "	B' = -B/tau2\n"
+  "}\n"
+  "\n"
+  "FUNCTION mgblock(v(mV)) {\n"
+  "	TABLE \n"
+  "	DEPEND mg\n"
+  "	FROM -140 TO 80 WITH 1000\n"
+  "\n"
+  "	: from Jahr & Stevens\n"
+  "	mgblock = 1 / (1 + exp(0.062 (/mV) * -v) * (mg / 3.57 (mM)))\n"
+  "	\n"
+  "	: Major 2008\n"
+  ":	mgblock = 1 / (1 + exp(0.08 (/mV) * -v) * (mg / 5 (mM)))\n"
+  "\n"
+  "\n"
+  ":       from Grunditz et al., 2012\n"
+  ":	mgblock = 1 / (1 + exp(0.08 (/mV) * -v) * (mg / 0.69 (mM)))\n"
+  "\n"
+  "	: from Larkum et al., 2009\n"
+  ":	mgblock = 1 / (1 + exp(0.08 (/mV) * -v) * (mg / 4 (mM)))\n"
+  ":	mgblock = 1 / (1 + exp(0.1 (/mV) * -v) * (mg / 10 (mM)))\n"
+  ":	mgblock = 1 / (1 + exp(0.1 (/mV) * -v) * (mg / 3.57 (mM)))\n"
+  "\n"
+  "\n"
+  "	: modified for sharp activation + baseline conductance\n"
+  "	: mgblock = 0.95 / (1 + exp(-0.15 (/mV) * (v + 20 (mV))) * (mg / 1 (mM))) + 0.05\n"
+  "\n"
+  "}\n"
+  "\n"
+  "NET_RECEIVE(weight (uS)) {\n"
+  "	A = A + weight*factor\n"
+  "	B = B + weight*factor\n"
+  "}\n"
+  ;
 #endif
