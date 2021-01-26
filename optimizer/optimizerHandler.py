@@ -874,7 +874,7 @@ class Nelder_Mead_Scipy(baseOptimizer):
 		self.SetFFun(option_obj)
 		self.rand=random
 		self.seed=option_obj.seed
-		self.rand.seed([self.seed])
+		self.rand.seed(self.seed)
 		self.xtol=option_obj.x_tol
 		self.ftol=option_obj.f_tol
 		self.max_evaluation=option_obj.max_evaluation
@@ -914,8 +914,7 @@ class Nelder_Mead_Scipy(baseOptimizer):
 		"""
 		Performs the optimization.
 		"""
-		self.result=optimize.fmin(self.wrapper,
-									  x0=ndarray((self.num_params,),buffer=array(self.starting_points),offset=0,dtype=float),
+		self.result=optimize.fmin(self.wrapper,x0=ndarray((self.num_params,),buffer=array(self.starting_points),offset=0,dtype=float),
 #                                      x0=ndarray( (self.num_params,1) ,buffer=array([0.784318808, 4.540607953, -11.919391073,-100]),dtype=float),
 #                                      args=[[]]
 									  args=((),),
@@ -959,7 +958,7 @@ class L_BFGS_B_Scipy(baseOptimizer):
 		self.SetFFun(option_obj)
 		self.rand=random
 		self.seed=option_obj.seed
-		self.rand.seed([self.seed])
+		self.rand.seed(self.seed)
 		self.max_evaluation=option_obj.max_evaluation
 		self.accuracy=option_obj.acc
 		self.num_params=option_obj.num_params

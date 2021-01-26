@@ -929,12 +929,12 @@ class Ui_Optimizer(object):
 
         self.menuMenu.setTitle(_translate("Optimizer", "Menu"))
         self.actionMultiple_Optimization.setText(_translate("Optimizer", "Multiple Optimization"))
-        """self.tabwidget.setTabEnabled(1,False)
+        self.tabwidget.setTabEnabled(1,False)
         self.tabwidget.setTabEnabled(2,False)
         self.tabwidget.setTabEnabled(3,False)
         self.tabwidget.setTabEnabled(4,False)
         self.tabwidget.setTabEnabled(5,False)
-        self.tabwidget.setTabEnabled(6,False)"""
+        self.tabwidget.setTabEnabled(6,False)
     
                 
 
