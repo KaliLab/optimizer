@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 optimizer_path 	= '/home/mohacsi/Desktop/optimizer/optimizer/optimizer.py'
 curr_dir  		= os.getcwd()						# base directory
-orig_name 		= 'hh_pas_surrogate'						# name of the working directory we want to copy
+orig_name 		= 'ca1_pc_simplification'						# name of the working directory we want to copy
 orig_dir  		= curr_dir + '/'+ 'optimizer_multirun/' + orig_name		# path of this directory
 num_runs  		= 10						# how many copies we want
 parallel_runs   = 10								# how many optimizations we allow to run in parallel
@@ -17,7 +17,7 @@ max_eval   = 100		# number of iterations
 pop_size   = 100				# population size
 num_islands = 1
 #csv_name   = 'input_data2.dat'	
-num_param  = 3
+num_param  = 9
 #evo_strat = "Particle Swarm (PSO) - Inspyred"		 					# number of parameters to optimize (needed as a command line argument)
 """self.Recom=["Evolutionary Algorithm (EA) - Inspyred","Covariance Matrix Adaptation ES (CMAES) - Pygmo",
                 "Particle Swarm (PSO) - Inspyred","Indicator Based (IBEA) - Bluepyopt","L-BFGS-B - Scipy"]
