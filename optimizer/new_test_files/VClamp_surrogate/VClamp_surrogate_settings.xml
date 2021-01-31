@@ -28,7 +28,7 @@
   <num_islands>4</num_islands>
   <num_iter>1</num_iter>
   <num_params>4</num_params>
-  <num_repet>1</num_repet>
+  <num_repet>100</num_repet>
   <number_of_cpu>2</number_of_cpu>
   <param_vals>[0, 0.1, 0.1, 0.1, 0.1]</param_vals>
   <pop_size>20.0</pop_size>

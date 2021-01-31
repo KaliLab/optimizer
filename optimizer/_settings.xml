@@ -16,7 +16,7 @@
   <sim_command>&quot;&quot;</sim_command>
   <base_dir>/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/VClamp_surrogate</base_dir>
   <input_dir>/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/VClamp_surrogate/iclamp_new.dat</input_dir>
-  <num_repet>1</num_repet>
+  <num_repet>100</num_repet>
   <force_bounds>True</force_bounds>
   <spike_thres>0.0</spike_thres>
   <seed>1234.0</seed>

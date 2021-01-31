@@ -855,7 +855,7 @@ class Basinhopping_Scipy(ScipyAlgorithmBasis):
 		self.bounder=bounderObject([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
 
 
-class Nelder_Mead_Scipy(baseOptimizer):
+class Nelder_Mead_Scipy(ScipyAlgorithmBasis):
 	"""
 	Implements a downhill simplex algorithm for minimization from the ``scipy`` package.
 
@@ -870,6 +870,7 @@ class Nelder_Mead_Scipy(baseOptimizer):
 
 	"""
 	def __init__(self,reader_obj,model_obj,option_obj):
+		ScipyAlgorithmBasis.__init__(self, reader_obj,model_obj,option_obj)
 		self.fit_obj=fF(reader_obj,model_obj,option_obj)
 		self.SetFFun(option_obj)
 		self.rand=random
@@ -877,6 +878,8 @@ class Nelder_Mead_Scipy(baseOptimizer):
 		self.rand.seed(self.seed)
 		self.xtol=option_obj.x_tol
 		self.ftol=option_obj.f_tol
+		self.num_iter=option_obj.num_iter
+		self.num_repet=option_obj.num_repet
 		self.max_evaluation=option_obj.max_evaluation
 		self.num_params=option_obj.num_params
 		self.SetBoundaries(option_obj.boundaries)
@@ -903,9 +906,9 @@ class Nelder_Mead_Scipy(baseOptimizer):
 
 		"""
 		tmp=ndarray.tolist(candidates)
-		candidates=self.bounder(tmp,args)
+		ec_bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
+		candidates=ec_bounder(tmp,args)
 		return self.ffun([candidates],args)[0]
-
 
 
 
@@ -914,7 +917,13 @@ class Nelder_Mead_Scipy(baseOptimizer):
 		"""
 		Performs the optimization.
 		"""
-		self.result=optimize.fmin(self.wrapper,x0=ndarray((self.num_params,),buffer=array(self.starting_points),offset=0,dtype=float),
+		self.log_file=open(self.directory + "/nelder.log","w")
+		list_of_results=[0]*int(self.num_repet)
+		for points in range(int(self.num_repet)):
+			self.log_file.write(str(points+1)+". starting point: ["+", ".join(map(str,self.starting_points))+"]")
+			self.log_file.write("\n")
+			list_of_results[points]=optimize.fmin(self.wrapper,x0=ndarray((self.num_params,),
+						buffer=array(self.starting_points),offset=0,dtype=float),
 #                                      x0=ndarray( (self.num_params,1) ,buffer=array([0.784318808, 4.540607953, -11.919391073,-100]),dtype=float),
 #                                      args=[[]]
 									  args=((),),
@@ -923,8 +932,14 @@ class Nelder_Mead_Scipy(baseOptimizer):
 									  ftol= self.ftol,
 									  full_output=True
 									  )
+			self.starting_points=uniform(self.rand,{"num_params" : self.num_params,"self": self})
+			self.log_file.write("".join(["-"]*200))
+		self.log_file.close()
 
-		self.final_pop=[my_candidate(self.result[0],self.result[1])]
+		self.result=min(list_of_results,key=lambda x:x.fun)
+		#print self.result.x
+		self.final_pop=[my_candidate(self.result.x,self.result.fun)]
+		
 
 	def SetBoundaries(self,bounds):
 		"""
