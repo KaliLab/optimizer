@@ -1,0 +1,13 @@
+#!/bin/sh
+if test "x${NRNHOME}" = "x" ; then
+	NRNHOME="/usr"
+fi
+if test "x${NRNBIN}" = "x" ; then
+	NRNBIN="/usr/bin/"
+fi
+if test "" = "yes" ; then
+	NRNIV="${NRNBIN}nrniv.app/Contents/MacOS/nrniv"
+else
+	NRNIV="${NRNBIN}nrniv"
+fi
+"${NRNIV}" -dll "/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/ca1_pc_simplification/mod_files/x86_64/.libs/libnrnmech.so" "$@"

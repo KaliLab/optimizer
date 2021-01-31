@@ -918,10 +918,11 @@ class Nelder_Mead_Scipy(ScipyAlgorithmBasis):
 		Performs the optimization.
 		"""
 		self.log_file=open(self.directory + "/nelder.log","w")
+		self.stat_file=open(self.directory + "/nelder.txt","w")
 		list_of_results=[0]*int(self.num_repet)
 		for points in range(int(self.num_repet)):
-			self.log_file.write(str(points+1)+". starting point: ["+", ".join(map(str,self.starting_points))+"]")
-			self.log_file.write("\n")
+			
+			
 			list_of_results[points]=optimize.fmin(self.wrapper,x0=ndarray((self.num_params,),
 						buffer=array(self.starting_points),offset=0,dtype=float),
 #                                      x0=ndarray( (self.num_params,1) ,buffer=array([0.784318808, 4.540607953, -11.919391073,-100]),dtype=float),
@@ -932,8 +933,10 @@ class Nelder_Mead_Scipy(ScipyAlgorithmBasis):
 									  ftol= self.ftol,
 									  full_output=True
 									  )
+			self.log_file.write(str(points+1)+" [".join(map(str,self.starting_points))+"] ("+min(list_of_results[points])+") \n")
+			self.stat_file.write(min(list_of_results[points]))
 			self.starting_points=uniform(self.rand,{"num_params" : self.num_params,"self": self})
-			self.log_file.write("".join(["-"]*200))
+			
 		self.log_file.close()
 
 		self.result=min(list_of_results,key=lambda x:x.fun)
