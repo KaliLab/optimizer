@@ -56,6 +56,6 @@
   <model_path>/home/mohacsi/work/optimizer/optimizer/new_test_files/ca1_pc_simplification/ca1pc_model.hoc</model_path>
   <run_controll_pos>0.5</run_controll_pos>
   <update_freq>None</update_freq>
-  <num_iter>10000</num_iter>
+  <num_iter>1</num_iter>
   <base_dir>/home/mohacsi/work/optimizer/Alltest/IBEAtest/optimizer_multirun/ca1_pc_simplification_2</base_dir>
 </settings>

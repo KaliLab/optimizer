@@ -10,4 +10,4 @@ if test "" = "yes" ; then
 else
 	NRNIV="${NRNBIN}nrniv"
 fi
-"${NRNIV}" -dll "/home/mohacsi/work/optimizer/ALLtest/optimizer_multirun/ca1_pc_simplification/mod_files/x86_64/.libs/libnrnmech.so" "$@"
+"${NRNIV}" -dll "/home/mohacsi/work/optimizer/Alltest/IBEAtest/optimizer_multirun/ca1_pc_simplification/mod_files/x86_64/.libs/libnrnmech.so" "$@"

@@ -216,7 +216,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
  	hoc_register_cvode(_mechtype, _ode_count, _ode_map, _ode_spec, _ode_matsol);
  	hoc_register_tolerance(_mechtype, _hoc_state_tol, &_atollist);
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 CaN /home/mohacsi/work/optimizer/ALLtest/optimizer_multirun/ca1_pc_simplification/mod_files/x86_64/CaN.mod\n");
+ 	ivoc_help("help ?1 CaN /home/mohacsi/work/optimizer/Alltest/IBEAtest/optimizer_multirun/ca1_pc_simplification/mod_files/x86_64/CaN.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
