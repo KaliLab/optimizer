@@ -1,13 +1,17 @@
 #!/bin/sh
 if test "x${NRNHOME}" = "x" ; then
-	NRNHOME="/usr"
+    NRNHOME="/home/mohacsi/work/venv_37/lib/python3.7/site-packages/neuron/.data"
+fi
+if test "${NEURONHOME}" = "" ; then
+    NEURONHOME=${NRNHOME}/share/nrn
+    export NEURONHOME
 fi
 if test "x${NRNBIN}" = "x" ; then
-	NRNBIN="/usr/bin/"
+    NRNBIN="/home/mohacsi/work/venv_37/bin"
 fi
 if test "" = "yes" ; then
-	NRNIV="${NRNBIN}nrniv.app/Contents/MacOS/nrniv"
+    NRNIV="${NRNBIN}/nrniv.app/Contents/MacOS/nrniv"
 else
-	NRNIV="${NRNBIN}nrniv"
+    NRNIV="${NRNBIN}/nrniv"
 fi
-"${NRNIV}" -dll "/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/ca1_pc_simplification/mod_files/x86_64/.libs/libnrnmech.so" "$@"
+"${NRNIV}" -dll "/home/mohacsi/work/optimizer/optimizer/new_test_files/ca1_pc_simplification/x86_64/.libs/libnrnmech.so" "$@"

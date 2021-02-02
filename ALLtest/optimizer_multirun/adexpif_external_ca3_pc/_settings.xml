@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <settings>
   <simulator>external</simulator>
-  <f_tol>None</f_tol>
-  <max_evaluation>3</max_evaluation>
+  <f_tol>0.0000000000000000000000000000000001</f_tol>
+  <max_evaluation>100</max_evaluation>
   <spike_window>5.0</spike_window>
   <evo_strat>Particle Swarm Gen - Pygmo</evo_strat>
   <num_islands>2.0</num_islands>
@@ -14,7 +14,7 @@
   <number_of_cpu>4</number_of_cpu>
   <pop_size>5</pop_size>
   <adjusted_params>['parameter0', 'parameter1', 'parameter2', 'parameter3', 'parameter4', 'parameter5', 'parameter6', 'parameter7', 'parameter8', 'parameter9']</adjusted_params>
-  <num_repet>None</num_repet>
+  <num_repet>100</num_repet>
   <param_vals>[]</param_vals>
   <temperature>None</temperature>
   <run_controll_tstop>1100</run_controll_tstop>
@@ -28,10 +28,10 @@
   <social_rate>None</social_rate>
   <input_size>4</input_size>
   <type>['voltage']</type>
-  <x_tol>None</x_tol>
+  <x_tol>0.0000000000000000000000000000000001</x_tol>
   <feats>MSE (excl. spikes), Spike count (stim.), Latency to 1st spike</feats>
   <input_length>1100</input_length>
-  <sim_command>python /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py 10</sim_command>
+  <sim_command>python3.7 /home/mohacsi/work/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/teststeps_optim5.py 10</sim_command>
   <init_temp>None</init_temp>
   <num_params>10</num_params>
   <force_bounds>True</force_bounds>
@@ -48,7 +48,7 @@
   <stim_type>&quot;&quot;</stim_type>
   <stim_del>0</stim_del>
   <stim_amp>[0, 0, 0, 0]</stim_amp>
-  <input_dir>/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/ca3_pc_v2_4.csv</input_dir>
+  <input_dir>/home/mohacsi/work/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc/ca3_pc_v2_4.csv</input_dir>
   <input_freq>5000</input_freq>
   <input_scale>mV</input_scale>
   <u_fun_string>&quot;&quot;</u_fun_string>
@@ -57,6 +57,6 @@
   <model_path>&quot;&quot;</model_path>
   <run_controll_pos>pos</run_controll_pos>
   <update_freq>None</update_freq>
-  <num_iter>2.0</num_iter>
-  <base_dir>/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc</base_dir>
+  <num_iter>100</num_iter>
+  <base_dir>/home/mohacsi/work/optimizer/optimizer/new_test_files/adexpif_external_ca3_pc</base_dir>
 </settings>

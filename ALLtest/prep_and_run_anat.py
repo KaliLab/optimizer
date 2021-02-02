@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 import subprocess
 import matplotlib.pyplot as plt
 
-optimizer_path 	= '/home/mohacsi/Desktop/optimizer/optimizer/optimizer.py'
+optimizer_path 	= '/home/mohacsi/work/optimizer/optimizer/optimizer.py'
 curr_dir  		= os.getcwd()						# base directory
 orig_name 		= 'ca1pc_anat'						# name of the working directory we want to copy
 orig_dir  		= curr_dir + '/'+ 'optimizer_multirun/' + orig_name		# path of this directory
@@ -13,7 +13,7 @@ parallel_runs   = 10								# how many optimizations we allow to run in parallel
 
 # define basic things for the xml files
 rnd_start  = 1234							# random seed in the first run
-max_eval   = 100		# number of iterations
+max_eval   = 10000		# number of iterations
 pop_size   = 100				# population size
 num_islands = 1
 #csv_name   = 'input_data2.dat'	

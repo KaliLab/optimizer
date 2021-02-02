@@ -382,14 +382,14 @@ class coreModul():
 				print((self.option_handler.run_controll_dt,self.data_handler.data.step))
 				#we have to resample the input trace so it would match the model output
 				#will use lin interpolation
-				x=linspace(0,self.option_handler.run_controll_tstop,self.option_handler.run_controll_tstop*(1/self.data_handler.data.step))#x axis of data points
+				x=linspace(0,int(self.option_handler.run_controll_tstop),int(self.option_handler.run_controll_tstop*(1/self.data_handler.data.step)))#x axis of data points
 
 				tmp=[]
 				for i in range(self.data_handler.number_of_traces()):
 					y=self.data_handler.data.GetTrace(i)#y axis, the values from the input traces, corresponding to x
 					f=interp1d(x,y)
 					#we have the continuous trace, we could re-sample it now
-					new_x=linspace(0,self.option_handler.run_controll_tstop,self.option_handler.run_controll_tstop/self.option_handler.run_controll_dt)
+					new_x=linspace(0,int(self.option_handler.run_controll_tstop),int(self.option_handler.run_controll_tstop/self.option_handler.run_controll_dt))
 					#self.trace_reader.SetColumn(i,f(new_x)) the resampled vector replaces the original in the trace reader object
 					tmp.append(f(new_x))
 				self.data_handler.data.t_length=len(tmp[0])
