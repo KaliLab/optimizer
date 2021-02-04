@@ -7,9 +7,9 @@
   <cognitive_rate>None</cognitive_rate>
   <cooling_rate>None</cooling_rate>
   <crossover_rate>None</crossover_rate>
-  <evo_strat>Indicator Based (IBEA) - Bluepyopt</evo_strat>
+  <evo_strat>Evolutionary Algorithm (EA) - Inspyred</evo_strat>
   <f_tol>None</f_tol>
-  <feats>Spike count, Spike count (stim.), ISI differences</feats>
+  <feats>MSE, PPTD</feats>
   <force_bounds>False</force_bounds>
   <inertia>None</inertia>
   <init_temp>None</init_temp>
@@ -44,7 +44,7 @@
   <social_rate>None</social_rate>
   <spike_thres>0.0</spike_thres>
   <spike_window>40.0</spike_window>
-  <start_time_stamp>1606585723.0628428</start_time_stamp>
+  <start_time_stamp>1594840658.3187103</start_time_stamp>
   <starting_points>None</starting_points>
   <std_gauss>None</std_gauss>
   <step_size>None</step_size>
@@ -55,9 +55,9 @@
   <stim_sec>soma</stim_sec>
   <stim_type>IClamp</stim_type>
   <temperature>None</temperature>
-  <type>['voltage']</type>
+  <type>['voltage', 'voltage']</type>
   <u_fun_string>&quot;&quot;</u_fun_string>
   <update_freq>None</update_freq>
-  <weights>[0.3333, 0.3333, 0.3333]</weights>
+  <weights>[0.5, 0.5]</weights>
   <x_tol>None</x_tol>
 </settings>

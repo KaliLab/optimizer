@@ -2,7 +2,7 @@
 <settings>
   <simulator>Neuron</simulator>
   <f_tol>None</f_tol>
-  <max_evaluation>100</max_evaluation>
+  <max_evaluation>2</max_evaluation>
   <spike_window>5.0</spike_window>
   <evo_strat>Indicator Based (IBEA) - Bluepyopt</evo_strat>
   <seed>1234.0</seed>
@@ -10,8 +10,8 @@
   <run_controll_vrest>-65.0</run_controll_vrest>
   <starting_points>None</starting_points>
   <cooling_rate>None</cooling_rate>
-  <number_of_cpu>1</number_of_cpu>
-  <pop_size>100</pop_size>
+  <number_of_cpu>3</number_of_cpu>
+  <pop_size>2</pop_size>
   <num_islands>2.0</num_islands>
   <adjusted_params>['soma 0 H_CA1pyr_prox gmax_H_CA1pyr_prox', 'soma 0 CaN gmax_CaN', 'soma 0 CaL gmax_CaL', 'soma 0 K_AHP gmax_K_AHP', 'soma 0 K_C_1D gmax_K_C_1D', 'soma 0 K_M gmax_K_M', 'soma 0 K_A_prox gmax_K_A_prox', 'soma 0 K_DR gmax_K_DR', 'soma 0 Na_soma gmax_Na_soma']</adjusted_params>
   <num_repet>None</num_repet>
