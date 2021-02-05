@@ -1,9 +1,9 @@
 #!/bin/sh
 if test "x${NRNHOME}" = "x" ; then
-	NRNHOME="/home/mohacsi/Downloads/neuron/nrn-7.6"
+	NRNHOME="/usr"
 fi
 if test "x${NRNBIN}" = "x" ; then
-	NRNBIN="/home/mohacsi/Downloads/neuron/nrn-7.6/x86_64/bin/"
+	NRNBIN="/usr/bin/"
 fi
 if test "" = "yes" ; then
 	NRNIV="${NRNBIN}nrniv.app/Contents/MacOS/nrniv"
