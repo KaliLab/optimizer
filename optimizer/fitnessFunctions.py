@@ -185,7 +185,10 @@ class fF(object):
             unique_ID = pid + current_time
             self.model.record[0] = []
             print('PID ', pid, ' ************')
-            
+
+
+            os.chdir(self.option.base_dir)
+
             with open(self.option.base_dir + "/params" + unique_ID + ".param" , "w") as out_handler:
                 print("CANDIDATES")
                 print(candidates)
@@ -193,6 +196,7 @@ class fF(object):
                     out_handler.write(str(c) + "\n")
                 out_handler.write(str(act_trace_idx))
             
+
             from subprocess import call
             error=call(self.model.GetExec(unique_ID))
          
@@ -220,9 +224,10 @@ class fF(object):
             except OSError:
                 pass
             
-            #os.remove(self.option.base_dir + '/trace' + unique_ID + '.dat')
+            
             
             try:
+                os.remove(self.option.base_dir + '/trace' + unique_ID + '.dat')
                 os.remove(self.option.base_dir + '/spike' + unique_ID + '.dat')
             except OSError:
                 pass

@@ -123,7 +123,7 @@ class modelHandlerNeuron():
         self.spike_times=None
         self.sections={}
         for n in h.allsec():
-            self.sections[str(h.secname())]=n
+            self.sections[str(h.secname(sec=n))]=n
         self.channels={}
         for sec in h.allsec():
             for seg in sec:
@@ -353,7 +353,7 @@ class modelHandlerNeuron():
         seg_num=0
 
         for sec in self.hoc_obj.allsec():
-            temp.append(str(self.hoc_obj.secname()))
+            temp.append(str(self.hoc_obj.secname(sec=sec)))
 
             defaults=["", "morphology",["L" , "cm" , "Ra", "diam"]]
             mechs_pars.append(defaults)

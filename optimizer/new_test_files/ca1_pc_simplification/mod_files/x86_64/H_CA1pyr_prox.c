@@ -213,7 +213,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
  	hoc_register_cvode(_mechtype, _ode_count, _ode_map, _ode_spec, _ode_matsol);
  	hoc_register_tolerance(_mechtype, _hoc_state_tol, &_atollist);
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 H_CA1pyr_prox /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/ca1_pc_simplification/mod_files/x86_64/H_CA1pyr_prox.mod\n");
+ 	ivoc_help("help ?1 H_CA1pyr_prox /home/mohacsi/work/optimizer/optimizer/new_test_files/ca1_pc_simplification/mod_files/H_CA1pyr_prox.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
@@ -529,7 +529,7 @@ _first = 0;
 #endif
 
 #if NMODL_TEXT
-static const char* nmodl_filename = "/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/ca1_pc_simplification/mod_files/H_CA1pyr_prox.mod";
+static const char* nmodl_filename = "/home/mohacsi/work/optimizer/optimizer/new_test_files/ca1_pc_simplification/mod_files/H_CA1pyr_prox.mod";
 static const char* nmodl_file_text = 
   "COMMENT\n"
   "\n"

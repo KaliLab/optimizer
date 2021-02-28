@@ -1,1 +1,0 @@
-../nmda_Grunditz.mod

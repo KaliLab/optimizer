@@ -1,0 +1,1 @@
+['soma', [['', 'morphology', ['L', 'cm', 'Ra', 'diam']], [0, 'k_ion', ['ko']], [0, 'na_ion', ['nao']], [0, 'hh', ['gnabar_hh', 'gkbar_hh', 'gl_hh', 'el_hh']]]]
