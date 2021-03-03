@@ -1,0 +1,133 @@
+<settings>
+  <acc>1e-06</acc>
+  <adjusted_params>['Na_BG_act_inact_shift 0', 'gmax_K_DRS4_params_voltage_dep_dend 1', 'gmax_Na_BG_soma 2', 'gmax_K_DRS4_params_voltage_dep_soma 3', 'gmax_K_DRS4_params_voltage_dep_axon 4', 'gmax_Leak_pyr 5', 'H_ratio 6', 'e_Leak_pyr 7', 'gbar_km_soma_dend 8', 'gbar_km_axon 9', 'KA_ratio 10', 'gbar_kd 11']</adjusted_params>
+  <base_dir>/home/mohacsi/work/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3Nelder-MeadScipy_8</base_dir>
+  <boundaries>[[5.0, 0.01, 0.002, 0.01, 0.01, 1e-05, 0.1, -70.0, 5e-05, 0.0001, 0.3, 1e-05], [15.0, 0.2, 0.1, 0.5, 10.0, 0.0001, 15.0, -40.0, 0.01, 5.0, 3.0, 0.01]]</boundaries>
+  <cognitive_rate>2.1</cognitive_rate>
+  <cooling_rate>0.5</cooling_rate>
+  <crossover_rate>1</crossover_rate>
+  <evo_strat>Nelder-Mead - Scipy</evo_strat>
+  <f_tol>0.0000000000000000000000000000001</f_tol>
+  <feats>Spikecount, inv_first_ISI, inv_last_ISI, inv_time_to_first_spike, steady_state_voltage, voltage_base, voltage_deflection, voltage_deflection_begin, AHP_depth_abs, AHP_time_from_peak, AP2_amp, AP_amplitude, AP_begin_voltage, AP_duration_half_width, AP_fall_time, AP_rise_time, APlast_amp, time_to_last_spike, sag_amplitude</feats>
+  <force_bounds>False</force_bounds>
+  <inertia>0.5</inertia>
+  <init_temp>0.1</init_temp>
+  <input_cont_t>None</input_cont_t>
+  <input_dir>/home/mohacsi/work/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3/opt_data_JMakara_OUR_features_selected_stim.json</input_dir>
+  <input_freq>None</input_freq>
+  <input_length>None</input_length>
+  <input_scale>mV</input_scale>
+  <input_size>6</input_size>
+  <m_gauss>0</m_gauss>
+  <max_evaluation>10000.0</max_evaluation>
+  <model_path>/home/mohacsi/work/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3/load_model_na_inhomo_minimal_model+KM+KA+KD.hoc</model_path>
+  <model_spec_dir>/home/mohacsi/work/optimizer/ALLtest/optimizer_multirun/Luca_modell_python3</model_spec_dir>
+  <mutation_rate>0.25</mutation_rate>
+  <neighborhood_size>5</neighborhood_size>
+  <num_islands>1.0</num_islands>
+  <num_iter>100</num_iter>
+  <num_params>12</num_params>
+  <num_repet>1</num_repet>
+  <number_of_cpu>40</number_of_cpu>
+  <param_vals>[0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]</param_vals>
+  <pop_size>100.0</pop_size>
+  <run_controll_dt>0.05</run_controll_dt>
+  <run_controll_pos>0.5</run_controll_pos>
+  <run_controll_record>v</run_controll_record>
+  <run_controll_sec>soma</run_controll_sec>
+  <run_controll_tstop>600.0</run_controll_tstop>
+  <run_controll_vrest>-65.0</run_controll_vrest>
+  <seed>1242.0</seed>
+  <sim_command>""</sim_command>
+  <simulator>Neuron</simulator>
+  <social_rate>2.1</social_rate>
+  <spike_thres>0.0</spike_thres>
+  <spike_window>None</spike_window>
+  <start_time_stamp>1552910688.9938984</start_time_stamp>
+  <starting_points>None</starting_points>
+  <std_gauss>1</std_gauss>
+  <step_size>0.1</step_size>
+  <stim_amp>[-0.25, 0.05, 0.1, 0.15, 0.2, 0.25]</stim_amp>
+  <stim_del>200.0</stim_del>
+  <stim_dur>300.0</stim_dur>
+  <stim_pos>0.5</stim_pos>
+  <stim_sec>soma</stim_sec>
+  <stim_type>IClamp</stim_type>
+  <temperature>0.1</temperature>
+  <type>['features', 'features']</type>
+  <u_fun_string>#Please define your function below in the template!
+#You may choose an arbitrary name for your function,
+#but the input parameters must be self and a vector!In the first line of the function specify the length of the vector in a comment!
+#In the second line you may specify the names of the parameters in a comment, separated by spaces.
+def usr_fun(self,v):
+#12
+#Na_BG_act_inact_shift 0
+#gmax_K_DRS4_params_voltage_dep_dend 1
+#gmax_Na_BG_soma 2
+#gmax_K_DRS4_params_voltage_dep_soma 3
+#gmax_K_DRS4_params_voltage_dep_axon 4
+#gmax_Leak_pyr 5
+#H_ratio 6
+#e_Leak_pyr 7
+#gbar_km_soma_dend 8
+#gbar_km_axon 9
+#KA_ratio 10
+#gbar_kd 11 
+    for sec in h.all_dendrites:
+		
+        sec.Y_v0_Na_BG_dend = sec.X_v0_Na_BG_dend-v[0]
+        sec.gmax_K_DRS4_params_voltage_dep = v[1]
+        sec.gbar_km_q10_2 = v[8]  
+        for seg in sec:
+                h('soma distance()')
+                dist=(h.distance(seg.x))
+				
+                seg.gmax_Na_BG_dend = (v[2]+v[2]*(-0.00125)*dist)
+        
+                if (dist&gt;100) and (dist&lt;=150):
+                        seg.gmax_H_CA1pyr_dist=(v[6]*0.00002+v[6]*4e-07*dist)
+                        seg.gmax_H_CA1pyr_prox=0
+                        seg.gmax_K_A_prox=0
+                        seg.gmax_K_A_dist=(0.0035*v[10]+v[10]*5.5e-05*dist)
+                elif (dist&gt;150.0) and (dist&lt;=400.0):
+                        seg.gmax_H_CA1pyr_dist=(v[6]*0.00002+v[6]*4e-07*dist)
+                        seg.gmax_H_CA1pyr_prox=0
+                        seg.gmax_K_A_prox=0
+                        seg.gmax_K_A_dist=(0.0035*v[10]+v[10]*5.5e-05*dist)
+                elif (dist&lt;=100.0) and (dist&gt;0.0):
+                        seg.gmax_H_CA1pyr_dist=0
+                        seg.gmax_H_CA1pyr_prox=(v[6]*0.00002+v[6]*4e-07*dist)
+                        seg.gmax_K_A_prox=(0.0035*v[10]+v[10]*5.5e-05*dist)
+                        seg.gmax_K_A_dist=0
+                elif (dist&gt;400.0):
+                        seg.gmax_H_CA1pyr_dist=0.00018*v[6]
+                        seg.gmax_H_CA1pyr_prox=0
+                        seg.gmax_K_A_prox=0
+                        seg.gmax_K_A_dist=0.0255*v[10]
+                elif (dist&lt;=0.0):
+                        seg.gmax_H_CA1pyr_prox=0.00002*v[6]
+                        seg.gmax_H_CA1pyr_dist=0
+                        seg.gmax_K_A_prox=0.0035*v[10]
+                        seg.gmax_K_A_dist=0
+    for sec in h.soma:
+        sec.gmax_Na_BG_soma = v[2]
+        sec.Y_v0_Na_BG_soma = sec.X_v0_Na_BG_soma-v[0]
+        sec.gmax_K_DRS4_params_voltage_dep = v[3]
+        sec.gmax_H_CA1pyr_prox = 0.00002*v[6] 
+        sec.gbar_km_q10_2 = v[8]    
+        sec.gmax_K_A_prox=0.0035*v[10] 
+        sec.gkd_kd_params3=v[11]
+    for sec in h.all_axon:
+        sec.gmax_Na_BG_axon = v[2]*40
+        sec.Y_v0_Na_BG_axon = sec.X_v0_Na_BG_axon-v[0]
+        sec.gmax_K_DRS4_params_voltage_dep = v[4]
+        sec.gmax_H_CA1pyr_prox = 0.00002*v[6]
+        sec.gbar_km_q10_2 = v[9]
+        sec.gmax_K_A_prox=0.0035*v[10]
+    for sec in h.all:
+        sec.gmax_Leak_pyr = v[5]
+        sec.e_Leak_pyr = v[7]</u_fun_string>
+  <update_freq>50</update_freq>
+  <weights>[0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842, 0.05263157894736842]</weights>
+  <x_tol>0.0000000000000000000000000000001</x_tol>
+</settings>
