@@ -122,8 +122,9 @@ class modelHandlerNeuron():
         self.record=[]
         self.spike_times=None
         self.sections={}
+        
         for n in h.allsec():
-            self.sections[str(h.secname())]=n
+            self.sections[str(h.secname(sec=n))]=n
         self.channels={}
         for sec in h.allsec():
             for seg in sec:
@@ -432,6 +433,9 @@ class modelHandlerNeuron():
         self.hoc_obj.finitialize(settings[5])
         self.hoc_obj.run()
         self.record=self.Recordings(vec)
+        if settings[2]=="i" and self.stims[0]=="VClamp":
+            self.record[0]=self.record[0][1:]
+            
         vec.resize(0)
 
         #else:

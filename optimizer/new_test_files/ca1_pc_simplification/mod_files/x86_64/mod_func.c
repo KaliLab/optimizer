@@ -29,27 +29,27 @@ void modl_reg(){
   if (!nrn_nobanner_) if (nrnmpi_myid < 1) {
     fprintf(stderr, "Additional mechanisms from files\n");
 
-    fprintf(stderr," Ca_conc_dend2a.mod");
-    fprintf(stderr," Ca_conc_dend2.mod");
-    fprintf(stderr," Ca_conc_dend3.mod");
-    fprintf(stderr," Ca_conc_dend4.mod");
-    fprintf(stderr," Ca_conc_dend5.mod");
-    fprintf(stderr," Ca_conc_soma.mod");
-    fprintf(stderr," CaL.mod");
-    fprintf(stderr," CaN.mod");
-    fprintf(stderr," CaR.mod");
-    fprintf(stderr," CaT.mod");
-    fprintf(stderr," H_CA1pyr_dist.mod");
-    fprintf(stderr," H_CA1pyr_prox.mod");
-    fprintf(stderr," K_A_dist.mod");
-    fprintf(stderr," K_AHP.mod");
-    fprintf(stderr," K_A_prox.mod");
-    fprintf(stderr," K_C_1D.mod");
-    fprintf(stderr," K_DR.mod");
-    fprintf(stderr," K_M.mod");
-    fprintf(stderr," Leak_pyr.mod");
-    fprintf(stderr," Na_dend.mod");
-    fprintf(stderr," Na_soma.mod");
+    fprintf(stderr," \"Ca_conc_dend2a.mod\"");
+    fprintf(stderr," \"Ca_conc_dend2.mod\"");
+    fprintf(stderr," \"Ca_conc_dend3.mod\"");
+    fprintf(stderr," \"Ca_conc_dend4.mod\"");
+    fprintf(stderr," \"Ca_conc_dend5.mod\"");
+    fprintf(stderr," \"Ca_conc_soma.mod\"");
+    fprintf(stderr," \"CaL.mod\"");
+    fprintf(stderr," \"CaN.mod\"");
+    fprintf(stderr," \"CaR.mod\"");
+    fprintf(stderr," \"CaT.mod\"");
+    fprintf(stderr," \"H_CA1pyr_dist.mod\"");
+    fprintf(stderr," \"H_CA1pyr_prox.mod\"");
+    fprintf(stderr," \"K_A_dist.mod\"");
+    fprintf(stderr," \"K_AHP.mod\"");
+    fprintf(stderr," \"K_A_prox.mod\"");
+    fprintf(stderr," \"K_C_1D.mod\"");
+    fprintf(stderr," \"K_DR.mod\"");
+    fprintf(stderr," \"K_M.mod\"");
+    fprintf(stderr," \"Leak_pyr.mod\"");
+    fprintf(stderr," \"Na_dend.mod\"");
+    fprintf(stderr," \"Na_soma.mod\"");
     fprintf(stderr, "\n");
   }
   _Ca_conc_dend2a_reg();

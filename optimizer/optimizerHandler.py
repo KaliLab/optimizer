@@ -554,6 +554,28 @@ class Simulated_Annealing_Inspyred(InspyredAlgorithmBasis):
 		else:
 			self.evo_strat.observer=[observers.file_observer]
 
+class Praxis_Pygmo(PygmoAlgorithmBasis):
+	def __init__(self, reader_obj, model_obj, option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+		self.multiprocessing=False
+		
+		self.pop_size = int(option_obj.pop_size)
+
+		self.algorithm = pg.nlopt(solver="praxis")
+		self.algorithm.xtol_rel=0
+		self.algorithm.maxeval=int(option_obj.max_evaluation)
+
+
+class Nelder_Mead_Pygmo(PygmoAlgorithmBasis):
+	def __init__(self, reader_obj, model_obj, option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+		self.multiprocessing=False
+		self.max_evaluation=int(option_obj.max_evaluation)
+		self.pop_size = int(option_obj.pop_size)
+
+		self.algorithm = pg.scipy_optimize(method="Nelder-Mead",tol=0,options={"maxfev":self.max_evaluation})
+
+
 class Differential_Evolution_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)

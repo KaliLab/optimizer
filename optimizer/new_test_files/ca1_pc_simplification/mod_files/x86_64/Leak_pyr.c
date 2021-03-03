@@ -165,7 +165,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
 #endif
   hoc_register_prop_size(_mechtype, 5, 0);
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 Leak_pyr /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/ca1_pc_simplification/mod_files/x86_64/Leak_pyr.mod\n");
+ 	ivoc_help("help ?1 Leak_pyr /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/ca1_pc_simplification/mod_files/Leak_pyr.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
