@@ -406,7 +406,6 @@ class coreModul():
 		
 		import re 
 		algo_str=re.sub('_+',"_",re.sub("[\(\[].*?[\)\]]", "", self.option_handler.evo_strat).replace("-","_").replace(" ","_"))
-		print("*********************"+algo_str)
 		exec("self.optimizer="+algo_str+"(self.data_handler,self.model_handler,self.option_handler)")
 		
 

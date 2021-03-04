@@ -14,7 +14,7 @@ parallel_runs   = 10								# how many optimizations we allow to run in parallel
 # define basic things for the xml files
 rnd_start  = 1234							# random seed in the first run
 max_eval   = 10000		# number of iterations
-pop_size   = 100				# population size
+pop_size   = 1				# population size
 num_islands = 1
 #csv_name   = 'input_data2.dat'	
 num_param  = 1
@@ -97,7 +97,7 @@ def RunOptim():
 
 
 def main():
-	algos = ["Nelder-Mead - Scipy"]
+	algos = ["Nelder-Mead - Pygmo, Praxis - Pygmo"]
 	for evo_strat in algos:
 		evo_name=str.split(evo_strat," ")[0]+str.split(evo_strat," ")[-1]
 		print(evo_name)

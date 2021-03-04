@@ -1,14 +1,7 @@
 from random import Random
-from inspyred import ec
-from inspyred.ec import emo
-from inspyred.ec import terminators
-from inspyred.ec import variators
-from inspyred.ec import observers
 from fitnessFunctions import fF,frange
 import sys
-import inspyred
 import logging
-from scipy import optimize, array, ndarray
 from numpy import random
 import numpy as np
 import copy
@@ -19,30 +12,19 @@ import numpy
 import time
 import os
 import bluepyopt as bpop
-from math import sqrt
 import bluepyopt.ephys as ephys
-
+from math import sqrt
 
 import multiprocessing
 from math import sqrt
 from optionHandler import optionHandler
-from deap import algorithms
-from deap import base
-from deap import benchmarks
-from deap.benchmarks.tools import diversity, convergence, hypervolume
-from deap import creator
-from deap import tools
-import queue
 import Core
 
 from scipy import dot, exp, log, sqrt, floor, ones, randn
 
-import pygmo as pg
 import modelHandler
 from itertools import combinations, product
 
-
-from PyQt5 import QtCore, QtGui, QtWidgets
 from types import MethodType
 try:
     import copyreg
@@ -208,7 +190,12 @@ class baseOptimizer():
 class InspyredAlgorithmBasis(baseOptimizer):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		baseOptimizer.__init__(self, reader_obj, model_obj, option_obj)
-
+		import inspyred
+		from inspyred import ec
+		from inspyred.ec import emo
+		from inspyred.ec import terminators
+		from inspyred.ec import variators
+		from inspyred.ec import observers
 		self.pop_size = option_obj.pop_size
 		self.max_evaluation = option_obj.max_evaluation
 
@@ -292,6 +279,7 @@ class PygmoAlgorithmBasis(baseOptimizer):
 
 	def __init__(self, reader_obj, model_obj, option_obj):
 		baseOptimizer.__init__(self, reader_obj, model_obj, option_obj)
+		import pygmo as pg
 		self.multiobjective=False
 		self.option_obj=option_obj
 		pg.set_global_rng_seed(seed = self.seed)
@@ -1503,6 +1491,17 @@ class Indicator_Based_Bluepyopt(oldBaseOptimizer):
 		optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(self.params,self.deapfun,self.feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),selector_name='IBEA')
 		self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))"""	
 		
+		view.map_sync(os.chdir, [str(os.path.dirname(os.path.realpath(__file__)))]*int(self.number_of_cpu))
+		map_function=view.map_sync
+		optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(self.params,self.deapfun,self.feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),map_function=map_function,selector_name='IBEA')
+		self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation),cp_frequency=int(self.max_evaluation))
+		os.system("ipcluster stop")
+		#except Exception:
+		"""os.system("ipcluster stop")
+		print("*****************Single Run : IBEA *******************")
+		optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(self.params,self.deapfun,self.feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),selector_name='IBEA')
+		self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))"""	
+		
 
 	def SetBoundaries(self,bounds):
 		"""
@@ -1602,8 +1601,7 @@ class Nondominated_Sorted_Bluepyopt(oldBaseOptimizer):
 						"AP amplitude": "AP_overshoot",
 						"AHP depth": "AHP_depth",
 						"AP width": "AP_width",
-						"Derivative difference" : "calc_grad_dif",
-						"PPTD" : "pyelectro_pptd"}
+						"Derivative difference" : "calc_grad_dif"}
 		self.ffun_mapper=dict((v,k) for k,v in list(f_m.items()))
 		if self.option_obj.type[-1]!="features":
 			feat_names=[self.ffun_mapper[x.__name__] for x in feats[0][1]]
