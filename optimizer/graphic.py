@@ -950,14 +950,14 @@ class Ui_Optimizer(object):
             self.lineEdit_folder.setText(os.path.dirname(os.path.realpath(fileName)))
             self.pushButton_3.setEnabled(True)
             if self.time_checker.isChecked():
-		    try:
-		    	with open(str(fileName)) as data:
-		    		time_vec=[float(x.split()[0]) for x in data.read().splitlines()]
-		    		max_t_vec=round(max(time_vec))
-		    		self.length_ctrl.setText(str(max_t_vec))
-		    		self.freq_ctrl.setText(str(round((len(time_vec))*1000/max_t_vec)))
-		    except:
-		    	print('Time or voltage is missing from trace file')
+                try:
+                    with open(str(fileName)) as data:
+                        time_vec=[float(x.split()[0]) for x in data.read().splitlines()]
+                        max_t_vec=round(max(time_vec))
+                        self.length_ctrl.setText(str(max_t_vec))
+                        self.freq_ctrl.setText(str(round((len(time_vec))*1000/max_t_vec)))
+                except:
+                    print('Time or voltage is missing from trace file')
             
 
     def openFolderNameDialog2(self): 
