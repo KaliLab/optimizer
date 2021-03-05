@@ -7,8 +7,8 @@
   <cognitive_rate>None</cognitive_rate>
   <cooling_rate>None</cooling_rate>
   <crossover_rate>None</crossover_rate>
-  <evo_strat>Particle Swarm - Pygmo</evo_strat>
-  <f_tol>None</f_tol>
+  <evo_strat>Nelder-Mead - Scipy</evo_strat>
+  <f_tol>1e-23</f_tol>
   <feats>MSE (excl. spikes), Spike count (stim.), Latency to 1st spike</feats>
   <force_bounds>True</force_bounds>
   <inertia>None</inertia>
@@ -20,7 +20,7 @@
   <input_scale>mV</input_scale>
   <input_size>4</input_size>
   <m_gauss>None</m_gauss>
-  <max_evaluation>10</max_evaluation>
+  <max_evaluation>3</max_evaluation>
   <model_path>&quot;&quot;</model_path>
   <model_spec_dir>&quot;&quot;</model_spec_dir>
   <mutation_rate>0.25</mutation_rate>
@@ -28,10 +28,10 @@
   <num_islands>2.0</num_islands>
   <num_iter>2.0</num_iter>
   <num_params>10</num_params>
-  <num_repet>None</num_repet>
+  <num_repet>1</num_repet>
   <number_of_cpu>4</number_of_cpu>
   <param_vals>['']</param_vals>
-  <pop_size>10</pop_size>
+  <pop_size>5</pop_size>
   <run_controll_dt>0.2</run_controll_dt>
   <run_controll_pos>pos</run_controll_pos>
   <run_controll_record>record</run_controll_record>
@@ -59,5 +59,5 @@
   <u_fun_string>&quot;&quot;</u_fun_string>
   <update_freq>None</update_freq>
   <weights>[0.333333333333, 0.333333333333, 0.333333333333]</weights>
-  <x_tol>None</x_tol>
+  <x_tol>1e-23</x_tol>
 </settings>

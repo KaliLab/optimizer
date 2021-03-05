@@ -3,10 +3,10 @@
   <mutation_rate>0.25</mutation_rate>
   <pop_size>10.0</pop_size>
   <adjusted_params>['cm', 'Ra', 'g_pas']</adjusted_params>
-  <model_path>/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/ca1pc_anat/morphology_131117-C2.hoc</model_path>
+  <model_path>/home/nest/Documents/TESTS/ANAT/PYGMO/ISLAND/CMAES/ca1pc_anat/morphology_131117-C2.hoc</model_path>
   <simulator>Neuron</simulator>
   <f_tol>1</f_tol>
-  <model_spec_dir>/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/ca1pc_anat</model_spec_dir>
+  <model_spec_dir>/home/nest/Documents/TESTS/ANAT/PYGMO/ISLAND/CMAES/ca1pc_anat</model_spec_dir>
   <m_gauss>1</m_gauss>
   <boundaries>[[1.0, 30.0, 1e-05], [10.0, 3000.0, 0.001]]</boundaries>
   <crossover_rate>1</crossover_rate>
@@ -17,8 +17,8 @@
   <x_tol>1</x_tol>
   <run_controll_dt>0.05</run_controll_dt>
   <input_size>1</input_size>
-  <input_dir>/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/ca1pc_anat/131117-C2_short.dat</input_dir>
-  <stim_amp>['/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/ca1pc_anat/cell2_stim.dat']</stim_amp>
+  <input_dir>/home/nest/Documents/TESTS/ANAT/PYGMO/ISLAND/CMAES/ca1pc_anat/131117-C2_short.dat</input_dir>
+  <stim_amp>['/home/nest/Documents/TESTS/ANAT/PYGMO/ISLAND/CMAES/ca1pc_anat/cell2_stim.dat']</stim_amp>
   <stim_del>0.0</stim_del>
   <input_cont_t>True</input_cont_t>
   <spike_window>20.0</spike_window>
@@ -47,7 +47,7 @@ def usr_fun(self,v):
 			seg.e_pas=0</u_fun_string>
   <feats>MSE</feats>
   <run_controll_tstop>1500.0</run_controll_tstop>
-  <evo_strat>Extended Ant Colony - Pygmo</evo_strat>
+  <evo_strat>PYGMO CMAES</evo_strat>
   <acc>1</acc>
   <std_gauss>1</std_gauss>
   <update_freq>2</update_freq>
@@ -60,7 +60,7 @@ def usr_fun(self,v):
   <run_controll_record>v</run_controll_record>
   <init_temp>1</init_temp>
   <force_bounds>True</force_bounds>
-  <base_dir>/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/ca1pc_anat</base_dir>
+  <base_dir>/home/nest/Documents/TESTS/ANAT/PYGMO/ISLAND/SADE/ca1pc_anat/final</base_dir>
   <seed>1234.0</seed>
   <sim_command>&quot;&quot;</sim_command>
   <num_iter>1</num_iter>

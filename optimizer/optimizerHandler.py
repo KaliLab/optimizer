@@ -1,14 +1,7 @@
 from random import Random
-from inspyred import ec
-from inspyred.ec import emo
-from inspyred.ec import terminators
-from inspyred.ec import variators
-from inspyred.ec import observers
 from fitnessFunctions import fF,frange
 import sys
-import inspyred
 import logging
-from scipy import optimize, array, ndarray
 from numpy import random
 import numpy as np
 import copy
@@ -19,30 +12,19 @@ import numpy
 import time
 import os
 import bluepyopt as bpop
-from math import sqrt
 import bluepyopt.ephys as ephys
-
+from math import sqrt
 
 import multiprocessing
 from math import sqrt
 from optionHandler import optionHandler
-from deap import algorithms
-from deap import base
-from deap import benchmarks
-from deap.benchmarks.tools import diversity, convergence, hypervolume
-from deap import creator
-from deap import tools
-import queue
 import Core
 
 from scipy import dot, exp, log, sqrt, floor, ones, randn
 
-import pygmo as pg
 import modelHandler
 from itertools import combinations, product
 
-
-from PyQt5 import QtCore, QtGui, QtWidgets
 from types import MethodType
 try:
     import copyreg
@@ -208,7 +190,12 @@ class baseOptimizer():
 class InspyredAlgorithmBasis(baseOptimizer):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		baseOptimizer.__init__(self, reader_obj, model_obj, option_obj)
-
+		import inspyred
+		from inspyred import ec
+		from inspyred.ec import emo
+		from inspyred.ec import terminators
+		from inspyred.ec import variators
+		from inspyred.ec import observers
 		self.pop_size = option_obj.pop_size
 		self.max_evaluation = option_obj.max_evaluation
 
@@ -292,6 +279,7 @@ class PygmoAlgorithmBasis(baseOptimizer):
 
 	def __init__(self, reader_obj, model_obj, option_obj):
 		baseOptimizer.__init__(self, reader_obj, model_obj, option_obj)
+		import pygmo as pg
 		self.multiobjective=False
 		self.option_obj=option_obj
 		pg.set_global_rng_seed(seed = self.seed)
@@ -553,6 +541,28 @@ class Simulated_Annealing_Inspyred(InspyredAlgorithmBasis):
 			self.evo_strat.observer=[observers.population_observer,observers.file_observer]
 		else:
 			self.evo_strat.observer=[observers.file_observer]
+
+class Praxis_Pygmo(PygmoAlgorithmBasis):
+	def __init__(self, reader_obj, model_obj, option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+		self.multiprocessing=False
+		
+		self.pop_size = int(option_obj.pop_size)
+
+		self.algorithm = pg.nlopt(solver="praxis")
+		self.algorithm.xtol_rel=0
+		self.algorithm.maxeval=int(option_obj.max_evaluation)
+
+
+class Nelder_Mead_Pygmo(PygmoAlgorithmBasis):
+	def __init__(self, reader_obj, model_obj, option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+		self.multiprocessing=False
+		self.max_evaluation=int(option_obj.max_evaluation)
+		self.pop_size = int(option_obj.pop_size)
+
+		self.algorithm = pg.scipy_optimize(method="Nelder-Mead",tol=0,options={"maxfev":self.max_evaluation})
+
 
 class Differential_Evolution_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj, model_obj, option_obj):
@@ -855,7 +865,7 @@ class Basinhopping_Scipy(ScipyAlgorithmBasis):
 		self.bounder=bounderObject([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
 
 
-class Nelder_Mead_Scipy(baseOptimizer):
+class Nelder_Mead_Scipy(ScipyAlgorithmBasis):
 	"""
 	Implements a downhill simplex algorithm for minimization from the ``scipy`` package.
 
@@ -870,13 +880,16 @@ class Nelder_Mead_Scipy(baseOptimizer):
 
 	"""
 	def __init__(self,reader_obj,model_obj,option_obj):
+		ScipyAlgorithmBasis.__init__(self, reader_obj,model_obj,option_obj)
 		self.fit_obj=fF(reader_obj,model_obj,option_obj)
 		self.SetFFun(option_obj)
 		self.rand=random
 		self.seed=option_obj.seed
-		self.rand.seed([self.seed])
+		self.rand.seed(self.seed)
 		self.xtol=option_obj.x_tol
 		self.ftol=option_obj.f_tol
+		self.num_iter=option_obj.num_iter
+		self.num_repet=option_obj.num_repet
 		self.max_evaluation=option_obj.max_evaluation
 		self.num_params=option_obj.num_params
 		self.SetBoundaries(option_obj.boundaries)
@@ -891,7 +904,13 @@ class Nelder_Mead_Scipy(baseOptimizer):
 			print("starting points: ",self.starting_points)
 
 
-
+	def logger(self,x):
+		self.log_file.write(str(x))
+		self.log_file.write("\n")
+		self.log_file.flush()
+		
+		
+		
 	def wrapper(self,candidates,args):
 		"""
 		Converts the ``ndarray`` object into a ``list`` and passes it to the fitness function.
@@ -903,9 +922,11 @@ class Nelder_Mead_Scipy(baseOptimizer):
 
 		"""
 		tmp=ndarray.tolist(candidates)
-		candidates=self.bounder(tmp,args)
-		return self.ffun([candidates],args)[0]
-
+		ec_bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
+		candidates=ec_bounder(tmp,args)
+		fit=self.ffun([candidates],args)[0]
+		self.logger(fit)
+		return fit
 
 
 
@@ -914,18 +935,34 @@ class Nelder_Mead_Scipy(baseOptimizer):
 		"""
 		Performs the optimization.
 		"""
-		self.result=optimize.fmin(self.wrapper,
-									  x0=ndarray((self.num_params,),buffer=array(self.starting_points),offset=0,dtype=float),
+		self.log_file=open(self.directory + "/nelder.log","w")
+		
+		list_of_results=[0]*int(self.num_repet)
+		for points in range(int(self.num_repet)):
+			
+			
+			list_of_results[points]=optimize.minimize(self.wrapper,x0=ndarray((self.num_params,),
+						buffer=array(self.starting_points),offset=0,dtype=float),
 #                                      x0=ndarray( (self.num_params,1) ,buffer=array([0.784318808, 4.540607953, -11.919391073,-100]),dtype=float),
 #                                      args=[[]]
 									  args=((),),
-									  maxiter= self.max_evaluation,
-									  xtol= self.xtol,
-									  ftol= self.ftol,
-									  full_output=True
+									  method="Nelder-Mead",
+									  callback=self.logger,
+									  options={"maxiter":self.max_evaluation,
+										  "xtol": self.xtol,
+										  "ftol": self.ftol,
+										  "return_all":True}
 									  )
-
-		self.final_pop=[my_candidate(self.result[0],self.result[1])]
+			#self.log_file.write(str(points+1)+" "+str(self.starting_points)+" ("+str(list_of_results)+") \n")
+			
+			self.starting_points=uniform(self.rand,{"num_params" : self.num_params,"self": self})
+		self.stat_file=open(self.directory + "/nelder.txt","w")
+		self.stat_file.write(str(list_of_results))	
+		self.log_file.close()
+		self.stat_file.close()
+		self.result=min(list_of_results,key=lambda x:x.fun)
+		#print self.result.x
+		self.final_pop=[my_candidate(self.result.x,self.result.fun)]
 
 	def SetBoundaries(self,bounds):
 		"""
@@ -959,7 +996,7 @@ class L_BFGS_B_Scipy(baseOptimizer):
 		self.SetFFun(option_obj)
 		self.rand=random
 		self.seed=option_obj.seed
-		self.rand.seed([self.seed])
+		self.rand.seed(self.seed)
 		self.max_evaluation=option_obj.max_evaluation
 		self.accuracy=option_obj.acc
 		self.num_params=option_obj.num_params
@@ -1454,6 +1491,17 @@ class Indicator_Based_Bluepyopt(oldBaseOptimizer):
 		optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(self.params,self.deapfun,self.feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),selector_name='IBEA')
 		self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))"""	
 		
+		view.map_sync(os.chdir, [str(os.path.dirname(os.path.realpath(__file__)))]*int(self.number_of_cpu))
+		map_function=view.map_sync
+		optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(self.params,self.deapfun,self.feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),map_function=map_function,selector_name='IBEA')
+		self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation),cp_frequency=int(self.max_evaluation))
+		os.system("ipcluster stop")
+		#except Exception:
+		"""os.system("ipcluster stop")
+		print("*****************Single Run : IBEA *******************")
+		optimisation = bpop.optimisations.DEAPOptimisation(evaluator=DeapEvaluator(self.params,self.deapfun,self.feats_and_weights,self.min_max,self.number_of_traces),seed=self.seed,offspring_size = int(self.pop_size),selector_name='IBEA')
+		self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))"""	
+		
 
 	def SetBoundaries(self,bounds):
 		"""
@@ -1553,8 +1601,7 @@ class Nondominated_Sorted_Bluepyopt(oldBaseOptimizer):
 						"AP amplitude": "AP_overshoot",
 						"AHP depth": "AHP_depth",
 						"AP width": "AP_width",
-						"Derivative difference" : "calc_grad_dif",
-						"PPTD" : "pyelectro_pptd"}
+						"Derivative difference" : "calc_grad_dif"}
 		self.ffun_mapper=dict((v,k) for k,v in list(f_m.items()))
 		if self.option_obj.type[-1]!="features":
 			feat_names=[self.ffun_mapper[x.__name__] for x in feats[0][1]]

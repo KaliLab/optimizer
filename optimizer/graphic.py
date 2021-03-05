@@ -929,12 +929,12 @@ class Ui_Optimizer(object):
 
         self.menuMenu.setTitle(_translate("Optimizer", "Menu"))
         self.actionMultiple_Optimization.setText(_translate("Optimizer", "Multiple Optimization"))
-        """self.tabwidget.setTabEnabled(1,False)
+        self.tabwidget.setTabEnabled(1,False)
         self.tabwidget.setTabEnabled(2,False)
         self.tabwidget.setTabEnabled(3,False)
         self.tabwidget.setTabEnabled(4,False)
         self.tabwidget.setTabEnabled(5,False)
-        self.tabwidget.setTabEnabled(6,False)"""
+        self.tabwidget.setTabEnabled(6,False)
     
                 
 
@@ -949,6 +949,16 @@ class Ui_Optimizer(object):
             self.lineEdit_file.setText(fileName)
             self.lineEdit_folder.setText(os.path.dirname(os.path.realpath(fileName)))
             self.pushButton_3.setEnabled(True)
+            if self.time_checker.isChecked():
+		    try:
+		    	with open(str(fileName)) as data:
+		    		time_vec=[float(x.split()[0]) for x in data.read().splitlines()]
+		    		max_t_vec=round(max(time_vec))
+		    		self.length_ctrl.setText(str(max_t_vec))
+		    		self.freq_ctrl.setText(str(round((len(time_vec))*1000/max_t_vec)))
+		    except:
+		    	print('Time or voltage is missing from trace file')
+            
 
     def openFolderNameDialog2(self): 
         """
@@ -1061,8 +1071,8 @@ class Ui_Optimizer(object):
                         "input" : [str(self.lineEdit_file.text()),
                                    int(self.size_ctrl.text()),
                                    str(self.dropdown.currentText()),
-                                   int(self.length_ctrl.text()),
-                                   int(self.freq_ctrl.text()),
+                                   float(self.length_ctrl.text()),
+                                   float(self.freq_ctrl.text()),
                                    self.time_checker.isChecked(),
                                    self.type_selector.currentText().split()[0].lower()]}
                 
@@ -1083,9 +1093,11 @@ class Ui_Optimizer(object):
             #self.graphicsView.set_ylabel(_type+" [" + self.core.option_handler.input_scale + "]")
             exp_data = []
             
-            freq=int(self.freq_ctrl.text())
+            freq=float(self.freq_ctrl.text())
             for k in range(self.core.data_handler.number_of_traces()):
                 exp_data.extend(self.core.data_handler.data.GetTrace(k))
+            
+            self.figure.clf()
             ax = self.figure.add_subplot(111)
             ax.cla()
             if self.time_checker.isChecked():
