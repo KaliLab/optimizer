@@ -14,12 +14,17 @@ import os
 import bluepyopt as bpop
 import bluepyopt.ephys as ephys
 from math import sqrt
-
+import inspyred
+from inspyred import ec
+from inspyred.ec import emo
+from inspyred.ec import terminators
+from inspyred.ec import variators
+from inspyred.ec import observers
 import multiprocessing
 from math import sqrt
 from optionHandler import optionHandler
 import Core
-
+import pygmo as pg
 from scipy import dot, exp, log, sqrt, floor, ones, randn
 
 import modelHandler
@@ -190,12 +195,6 @@ class baseOptimizer():
 class InspyredAlgorithmBasis(baseOptimizer):
 	def __init__(self, reader_obj, model_obj, option_obj):
 		baseOptimizer.__init__(self, reader_obj, model_obj, option_obj)
-		import inspyred
-		from inspyred import ec
-		from inspyred.ec import emo
-		from inspyred.ec import terminators
-		from inspyred.ec import variators
-		from inspyred.ec import observers
 		self.pop_size = option_obj.pop_size
 		self.max_evaluation = option_obj.max_evaluation
 
@@ -279,7 +278,6 @@ class PygmoAlgorithmBasis(baseOptimizer):
 
 	def __init__(self, reader_obj, model_obj, option_obj):
 		baseOptimizer.__init__(self, reader_obj, model_obj, option_obj)
-		import pygmo as pg
 		self.multiobjective=False
 		self.option_obj=option_obj
 		pg.set_global_rng_seed(seed = self.seed)
