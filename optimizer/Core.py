@@ -403,10 +403,10 @@ class coreModul():
 			if self.option_handler.run_controll_dt>self.data_handler.data.step:
 				self.option_handler.run_controll_dt=self.data_handler.data.step
 
-		
+		self.model_handler=None
 		import re 
 		algo_str=re.sub('_+',"_",re.sub("[\(\[].*?[\)\]]", "", self.option_handler.evo_strat).replace("-","_").replace(" ","_"))
-		exec("self.optimizer="+algo_str+"(self.data_handler,self.model_handler,self.option_handler)")
+		exec("self.optimizer="+algo_str+"(self.data_handler,self.option_handler)")
 		
 
 		f_handler=open(self.option_handler.GetFileOption()+"/"+self.option_handler.GetFileOption().split("/")[-1]+"_settings.xml", 'w')
@@ -421,7 +421,7 @@ class coreModul():
 			
 		try:
 			if(self.option_handler.simulator == 'Neuron'):
-				self.model_handler=modelHandler.modelHandlerNeuron(self.option_handler.model_path,self.option_handler.model_spec_dir,self.option_handler.base_dir)
+				self.model_handler=None
 		except:
 			"no model yet"
 
@@ -510,7 +510,7 @@ class coreModul():
 		"""
 		self.final_result=[]
 		self.error_comps=[]
-		print(4)
+		self.model_handler=modelHandlerNeuron(self.option_handler.model_path,self.option_handler.model_spec_dir,self.option_handler.base_dir)
 		#self.optimal_params=self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])
 		self.optimal_params=self.cands[0]
 		if self.option_handler.GetUFunString()=='':
@@ -522,7 +522,6 @@ class coreModul():
 				if isinstance(self.model_handler, externalHandler):
 					out_handler.write(str(k)+"\n")
 				else:
-					self.model_handler.load_neuron()
 					if len(tmp)==4:
 						self.model_handler.SetChannelParameters(tmp[0], tmp[1], tmp[2], tmp[3], k)
 					else:
@@ -531,18 +530,15 @@ class coreModul():
 				out_handler.close()
 		else:
 			try:
-				self.model_handler.load_neuron()
 				s=self.option_handler.GetUFunString()
 				s=str.replace(s,"h.","self.model_handler.hoc_obj.")
 				s=str.replace(s,"h(","self.model_handler.hoc_obj(")
 				exec(compile(s,'<string>','exec'))
 			except SyntaxError:
 				print("Your function contained syntax errors!! Please fix them!")
-
 			self.usr_fun_name=self.option_handler.GetUFunString().split("\n")[4][self.option_handler.GetUFunString().split("\n")[4].find(" ")+1:self.option_handler.GetUFunString().split("\n")[4].find("(")]
 			self.usr_fun=locals()[self.usr_fun_name]
 			self.usr_fun(self,self.cands[0])
-			print('ok')
 			#self.usr_fun(self,self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)]))
 		#the first cell is a vector with all the stimuli in the simulation
 		#the first cell is the current stimulus
@@ -551,17 +547,18 @@ class coreModul():
 			k_range=self.data_handler.number_of_traces()
 		else:
 			k_range=len(self.data_handler.features_data["stim_amp"])
-
+			
+		
 		for k in range(k_range):
+				self.model_handler.CreateStimuli(self.option_handler.GetModelStim())
 				param=self.option_handler.GetModelStimParam()
 				parameter=param
 				parameter[0]=param[0][k]
 				if isinstance(parameter[0], str):
-					self.optimizer.ffun([self.cands[0]])
+					#self.optimizer.ffun([self.cands[0]])
 					self.model_handler.SetCustStimuli(parameter)
 				else:
 					extra_param=self.option_handler.GetModelRun()
-					self.model_handler.CreateStimuli(self.option_handler.GetModelStim())
 					self.model_handler.SetStimuli(parameter,extra_param)
 				if isinstance(self.model_handler, externalHandler):
 					readFile = open("params.param","r")
@@ -686,7 +683,6 @@ class coreModul():
 		#print tmp_str
 		f_handler.write(tmp_str)
 		f_handler.close()
-		self.model_handler.load_neuron()
 
 
 	def callGrid(self,resolution):

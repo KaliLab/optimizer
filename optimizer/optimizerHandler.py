@@ -8,7 +8,6 @@ import copy
 import array as array1
 import random
 import json
-import numpy
 import time
 import os
 import bluepyopt as bpop
@@ -25,9 +24,9 @@ from math import sqrt
 from optionHandler import optionHandler
 import Core
 import pygmo as pg
+from scipy import optimize, array, ndarray
 from scipy import dot, exp, log, sqrt, floor, ones, randn
 
-import modelHandler
 from itertools import combinations, product
 
 from types import MethodType
@@ -147,8 +146,8 @@ class baseOptimizer():
 	"""
 	An abstract base class to implement an optimization process.
 	"""
-	def __init__(self, reader_obj, model_obj, option_obj):
-		self.fit_obj = fF(reader_obj, model_obj, option_obj)
+	def __init__(self, reader_obj,  option_obj):
+		self.fit_obj = fF(reader_obj,  option_obj)
 		self.SetFFun(option_obj)
 		self.rand = random
 		self.seed = int(option_obj.seed)
@@ -193,8 +192,8 @@ class baseOptimizer():
 		self.bounder = ec.Bounder([0] * len(self.min_max[0]), [1] * len(self.min_max[1]))
 
 class InspyredAlgorithmBasis(baseOptimizer):
-	def __init__(self, reader_obj, model_obj, option_obj):
-		baseOptimizer.__init__(self, reader_obj, model_obj, option_obj)
+	def __init__(self, reader_obj,  option_obj):
+		baseOptimizer.__init__(self, reader_obj,  option_obj)
 		self.pop_size = option_obj.pop_size
 		self.max_evaluation = option_obj.max_evaluation
 
@@ -247,8 +246,8 @@ class InspyredAlgorithmBasis(baseOptimizer):
 
 class ScipyAlgorithmBasis(baseOptimizer):
 
-	def __init__(self, reader_obj, model_obj, option_obj):
-		baseOptimizer.__init__(self, reader_obj, model_obj, option_obj)
+	def __init__(self, reader_obj,  option_obj):
+		baseOptimizer.__init__(self, reader_obj,  option_obj)
 
 		try:
 			if isinstance(option_obj.starting_points[0], list):
@@ -276,8 +275,8 @@ class ScipyAlgorithmBasis(baseOptimizer):
 
 class PygmoAlgorithmBasis(baseOptimizer):
 
-	def __init__(self, reader_obj, model_obj, option_obj):
-		baseOptimizer.__init__(self, reader_obj, model_obj, option_obj)
+	def __init__(self, reader_obj,  option_obj):
+		baseOptimizer.__init__(self, reader_obj,  option_obj)
 		self.multiobjective=False
 		self.option_obj=option_obj
 		pg.set_global_rng_seed(seed = self.seed)
@@ -291,6 +290,7 @@ class PygmoAlgorithmBasis(baseOptimizer):
 		self.num_islands = int(option_obj.num_islands)
 
 	def Optimize(self):
+		
 		if self.multiobjective:
 			fitfun=self.mfun
 		else:
@@ -307,17 +307,19 @@ class PygmoAlgorithmBasis(baseOptimizer):
 		print(self.max_evaluation)"""
 		
 		if self.multiprocessing:
-			self.mpbfe=pg.mp_bfe()
+			self.mpbfe=pg.mp_bfe(1)
 			self.mpbfe.init_pool(self.number_of_cpu)
 			self.bfe=pg.bfe(self.mpbfe)
 			self.algorithm.set_bfe(self.bfe)
 			self.pgalgo=pg.algorithm(self.algorithm)
+			self.pgalgo.set_verbosity(1)
 			self.archi = pg.population(prob=self.prob, size=self.pop_size,b=self.bfe)
 			self.pgalgo.evolve(self.archi)
 			
 			self.mpbfe.shutdown_pool()
 		else:
 			self.pgalgo=pg.algorithm(self.algorithm)
+			self.pgalgo.set_verbosity(1)
 			self.archi = pg.archipelago(n=self.num_islands,t = pg.fully_connected(),algo=self.pgalgo, prob=self.prob, pop_size=self.pop_size)#,b=self.bfe)
 			self.archi.evolve()
 			self.archi.wait()
@@ -368,7 +370,6 @@ class Problem:
 			pass
 
 	def fitness(self, x):
-		
 		if self.nobj!=1:
 			fitness = self.fitnes_fun([normalize(x,self)])[0]
 		else:
@@ -394,8 +395,8 @@ class Problem:
 
 class SinglePygmoAlgorithmBasis(baseOptimizer):
 
-	def __init__(self, reader_obj, model_obj, option_obj):
-		baseOptimizer.__init__(self, reader_obj, model_obj, option_obj)
+	def __init__(self, reader_obj,  option_obj):
+		baseOptimizer.__init__(self, reader_obj,  option_obj)
 
 		pg.set_global_rng_seed(seed = self.seed)
 		self.prob = SingleProblem(self.ffun,option_obj.boundaries)
@@ -459,9 +460,9 @@ class SingleProblem:
 
 class Single_Differential_Evolution_Pygmo(SinglePygmoAlgorithmBasis):
 	
-	def __init__(self,reader_obj,model_obj,option_obj):
+	def __init__(self,reader_obj,option_obj):
 
-		SinglePygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+		SinglePygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		
@@ -523,8 +524,8 @@ class Simulated_Annealing_Inspyred(InspyredAlgorithmBasis):
 
 
 	"""
-	def __init__(self,reader_obj,model_obj,option_obj):
-		InspyredAlgorithmBasis.__init__(self, reader_obj,model_obj,option_obj)
+	def __init__(self,reader_obj,option_obj):
+		InspyredAlgorithmBasis.__init__(self, reader_obj,option_obj)
 
 		self.kwargs['mutation_rate'] = option_obj.mutation_rate
 		self.kwargs['gaussian_mean'] = option_obj.m_gauss
@@ -541,8 +542,8 @@ class Simulated_Annealing_Inspyred(InspyredAlgorithmBasis):
 			self.evo_strat.observer=[observers.file_observer]
 
 class Praxis_Pygmo(PygmoAlgorithmBasis):
-	def __init__(self, reader_obj, model_obj, option_obj):
-		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+	def __init__(self, reader_obj,  option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiprocessing=False
 		
 		self.pop_size = int(option_obj.pop_size)
@@ -553,8 +554,8 @@ class Praxis_Pygmo(PygmoAlgorithmBasis):
 
 
 class Nelder_Mead_Pygmo(PygmoAlgorithmBasis):
-	def __init__(self, reader_obj, model_obj, option_obj):
-		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+	def __init__(self, reader_obj,  option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
@@ -563,8 +564,8 @@ class Nelder_Mead_Pygmo(PygmoAlgorithmBasis):
 
 
 class Differential_Evolution_Pygmo(PygmoAlgorithmBasis):
-	def __init__(self, reader_obj, model_obj, option_obj):
-		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+	def __init__(self, reader_obj,  option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
@@ -572,8 +573,8 @@ class Differential_Evolution_Pygmo(PygmoAlgorithmBasis):
 		self.algorithm = pg.de(gen=self.max_evaluation)
 
 class Covariance_Matrix_Adaptation_ES_Pygmo(PygmoAlgorithmBasis):
-	def __init__(self, reader_obj, model_obj, option_obj):
-		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+	def __init__(self, reader_obj,  option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
@@ -581,8 +582,8 @@ class Covariance_Matrix_Adaptation_ES_Pygmo(PygmoAlgorithmBasis):
 		self.algorithm = pg.cmaes(gen=self.max_evaluation,ftol=1e-15, xtol=1e-15, force_bounds=bool(self.force_bounds))
 
 class Particle_Swarm_Pygmo(PygmoAlgorithmBasis):
-	def __init__(self, reader_obj, model_obj, option_obj):
-		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+	def __init__(self, reader_obj,  option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
@@ -590,8 +591,8 @@ class Particle_Swarm_Pygmo(PygmoAlgorithmBasis):
 		self.algorithm = pg.pso(gen=self.max_evaluation)
 
 class Particle_Swarm_Gen_Pygmo(PygmoAlgorithmBasis):
-	def __init__(self, reader_obj, model_obj, option_obj):
-		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+	def __init__(self, reader_obj,  option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiprocessing=True
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
@@ -599,8 +600,8 @@ class Particle_Swarm_Gen_Pygmo(PygmoAlgorithmBasis):
 		self.algorithm = pg.pso_gen(gen=self.max_evaluation)
 
 class Multi_Objective_Ant_Colony_Pygmo(PygmoAlgorithmBasis):
-	def __init__(self, reader_obj, model_obj, option_obj):
-		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+	def __init__(self, reader_obj,  option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiobjective=True
 		self.multiprocessing=True
 		self.max_evaluation=int(option_obj.max_evaluation)
@@ -609,8 +610,8 @@ class Multi_Objective_Ant_Colony_Pygmo(PygmoAlgorithmBasis):
 		self.algorithm = pg.maco(gen=self.max_evaluation)
 
 class Extended_Ant_Colony_Pygmo(PygmoAlgorithmBasis):
-	def __init__(self, reader_obj, model_obj, option_obj):
-		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+	def __init__(self, reader_obj,  option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiprocessing=True
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
@@ -618,8 +619,8 @@ class Extended_Ant_Colony_Pygmo(PygmoAlgorithmBasis):
 		self.algorithm = pg.gaco(gen=self.max_evaluation)
 
 class Nondominated_Sorted_Particle_Swarm_Pygmo(PygmoAlgorithmBasis):
-	def __init__(self, reader_obj, model_obj, option_obj):
-		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+	def __init__(self, reader_obj,  option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiobjective=True
 		self.multiprocessing=True
 		self.max_evaluation=int(option_obj.max_evaluation)
@@ -628,8 +629,8 @@ class Nondominated_Sorted_Particle_Swarm_Pygmo(PygmoAlgorithmBasis):
 		self.algorithm = pg.nspso(gen=self.max_evaluation)
 
 class Nondominated_Sorted_GA_Pygmo(PygmoAlgorithmBasis):
-	def __init__(self, reader_obj, model_obj, option_obj):
-		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+	def __init__(self, reader_obj,  option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiobjective=True
 		self.multiprocessing=True
 		self.max_evaluation=int(option_obj.max_evaluation)
@@ -639,8 +640,8 @@ class Nondominated_Sorted_GA_Pygmo(PygmoAlgorithmBasis):
 
 
 class Exponential_Evolution_Strategies_Pygmo(PygmoAlgorithmBasis):
-	def __init__(self, reader_obj, model_obj, option_obj):
-		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+	def __init__(self, reader_obj,  option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
@@ -650,8 +651,8 @@ class Exponential_Evolution_Strategies_Pygmo(PygmoAlgorithmBasis):
 		self.algorithm = pg.xnes(gen=self.max_evaluation,ftol=1e-15, xtol=1e-15, force_bounds=bool(self.force_bounds))
 
 class Bee_Colony_Pygmo(PygmoAlgorithmBasis):
-	def __init__(self, reader_obj, model_obj, option_obj):
-		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+	def __init__(self, reader_obj,  option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
@@ -659,8 +660,8 @@ class Bee_Colony_Pygmo(PygmoAlgorithmBasis):
 		self.algorithm = pg.bee_colony(gen=self.max_evaluation)
 
 class Simple_Genetic_Algorithm_Pygmo(PygmoAlgorithmBasis):
-	def __init__(self, reader_obj, model_obj, option_obj):
-		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+	def __init__(self, reader_obj,  option_obj):
+		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
@@ -669,9 +670,9 @@ class Simple_Genetic_Algorithm_Pygmo(PygmoAlgorithmBasis):
 
 class Self_adaptive_DE_Pygmo(PygmoAlgorithmBasis):
 
-	def __init__(self,reader_obj,model_obj,option_obj):
+	def __init__(self,reader_obj,option_obj):
 
-		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 
@@ -687,9 +688,9 @@ class Self_adaptive_DE_Pygmo(PygmoAlgorithmBasis):
 
 class Differential_Evolution_1220_Pygmo(PygmoAlgorithmBasis):
 
-	def __init__(self,reader_obj,model_obj,option_obj):
+	def __init__(self,reader_obj,option_obj):
 
-		PygmoAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 
@@ -718,9 +719,9 @@ class Particle_Swarm_Inspyred(InspyredAlgorithmBasis):
 			http://pythonhosted.org/inspyred/reference.html
 
 	"""
-	def __init__(self,reader_obj,model_obj,option_obj):
+	def __init__(self,reader_obj,option_obj):
 
-		InspyredAlgorithmBasis.__init__(self,reader_obj,model_obj,option_obj)
+		InspyredAlgorithmBasis.__init__(self,reader_obj,option_obj)
 
 		#PSO algorithm
 		self.evo_strat=inspyred.swarm.PSO(self.rand)
@@ -774,8 +775,8 @@ class Basinhopping_Scipy(ScipyAlgorithmBasis):
 			http://docs.scipy.org/doc/scipy-dev/reference/generated/scipy.optimize.basinhopping.html
 
 	"""
-	def __init__(self,reader_obj,model_obj,option_obj):
-		ScipyAlgorithmBasis.__init__(self, reader_obj,model_obj,option_obj)
+	def __init__(self,reader_obj,option_obj):
+		ScipyAlgorithmBasis.__init__(self, reader_obj,option_obj)
 
 		self.temp=option_obj.temperature
 		self.num_iter=option_obj.num_iter
@@ -877,9 +878,9 @@ class Nelder_Mead_Scipy(ScipyAlgorithmBasis):
 			http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fmin.html#scipy.optimize.fmin
 
 	"""
-	def __init__(self,reader_obj,model_obj,option_obj):
-		ScipyAlgorithmBasis.__init__(self, reader_obj,model_obj,option_obj)
-		self.fit_obj=fF(reader_obj,model_obj,option_obj)
+	def __init__(self,reader_obj,option_obj):
+		ScipyAlgorithmBasis.__init__(self, reader_obj,option_obj)
+		self.fit_obj=fF(reader_obj,option_obj)
 		self.SetFFun(option_obj)
 		self.rand=random
 		self.seed=option_obj.seed
@@ -989,8 +990,8 @@ class L_BFGS_B_Scipy(baseOptimizer):
 			http://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fmin_l_bfgs_b.html#scipy.optimize.fmin_l_bfgs_b
 
 	"""
-	def __init__(self,reader_obj,model_obj,option_obj):
-		self.fit_obj=fF(reader_obj,model_obj,option_obj)
+	def __init__(self,reader_obj,option_obj):
+		self.fit_obj=fF(reader_obj,option_obj)
 		self.SetFFun(option_obj)
 		self.rand=random
 		self.seed=option_obj.seed
@@ -1075,8 +1076,8 @@ class grid(baseOptimizer):
 	:param resolution: number of sample points along each dimensions (default: 10)
 
 	"""
-	def __init__(self,reader_obj,model_obj,option_obj,resolution):
-		self.fit_obj=fF(reader_obj,model_obj,option_obj)
+	def __init__(self,reader_obj,option_obj,resolution):
+		self.fit_obj=fF(reader_obj,option_obj)
 		self.SetFFun(option_obj)
 		self.num_params=option_obj.num_params
 		self.num_points_per_dim=resolution
@@ -1145,8 +1146,8 @@ class Evolutionary_Algorithm_Inspyred(InspyredAlgorithmBasis):
 
 
 	"""
-	def __init__(self,reader_obj,model_obj,option_obj):
-		InspyredAlgorithmBasis.__init__(self, reader_obj, model_obj, option_obj)
+	def __init__(self,reader_obj,option_obj):
+		InspyredAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 
 		self.kwargs["mutation_rate"] = option_obj.mutation_rate
 		self.kwargs["num_elites"] = int(self.pop_size/2)
@@ -1179,9 +1180,9 @@ class Differential_Evolution_Inspyred(InspyredAlgorithmBasis):
 
 
 	"""
-	def __init__(self,reader_obj,model_obj,option_obj):
+	def __init__(self,reader_obj,option_obj):
 
-		InspyredAlgorithmBasis.__init__(self,reader_obj,model_obj,option_obj)
+		InspyredAlgorithmBasis.__init__(self,reader_obj,option_obj)
 		self.kwargs["tournament_size"] = int(self.pop_size)
 		self.kwargs["num_selected"] = int(self.pop_size/10)
 		self.kwargs["mutation_rate"] = option_obj.mutation_rate
@@ -1196,7 +1197,7 @@ class Differential_Evolution_Inspyred(InspyredAlgorithmBasis):
 			self.evo_strat.observer=[observers.file_observer]
 
 
-class Random_Search_Base(baseOptimizer):
+class Random_Search(baseOptimizer):
 	"""
 	Implements the ``Differential Evolution Algorithm`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1211,14 +1212,14 @@ class Random_Search_Base(baseOptimizer):
 
 
 	"""
-	def __init__(self,reader_obj,model_obj,option_obj):
-		baseOptimizer.__init__(self, reader_obj, model_obj, option_obj)		
+	def __init__(self,reader_obj,option_obj):
+		baseOptimizer.__init__(self, reader_obj,  option_obj)		
 		self.directory = str(option_obj.base_dir)
 		self.max_evaluation = option_obj.max_evaluation
 		self.pop_size = option_obj.pop_size
 		self.pickled_args={}
 		self.gen_min=[]
-		self.pool = multiprocessing.Pool(processes=int(self.number_of_cpu))
+		
 		for file_name in ["stat_file.txt", "ind_file.txt"]:
 			try:
 				os.remove(file_name)
@@ -1231,8 +1232,9 @@ class Random_Search_Base(baseOptimizer):
 		"""
 		Performs the optimization.
 		"""
+		self.pool = multiprocessing.Pool(processes=int(self.number_of_cpu),maxtasksperchild=1)
 		init_candidate=uniform(self.rand, {"self":self,"num_params":self.num_params})
-		self.act_min=my_candidate(array(init_candidate),self.ffun([init_candidate],{}))
+		self.act_min=pool.apply(self.ffun,([init_candidate],))
 		
 		for i in range(int(self.max_evaluation)):
 			act_candidate=[]
@@ -1284,8 +1286,8 @@ class Nondominated_Sorted_Inspyred(InspyredAlgorithmBasis):
 
 
 	"""
-	def __init__(self,reader_obj,model_obj,option_obj):
-		InspyredAlgorithmBasis.__init__(self, reader_obj,model_obj,option_obj)
+	def __init__(self,reader_obj,option_obj):
+		InspyredAlgorithmBasis.__init__(self, reader_obj,option_obj)
 		self.kwargs["mp_evaluator"] = self.mfun
 		global moo_var
 		moo_var = True
@@ -1318,8 +1320,8 @@ class Pareto_Archived_ES_Inspyred(InspyredAlgorithmBasis):
 
 
 	"""
-	def __init__(self,reader_obj,model_obj,option_obj):
-		InspyredAlgorithmBasis.__init__(self, reader_obj,model_obj,option_obj)
+	def __init__(self,reader_obj,option_obj):
+		InspyredAlgorithmBasis.__init__(self, reader_obj,option_obj)
 
 		self.kwargs["mp_evaluator"] = self.mfun
 
@@ -1340,8 +1342,8 @@ class Pareto_Archived_ES_Inspyred(InspyredAlgorithmBasis):
 
 class FullGrid_Pygmo(InspyredAlgorithmBasis):
 	
-	def __init__(self,reader_obj,model_obj,option_obj):
-		InspyredAlgorithmBasis.__init__(self, reader_obj,model_obj,option_obj)
+	def __init__(self,reader_obj,option_obj):
+		InspyredAlgorithmBasis.__init__(self, reader_obj,option_obj)
 
 		self.evo_strat=ec.ES(self.rand)
 
@@ -1446,8 +1448,8 @@ class FullGrid_Pygmo(InspyredAlgorithmBasis):
 class Indicator_Based_Bluepyopt(oldBaseOptimizer):
 
 
-	def __init__(self,reader_obj,model_obj,option_obj):
-		self.fit_obj=fF(reader_obj,model_obj,option_obj)
+	def __init__(self,reader_obj,option_obj):
+		self.fit_obj=fF(reader_obj,option_obj)
 		self.SetFFun(option_obj)
 		self.option_obj=option_obj
 		self.seed=option_obj.seed
@@ -1535,8 +1537,8 @@ class Indicator_Based_Bluepyopt(oldBaseOptimizer):
 class Nondominated_Sorted_Bluepyopt(oldBaseOptimizer):
 
 
-	def __init__(self,reader_obj,model_obj,option_obj):
-		self.fit_obj=fF(reader_obj,model_obj,option_obj)
+	def __init__(self,reader_obj,option_obj):
+		self.fit_obj=fF(reader_obj,option_obj)
 		self.SetFFun(option_obj)
 		self.option_obj=option_obj
 		self.seed=option_obj.seed

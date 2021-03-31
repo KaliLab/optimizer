@@ -225,7 +225,7 @@ extern void _cvode_abstol( Symbol**, double*, int);
  	hoc_register_tolerance(_mechtype, _hoc_state_tol, &_atollist);
  	hoc_register_synonym(_mechtype, _ode_synonym);
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 cad_mod_for_ltp /home/mohacsi/work/optimizer/optimizer/new_test_files/Luca_modell_python3/cad_mod_for_ltp.mod\n");
+ 	ivoc_help("help ?1 cad_mod_for_ltp /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/cad_mod_for_ltp.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
  }
@@ -513,7 +513,7 @@ _first = 0;
 #endif
 
 #if NMODL_TEXT
-static const char* nmodl_filename = "/home/mohacsi/work/optimizer/optimizer/new_test_files/Luca_modell_python3/cad_mod_for_ltp.mod";
+static const char* nmodl_filename = "/home/mohacsi/Desktop/optimizer/optimizer/new_test_files/Luca_modell_python3/cad_mod_for_ltp.mod";
 static const char* nmodl_file_text = 
   "TITLE decay of internal calcium concentration\n"
   ":\n"
