@@ -13,6 +13,7 @@ from inspyred.ec import observers
 import modelHandler
 import time
 import random
+import threading
 
 try:
     import copyreg
@@ -106,12 +107,12 @@ class fF(object):
         :attr: user_fun_name: the name of the function defined by the user (optional)
 
     """
-    def __init__(self, reader_object, model_object, option_object):
+    def __init__(self, reader_object, option_object):
         self.fitnes = []
         self.thres = option_object.spike_thres
         #self.d_spike=[]
         #self.m_spike=[]
-        self.model = model_object
+        self.model=None
         self.option = option_object
         self.reader = reader_object
         #self.current_pop=0
@@ -236,14 +237,13 @@ class fF(object):
             
 
         else:
-            section = self.option.GetObjTOOpt()
             settings = self.option.GetModelRun()#1. is the integrating step dt
             if self.option.type[-1]!= 'features':
                 settings.append(self.reader.data.step)
             else:
                 settings.append(0.05)
             
-            self.setParameters(section, candidates)
+            
             self.model.RunControll(settings)
 
         return error
@@ -969,10 +969,9 @@ class fF(object):
         :return: the ``list`` of fitness values corresponding to the parameter sets
 
         """
-        #modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
+        
         self.fitnes = []
         features = self.option.feats
-        #print self.option.feats   #--> [<bound method fF.AP1_amp_abstr_data of <fitnessFunctions.fF instance at 0x7f669e957128>>] (ezt adja)
         weigths = self.option.weights
         temp_fit = 0
         if self.option.type[-1]!= 'features':
@@ -980,7 +979,9 @@ class fF(object):
         else:
             window=None
         if(self.option.simulator == 'Neuron'):
-            self.model.load_neuron()
+            "Instantiate a model class"
+            self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
+            
 
         try:
             s = self.option.GetUFunString()
@@ -994,8 +995,8 @@ class fF(object):
         except IndexError:
             pass
 
-
-        self.model.CreateStimuli(self.option.GetModelStim())
+        section = self.option.GetObjTOOpt()
+        
 
         if self.option.type[-1]!= 'features':
             k_range=self.reader.number_of_traces()
@@ -1007,7 +1008,8 @@ class fF(object):
             if self.option.output_level == "1":
                 print(l)
             l = self.ReNormalize(l)
-            
+            self.setParameters(section, l)
+            self.model.CreateStimuli(self.option.GetModelStim())
             if self.option.output_level == "1":
                 print(l)
             for k in range(k_range):     #for k in range(self.reader.number_of_traces()):
@@ -1048,9 +1050,8 @@ class fF(object):
             temp_fit = 0
 
         if(self.option.simulator == 'Neuron'):
-            self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
-
-        
+            "Deletes the reference of the instance"
+            del self.model
 
         return self.fitnes
 
@@ -1101,13 +1102,18 @@ class fF(object):
             the actual data traces.
         :return: the ``list`` of fitness values corresponding to the parameter sets
         """
-        
         self.fitnes = []
         features = self.option.feats
         weigths = self.option.weights
-        temp_fit = []
+        temp_fit = 0
+        if self.option.type[-1]!= 'features':
+            window = int(self.option.spike_window)
+        else:
+            window=None
         if(self.option.simulator == 'Neuron'):
-            self.model.load_neuron()
+            "Instantiate a model class"
+            self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
+            
 
         try:
             s = self.option.GetUFunString()
@@ -1121,16 +1127,14 @@ class fF(object):
         except IndexError:
             pass
 
-        if self.option.type[-1]!= 'features':
-            window = int(self.option.spike_window)
-        else:
-            window=None
-        self.model.CreateStimuli(self.option.GetModelStim())
+        section = self.option.GetObjTOOpt()
+        
 
         if self.option.type[-1]!= 'features':
             k_range=self.reader.number_of_traces()
         else:
             k_range=len(self.reader.features_data["stim_amp"])
+
 
         for l in candidates:
 
@@ -1179,8 +1183,9 @@ class fF(object):
                 print("current fitness: ",temp_fit)
             del temp_fit[:] 
         if(self.option.simulator == 'Neuron'):
-                self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
-        
+            "Deletes the reference of the instance"
+            del self.model
+
         
         return self.fitnes
 
@@ -1189,10 +1194,16 @@ class fF(object):
         self.fitnes = []
         features = self.option.feats
         weigths = self.option.weights
-        temp_fit = []
+        temp_fit = 0
+        if self.option.type[-1]!= 'features':
+            window = int(self.option.spike_window)
+        else:
+            window=None
         if(self.option.simulator == 'Neuron'):
-            self.model.load_neuron()
-        
+            "Instantiate a model class"
+            self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
+            
+
         try:
             s = self.option.GetUFunString()
             s = str.replace(s, "h.", "self.model.hoc_obj.")
@@ -1205,17 +1216,14 @@ class fF(object):
         except IndexError:
             pass
 
-        if self.option.type[-1]!= 'features':
-            window = int(self.option.spike_window)
-        else:
-            window=None
-        self.model.CreateStimuli(self.option.GetModelStim())
+        section = self.option.GetObjTOOpt()
+        
 
         if self.option.type[-1]!= 'features':
             k_range=self.reader.number_of_traces()
         else:
             k_range=len(self.reader.features_data["stim_amp"])
-        
+
         if self.option.output_level == "1":
             print(candidates)
         l = self.ReNormalize(candidates)
@@ -1261,8 +1269,10 @@ class fF(object):
             if self.option.output_level == "1":
                 print("current fitness: ",temp_fit)
             del temp_fit[:] 
+            
         if(self.option.simulator == 'Neuron'):
-            self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
+            "Deletes the reference of the instance"
+            del self.model
 
         return sum(self.fitnes,[])
 

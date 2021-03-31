@@ -1366,7 +1366,6 @@ class Ui_Optimizer(object):
             self.core.LoadModel({"model" : [self.model_file, self.spec_file],
                                  "simulator" : self.dd_type.currentText(),
                                  "sim_command" : self.sim_path.text()})
-            self.core.model_handler.load_neuron()
             temp = self.core.model_handler.GetParameters()
             if temp!=None:
                 out = open("model.txt", 'w')
@@ -1423,9 +1422,9 @@ class Ui_Optimizer(object):
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
         fileName, _ = QFileDialog.getOpenFileName(None,"QFileDialog.getOpenFileName()", "","Data files (*.dat *.json);;All Files (*);;", options=options)
+        print("**********************"+str(fileName))
         if fileName:
-            with open(str(fileName)) as data:
-               self.container=[float(x) for x in data.read().splitlines()]
+            self.container=[fileName]
                
 
 
@@ -2225,7 +2224,7 @@ class BoundaryWindow(QtWidgets.QMainWindow):
         try:    
             name = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File')
             if name[0]:
-                f = open(name,'w')
+                f = open(name[0],'w')
                 for idx in range(self.boundary_table.rowCount()):
                     f.write(str(self.boundary_table.item(idx,1).text()))
                     f.write("\t")

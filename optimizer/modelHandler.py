@@ -89,7 +89,6 @@ class modelHandlerNeuron():
 
 
     def __init__(self,model_path,special_path,base=os.getcwd()):
-        from neuron import h
         import neuron
         print('*********** NEURON '+neuron.__version__+' LOADED ***********')
         self.base_directory=base
@@ -98,23 +97,9 @@ class modelHandlerNeuron():
         self.model_dir=('/').join(self.model.rsplit('/')[0:-1])
         if self.special:
             neuron.load_mechanisms(self.special)
-        
-        
 
-        self.hoc_obj=None
-        self.vec=None
-        self.stimulus=None
-        self.record=[]
-        self.spike_times=None
-        self.sections={}
-
-    def load_neuron(self):
-        from neuron import h
-        import neuron
-        if self.special:
-            neuron.load_mechanisms(self.special)
-        self.hoc_obj=h
-        self.hoc_obj.load_file(str(self.model))
+        self.hoc_obj=neuron.h
+        self.hoc_obj.load_file(1,str(self.model))
         self.hoc_obj.load_file("stdrun.hoc")
         self.vec=self.hoc_obj.Vector()
         os.chdir(self.base_directory)
@@ -122,16 +107,16 @@ class modelHandlerNeuron():
         self.record=[]
         self.spike_times=None
         self.sections={}
-        
-        for n in h.allsec():
-            self.sections[str(h.secname(sec=n))]=n
+        for n in self.hoc_obj.allsec():
+            self.sections[str(self.hoc_obj.secname(sec=n))]=n
         self.channels={}
-        for sec in h.allsec():
+        for sec in self.hoc_obj.allsec():
             for seg in sec:
                 for mech in seg:
                     self.channels[str(mech.name())]=mech
 
-
+    def __del__(self):
+            print("model deleted")
 
     # creates and adjusts the stimulus parameters
     # stims: 0.: stimulation type, 1.: place inside the section, 2.: section name
@@ -227,6 +212,7 @@ class modelHandlerNeuron():
         #self.hoc_obj('h.vec.play(&stim.amp,dt)')
         #print (dir(self.hoc_obj.cas()(0.5).point_processes()[0]))
         #ref=self.hoc_obj.ref(self.stimulus.amp)
+        print(self.hoc_obj.cas()(0.5).point_processes())
         self.vec.play(self.hoc_obj.cas()(0.5).point_processes()[0]._ref_amp,self.hoc_obj.dt)
         self.stimulus.delay=0
         self.stimulus.dur=1e9
