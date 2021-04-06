@@ -37,7 +37,7 @@
   <run_controll_record>v</run_controll_record>
   <run_controll_sec>soma</run_controll_sec>
   <run_controll_tstop>1500.0</run_controll_tstop>
-  <run_controll_vrest>-65.0</run_controll_vrest>
+  <run_controll_vrest>0</run_controll_vrest>
   <seed>1234</seed>
   <sim_command>&quot;&quot;</sim_command>
   <simulator>Neuron</simulator>

@@ -1289,8 +1289,6 @@ class Nondominated_Sorted_Inspyred(InspyredAlgorithmBasis):
 	def __init__(self,reader_obj,option_obj):
 		InspyredAlgorithmBasis.__init__(self, reader_obj,option_obj)
 		self.kwargs["mp_evaluator"] = self.mfun
-		global moo_var
-		moo_var = True
 		self.evo_strat=ec.emo.NSGA2(self.rand)
 		self.evo_strat.terminator=terminators.generation_termination
 		self.evo_strat.selector=inspyred.ec.selectors.default_selection

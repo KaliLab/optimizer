@@ -864,10 +864,6 @@ class fF(object):
         :return: resulting fitness value
 
         """
-        print(self.option.run_controll_tstop)
-        print(self.option.run_controll_dt)
-        print(type(self.option.run_controll_tstop))
-        print(type(self.option.run_controll_dt))
         t_gen = frange(0, self.option.run_controll_tstop + self.option.run_controll_dt, self.option.run_controll_dt)
         t = []
         for n in t_gen:
@@ -981,7 +977,7 @@ class fF(object):
         if(self.option.simulator == 'Neuron'):
             "Instantiate a model class"
             self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
-            
+            self.model.hoc_obj.dt=self.option.GetModelRun()[1]
 
         try:
             s = self.option.GetUFunString()

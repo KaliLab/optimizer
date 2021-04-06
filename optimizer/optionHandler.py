@@ -454,7 +454,6 @@ class optionHandler(object):
 			SEClamp are obtained by combining the values here and the values regarding the simulation.
 
 		"""
-		print(options)
 		self.stim_amp=options[0]
 		self.stim_del=options[1]
 		self.stim_dur=options[2]
