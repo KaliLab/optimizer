@@ -97,7 +97,6 @@ class modelHandlerNeuron():
         self.model_dir=('/').join(self.model.rsplit('/')[0:-1])
         if self.special:
             neuron.load_mechanisms(self.special)
-
         self.hoc_obj=neuron.h
         self.hoc_obj.load_file(1,str(self.model))
         self.hoc_obj.load_file("stdrun.hoc")
@@ -115,8 +114,12 @@ class modelHandlerNeuron():
                 for mech in seg:
                     self.channels[str(mech.name())]=mech
 
+        #self.hoc_obj.tstop=settings[0]
+        #self.hoc_obj.steps_per_ms=1/settings[1]
+        #self.hoc_obj.dt=settings[1]
+
     def __del__(self):
-            print("model deleted")
+            print("model instance deleted")
 
     # creates and adjusts the stimulus parameters
     # stims: 0.: stimulation type, 1.: place inside the section, 2.: section name
@@ -205,14 +208,13 @@ class modelHandlerNeuron():
 
         self.hoc_obj.load_file("vplay.hoc")
         self.parameters=params
-
         f=open(self.parameters[0],'r')
         tmp=[float(n) for n in f]
         self.vec=self.vec.from_python(tmp)
+        print(self.hoc_obj.dt)
         #self.hoc_obj('h.vec.play(&stim.amp,dt)')
         #print (dir(self.hoc_obj.cas()(0.5).point_processes()[0]))
         #ref=self.hoc_obj.ref(self.stimulus.amp)
-        print(self.hoc_obj.cas()(0.5).point_processes())
         self.vec.play(self.hoc_obj.cas()(0.5).point_processes()[0]._ref_amp,self.hoc_obj.dt)
         self.stimulus.delay=0
         self.stimulus.dur=1e9
@@ -235,11 +237,7 @@ class modelHandlerNeuron():
         Sets the given channel's parameter to the given value. If the section is not known that
         indicates a serious internal error and the program will abort.
 
-        :param section: the selected section's name as ``string``
-        :param channel: the selected channel's name as ``string``
-        :param params: the selected channel parameter's name as ``string``
-        :param values: the value to be set
-
+        print(len(self.vec))
         """
         try:
             self.sections[section].push()
@@ -414,7 +412,6 @@ class modelHandlerNeuron():
             ref='_ref_'+settings[2]
             vec.record(getattr(self.sections[settings[3]](settings[4]),ref))
         # comment: create the hoc vector to record time and the measured parameter
-        #print settings[5]
         self.hoc_obj.v_init=settings[5]
         self.hoc_obj.finitialize(settings[5])
         self.hoc_obj.run()
@@ -438,7 +435,7 @@ class modelHandlerNeuron():
         :return: the data trace from the created object
 
         """
-        tr=Trace(1,"",self.hoc_obj.tstop,self.hoc_obj.tstop/self.hoc_obj.dt)
+        tr=Trace(1,"",t_length=self.hoc_obj.tstop,freq=(self.hoc_obj.tstop/self.hoc_obj.dt))
         tr.Convert(vector)
         return tr.data
         # comment: pass the hoc vector to Convert, not the hoc_object

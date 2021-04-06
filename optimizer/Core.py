@@ -155,10 +155,11 @@ class coreModul():
 		"""
 		print(args)
 		self.model_handler=None
-		#print "load"
 		self.option_handler.SetSimParam([args.get("simulator","Neuron"),args.get("sim_command"),None])
 		if self.option_handler.GetSimParam()[0]=="Neuron":
 			self.option_handler.SetModelOptions(args.get("model"))
+			settings = self.option_handler.GetModelRun()
+			settings.append(0.05)
 			self.model_handler=modelHandlerNeuron(self.option_handler.model_path,self.option_handler.model_spec_dir,self.option_handler.base_dir)
 		else:
 			self.model_handler=externalHandler(self.option_handler.GetSimParam()[1])
@@ -358,13 +359,11 @@ class coreModul():
 		self.model_handler.hoc_obj = None
 		self.grid_result=None
 		if args!=None:
-			#print "args: ",args
 			self.option_handler.SetModelRun(args.get("runparam"))
 			fit_par=[]
 			#fit_par.append(args.get("ffun",[]))
 			fit_par.append(args.get("feat",[]))
 			fit_par.append(args.get("weights",[]))
-			#print fit_par
 			self.option_handler.SetFitnesParam(fit_par)
 			tmp=args.get("algo_options")
 			"""
@@ -382,14 +381,14 @@ class coreModul():
 				print((self.option_handler.run_controll_dt,self.data_handler.data.step))
 				#we have to resample the input trace so it would match the model output
 				#will use lin interpolation
-				x=linspace(0,int(self.option_handler.run_controll_tstop),int(self.option_handler.run_controll_tstop*(1/self.data_handler.data.step)))#x axis of data points
+				x=linspace(0,self.option_handler.run_controll_tstop,self.option_handler.run_controll_tstop*(1/self.data_handler.data.step))#x axis of data points
 
 				tmp=[]
 				for i in range(self.data_handler.number_of_traces()):
 					y=self.data_handler.data.GetTrace(i)#y axis, the values from the input traces, corresponding to x
 					f=interp1d(x,y)
 					#we have the continuous trace, we could re-sample it now
-					new_x=linspace(0,int(self.option_handler.run_controll_tstop),int(self.option_handler.run_controll_tstop/self.option_handler.run_controll_dt))
+					new_x=linspace(0,self.option_handler.run_controll_tstop,self.option_handler.run_controll_tstop/self.option_handler.run_controll_dt)
 					#self.trace_reader.SetColumn(i,f(new_x)) the resampled vector replaces the original in the trace reader object
 					tmp.append(f(new_x))
 				self.data_handler.data.t_length=len(tmp[0])
@@ -511,6 +510,7 @@ class coreModul():
 		self.final_result=[]
 		self.error_comps=[]
 		self.model_handler=modelHandlerNeuron(self.option_handler.model_path,self.option_handler.model_spec_dir,self.option_handler.base_dir)
+		self.model_handler.hoc_obj.dt=self.option_handler.GetModelRun()[1]
 		#self.optimal_params=self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])
 		self.optimal_params=self.cands[0]
 		if self.option_handler.GetUFunString()=='':

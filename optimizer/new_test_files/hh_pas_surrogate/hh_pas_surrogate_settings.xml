@@ -9,7 +9,7 @@
   <crossover_rate>None</crossover_rate>
   <evo_strat>Evolutionary Algorithm (EA) - Inspyred</evo_strat>
   <f_tol>None</f_tol>
-  <feats>MSE, PPTD</feats>
+  <feats>MSE</feats>
   <force_bounds>False</force_bounds>
   <inertia>None</inertia>
   <init_temp>None</init_temp>
@@ -58,6 +58,6 @@
   <type>['voltage', 'voltage']</type>
   <u_fun_string>&quot;&quot;</u_fun_string>
   <update_freq>None</update_freq>
-  <weights>[0.5, 0.5]</weights>
+  <weights>[1]</weights>
   <x_tol>None</x_tol>
 </settings>
