@@ -212,7 +212,6 @@ class InspyredAlgorithmBasis(baseOptimizer):
 			self.starting_points = None
 		if option_obj.output_level == "1":
 			print("starting points: ", self.starting_points)
-
 		self.kwargs = dict(generator=uniform,
 						   evaluator=inspyred.ec.evaluators.parallel_evaluation_mp,
 						   mp_evaluator=self.ffun,
@@ -238,7 +237,7 @@ class InspyredAlgorithmBasis(baseOptimizer):
 			formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 			file_handler.setFormatter(formatter)
 			logger.addHandler(file_handler)
-
+			self.kwargs={k: v for k, v in self.kwargs.items() if v is not None}
 			self.final_pop = self.evo_strat.evolve(**self.kwargs)
 
 			if hasattr(self.evo_strat, "archive"):

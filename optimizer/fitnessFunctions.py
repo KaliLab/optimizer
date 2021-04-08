@@ -947,7 +947,7 @@ class fF(object):
 
         return temp_fit
 
-    def combineFeatures(self, candidates, args={}):
+    def combineFeatures(self, candidates, args={}, delete_model=True):
         """
         Creates the weighted combination of fitness functions and calculates the combined fitness for every
         set of parameters created during the optimization proccess by seting the model parameters,
@@ -1045,7 +1045,7 @@ class fF(object):
                 print("current fitness: ",temp_fit)
             temp_fit = 0
 
-        if(self.option.simulator == 'Neuron'):
+        if(self.option.simulator == 'Neuron') and delete_model:
             "Deletes the reference of the instance"
             del self.model
 
