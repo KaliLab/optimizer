@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <body>
-<p>Wed Mar 31 18:11:56 2021</p>
+<p>Thu Apr  8 13:05:06 2021</p>
 <p><span style="text-align:center;">Optimization of <b>hh_pas.hoc</b> based on: /home/mohacsi/Desktop/optimizer/optimizer/new_test_files/hh_pas_surrogate/input_data2.dat</span></p>
 <center><p><span style="text-decoration:underline;font-size:200%;">Results</span></p></center>
 <table border="1" align="center">
@@ -11,31 +11,31 @@
 <th>Optimum</th>
 <tr>
 <td>soma 0 hh gnabar_hh</td>
-<td>0.001</td>
+<td>0.01</td>
 <td>1.0</td>
-<td>0.4602509920626888</td>
+<td>0.13547901068236234</td>
 </tr>
 <tr>
 <td>soma 0 hh gkbar_hh</td>
-<td>0.001</td>
+<td>0.01</td>
 <td>1.0</td>
-<td>0.12590459573659307</td>
+<td>0.04187331447194505</td>
 </tr>
 <tr>
 <td>soma 0 hh gl_hh</td>
 <td>1e-05</td>
 <td>0.001</td>
-<td>0.0008226474634117422</td>
+<td>0.0001077159991058383</td>
 </tr>
 </table>
-<center><p><b>Fitnes: </b><b>0.0232189443214249</b></p></center>
+<center><p><b>Fitnes: </b><b>0.0056537881385051</b></p></center>
 <p align="center"><img style="border:none;" src="result_trace.png" ></p>
-<p><b>seed =</b> 1234</p>
-<p><b>evo_strat =</b> Evolutionary Algorithm (EA) - Inspyred</p>
-<p><b>Size of Population: =</b> 10.0</p>
-<p><b>Number of Islands: =</b> None</p>
-<p><b>Number of Generations: =</b> 10.0</p>
-<p><b>Force bounds: =</b> False</p>
+<p><b>seed =</b> 1234.0</p>
+<p><b>evo_strat =</b> Particle Swarm - Inspyred</p>
+<p><b>Size of Population: =</b> 20</p>
+<p><b>Number of Islands: =</b> 1</p>
+<p><b>Number of Generations: =</b> 20.0</p>
+<p><b>Force bounds: =</b> True</p>
 <p><b>Mutation Rate: =</b> 0.25</p>
 <p><b>Crossover Rate: =</b> None</p>
 <p><b>Cooling Rate: =</b> None</p>
@@ -50,15 +50,15 @@
 <p><b>Error Tolerance for x: =</b> None</p>
 <p><b>Error Tolerance for f: =</b> None</p>
 <p><b>num_params =</b> 3</p>
-<p><b>boundaries =</b> [[0.001, 0.001, 1e-05], [1.0, 1.0, 0.001]]</p>
+<p><b>boundaries =</b> [[0.01, 0.01, 1e-05], [1.0, 1.0, 0.001]]</p>
 <p><b>starting_points =</b> None</p>
-<p><b>Inertia: =</b> None</p>
-<p><b>Cognitive Rate: =</b> None</p>
-<p><b>Social Rate: =</b> None</p>
+<p><b>Inertia: =</b> 0.5</p>
+<p><b>Cognitive Rate: =</b> 2.1</p>
+<p><b>Social Rate: =</b> 2.1</p>
 <p><b>Neighborhood Size: =</b> None</p>
-<p><b>Number of CPU: =</b> 1.0</p>
-<p><b>feats =</b> MSE</p>
-<p><b>weights =</b> [1]</p>
+<p><b>Number of CPU: =</b> 2</p>
+<p><b>feats =</b> MSE (excl. spikes), Spike count, AP amplitude, AP width</p>
+<p><b>weights =</b> [0.25, 0.25, 0.25, 0.25]</p>
 <p><b>user function =</b></p>
 </body>
 </html>
@@ -70,10 +70,31 @@
 <th>Weighted Value</th>
 <th>Weighted Sum</th>
 <tr>
-<td>MSE</td>
-<td>0.0232189443214249</td>
-<td>1</td>
-<td>0.0232189443214249</td>
+<td>MSE (excl. spikes)</td>
+<td>0.0034516573993507173</td>
+<td>0.25</td>
+<td>0.0008629143498376793</td>
+<td></td>
+</tr>
+<tr>
+<td>Spike count</td>
+<td>0.0</td>
+<td>0.25</td>
+<td>0.0</td>
+<td></td>
+</tr>
+<tr>
+<td>AP amplitude</td>
+<td>0.012602999817862021</td>
+<td>0.25</td>
+<td>0.0031507499544655053</td>
+<td></td>
+</tr>
+<tr>
+<td>AP width</td>
+<td>0.006560495336807662</td>
+<td>0.25</td>
+<td>0.0016401238342019155</td>
 <td></td>
 </tr>
 <tr>
@@ -81,7 +102,7 @@
 <td></td>
 <td></td>
 <td></td>
-<td>0.0232189443214249</td>
+<td>0.0056537881385051</td>
 </tr>
 </table>
 <table border="1" align="center">
@@ -90,9 +111,27 @@
 <th>Weight</th>
 <th>Weighted Value</th>
 <tr>
-<td>MSE</td>
-<td>0.0232189443214249</td>
-<td>1</td>
-<td>0.0232189443214249</td>
+<td>MSE (excl. spikes)</td>
+<td>0.0034516573993507173</td>
+<td>0.25</td>
+<td>0.0008629143498376793</td>
+</tr>
+<tr>
+<td>Spike count</td>
+<td>0.0</td>
+<td>0.25</td>
+<td>0.0</td>
+</tr>
+<tr>
+<td>AP amplitude</td>
+<td>0.012602999817862021</td>
+<td>0.25</td>
+<td>0.0031507499544655053</td>
+</tr>
+<tr>
+<td>AP width</td>
+<td>0.006560495336807662</td>
+<td>0.25</td>
+<td>0.0016401238342019155</td>
 </tr>
 </table>

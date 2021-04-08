@@ -158,8 +158,6 @@ class coreModul():
 		self.option_handler.SetSimParam([args.get("simulator","Neuron"),args.get("sim_command"),None])
 		if self.option_handler.GetSimParam()[0]=="Neuron":
 			self.option_handler.SetModelOptions(args.get("model"))
-			settings = self.option_handler.GetModelRun()
-			settings.append(0.05)
 			self.model_handler=modelHandlerNeuron(self.option_handler.model_path,self.option_handler.model_spec_dir,self.option_handler.base_dir)
 		else:
 			self.model_handler=externalHandler(self.option_handler.GetSimParam()[1])
@@ -356,7 +354,6 @@ class coreModul():
 				optional parameter shared by every algorithm
 					* starting_points
 		"""
-		self.model_handler.hoc_obj = None
 		self.grid_result=None
 		if args!=None:
 			self.option_handler.SetModelRun(args.get("runparam"))
@@ -381,14 +378,14 @@ class coreModul():
 				print((self.option_handler.run_controll_dt,self.data_handler.data.step))
 				#we have to resample the input trace so it would match the model output
 				#will use lin interpolation
-				x=linspace(0,self.option_handler.run_controll_tstop,self.option_handler.run_controll_tstop*(1/self.data_handler.data.step))#x axis of data points
+				x=linspace(0,self.option_handler.run_controll_tstop,int(self.option_handler.run_controll_tstop*(1/self.data_handler.data.step)))#x axis of data points
 
 				tmp=[]
 				for i in range(self.data_handler.number_of_traces()):
 					y=self.data_handler.data.GetTrace(i)#y axis, the values from the input traces, corresponding to x
 					f=interp1d(x,y)
 					#we have the continuous trace, we could re-sample it now
-					new_x=linspace(0,self.option_handler.run_controll_tstop,self.option_handler.run_controll_tstop/self.option_handler.run_controll_dt)
+					new_x=linspace(0,self.option_handler.run_controll_tstop,int(self.option_handler.run_controll_tstop/self.option_handler.run_controll_dt))
 					#self.trace_reader.SetColumn(i,f(new_x)) the resampled vector replaces the original in the trace reader object
 					tmp.append(f(new_x))
 				self.data_handler.data.t_length=len(tmp[0])
@@ -402,7 +399,6 @@ class coreModul():
 			if self.option_handler.run_controll_dt>self.data_handler.data.step:
 				self.option_handler.run_controll_dt=self.data_handler.data.step
 
-		self.model_handler=None
 		import re 
 		algo_str=re.sub('_+',"_",re.sub("[\(\[].*?[\)\]]", "", self.option_handler.evo_strat).replace("-","_").replace(" ","_"))
 		exec("self.optimizer="+algo_str+"(self.data_handler,self.option_handler)")
@@ -420,7 +416,7 @@ class coreModul():
 			
 		try:
 			if(self.option_handler.simulator == 'Neuron'):
-				self.model_handler=None
+				del self.model_handler
 		except:
 			"no model yet"
 
@@ -493,7 +489,7 @@ class coreModul():
 
 		print(("Optimization lasted for ", stop_time-start_time, " s"))
 		print(self.cands)	
-		self.cands[0]=self.optimizer.fit_obj.ReNormalize(self.cands[0])
+		#self.cands[0]=self.optimizer.fit_obj.ReNormalize(self.cands[0])
 		print((self.cands[0],"fitness: ",self.fits[0]))
 		
 
@@ -509,10 +505,11 @@ class coreModul():
 		"""
 		self.final_result=[]
 		self.error_comps=[]
-		self.model_handler=modelHandlerNeuron(self.option_handler.model_path,self.option_handler.model_spec_dir,self.option_handler.base_dir)
+		self.optimal_params=self.optimizer.fit_obj.ReNormalize(self.cands[0])
+		"""self.model_handler=modelHandlerNeuron(self.option_handler.model_path,self.option_handler.model_spec_dir,self.option_handler.base_dir)
 		self.model_handler.hoc_obj.dt=self.option_handler.GetModelRun()[1]
 		#self.optimal_params=self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])
-		self.optimal_params=self.cands[0]
+		
 		if self.option_handler.GetUFunString()=='':
 			if isinstance(self.model_handler, externalHandler):
 				out_handler=open("params.param","w")
@@ -548,7 +545,6 @@ class coreModul():
 		else:
 			k_range=len(self.data_handler.features_data["stim_amp"])
 			
-		
 		for k in range(k_range):
 				self.model_handler.CreateStimuli(self.option_handler.GetModelStim())
 				param=self.option_handler.GetModelStimParam()
@@ -596,18 +592,25 @@ class coreModul():
 					else:
 						s.append(0.05)
 
-					self.model_handler.RunControll(s)
-				#calculate the error components
-				self.error_comps.append(self.optimizer.fit_obj.getErrorComponents(k, self.model_handler.record[0]))
-				trace_handler=open("result_trace"+str(k)+".txt","w")
-				for l in self.model_handler.record[0]:
-					trace_handler.write(str(l))
-					trace_handler.write("\n")
-				trace_handler.close()
-				self.final_result.extend(self.model_handler.record)
+					self.model_handler.RunControll(s)"""
+		self.optimizer.fit_obj.combineFeatures([self.cands[0]],delete_model=False)
+		#calculate the error components
+		if self.option_handler.type[-1]!= 'features':
+			k_range=self.data_handler.number_of_traces()
+		else:
+			k_range=len(self.data_handler.features_data["stim_amp"])
+			
+		for k in range(k_range):
+			self.error_comps.append(self.optimizer.fit_obj.getErrorComponents(k, self.optimizer.fit_obj.model.record[0]))
+			trace_handler=open("result_trace"+str(k)+".txt","w")
+			for l in self.optimizer.fit_obj.model.record[0]:
+				trace_handler.write(str(l))
+				trace_handler.write("\n")
+			trace_handler.close()
+			self.final_result.extend(self.optimizer.fit_obj.model.record)
 
-		if isinstance(self.model_handler, externalHandler):
-			self.model_handler.record[0]=[]
+		if isinstance(self.optimizer.fit_obj.model, externalHandler):
+			self.optimizer.fit_obj.model.record[0]=[]
 
 		name=self.option_handler.model_path.split("/")[-1].split(".")[0]
 		f_handler=open(name+"_results.html","w")
@@ -616,7 +619,7 @@ class coreModul():
 		tmp_str+="<p>"+self.htmlStyle("Optimization of <b>"+name+".hoc</b> based on: "+self.option_handler.input_dir,self.htmlAlign("center"))+"</p>\n"
 		tmp_list=[]
 		#tmp_fit=self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])
-		tmp_fit=self.cands[0]
+		tmp_fit=self.optimal_params
 		for name,mmin,mmax,f in zip(self.option_handler.GetObjTOOpt(),self.option_handler.boundaries[0],self.option_handler.boundaries[1],tmp_fit):
 			tmp_list.append([str(name),str(mmin),str(mmax),str(f)])
 		tmp_str+="<center><p>"+self.htmlStyle("Results",self.htmlUnderline(),self.htmlResize(200))+"</p></center>\n"
@@ -692,7 +695,7 @@ class coreModul():
 		"""
 		import copy
 		self.prev_result=copy.copy(self.optimizer.final_pop)
-		self.optimizer=grid(self.data_handler,self.model_handler,self.option_handler,resolution)
+		self.optimizer=grid(self.data_handler,self.optimizer.fit_obj.model,self.option_handler,resolution)
 		self.optimizer.Optimize(self.optimal_params)
 		self.grid_result=copy.copy(self.optimizer.final_pop)
 		self.optimizer.final_pop=self.prev_result
