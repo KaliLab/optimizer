@@ -487,10 +487,9 @@ class coreModul():
 				self.cands.append(self.optimizer.final_pop[i].candidate[0:len(self.option_handler.adjusted_params)])
 				self.fits.append(self.optimizer.final_pop[i].fitness)
 
-		print(("Optimization lasted for ", stop_time-start_time, " s"))
-		print(self.cands)	
-		#self.cands[0]=self.optimizer.fit_obj.ReNormalize(self.cands[0])
-		print((self.cands[0],"fitness: ",self.fits[0]))
+		print(("Optimization lasted for ", stop_time-start_time, " s"))	
+		self.optimal_params=self.optimizer.fit_obj.ReNormalize(self.cands[0])
+		
 		
 
 	def FourthStep(self,args={}):
@@ -505,95 +504,8 @@ class coreModul():
 		"""
 		self.final_result=[]
 		self.error_comps=[]
-		self.optimal_params=self.optimizer.fit_obj.ReNormalize(self.cands[0])
-		"""self.model_handler=modelHandlerNeuron(self.option_handler.model_path,self.option_handler.model_spec_dir,self.option_handler.base_dir)
-		self.model_handler.hoc_obj.dt=self.option_handler.GetModelRun()[1]
-		#self.optimal_params=self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])
-		
-		if self.option_handler.GetUFunString()=='':
-			if isinstance(self.model_handler, externalHandler):
-				out_handler=open("params.param","w")
-			#for n,k in zip(self.option_handler.GetObjTOOpt(),self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])):
-			for n,k in zip(self.option_handler.GetObjTOOpt(),self.cands[0]):
-				tmp=n.split(" ")
-				if isinstance(self.model_handler, externalHandler):
-					out_handler.write(str(k)+"\n")
-				else:
-					if len(tmp)==4:
-						self.model_handler.SetChannelParameters(tmp[0], tmp[1], tmp[2], tmp[3], k)
-					else:
-						self.model_handler.SetMorphParameters(tmp[0], tmp[1], k)
-			if isinstance(self.model_handler, externalHandler):
-				out_handler.close()
-		else:
-			try:
-				s=self.option_handler.GetUFunString()
-				s=str.replace(s,"h.","self.model_handler.hoc_obj.")
-				s=str.replace(s,"h(","self.model_handler.hoc_obj(")
-				exec(compile(s,'<string>','exec'))
-			except SyntaxError:
-				print("Your function contained syntax errors!! Please fix them!")
-			self.usr_fun_name=self.option_handler.GetUFunString().split("\n")[4][self.option_handler.GetUFunString().split("\n")[4].find(" ")+1:self.option_handler.GetUFunString().split("\n")[4].find("(")]
-			self.usr_fun=locals()[self.usr_fun_name]
-			self.usr_fun(self,self.cands[0])
-			#self.usr_fun(self,self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)]))
-		#the first cell is a vector with all the stimuli in the simulation
-		#the first cell is the current stimulus
-
-		if self.option_handler.type[-1]!= 'features':
-			k_range=self.data_handler.number_of_traces()
-		else:
-			k_range=len(self.data_handler.features_data["stim_amp"])
-			
-		for k in range(k_range):
-				self.model_handler.CreateStimuli(self.option_handler.GetModelStim())
-				param=self.option_handler.GetModelStimParam()
-				parameter=param
-				parameter[0]=param[0][k]
-				if isinstance(parameter[0], str):
-					#self.optimizer.ffun([self.cands[0]])
-					self.model_handler.SetCustStimuli(parameter)
-				else:
-					extra_param=self.option_handler.GetModelRun()
-					self.model_handler.SetStimuli(parameter,extra_param)
-				if isinstance(self.model_handler, externalHandler):
-					readFile = open("params.param","r")
-					lines = readFile.readlines()
-					readFile.close()
-					w = open("params.param",'w')
-					w.writelines([item for item in lines[0:len(self.option_handler.GetObjTOOpt())]])
-					w.close()
-					out_handler=open("params.param","a")
-					out_handler.write(str(k))
-					out_handler.close()
-					from subprocess import call
-					#print self.model_handler.GetExec()
-					call(self.model_handler.GetExec())
-					in_handler=open("trace.dat","r")
-					self.model_handler.record[0]=[]
-					for line in in_handler:
-						self.model_handler.record[0].append(float(line.split()[-1]))
-					in_handler.close()
-
-					try:
-						in_handler = open(self.option_handler.base_dir + "/spike.dat", "r")
-						self.model_handler.spike_times = []
-						for line in in_handler:
-							self.model_handler.spike_times.append(int(float(line) / (1000.0 / self.option_handler.input_freq)))
-						in_handler.close()
-					except OSError:
-						pass
-
-
-				else:
-					s=self.option_handler.GetModelRun()
-					if self.option_handler.type[-1]!= 'features':
-						s.append(self.data_handler.data.step)
-					else:
-						s.append(0.05)
-
-					self.model_handler.RunControll(s)"""
-		self.optimizer.fit_obj.combineFeatures([self.cands[0]],delete_model=False)
+		self.last_fitness=self.optimizer.fit_obj.combineFeatures([self.optimal_params],delete_model=False)
+		print((self.optimal_params,"fitness: ",self.last_fitness))
 		#calculate the error components
 		if self.option_handler.type[-1]!= 'features':
 			k_range=self.data_handler.number_of_traces()
@@ -624,9 +536,9 @@ class coreModul():
 			tmp_list.append([str(name),str(mmin),str(mmax),str(f)])
 		tmp_str+="<center><p>"+self.htmlStyle("Results",self.htmlUnderline(),self.htmlResize(200))+"</p></center>\n"
 		tmp_str+=self.htmlTable(["Parameter Name","Minimum","Maximum","Optimum"], tmp_list)+"\n"
-		tmp_str+="<center><p>"+self.htmlStrBold("Fitnes: ")
+		tmp_str+="<center><p>"+self.htmlStrBold("Fitness: ")
 		#tmp_str+=self.htmlStrBold(str(self.optimizer.final_pop[0].fitness))+"</p></center>\n"
-		tmp_str+=self.htmlStrBold(str(self.fits[0]))+"</p></center>\n"
+		tmp_str+=self.htmlStrBold(str(self.last_fitness))+"</p></center>\n"
 		tmp_str+=self.htmlPciture("result_trace.png")+"\n"
 		for k in list(self.option_handler.GetOptimizerOptions().keys()):
 			tmp_str+="<p><b>"+k+" =</b> "+str(self.option_handler.GetOptimizerOptions()[k])+"</p>\n"
