@@ -196,7 +196,6 @@ class InspyredAlgorithmBasis(baseOptimizer):
 		baseOptimizer.__init__(self, reader_obj,  option_obj)
 		self.pop_size = option_obj.pop_size
 		self.max_evaluation = option_obj.max_evaluation
-
 		self.maximize = False  # hard wired, always minimize
 		self.stat_file = open(self.directory + "/stat_file.txt", "w")
 		self.ind_file = open(self.directory + "/ind_file.txt", "w")
@@ -238,10 +237,12 @@ class InspyredAlgorithmBasis(baseOptimizer):
 			file_handler.setFormatter(formatter)
 			logger.addHandler(file_handler)
 			self.kwargs={k: v for k, v in self.kwargs.items() if v is not None}
+			print(self.kwargs)
 			self.final_pop = self.evo_strat.evolve(**self.kwargs)
 
 			if hasattr(self.evo_strat, "archive"):
 				self.final_archive = self.evo_strat.archive
+	
 
 class ScipyAlgorithmBasis(baseOptimizer):
 
@@ -316,23 +317,7 @@ class PygmoAlgorithmBasis(baseOptimizer):
 			self.pgalgo.evolve(self.archi)
 			
 			self.mpbfe.shutdown_pool()
-		else:
-			self.pgalgo=pg.algorithm(self.algorithm)
-			self.pgalgo.set_verbosity(1)
-			self.archi = pg.archipelago(n=self.num_islands,t = pg.fully_connected(),algo=self.pgalgo, prob=self.prob, pop_size=self.pop_size)#,b=self.bfe)
-			self.archi.evolve()
-			self.archi.wait()
-			for x in range(self.num_islands):
-				self.archi.push_back()
-		
-		
-		
-		
-		#pickle.dump(self.archi,open(str(self.base_dir)+'/pygmo_save.pkl', 'wb'))
-		#self.archi.wait()
-		
-		#try:
-		if self.multiprocessing:
+			
 			if self.multiobjective:
 				self.champions_x = self.archi.get_x()
 				self.champions_f = list(np.mean(self.archi.get_f(),axis=1))
@@ -343,11 +328,25 @@ class PygmoAlgorithmBasis(baseOptimizer):
 				self.champions_f = self.archi.champion_f
 				self.best_fitness = self.champions_f
 				self.best = normalize(self.champions_x, self)
-		else:		
+				
+		else:
+			self.pgalgo=pg.algorithm(self.algorithm)
+			self.pgalgo.set_verbosity(1)
+			self.archi = pg.archipelago(n=self.num_islands,t = pg.fully_connected(),algo=self.pgalgo, prob=self.prob, pop_size=self.pop_size)#,b=self.bfe)
+			self.archi.evolve()
+			self.archi.wait()
+			for x in range(self.num_islands):
+				self.archi.push_back()
+		
 			self.champions_x = self.archi.get_champions_x()
 			self.champions_f = self.archi.get_champions_f()
 			self.best_fitness = min(self.champions_f)
-			self.best = normalize(self.champions_x[self.champions_f.index(self.best_fitness)], self)
+			self.best = normalize(self.champions_x[self.champions_f.index(self.best_fitness)], self)		
+		
+		
+		#pickle.dump(self.archi,open(str(self.base_dir)+'/pygmo_save.pkl', 'wb'))
+		
+			
 
 		
 class Problem:
@@ -1266,7 +1265,7 @@ class Random_Search(baseOptimizer):
 
 
 # simple NSGA-II
-class Nondominated_Sorted_Inspyred(InspyredAlgorithmBasis):
+class Nondominated_Sorted_GA_Inspyred(InspyredAlgorithmBasis):
 	"""
 	Implements a custom version of ``Evolution Strategy`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object

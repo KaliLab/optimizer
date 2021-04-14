@@ -44,10 +44,6 @@ class coreModul():
 		self.optimizer=None
 		self.wfits = []
 		self.wfits2 = []
-		self.minind = 0
-		self.moo_var = False
-		self.deap_var = False
-		self.brain_var = False
 		f_m={"MSE": "calc_ase",
 						"Spike count": "calc_spike",
 						"MSE (excl. spikes)": "calc_spike_ase",
@@ -213,14 +209,6 @@ class coreModul():
 		channels.append("None")
 		return channels
 
-	def get_moo_var(self):
-		return self.moo_var
-
-	def get_deap_var(self):
-		return self.deap_var
-
-	def get_brain_var(self):
-		return self.brain_var
 
 	def ReturnChParams(self,channel):
 		"""
@@ -505,7 +493,8 @@ class coreModul():
 		self.final_result=[]
 		self.error_comps=[]
 		self.last_fitness=self.optimizer.fit_obj.combineFeatures([self.optimal_params],delete_model=False)
-		print((self.optimal_params,"fitness: ",self.last_fitness))
+		self.renormed_params=self.optimizer.fit_obj.ReNormalize(self.optimal_params)
+		print((self.renormed_params,"fitness: ",self.last_fitness))
 		#calculate the error components
 		if self.option_handler.type[-1]!= 'features':
 			k_range=self.data_handler.number_of_traces()
@@ -531,7 +520,7 @@ class coreModul():
 		tmp_str+="<p>"+self.htmlStyle("Optimization of <b>"+name+".hoc</b> based on: "+self.option_handler.input_dir,self.htmlAlign("center"))+"</p>\n"
 		tmp_list=[]
 		#tmp_fit=self.optimizer.fit_obj.ReNormalize(self.optimizer.final_pop[0].candidate[0:len(self.option_handler.adjusted_params)])
-		tmp_fit=self.optimal_params
+		tmp_fit=self.renormed_params
 		for name,mmin,mmax,f in zip(self.option_handler.GetObjTOOpt(),self.option_handler.boundaries[0],self.option_handler.boundaries[1],tmp_fit):
 			tmp_list.append([str(name),str(mmin),str(mmax),str(f)])
 		tmp_str+="<center><p>"+self.htmlStyle("Results",self.htmlUnderline(),self.htmlResize(200))+"</p></center>\n"
