@@ -211,7 +211,6 @@ class modelHandlerNeuron():
         f=open(self.parameters[0],'r')
         tmp=[float(n) for n in f]
         self.vec=self.vec.from_python(tmp)
-        print(self.hoc_obj.dt)
         #self.hoc_obj('h.vec.play(&stim.amp,dt)')
         #print (dir(self.hoc_obj.cas()(0.5).point_processes()[0]))
         #ref=self.hoc_obj.ref(self.stimulus.amp)
