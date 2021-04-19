@@ -476,7 +476,7 @@ class coreModul():
 				self.fits.append(self.optimizer.final_pop[i].fitness)
 
 		print(("Optimization lasted for ", stop_time-start_time, " s"))	
-		self.optimal_params=self.optimizer.fit_obj.ReNormalize(self.cands[0])
+		self.optimal_params=self.cands[0]
 		
 		
 
@@ -494,7 +494,6 @@ class coreModul():
 		self.error_comps=[]
 		self.last_fitness=self.optimizer.fit_obj.combineFeatures([self.optimal_params],delete_model=False)
 		self.renormed_params=self.optimizer.fit_obj.ReNormalize(self.optimal_params)
-		print((self.renormed_params,"fitness: ",self.last_fitness))
 		#calculate the error components
 		if self.option_handler.type[-1]!= 'features':
 			k_range=self.data_handler.number_of_traces()
