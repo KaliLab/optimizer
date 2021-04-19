@@ -237,7 +237,6 @@ class InspyredAlgorithmBasis(baseOptimizer):
 			file_handler.setFormatter(formatter)
 			logger.addHandler(file_handler)
 			self.kwargs={k: v for k, v in self.kwargs.items() if v is not None}
-			print(self.kwargs)
 			self.final_pop = self.evo_strat.evolve(**self.kwargs)
 
 			if hasattr(self.evo_strat, "archive"):
@@ -577,8 +576,8 @@ class Covariance_Matrix_Adaptation_ES_Pygmo(PygmoAlgorithmBasis):
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
 		self.force_bounds = option_obj.force_bounds
-		self.algorithm = pg.cmaes(gen=self.max_evaluation,ftol=1e-15, xtol=1e-15, force_bounds=bool(self.force_bounds))
-
+		self.algorithm = pg.cmaes(gen=self.max_evaluation,ftol=0, xtol=0, force_bounds=bool(self.force_bounds))
+		
 class Particle_Swarm_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
