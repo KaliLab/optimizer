@@ -201,7 +201,7 @@ class fF(object):
             error=call(self.model.GetExec(unique_ID))
             
             params_file = 'params' + unique_ID + '.param' 
-            
+            os.chdir(self.option.base_dir)
             try:
                 if(params_file != 'params.param'):
                     os.remove(params_file)
@@ -979,6 +979,9 @@ class fF(object):
             "Instantiate a model class"
             self.model=modelHandler.modelHandlerNeuron(self.option.model_path,self.option.model_spec_dir,self.option.base_dir)
             self.model.hoc_obj.dt=self.option.GetModelRun()[1]
+        else:
+            self.model=modelHandler.externalHandler(self.option.GetSimParam()[1])
+            self.model.SetNParams(self.option)
 
         try:
             s = self.option.GetUFunString()
@@ -1005,7 +1008,8 @@ class fF(object):
             if self.option.output_level == "1":
                 print(l)
             l = self.ReNormalize(l)
-            self.setParameters(section, l)
+            if(self.option.simulator == 'Neuron'):
+                self.setParameters(section, l)
             self.model.CreateStimuli(self.option.GetModelStim())
             if self.option.output_level == "1":
                 print(l)

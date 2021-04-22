@@ -60,7 +60,6 @@ class externalHandler():
         for o in self.options:
             tmp.append(o)
         tmp += [unique_ID]
-        print(tmp)
         return tmp
 
     def GetParameters(self):
@@ -72,7 +71,10 @@ class externalHandler():
     def SetStimuli(self,p,e):
         pass
 
-    def load_neuron(self):
+    def SetChannelParameters(self,section,segment,channel,params,values):
+        pass
+
+    def SetMorphParameters(self,section,params,values):
         pass
 
 # class to handle the neuron models
