@@ -95,7 +95,6 @@ spikedetector = nest.Create('spike_detector')
 
 
 # In[164]:
-
 nest.Connect(current_gen, neuron)
 nest.Connect(voltmeter,   neuron)
 nest.Connect(neuron,      spikedetector)
@@ -126,6 +125,7 @@ spikes   = nest.GetStatus(spikedetector)[0]['events']['times']
 # In[167]:
 spike_filename = 'spike' + unique_ID + '.dat'
 trace_filename = 'trace' + unique_ID + '.dat'
+
 
 np.savetxt(spike_filename, spikes, fmt='%.2f')
 np.savetxt(trace_filename, np.array([times, voltages]).T, fmt='%.2f')
