@@ -110,6 +110,7 @@ class fF(object):
     """
     def __init__(self, reader_object, option_object):
         self.fitnes = []
+        self.model_trace = [] 
         self.thres = option_object.spike_thres
         #self.d_spike=[]
         #self.m_spike=[]
@@ -225,13 +226,13 @@ class fF(object):
             
             
             try:
-                os.remove(self.option.base_dir + '/trace' + unique_ID + '.dat')
+            	os.remove(self.option.base_dir + '/trace' + unique_ID + '.dat')
             except OSError:
                 pass
 
 
             try:
-            	os.remove(self.option.base_dir + '/spike' + unique_ID + '.dat')
+                os.remove(self.option.base_dir + '/spike' + unique_ID + '.dat')
             except OSError:
                 pass
             
@@ -966,7 +967,7 @@ class fF(object):
         :return: the ``list`` of fitness values corresponding to the parameter sets
 
         """
-        
+        self.model_trace = []
         self.fitnes = []
         features = self.option.feats
         weigths = self.option.weights
@@ -1029,6 +1030,7 @@ class fF(object):
                     extra_param = self.option.GetModelRun()
                     self.model.SetStimuli(parameter, extra_param)
                 if (not self.modelRunner(l,k)):
+                    self.model_trace.append(self.model.record[0])
                     if self.option.output_level == "1":
                         print(features, weigths)
                     if (self.option.type[-1]!='features'):
