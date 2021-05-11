@@ -501,13 +501,13 @@ class coreModul():
 			k_range=len(self.data_handler.features_data["stim_amp"])
 			
 		for k in range(k_range):
-			self.error_comps.append(self.optimizer.fit_obj.getErrorComponents(k, self.optimizer.fit_obj.model.record[0]))
+			self.error_comps.append(self.optimizer.fit_obj.getErrorComponents(k, self.optimizer.fit_obj.model_trace[k]))
 			trace_handler=open("result_trace"+str(k)+".txt","w")
-			for l in self.optimizer.fit_obj.model.record[0]:
+			for l in self.optimizer.fit_obj.model_trace[k]:
 				trace_handler.write(str(l))
 				trace_handler.write("\n")
 			trace_handler.close()
-			self.final_result.extend(self.optimizer.fit_obj.model.record)
+			self.final_result.append(self.optimizer.fit_obj.model_trace[k])
 
 		if isinstance(self.optimizer.fit_obj.model, externalHandler):
 			self.optimizer.fit_obj.model.record[0]=[]
