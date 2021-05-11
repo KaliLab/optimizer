@@ -306,13 +306,12 @@ class PygmoAlgorithmBasis(baseOptimizer):
 		print(self.max_evaluation)"""
 		
 		if self.multiprocessing:
-			self.mpbfe=pg.mp_bfe(1)
-			self.mpbfe.init_pool(self.number_of_cpu)
-			self.bfe=pg.bfe(self.mpbfe)
-			self.algorithm.set_bfe(self.bfe)
+			self.mpbfe=pg.mp_bfe()
+			self.mpbfe.resize_pool(int(self.number_of_cpu))
+			self.algorithm.set_bfe(pg.bfe())
 			self.pgalgo=pg.algorithm(self.algorithm)
 			self.pgalgo.set_verbosity(1)
-			self.archi = pg.population(prob=self.prob, size=self.pop_size,b=self.bfe)
+			self.archi = pg.population(prob=self.prob, size=self.pop_size,b=self.mpbfe)
 			self.pgalgo.evolve(self.archi)
 			
 			self.mpbfe.shutdown_pool()
