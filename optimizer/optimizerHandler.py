@@ -277,6 +277,7 @@ class PygmoAlgorithmBasis(baseOptimizer):
 	def __init__(self, reader_obj,  option_obj):
 		baseOptimizer.__init__(self, reader_obj,  option_obj)
 		self.multiobjective=False
+		self.multiprocessing=False
 		self.option_obj=option_obj
 		pg.set_global_rng_seed(seed = self.seed)
 		self.boundaries = option_obj.boundaries
@@ -459,7 +460,6 @@ class Single_Differential_Evolution_Pygmo(SinglePygmoAlgorithmBasis):
 	def __init__(self,reader_obj,option_obj):
 
 		SinglePygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
-		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		
 		self.pop_kwargs['size'] = int(option_obj.pop_size)
@@ -540,7 +540,6 @@ class Simulated_Annealing_Inspyred(InspyredAlgorithmBasis):
 class Praxis_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
-		self.multiprocessing=False
 		
 		self.pop_size = int(option_obj.pop_size)
 
@@ -552,7 +551,6 @@ class Praxis_Pygmo(PygmoAlgorithmBasis):
 class Nelder_Mead_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
-		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
 
@@ -562,7 +560,6 @@ class Nelder_Mead_Pygmo(PygmoAlgorithmBasis):
 class Differential_Evolution_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
-		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
 
@@ -571,7 +568,6 @@ class Differential_Evolution_Pygmo(PygmoAlgorithmBasis):
 class Covariance_Matrix_Adaptation_ES_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
-		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
 		self.force_bounds = option_obj.force_bounds
@@ -580,7 +576,6 @@ class Covariance_Matrix_Adaptation_ES_Pygmo(PygmoAlgorithmBasis):
 class Particle_Swarm_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
-		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
 
@@ -638,7 +633,6 @@ class Nondominated_Sorted_GA_Pygmo(PygmoAlgorithmBasis):
 class Exponential_Evolution_Strategies_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
-		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
 		self.force_bounds = option_obj.force_bounds if option_obj.force_bounds else False
@@ -649,7 +643,6 @@ class Exponential_Evolution_Strategies_Pygmo(PygmoAlgorithmBasis):
 class Bee_Colony_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
-		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
 
@@ -658,7 +651,6 @@ class Bee_Colony_Pygmo(PygmoAlgorithmBasis):
 class Simple_Genetic_Algorithm_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
-		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 		self.pop_size = int(option_obj.pop_size)
 
@@ -669,7 +661,6 @@ class Self_adaptive_DE_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self,reader_obj,option_obj):
 
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
-		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 
 		if int(option_obj.pop_size)<7:
@@ -687,7 +678,6 @@ class Differential_Evolution_1220_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self,reader_obj,option_obj):
 
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
-		self.multiprocessing=False
 		self.max_evaluation=int(option_obj.max_evaluation)
 
 		if int(option_obj.pop_size)<7:
@@ -743,19 +733,6 @@ class Particle_Swarm_Inspyred(InspyredAlgorithmBasis):
 		#self.neighborhood_size=int(round(option_obj.neighborhood_size))
 		'''
 		self.kwargs["topology"] = inspyred.swarm.topologies.star_topology
-	def Optimize(self):
-		"""
-		Performs the optimization.
-		"""
-		logger = logging.getLogger('inspyred.ec')
-		logger.setLevel(logging.DEBUG)
-		file_handler = logging.FileHandler(self.directory + '/inspyred.log', mode='w')
-		file_handler.setLevel(logging.DEBUG)
-		formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-		file_handler.setFormatter(formatter)
-		logger.addHandler(file_handler)
-
-		self.final_pop = self.evo_strat.evolve(**self.kwargs)
 
 class Basinhopping_Scipy(ScipyAlgorithmBasis):
 	"""

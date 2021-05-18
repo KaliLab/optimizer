@@ -39,23 +39,23 @@ def popup(message):
     msg.exec()
 
 
-class Ui_Optimizer(object):
+class Ui_Neuroptimus(object):
     def __init__(self,*args):
         super().__init__(*args)
 
 
-    def setupUi(self, Optimizer):
+    def setupUi(self, Neuroptimus):
         """
         Implements the widgets from the PyQT package.
         """
         
 
-        Optimizer.setObjectName("Optimizer")
-        Optimizer.resize(800, 589)
-        Optimizer.setSizePolicy(QtWidgets.QSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding))
-        self.centralwidget = QtWidgets.QWidget(Optimizer)
+        Neuroptimus.setObjectName("Neuroptimus")
+        Neuroptimus.resize(800, 589)
+        Neuroptimus.setSizePolicy(QtWidgets.QSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding))
+        self.centralwidget = QtWidgets.QWidget(Neuroptimus)
         self.centralwidget.setObjectName("centralwidget")
-        Optimizer.setCentralWidget(self.centralwidget)
+        Neuroptimus.setCentralWidget(self.centralwidget)
         self.laybox = QtWidgets.QVBoxLayout(self.centralwidget)
         
         self.tabwidget = QtWidgets.QTabWidget(self.centralwidget)
@@ -105,15 +105,11 @@ class Ui_Optimizer(object):
         font.setWeight(50)
         self.label_5.setFont(font)
         self.label_5.setObjectName("label_5")
-        self.label = QtWidgets.QLabel(self.filetab)
-        self.label.setGeometry(QtCore.QRect(10, 50, 180, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(11)
         font.setBold(True)
         font.setWeight(75)
-        self.label.setFont(font)
-        self.label.setObjectName("label")
         self.label_7 = QtWidgets.QLabel(self.filetab)
         self.label_7.setGeometry(QtCore.QRect(250, 210, 120, 16))
         font = QtGui.QFont()
@@ -210,7 +206,7 @@ class Ui_Optimizer(object):
         self.label_24.setFont(font)
         self.label_24.setObjectName("label_24")
         self.pushButton_13 = QtWidgets.QPushButton(self.modeltab)
-        self.pushButton_13.setGeometry(QtCore.QRect(360, 100, 80, 22))
+        self.pushButton_13.setGeometry(QtCore.QRect(150, 50, 80, 22))
         self.pushButton_13.setObjectName("pushButton_13")
         self.lineEdit_file2 = QtWidgets.QLineEdit(self.modeltab)
         self.lineEdit_file2.setGeometry(QtCore.QRect(10, 100, 221, 22))
@@ -227,17 +223,13 @@ class Ui_Optimizer(object):
         self.pushButton_16 = QtWidgets.QPushButton(self.modeltab)
         self.pushButton_16.setGeometry(QtCore.QRect(460, 200, 111, 22))
         self.pushButton_16.setObjectName("pushButton_16")
-        self.label_25 = QtWidgets.QLabel(self.modeltab)
-        self.label_25.setGeometry(QtCore.QRect(10, 50, 121, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(11)
         font.setBold(True)
         font.setWeight(75)
-        self.label_25.setFont(font)
-        self.label_25.setObjectName("label_25")
         self.label_26 = QtWidgets.QLabel(self.modeltab)
-        self.label_26.setGeometry(QtCore.QRect(370, 130, 300, 16))
+        self.label_26.setGeometry(QtCore.QRect(10, 80, 300, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(10)
@@ -245,17 +237,13 @@ class Ui_Optimizer(object):
         font.setWeight(50)
         self.label_26.setFont(font)
         self.label_26.setObjectName("label_26")
-        self.label_27 = QtWidgets.QLabel(self.modeltab)
-        self.label_27.setGeometry(QtCore.QRect(10, 180, 300, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(11)
         font.setBold(True)
         font.setWeight(75)
-        self.label_27.setFont(font)
-        self.label_27.setObjectName("label_27")
         self.dd_type = QtWidgets.QComboBox(self.modeltab)
-        self.dd_type.setGeometry(QtCore.QRect(480, 100, 121, 23))
+        self.dd_type.setGeometry(QtCore.QRect(10, 50, 121, 23))
         self.dd_type.setObjectName("dd_type")
         self.dd_type.addItem("Neuron")
         self.dd_type.addItem("external")
@@ -264,9 +252,9 @@ class Ui_Optimizer(object):
         self.lineEdit_folder2.setGeometry(QtCore.QRect(10, 150, 221, 22))
         self.lineEdit_folder2.setObjectName("lineEdit_folder2")
         self.sim_path = QtWidgets.QLineEdit(self.modeltab)
-        self.sim_path.setGeometry(QtCore.QRect(360, 150, 241, 22))
+        self.sim_path.setGeometry(QtCore.QRect(10, 100, 241, 22))
         self.sim_path.setObjectName("sim_path")
-        self.sim_path.setEnabled(False)
+        self.sim_path.hide()
         self.setter = QtWidgets.QPushButton(self.modeltab)
         self.setter.setGeometry(QtCore.QRect(460, 250, 80, 22))
         self.setter.setObjectName("setter")
@@ -357,15 +345,11 @@ class Ui_Optimizer(object):
         self.lineEdit_duration = QtWidgets.QLineEdit(self.simtab)
         self.lineEdit_duration.setGeometry(QtCore.QRect(10, 290, 113, 22))
         self.lineEdit_duration.setObjectName("duration")
-        self.label_47 = QtWidgets.QLabel(self.simtab)
-        self.label_47.setGeometry(QtCore.QRect(10, 50, 300, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(11)
         font.setBold(True)
         font.setWeight(75)
-        self.label_47.setFont(font)
-        self.label_47.setObjectName("label_47")
         self.base_dir_controll9 = QtWidgets.QPushButton(self.simtab)
         self.base_dir_controll9.setGeometry(QtCore.QRect(10, 180, 115, 22))
         self.base_dir_controll9.setObjectName("base_dir_controll9")
@@ -505,15 +489,11 @@ class Ui_Optimizer(object):
         self.pushButton_30 = QtWidgets.QPushButton(self.runtab)
         self.pushButton_30.setGeometry(QtCore.QRect(630, 460, 80, 22))
         self.pushButton_30.setObjectName("pushButton_30")
-        self.label_57 = QtWidgets.QLabel(self.runtab)
-        self.label_57.setGeometry(QtCore.QRect(10, 50, 250, 16))
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(11)
         font.setBold(True)
         font.setWeight(75)
-        self.label_57.setFont(font)
-        self.label_57.setObjectName("label_57")
         self.pushButton_31 = QtWidgets.QPushButton(self.runtab)
         self.pushButton_31.setGeometry(QtCore.QRect(110, 460, 111, 22))
         self.pushButton_31.setObjectName("pushButton_31")
@@ -612,57 +592,56 @@ class Ui_Optimizer(object):
         font.setWeight(50)
         self.fitstat.setFont(font)
         self.fitstat.setObjectName("label")
-        self.fitstat.setText(QtCore.QCoreApplication.translate("Optimizer", 'Fitness statistics'))
+        self.fitstat.setText(QtCore.QCoreApplication.translate("Neuroptimus", 'Fitness statistics'))
 
 
 
-        Optimizer.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(Optimizer)
+        Neuroptimus.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(Neuroptimus)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 771, 19))
         self.menubar.setObjectName("menubar")
         self.menuMenu = QtWidgets.QMenu(self.menubar)
         self.menuMenu.setObjectName("menuMenu")
-        Optimizer.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(Optimizer)
+        Neuroptimus.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(Neuroptimus)
         self.statusbar.setObjectName("statusbar")
-        Optimizer.setStatusBar(self.statusbar)
-        self.actionMultiple_Optimization = QtWidgets.QAction(Optimizer)
+        Neuroptimus.setStatusBar(self.statusbar)
+        self.actionMultiple_Optimization = QtWidgets.QAction(Neuroptimus)
         self.actionMultiple_Optimization.setObjectName("actionMultiple_Optimization")
         self.menuMenu.addAction(self.actionMultiple_Optimization)
         self.menubar.addAction(self.menuMenu.menuAction())
-        self.retranslateUi(Optimizer)
-        QtCore.QMetaObject.connectSlotsByName(Optimizer)
+        self.retranslateUi(Neuroptimus)
+        QtCore.QMetaObject.connectSlotsByName(Neuroptimus)
         self.tabwidget.setCurrentIndex(0)
 
-    def retranslateUi(self, Optimizer):
+    def retranslateUi(self, Neuroptimus):
         """
         Set PyQT widgets behaviors and implements functions.
         """
         _translate = QtCore.QCoreApplication.translate
-        Optimizer.setWindowTitle(_translate("Optimizer", "Optimizer"))
+        Neuroptimus.setWindowTitle(_translate("Neuroptimus", "Neuroptimus"))
         #self.tabwidget.currentChanged.connect(self.onChange)
-        #modeltab 1
+        #modeltab 2 disappearing
 
-        self.tabwidget.setTabText(self.tabwidget.indexOf(self.filetab), _translate("Optimizer", "File Tab"))
-        self.label_23.setText(_translate("Optimizer", "Load mod files from:"))
-        self.label_24.setText(_translate("Optimizer", "Model File"))
+        self.tabwidget.setTabText(self.tabwidget.indexOf(self.filetab), _translate("Neuroptimus", "File"))
+        self.label_23.setText(_translate("Neuroptimus", "Load mod files from:"))
+        self.label_24.setText(_translate("Neuroptimus", "Model File"))
         self.lineEdit_folder2.setEnabled(False)
         self.pushButton_14.setEnabled(False)
         self.load_mods_checkbox.clicked.connect(self.disable_mod_path)
-        self.pushButton_13.setText(_translate("Optimizer", "Load"))
+        self.pushButton_13.setText(_translate("Neuroptimus", "Load"))
         self.pushButton_13.clicked.connect(self.Load2)
-        self.pushButton_14.setText(_translate("Optimizer", "Browse..."))
+        self.pushButton_14.setText(_translate("Neuroptimus", "Browse..."))
         self.pushButton_14.clicked.connect(self.openFolderNameDialog2)
-        self.pushButton_15.setText(_translate("Optimizer", "Browse..."))
+        self.pushButton_15.setText(_translate("Neuroptimus", "Browse..."))
         self.pushButton_15.clicked.connect(self.openFileNameDialog2)
-        self.pushButton_16.setText(_translate("Optimizer", "Define function"))
+        self.pushButton_16.setText(_translate("Neuroptimus", "Define function"))
         self.pushButton_16.clicked.connect(self.UF)
-        self.label_25.setText(_translate("Optimizer", "Model Options"))
-        self.label_26.setText(_translate("Optimizer", "Command to external simulator"))
-        self.label_27.setText(_translate("Optimizer", "Model   Parameter  adjustment"))
-        self.setter.setText(_translate("Optimizer", "Set"))
+        self.label_26.setText(_translate("Neuroptimus", "Command to external simulator"))
+        self.label_26.hide()
+        self.setter.setText(_translate("Neuroptimus", "Set"))
         self.setter.clicked.connect(self.Set)
-        self.remover.setText(_translate("Optimizer", "Remove"))
+        self.remover.setText(_translate("Neuroptimus", "Remove"))
         self.remover.clicked.connect(self.Remove)
         self.modellist.setColumnCount(4)
         self.modellist.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
@@ -683,30 +662,29 @@ class Ui_Optimizer(object):
         self.input_tree.setWidget(self.input_label)
 
 
-        #filetab 2
-        self.label_3.setText(_translate("Optimizer", "Base Directory"))
-        self.label_4.setText(_translate("Optimizer", "Length of traces (ms)"))
-        self.label_5.setText(_translate("Optimizer", "Number of traces"))
-        self.label.setText(_translate("Optimizer", "File Options"))
-        self.label_7.setText(_translate("Optimizer", "Units"))
-        self.pushButton_3.setText(_translate("Optimizer", "Load trace"))
+        #filetab 1
+        self.label_3.setText(_translate("Neuroptimus", "Base Directory"))
+        self.label_4.setText(_translate("Neuroptimus", "Length of traces (ms)"))
+        self.label_5.setText(_translate("Neuroptimus", "Number of traces"))
+        self.label_7.setText(_translate("Neuroptimus", "Units"))
+        self.pushButton_3.setText(_translate("Neuroptimus", "Load trace"))
         self.pushButton_3.setEnabled(False)
         self.pushButton_3.clicked.connect(self.Load)
-        self.label_2.setText(_translate("Optimizer", "Input File"))
-        self.base_dir_controll.setText(_translate("Optimizer", "Browse..."))
+        self.label_2.setText(_translate("Neuroptimus", "Input File"))
+        self.base_dir_controll.setText(_translate("Neuroptimus", "Browse..."))
         self.base_dir_controll.clicked.connect(self.openFolderNameDialog)
-        self.label_6.setText(_translate("Optimizer", "Sampling frequency (Hz)"))
-        self.type_selector.setItemText(0, _translate("Optimizer", "Voltage trace"))
-        self.type_selector.setItemText(1, _translate("Optimizer", "Current trace"))
-        self.type_selector.setItemText(2, _translate("Optimizer", "Features"))
-        self.type_selector.setItemText(3, _translate("Optimizer", "Other"))
+        self.label_6.setText(_translate("Neuroptimus", "Sampling frequency (Hz)"))
+        self.type_selector.setItemText(0, _translate("Neuroptimus", "Voltage trace"))
+        self.type_selector.setItemText(1, _translate("Neuroptimus", "Current trace"))
+        self.type_selector.setItemText(2, _translate("Neuroptimus", "Features"))
+        self.type_selector.setItemText(3, _translate("Neuroptimus", "Other"))
         self.type_selector.currentTextChanged.connect(self.unitchange)
-        self.input_file_controll.setText(_translate("Optimizer", "Browse..."))
+        self.input_file_controll.setText(_translate("Neuroptimus", "Browse..."))
         self.input_file_controll.clicked.connect(self.openFileNameDialog)
-        self.time_checker.setText(_translate("Optimizer", "Contains time"))
-        self.dropdown.setItemText(0, _translate("Optimizer", "uV"))
-        self.dropdown.setItemText(1, _translate("Optimizer", "mV"))
-        self.dropdown.setItemText(2, _translate("Optimizer", "V"))
+        self.time_checker.setText(_translate("Neuroptimus", "Contains time"))
+        self.dropdown.setItemText(0, _translate("Neuroptimus", "uV"))
+        self.dropdown.setItemText(1, _translate("Neuroptimus", "mV"))
+        self.dropdown.setItemText(2, _translate("Neuroptimus", "V"))
         self.dropdown.setCurrentIndex(1)
 
         self.tvoltage=None
@@ -714,7 +692,7 @@ class Ui_Optimizer(object):
         self.tspike_t=None
         self.tother=None
         self.tfeatures=None
-        #self.vbox.setItemText(_translate("Optimizer", "Vbox"))
+        #self.vbox.setItemText(_translate("Neuroptimus", "Vbox"))
         self.figure = plt.figure(figsize=(4,2.5), dpi=80)
         self.canvas = FigureCanvas(self.figure)
         self.canvas.setParent(self.widget)
@@ -727,23 +705,22 @@ class Ui_Optimizer(object):
         self.core=Core.coreModul()
 
         #optiontab 3
-        self.tabwidget.setTabText(self.tabwidget.indexOf(self.modeltab), _translate("Optimizer", "Model Tab"))
-        self.label_44.setText(_translate("Optimizer", "Delay (ms)"))
-        self.label_66.setText(_translate("Optimizer", "Initial Voltage (mV)"))
-        self.label_67.setText(_translate("Optimizer", "tstop (ms)"))
-        self.label_45.setText(_translate("Optimizer", "Section"))
-        self.label_46.setText(_translate("Optimizer", "Duration (ms)"))
-        self.label_47.setText(_translate("Optimizer", "Simulation Settings"))
-        self.base_dir_controll9.setText(_translate("Optimizer", "Amplitude(s)"))
+        self.tabwidget.setTabText(self.tabwidget.indexOf(self.modeltab), _translate("Neuroptimus", "Model"))
+        self.label_44.setText(_translate("Neuroptimus", "Delay (ms)"))
+        self.label_66.setText(_translate("Neuroptimus", "Initial Voltage (mV)"))
+        self.label_67.setText(_translate("Neuroptimus", "tstop (ms)"))
+        self.label_45.setText(_translate("Neuroptimus", "Section"))
+        self.label_46.setText(_translate("Neuroptimus", "Duration (ms)"))
+        self.base_dir_controll9.setText(_translate("Neuroptimus", "Amplitude(s)"))
         self.base_dir_controll9.clicked.connect(self.amplitudes_fun)
-        self.label_48.setText(_translate("Optimizer", "Section"))
-        self.label_49.setText(_translate("Optimizer", "Stimulus Type"))
-        self.label_68.setText(_translate("Optimizer", "dt"))
-        self.label_50.setText(_translate("Optimizer", "Run Control"))
-        self.label_51.setText(_translate("Optimizer", "Position"))
-        self.label_52.setText(_translate("Optimizer", "Parameter to record"))
-        self.label_55.setText(_translate("Optimizer", "Simulation protocol"))
-        self.label_71.setText(_translate("Optimizer", "Position inside the section"))
+        self.label_48.setText(_translate("Neuroptimus", "Section"))
+        self.label_49.setText(_translate("Neuroptimus", "Stimulus Type"))
+        self.label_68.setText(_translate("Neuroptimus", "dt"))
+        self.label_50.setText(_translate("Neuroptimus", "Run Control"))
+        self.label_51.setText(_translate("Neuroptimus", "Position"))
+        self.label_52.setText(_translate("Neuroptimus", "Parameter to record"))
+        self.label_55.setText(_translate("Neuroptimus", "Simulation protocol"))
+        self.label_71.setText(_translate("Neuroptimus", "Position inside the section"))
         self.lineEdit_pos.setText("0.5")
         self.lineEdit_posins.setText("0.5")
         self.lineEdit_initv.setText("-65")
@@ -753,59 +730,54 @@ class Ui_Optimizer(object):
         self.stimulus_type.addItems(["Step Protocol","Custom Waveform"])
         self.stimulus_type.currentIndexChanged.connect(self.typeChange)
         self.param_to_record.addItems(["v","i"])
-        #self.stimprot.setItemText(0, _translate("Optimizer", "IClamp"))
-        #self.stimprot.setItemText(1, _translate("Optimizer", "VClamp"))
+        #self.stimprot.setItemText(0, _translate("Neuroptimus", "IClamp"))
+        #self.stimprot.setItemText(1, _translate("Neuroptimus", "VClamp"))
         self.container = []
         self.temp=[]
 
 
         #fittab 4
-        self.tabwidget.setTabText(self.tabwidget.indexOf(self.simtab), _translate("Optimizer", "Options Tab"))
-        self.label_56.setText(_translate("Optimizer", "Fitness Functions"))
+        self.tabwidget.setTabText(self.tabwidget.indexOf(self.simtab), _translate("Neuroptimus", "Options"))
         self.fitlist.setColumnCount(2)
         #self.fitlist.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         #self.flist.setHorizontalHeaderLabels(("Section;Segment;Mechanism;Parameter").split(";"))
-        #self.modellist.resizeColumnsToContents()
+        self.fitlist.resizeColumnsToContents()
         
         #self.fitlist.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.fitlist.setHorizontalHeaderLabels(["Fitness Functions","Weights"])
         #self.fitlist.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.fitlist.setColumnWidth(0,200)
-        self.fitlist.setColumnWidth(1,101)
+        self.fitlist.setColumnWidth(1,80)
         self.fitlist.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
-        self.fitlist.itemSelectionChanged.connect(self.fitselect)
-        self.fitlist.cellEntered.connect(self.fitselect)
+        #self.fitlist.itemSelectionChanged.connect(self.fitselect)
         self.fitlist.cellClicked.connect(self.fitselect)
-        self.fitlist.cellPressed.connect(self.fitselect)
-        self.fitlist.cellActivated.connect(self.fitselect)
         self.fitlist.horizontalHeader().setStretchLastSection(True)
         self.fitset=set()
-        self.label_69.setText(_translate("Optimizer", "Spike Detection Tresh. (mv)"))
-        self.label_70.setText(_translate("Optimizer", "Spike Window (ms)"))
+        self.label_69.setText(_translate("Neuroptimus", "Spike Detection Tresh. (mv)"))
+        self.label_70.setText(_translate("Neuroptimus", "Spike Window (ms)"))
         self.pushButton_normalize.clicked.connect(self.Normalize)
 
         #runtab 5
-        self.tabwidget.setTabText(self.tabwidget.indexOf(self.fittab), _translate("Optimizer", "Fitness Tab"))
-        self.pushButton_30.setText(_translate("Optimizer", "Run"))
+        self.tabwidget.setTabText(self.tabwidget.indexOf(self.fittab), _translate("Neuroptimus", "Fitness"))
+        self.pushButton_30.setText(_translate("Neuroptimus", "Run"))
         self.pushButton_30.clicked.connect(self.runsim)
-        self.label_57.setText(_translate("Optimizer", "Optimizer Settings"))
-        self.pushButton_31.setText(_translate("Optimizer", "Starting Points"))
+        self.pushButton_31.setText(_translate("Neuroptimus", "Starting Points"))
         self.pushButton_31.clicked.connect(self.startingpoints)
-        self.pushButton_32.setText(_translate("Optimizer", "Boundaries"))
+        self.pushButton_32.setText(_translate("Neuroptimus", "Boundaries"))
         self.pushButton_32.clicked.connect(self.boundarywindow)
-        self.label_59.setText(_translate("Optimizer", "Algorithms"))
-        self.label_60.setText(_translate("Optimizer", "Parameters"))
-        self.tabwidget.setTabText(self.tabwidget.indexOf(self.runtab), _translate("Optimizer", "Run Tab"))
+        self.label_59.setText(_translate("Neuroptimus", "Algorithms"))
+        self.label_60.setText(_translate("Neuroptimus", "Parameters"))
+        self.tabwidget.setTabText(self.tabwidget.indexOf(self.runtab), _translate("Neuroptimus", "Run"))
         
-        self.pushButton_Recom.setText(_translate("Optimizer", "Recommended"))
+        self.pushButton_Recom.setText(_translate("Neuroptimus", "Recommended"))
         self.pushButton_Recom.clicked.connect(partial(self.packageselect,"Recommended"))
-        self.pushButton_Inspyred.setText(_translate("Optimizer", "Inspyred"))
+        self.pushButton_Inspyred.setText(_translate("Neuroptimus", "Inspyred"))
         self.pushButton_Inspyred.clicked.connect(partial(self.packageselect,"Inspyred"))
-        self.pushButton_Pygmo.setText(_translate("Optimizer", "Pygmo"))
+        self.pushButton_Pygmo.setText(_translate("Neuroptimus", "Pygmo"))
         self.pushButton_Pygmo.clicked.connect(partial(self.packageselect,"Pygmo"))
-        self.pushButton_Bluepyopt.setText(_translate("Optimizer", "Bluepyopt"))
+        self.pushButton_Bluepyopt.setText(_translate("Neuroptimus", "Bluepyopt"))
         self.pushButton_Bluepyopt.clicked.connect(partial(self.packageselect,"Bluepyopt"))
-        self.pushButton_Scipy.setText(_translate("Optimizer", "Scipy"))
+        self.pushButton_Scipy.setText(_translate("Neuroptimus", "Scipy"))
         self.pushButton_Scipy.clicked.connect(partial(self.packageselect,"Scipy"))
         self.algolist.setColumnCount(1)
         self.algolist.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
@@ -815,14 +787,14 @@ class Ui_Optimizer(object):
         self.algolist.setHorizontalHeaderLabels(['Algorithms'])
         self.aspectlist.setColumnCount(2)
         self.aspectlist.horizontalHeader().setStretchLastSection(True)
-        self.aspectlist.setHorizontalHeaderLabels(["Aspects","Num"])
+        self.aspectlist.setHorizontalHeaderLabels(["Option","Value"])
         self.aspectlist.cellChanged.connect(self.aspect_changed)
         self.seed=None
 
         self.Recom=["Evolutionary Algorithm (EA) - Inspyred","Covariance Matrix Adaptation ES (CMAES) - Pygmo",
-                "Particle Swarm (PSO) - Inspyred","Indicator Based (IBEA) - Bluepyopt","L-BFGS-B - Scipy"]
+                "Particle Swarm (PSO) - Inspyred","Indicator Based (IBEA) - Bluepyopt","L-BFGS-B - Scipy","Random Search"]
         self.Inspyred=["Evolutionary Algorithm (EA) - Inspyred","Particle Swarm (PSO) - Inspyred",
-                "Differential Evolution (DE) - Inspyred","Random Search - Inspyred",
+                "Differential Evolution (DE) - Inspyred",
                 "Nondominated Sorted (NSGAII) - Inspyred","Pareto Archived (PAES) - Inspyred",
                 "Simulated Annealing - Inspyred"]
         self.Scipy=["Basinhopping - Scipy","Nelder-Mead - Scipy","L-BFGS-B - Scipy"]
@@ -868,7 +840,7 @@ class Ui_Optimizer(object):
         descr39 = {'Crossover Rate:':1}
         descr40 = {'Number of CPU:':1}
         descr41 = {'Number of Islands:':1}
-        descr42 = {'Force bounds:' : False}
+        descr42 = {'Force bounds:' : False}   #extend options  
 
 
         self.algo_dict={
@@ -879,7 +851,7 @@ class Ui_Optimizer(object):
             "Nelder-Mead - Scipy": [descr20.copy(),descr30.copy(),descr31],
             "L-BFGS-B - Scipy": [descr20.copy(),descr28],
             "Differential Evolution (DE) - Inspyred": [descr19.copy(),descr20.copy(),descr21.copy(),descr39.copy(),descr40],
-            "Random Search - Inspyred": [descr19.copy(),descr40],
+            "Random Search - Base": [descr19.copy(),descr40],
             "Nondominated Sorted (NSGAII) - Inspyred": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
             "Pareto Archived (PAES) - Inspyred": [descr19.copy(),descr20.copy(),descr40],
             "Nondominated Sorted (NSGAII) - Bluepyopt": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
@@ -898,43 +870,43 @@ class Ui_Optimizer(object):
             "Single Differential Evolution - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "Differential Evolution (DE1220) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "Bee Colony - Pygmo":[descr19.copy(),descr20.copy(),descr41],
-            "FullGrid - Pygmo":[descr19.copy(),descr20.copy(),descr41]
+            "FullGrid - Pygmo":[descr19.copy(),descr20.copy(),descr41]    #NM,prax 
             }
         
 
 
-        self.tabwidget.setTabText(self.tabwidget.indexOf(self.eval_tab), _translate("Optimizer", "Evaluation Tab"))
-        self.label_72.setText(_translate("Optimizer", "Final Result"))
+        self.tabwidget.setTabText(self.tabwidget.indexOf(self.eval_tab), _translate("Neuroptimus", "Results"))
+        self.label_72.setText(_translate("Neuroptimus", "Final Result"))
         #plt.tight_layout()
         self.figure2 = plt.figure(figsize=(4,2), dpi=130)
         # self.figure2.gcf().subplots_adjust()
         self.canvas2 = FigureCanvas(self.figure2)
         self.canvas2.setParent(self.widget2)
-        self.pushButton_34.setText(_translate("Optimizer", "Save Parameters"))
+        self.pushButton_34.setText(_translate("Neuroptimus", "Save Parameters"))
         self.pushButton_34.clicked.connect(self.SaveParam)
 
 
-        self.tabwidget.setTabText(self.tabwidget.indexOf(self.plot_tab), _translate("Optimizer", "Plot Tab"))
-        self.label_74.setText(_translate("Optimizer", "Analysis"))
-        self.pushButton_35.setText(_translate("Optimizer", "Generation Plot"))
+        self.tabwidget.setTabText(self.tabwidget.indexOf(self.plot_tab), _translate("Neuroptimus", "Statistics"))
+        self.label_74.setText(_translate("Neuroptimus", "Analysis"))
+        self.pushButton_35.setText(_translate("Neuroptimus", "Generation Plot"))
         self.pushButton_35.clicked.connect(self.PlotGen)
-        self.pushButton_36.setText(_translate("Optimizer", "Grid Plot"))
+        self.pushButton_36.setText(_translate("Neuroptimus", "Grid Plot"))
         self.pushButton_36.clicked.connect(self.PlotGrid)
-        self.pushButton_37.setText(_translate("Optimizer", "Error Details"))
+        self.pushButton_37.setText(_translate("Neuroptimus", "Error Details"))
         self.pushButton_37.clicked.connect(self.ShowErrorDialog)
         self.errorlist.setColumnCount(4)
         self.errorlist.setHorizontalHeaderLabels(["Error Functions","Value","Weight","Weighted Value"])
         self.errorlist.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
 
 
-        self.menuMenu.setTitle(_translate("Optimizer", "Menu"))
-        self.actionMultiple_Optimization.setText(_translate("Optimizer", "Multiple Optimization"))
-        self.tabwidget.setTabEnabled(1,False)
+        self.menuMenu.setTitle(_translate("Neuroptimus", "Menu"))
+        self.actionMultiple_Optimization.setText(_translate("Neuroptimus", "Multiple Optimization"))
+        """self.tabwidget.setTabEnabled(1,False)
         self.tabwidget.setTabEnabled(2,False)
         self.tabwidget.setTabEnabled(3,False)
         self.tabwidget.setTabEnabled(4,False)
         self.tabwidget.setTabEnabled(5,False)
-        self.tabwidget.setTabEnabled(6,False)
+        self.tabwidget.setTabEnabled(6,False)"""
     
                 
 
@@ -1153,7 +1125,7 @@ class Ui_Optimizer(object):
         else:
             pass
         
-        self.input_label.setText(QtCore.QCoreApplication.translate("Optimizer", input_string))
+        self.input_label.setText(QtCore.QCoreApplication.translate("Neuroptimus", input_string))
         if self.core.option_handler.type[-1]!="features":
                 self.my_list = copy(self.core.ffun_calc_list)
                
@@ -1326,27 +1298,35 @@ class Ui_Optimizer(object):
         Called when simulation platform changed, locks unnecessary widgets and swap Label of Load button.
         """
         if self.dd_type.currentIndex():
-            self.sim_path.setEnabled(True)
-            self.pushButton_13.setText(QtCore.QCoreApplication.translate("Optimizer", "Set"))
-            self.pushButton_14.setEnabled(False)
-            self.pushButton_15.setEnabled(False)
-            self.pushButton_16.setEnabled(False)
-            self.setter.setEnabled(False)
-            self.remover.setEnabled(False)
-            self.modellist.setEnabled(False)
-            self.lineEdit_file2.setEnabled(False)
-            self.lineEdit_folder2.setEnabled(False)
+            self.sim_path.show()#setEnabled(True)
+            self.pushButton_13.setText(QtCore.QCoreApplication.translate("Neuroptimus", "Set"))
+            self.pushButton_14.hide()#setEnabled(False)
+            self.pushButton_15.hide()#setEnabled(False)
+            self.pushButton_16.hide()#setEnabled(False)
+            self.setter.hide()#setEnabled(False)
+            self.remover.hide()#setEnabled(False)
+            self.modellist.hide()#setEnabled(False)
+            self.lineEdit_file2.hide()#setEnabled(False)
+            self.lineEdit_folder2.hide()#setEnabled(False)
+            self.label_23.hide()
+            self.label_24.hide()
+            self.label_26.show()
+            self.load_mods_checkbox.hide()
         else:
-            self.pushButton_13.setText(QtCore.QCoreApplication.translate("Optimizer", "Load"))
-            self.sim_path.setEnabled(False)
-            self.pushButton_14.setEnabled(True)
-            self.pushButton_15.setEnabled(True)
-            self.pushButton_16.setEnabled(True)
-            self.setter.setEnabled(True)
-            self.remover.setEnabled(True)
-            self.modellist.setEnabled(True)
-            self.lineEdit_file2.setEnabled(True)
-            self.lineEdit_folder2.setEnabled(True)
+            self.pushButton_13.setText(QtCore.QCoreApplication.translate("Neuroptimus", "Load"))
+            self.sim_path.hide()#setEnabled(False)
+            self.pushButton_14.show()#setEnabled(True)
+            self.pushButton_15.show()#setEnabled(True)
+            self.pushButton_16.show()#setEnabled(True)
+            self.setter.show()#setEnabled(True)
+            self.remover.show()#setEnabled(True)
+            self.modellist.show()#setEnabled(True)
+            self.lineEdit_file2.show()#setEnabled(True)
+            self.lineEdit_folder2.show()#setEnabled(True)
+            self.label_23.show()
+            self.label_24.show()
+            self.label_26.hide()
+            self.load_mods_checkbox.show()
 
 
     def Load2(self, e):
@@ -1405,13 +1385,13 @@ class Ui_Optimizer(object):
             self.lineEdit_duration.setDisabled(False)
             self.base_dir_controll9.clicked.disconnect(self.openFileNameDialogWaveform)
             self.base_dir_controll9.clicked.connect(self.amplitudes_fun)
-            self.base_dir_controll9.setText(_translate("Optimizer", "Amplitude(s)"))
+            self.base_dir_controll9.setText(_translate("Neuroptimus", "Amplitude(s)"))
         if self.stimulus_type.currentIndex()==1:#wave prot
             self.lineEdit_delay.setDisabled(True)
             self.lineEdit_delay.setText("0")
             self.lineEdit_duration.setDisabled(True)
             self.lineEdit_duration.setText("1e9")
-            self.base_dir_controll9.setText(_translate("Optimizer", "Load Waveform"))
+            self.base_dir_controll9.setText(_translate("Neuroptimus", "Load Waveform"))
             self.base_dir_controll9.clicked.disconnect(self.amplitudes_fun)
             self.base_dir_controll9.clicked.connect(self.openFileNameDialogWaveform)
 
@@ -1441,7 +1421,7 @@ class Ui_Optimizer(object):
         """
 
         self.SW = SecondWindow(self) 
-        self.SW.setObjectName("Optimizer")
+        self.SW.setObjectName("Neuroptimus")
         self.SW.resize(500, 500)
         self.SW.show()
 
@@ -1451,7 +1431,7 @@ class Ui_Optimizer(object):
         """
 
         self.SiW = StimuliWindow(self) 
-        self.SiW.setObjectName("Optimizer")
+        self.SiW.setObjectName("Neuroptimus")
         self.SiW.resize(400, 500)
         self.SiW.show()
 
@@ -1694,7 +1674,7 @@ class Ui_Optimizer(object):
         Plots the experimental and result traces, sets tight layout not to crop the sides.
         """
         text = "Results:"
-        #for n, k in zip(self.core.option_handler.GetObjTOOpt(), self.core.optimizer.fit_obj.ReNormalize(self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)])):
+        #for n, k in zip(self.core.option_handler.GetObjTOOpt(), self.core.Neuroptimus.fit_obj.ReNormalize(self.core.Neuroptimus.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)])):
         for n, k in zip(self.core.option_handler.GetObjTOOpt(), self.core.cands[0]):
             if n.split()[0]==n.split()[-1]:
                 param=[n.split()[0], n.split()[-1]]
@@ -1706,7 +1686,7 @@ class Ui_Optimizer(object):
                     text += "\n" + ": \n".join(param) + ":" + "\n" + "\t" + str(k)
                 else:
                     text += "\n" + param[0] + ": " + param[-1] + "\n" + "\t" + str(k)
-        #text += "\n" + "fitness:\n" + "\t" + str(self.core.optimizer.final_pop[0].fitnes)
+        #text += "\n" + "fitness:\n" + "\t" + str(self.core.Neuroptimus.final_pop[0].fitnes)
         text += "\n" + "fitness:\n" + "\t" + str(self.core.fits)
         for tabs in [self.eval_tab,self.plot_tab]:
             label = QtWidgets.QLabel(tabs)
@@ -1718,7 +1698,7 @@ class Ui_Optimizer(object):
             font.setWeight(50)
             label.setFont(font)
             label.setObjectName("label")
-            label.setText(QtCore.QCoreApplication.translate("Optimizer", text))
+            label.setText(QtCore.QCoreApplication.translate("Neuroptimus", text))
             scroll_area = QtWidgets.QScrollArea(tabs)
             scroll_area.setGeometry(QtCore.QRect(10, 100, 170, 256))
             scroll_area.setWidget(label)
@@ -1731,7 +1711,7 @@ class Ui_Optimizer(object):
         font.setWeight(50)
         label.setFont(font)
         label.setObjectName("label")
-        label.setText(QtCore.QCoreApplication.translate("Optimizer", text))
+        label.setText(QtCore.QCoreApplication.translate("Neuroptimus", text))
         scroll_area = QtWidgets.QScrollArea(self.plot_tab)
         scroll_area.setGeometry(QtCore.QRect(300,80, 350, 100))
         scroll_area.setWidget(label)
@@ -1795,9 +1775,9 @@ class Ui_Optimizer(object):
             save_file_name = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File')
             if save_file_name[0]:
                 f=open(save_file_name,"w")
-                #params=self.core.optimizer.fit_obj.ReNormalize(self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)])
-                params=self.core.optimizer.fit_obj.ReNormalize(self.core.cands[0])
-                #params=self.core.optimizer.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)]
+                #params=self.core.Neuroptimus.fit_obj.ReNormalize(self.core.Neuroptimus.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)])
+                params=self.core.Neuroptimus.fit_obj.ReNormalize(self.core.cands[0])
+                #params=self.core.Neuroptimus.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)]
                 f.write("\n".join(map(str,params)))
         except Exception as e:
             popup("Couldn't save the parameters." + e)
@@ -1822,7 +1802,7 @@ class Ui_Optimizer(object):
         font.setWeight(50)
         label.setFont(font)
         label.setObjectName("label")
-        label.setText(QtCore.QCoreApplication.translate("Optimizer", string))
+        label.setText(QtCore.QCoreApplication.translate("Neuroptimus", string))
         scroll_area = QtWidgets.QScrollArea(self.plot_tab)
         scroll_area.setGeometry(QtCore.QRect(300,80, 350, 100))
         scroll_area.setWidget(label)
@@ -1939,19 +1919,19 @@ class Ui_Optimizer(object):
     def PlotGrid(self, e):
         self.prev_bounds=copy(self.core.option_handler.boundaries)
         self.PG=gridwindow(self)
-        self.PG.setObjectName("Optimizer")
+        self.PG.setObjectName("Neuroptimus")
         self.PG.resize(400, 500)
         self.PG.show()
 
     def ShowErrorDialog(self,e):
         self.extra_error_dialog=ErrorDialog(self)
-        self.extra_error_dialog.setObjectName("Optimizer")
+        self.extra_error_dialog.setObjectName("Neuroptimus")
         self.extra_error_dialog.resize(400, 500)
         self.extra_error_dialog.show()
 
     def boundarywindow(self):
         self.BW = BoundaryWindow(self) 
-        self.BW.setObjectName("Optimizer")
+        self.BW.setObjectName("Neuroptimus")
         self.BW.resize(400, 500)
         self.BW.show()
 
@@ -1959,7 +1939,7 @@ class Ui_Optimizer(object):
         num_o_params=len(self.core.option_handler.GetObjTOOpt())
         seeds = []
         self.SPW = startingpoints(self,num_o_params,seeds) 
-        self.SPW.setObjectName("Optimizer")
+        self.SPW.setObjectName("Neuroptimus")
         self.SPW.resize(400, 500)
         self.SPW.show()
         self.seed = seeds
@@ -2066,16 +2046,16 @@ class StimuliWindow(QtWidgets.QMainWindow):
         font.setWeight(50)
         self.label_amplit.setFont(font)
         self.label_amplit.setObjectName("label_amplit")
-        self.label_amplit.setText(_translate("Optimizer", "Number of stimuli:"))
+        self.label_amplit.setText(_translate("Neuroptimus", "Number of stimuli:"))
         self.pushButton_create = QtWidgets.QPushButton(self)
         self.pushButton_create.setGeometry(QtCore.QRect(250, 10, 61, 21))
         self.pushButton_create.setObjectName("pushButton_create")
-        self.pushButton_create.setText(_translate("Optimizer", "Create"))
+        self.pushButton_create.setText(_translate("Neuroptimus", "Create"))
         self.pushButton_create.clicked.connect(self.Set)
         self.pushButton_accept = QtWidgets.QPushButton(self)
         self.pushButton_accept.setGeometry(QtCore.QRect(200, 450, 61, 21))
         self.pushButton_accept.setObjectName("pushButton_accept")
-        self.pushButton_accept.setText(_translate("Optimizer", "Accept"))
+        self.pushButton_accept.setText(_translate("Neuroptimus", "Accept"))
         self.pushButton_accept.clicked.connect(self.Accept)
         self.pushButton_accept.setEnabled(False)
         self.option_handler=parent.core.option_handler
@@ -2123,7 +2103,7 @@ class StimuliWindow(QtWidgets.QMainWindow):
             font.setWeight(50)
             label.setFont(font)
             label.setObjectName("label_amplit")
-            label.setText(QtCore.QCoreApplication.translate("Optimizer", "Amplitude" + str(l+1) + " ("+unit+"):"))
+            label.setText(QtCore.QCoreApplication.translate("Neuroptimus", "Amplitude" + str(l+1) + " ("+unit+"):"))
             amplitude_edit = QtWidgets.QLineEdit(self)
             amplitude_edit.setGeometry(QtCore.QRect(hstep / 2+25, voffset + l * vstep, 61, 22))
             amplitude_edit.setObjectName("amplitude_edit")
@@ -2186,17 +2166,17 @@ class BoundaryWindow(QtWidgets.QMainWindow):
         Setbutton = QtWidgets.QPushButton(self)
         Setbutton.setGeometry(QtCore.QRect(10, 400, 80, 22))
         Setbutton.setObjectName("Setbutton")
-        Setbutton.setText(_translate("Optimizer", "Set"))
+        Setbutton.setText(_translate("Neuroptimus", "Set"))
         Setbutton.clicked.connect(self.Set)
         Savebutton = QtWidgets.QPushButton(self)
         Savebutton.setGeometry(QtCore.QRect(100, 400, 80, 22))
         Savebutton.setObjectName("Savebutton")
-        Savebutton.setText(_translate("Optimizer", "Save"))
+        Savebutton.setText(_translate("Neuroptimus", "Save"))
         Savebutton.clicked.connect(self.Save)
         Loadbutton = QtWidgets.QPushButton(self)
         Loadbutton.setGeometry(QtCore.QRect(190, 400, 80, 22))
         Loadbutton.setObjectName("Savebutton")
-        Loadbutton.setText(_translate("Optimizer", "Load"))
+        Loadbutton.setText(_translate("Neuroptimus", "Load"))
         Loadbutton.clicked.connect(self.Load)
         self.save_file_name="boundaries.txt"
 
@@ -2283,7 +2263,7 @@ class startingpoints(QtWidgets.QMainWindow):
             font.setWeight(50)
             lbl.setFont(font)
             lbl.setObjectName("ctrl")
-            lbl.setText(QtCore.QCoreApplication.translate("Optimizer", lbl))
+            lbl.setText(QtCore.QCoreApplication.translate("Neuroptimus", lbl))
 
             ctrl = QtWidgets.QLineEdit(self)
             ctrl.setGeometry(QtCore.QRect(hstep, voffset + n * vstep, 61, 22))
@@ -2295,22 +2275,22 @@ class startingpoints(QtWidgets.QMainWindow):
         Okbutton = QtWidgets.QPushButton(self)
         Okbutton.setGeometry(QtCore.QRect(10, 400, 80, 22))
         Okbutton.setObjectName("Okbutton")
-        Okbutton.setText(_translate("Optimizer", "Ok"))
+        Okbutton.setText(_translate("Neuroptimus", "Ok"))
         Okbutton.clicked.connect(self.OnOk)
         Closebutton = QtWidgets.QPushButton(self)
         Closebutton.setGeometry(QtCore.QRect(100, 400, 80, 22))
         Closebutton.setObjectName("Closebutton")
-        Closebutton.setText(_translate("Optimizer", "Cancel"))
+        Closebutton.setText(_translate("Neuroptimus", "Cancel"))
         Closebutton.clicked.connect(self.close)
         Loadpopbutton = QtWidgets.QPushButton(self)
         Loadpopbutton.setGeometry(QtCore.QRect(280, 400, 80, 22))
         Loadpopbutton.setObjectName("Loadpopbutton")
-        Loadpopbutton.setText(_translate("Optimizer", "Load Population"))
+        Loadpopbutton.setText(_translate("Neuroptimus", "Load Population"))
         Loadpopbutton.clicked.connect(self.OnLoadPop)
         Loadbutton = QtWidgets.QPushButton(self)
         Loadbutton.setGeometry(QtCore.QRect(190, 400, 80, 22))
         Loadbutton.setObjectName("Loadbutton")
-        Loadbutton.setText(_translate("Optimizer", "Load Point"))
+        Loadbutton.setText(_translate("Neuroptimus", "Load Point"))
         Loadbutton.clicked.connect(self.OnLoad)
 
         
@@ -2425,7 +2405,7 @@ class gridwindow(QtWidgets.QMainWindow):
             
             lbl.setFont(font)
             lbl.setObjectName("ctrl")
-            lbl.setText(QtCore.QCoreApplication.translate("Optimizer", self.option_handler.GetObjTOOpt()[l].split()[-1]))
+            lbl.setText(QtCore.QCoreApplication.translate("Neuroptimus", self.option_handler.GetObjTOOpt()[l].split()[-1]))
 
             
             tmp_min = QtWidgets.QLineEdit(self)
@@ -2446,7 +2426,7 @@ class gridwindow(QtWidgets.QMainWindow):
         lbl.setGeometry(QtCore.QRect(hoffset, voffset + l * vstep, 121, 16))
         lbl.setFont(font)
         lbl.setObjectName("ctrl")
-        lbl.setText(QtCore.QCoreApplication.translate("Optimizer", self.option_handler.GetObjTOOpt()[l].split()[-1]))
+        lbl.setText(QtCore.QCoreApplication.translate("Neuroptimus", self.option_handler.GetObjTOOpt()[l].split()[-1]))
         self.resolution_ctrl = QtWidgets.QLineEdit(self)
         self.resolution_ctrl.setGeometry(QtCore.QRect(hstep,600, 75, 30))
         self.resolution_ctrl.setObjectName("ctrl")
@@ -2455,7 +2435,7 @@ class gridwindow(QtWidgets.QMainWindow):
         Setbutton = QtWidgets.QPushButton(self)
         Setbutton.setGeometry(QtCore.QRect(hstep, 650, 80, 22))
         Setbutton.setObjectName("Okbutton")
-        Setbutton.setText(_translate("Optimizer", "Ok"))
+        Setbutton.setText(_translate("Neuroptimus", "Ok"))
         Setbutton.clicked.connect(self.Set)
         
 
@@ -2511,10 +2491,10 @@ def main(param=None):
         core=Core.coreModul()
         core.option_handler.output_level=param.lstrip("-v_level=")
     app = QtWidgets.QApplication(sys.argv)
-    Optimizer = QtWidgets.QMainWindow()
-    ui = Ui_Optimizer()
-    ui.setupUi(Optimizer)
-    Optimizer.show()
+    Neuroptimus = QtWidgets.QMainWindow()
+    ui = Ui_Neuroptimus()
+    ui.setupUi(Neuroptimus)
+    Neuroptimus.show()
     sys.exit(app.exec_())
 
 if __name__ == "__main__":
