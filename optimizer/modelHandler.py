@@ -339,7 +339,7 @@ class modelHandlerNeuron():
         seg_num=0
 
         for sec in self.hoc_obj.allsec():
-            temp.append(str(self.hoc_obj.secname()))
+            temp.append(str(self.hoc_obj.secname(sec=sec)))
 
             defaults=["", "morphology",["L" , "cm" , "Ra", "diam"]]
             mechs_pars.append(defaults)
