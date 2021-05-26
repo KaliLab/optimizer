@@ -362,7 +362,7 @@ class Problem:
 		self.directory = directory
 		self.nobj=n_obj
 		try:
-			os.remove(self.directory + '/island_inds.txt')
+			os.remove(self.directory + '/ind_file.txt')
 		except OSError:
 			pass
 
@@ -372,7 +372,7 @@ class Problem:
 		else:
 			fitness = self.fitnes_fun([normalize(x,self)])
 			
-		with open(self.directory + '/island_inds.txt', 'a') as inds_file:
+		with open(self.directory + '/ind_file.txt', 'a') as inds_file:
 			inds_file.write("{0}, {1}, {2}, {3}, {4}\n".format(self.gen_counter, self.pop_counter, fitness, x, normalize(x, self)))
 		self.pop_counter += 1
 		if (self.pop_counter * self.num_islands) % (self.pop_size * self.num_islands) == 0:
@@ -928,7 +928,7 @@ class Nelder_Mead_Scipy(ScipyAlgorithmBasis):
 			#self.log_file.write(str(points+1)+" "+str(self.starting_points)+" ("+str(list_of_results)+") \n")
 			
 			self.starting_points=uniform(self.rand,{"num_params" : self.num_params,"self": self})
-		self.stat_file=open(self.directory + "/nelder.txt","w")
+		self.stat_file=open(self.directory + "/ind_file.txt","w")
 		self.stat_file.write(str(list_of_results))	
 		self.log_file.close()
 		self.stat_file.close()
@@ -1229,7 +1229,7 @@ class Random_Search(baseOptimizer):
 			self.gen_min.append(self.act_min)		
 
 		self.pool.close()
-		with open(self.directory+"/random.txt","w") as f:
+		with open(self.directory+"/ind_file.txt","w") as f:
 			for x in self.gen_min:
 				f.write(str(x.candidate))
 				f.write("\t")

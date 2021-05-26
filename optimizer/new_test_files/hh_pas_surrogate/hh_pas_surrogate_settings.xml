@@ -20,7 +20,7 @@
   <input_scale>mV</input_scale>
   <input_size>1</input_size>
   <m_gauss>None</m_gauss>
-  <max_evaluation>10.0</max_evaluation>
+  <max_evaluation>100.0</max_evaluation>
   <model_path>/home/mohacsi/work/optimizer/optimizer/new_test_files/hh_pas_surrogate/hh_pas.hoc</model_path>
   <model_spec_dir>None</model_spec_dir>
   <mutation_rate>0.25</mutation_rate>
@@ -31,7 +31,7 @@
   <num_repet>None</num_repet>
   <number_of_cpu>1.0</number_of_cpu>
   <param_vals>[0, 0]</param_vals>
-  <pop_size>10.0</pop_size>
+  <pop_size>100.0</pop_size>
   <run_controll_dt>0.025</run_controll_dt>
   <run_controll_pos>0.5</run_controll_pos>
   <run_controll_record>v</run_controll_record>
@@ -39,12 +39,12 @@
   <run_controll_tstop>1000.0</run_controll_tstop>
   <run_controll_vrest>-65.0</run_controll_vrest>
   <seed>1234</seed>
-  <sim_command>&quot;&quot;</sim_command>
+  <sim_command> </sim_command>
   <simulator>Neuron</simulator>
   <social_rate>None</social_rate>
   <spike_thres>0.0</spike_thres>
   <spike_window>40.0</spike_window>
-  <start_time_stamp>1621367710.488703</start_time_stamp>
+  <start_time_stamp>1622024057.1795766</start_time_stamp>
   <starting_points>None</starting_points>
   <std_gauss>None</std_gauss>
   <step_size>None</step_size>

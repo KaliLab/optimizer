@@ -63,7 +63,7 @@ class Ui_Neuroptimus(object):
         self.tabwidget.setObjectName("tabwidget")
         self.laybox.addWidget(self.tabwidget)
         self.tabwidget.setSizePolicy(QtWidgets.QSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding))
-                #filetab 2
+                #filetab 1
         
         self.filetab = QtWidgets.QWidget()
        
@@ -205,8 +205,11 @@ class Ui_Neuroptimus(object):
         font.setWeight(50)
         self.label_24.setFont(font)
         self.label_24.setObjectName("label_24")
+        self.pushButton_12 = QtWidgets.QPushButton(self.modeltab)
+        self.pushButton_12.setGeometry(QtCore.QRect(150, 50, 140, 22))
+        self.pushButton_12.setObjectName("pushButton_12")
         self.pushButton_13 = QtWidgets.QPushButton(self.modeltab)
-        self.pushButton_13.setGeometry(QtCore.QRect(150, 50, 80, 22))
+        self.pushButton_13.setGeometry(QtCore.QRect(330, 100, 80, 22))
         self.pushButton_13.setObjectName("pushButton_13")
         self.lineEdit_file2 = QtWidgets.QLineEdit(self.modeltab)
         self.lineEdit_file2.setGeometry(QtCore.QRect(10, 100, 221, 22))
@@ -225,36 +228,35 @@ class Ui_Neuroptimus(object):
         self.pushButton_16.setObjectName("pushButton_16")
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
-        font.setPointSize(11)
-        font.setBold(True)
-        font.setWeight(75)
         self.label_26 = QtWidgets.QLabel(self.modeltab)
         self.label_26.setGeometry(QtCore.QRect(10, 80, 300, 16))
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(10)
-        font.setBold(False)
         font.setWeight(50)
         self.label_26.setFont(font)
         self.label_26.setObjectName("label_26")
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(11)
-        font.setBold(True)
+        self.label_27 = QtWidgets.QLabel(self.modeltab)
+        self.label_27.setGeometry(QtCore.QRect(10, 130, 300, 16))
+        font.setWeight(50)
+        self.label_27.setFont(font)
+        self.label_27.setObjectName("label_26")
         font.setWeight(75)
         self.dd_type = QtWidgets.QComboBox(self.modeltab)
         self.dd_type.setGeometry(QtCore.QRect(10, 50, 121, 23))
         self.dd_type.setObjectName("dd_type")
         self.dd_type.addItem("Neuron")
-        self.dd_type.addItem("external")
+        self.dd_type.addItem("External (Python)")
+        self.dd_type.addItem("External")
         self.dd_type.currentIndexChanged.connect(self.sim_plat)
         self.lineEdit_folder2 = QtWidgets.QLineEdit(self.modeltab)
         self.lineEdit_folder2.setGeometry(QtCore.QRect(10, 150, 221, 22))
         self.lineEdit_folder2.setObjectName("lineEdit_folder2")
         self.sim_path = QtWidgets.QLineEdit(self.modeltab)
-        self.sim_path.setGeometry(QtCore.QRect(10, 100, 241, 22))
+        self.sim_path.setGeometry(QtCore.QRect(10, 100, 301, 22))
         self.sim_path.setObjectName("sim_path")
         self.sim_path.hide()
+        self.sim_param = QtWidgets.QLineEdit(self.modeltab)
+        self.sim_param.setGeometry(QtCore.QRect(10, 150, 50, 22))
+        self.sim_param.setObjectName("sim_param")
+        self.sim_param.hide()
         self.setter = QtWidgets.QPushButton(self.modeltab)
         self.setter.setGeometry(QtCore.QRect(460, 250, 80, 22))
         self.setter.setObjectName("setter")
@@ -275,38 +277,19 @@ class Ui_Neuroptimus(object):
         self.param_to_record.setObjectName("parameter to record")
         self.label_44 = QtWidgets.QLabel(self.simtab)
         self.label_44.setGeometry(QtCore.QRect(10, 220, 111, 16))
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(10)
-        font.setBold(False)
         font.setWeight(50)
         self.label_44.setFont(font)
         self.label_44.setObjectName("label_44")
         self.label_66 = QtWidgets.QLabel(self.simtab)
         self.label_66.setGeometry(QtCore.QRect(220, 260, 200, 16))
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setWeight(50)
         self.label_66.setFont(font)
         self.label_66.setObjectName("label_66")
         self.label_67 = QtWidgets.QLabel(self.simtab)
         self.label_67.setGeometry(QtCore.QRect(220, 310, 200, 16))
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setWeight(50)
         self.label_67.setFont(font)
         self.label_67.setObjectName("label_67")
         self.label_45 = QtWidgets.QLabel(self.simtab)
         self.label_45.setGeometry(QtCore.QRect(10, 320, 200, 16))
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setWeight(50)
         self.label_45.setFont(font)
         self.label_45.setObjectName("label_45")
         self.lineEdit_pos = QtWidgets.QLineEdit(self.simtab)
@@ -317,11 +300,6 @@ class Ui_Neuroptimus(object):
         self.section_dur.setObjectName("section dur")
         self.label_46 = QtWidgets.QLabel(self.simtab)
         self.label_46.setGeometry(QtCore.QRect(10, 270, 200, 16))
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setWeight(50)
         self.label_46.setFont(font)
         self.label_46.setObjectName("label_46")
         self.stimprot = QtWidgets.QComboBox(self.simtab)
@@ -330,11 +308,6 @@ class Ui_Neuroptimus(object):
         self.stimulus_type = QtWidgets.QComboBox(self.simtab)
         self.stimulus_type.setGeometry(QtCore.QRect(10, 150, 121, 23))
         self.stimulus_type.setObjectName("stimulus type")
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(10)
-        font.setBold(False)
-        font.setWeight(50)
         self.label_71 = QtWidgets.QLabel(self.simtab)
         self.label_71.setGeometry(QtCore.QRect(10, 370, 300, 16))
         self.label_71.setFont(font)
@@ -345,20 +318,12 @@ class Ui_Neuroptimus(object):
         self.lineEdit_duration = QtWidgets.QLineEdit(self.simtab)
         self.lineEdit_duration.setGeometry(QtCore.QRect(10, 290, 113, 22))
         self.lineEdit_duration.setObjectName("duration")
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(11)
-        font.setBold(True)
         font.setWeight(75)
         self.base_dir_controll9 = QtWidgets.QPushButton(self.simtab)
         self.base_dir_controll9.setGeometry(QtCore.QRect(10, 180, 115, 22))
         self.base_dir_controll9.setObjectName("base_dir_controll9")
         self.label_48 = QtWidgets.QLabel(self.simtab)
         self.label_48.setGeometry(QtCore.QRect(220, 130, 200, 16))
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(10)
-        font.setBold(False)
         font.setWeight(50)
         self.label_48.setFont(font)
         self.label_48.setObjectName("label_48")
@@ -367,49 +332,25 @@ class Ui_Neuroptimus(object):
         self.lineEdit_tstop.setObjectName("tstop")
         self.label_49 = QtWidgets.QLabel(self.simtab)
         self.label_49.setGeometry(QtCore.QRect(10, 130, 200, 16))
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(10)
-        font.setBold(False)
         font.setWeight(50)
         self.label_49.setFont(font)
         self.label_49.setObjectName("label_49")
         self.label_68 = QtWidgets.QLabel(self.simtab)
         self.label_68.setGeometry(QtCore.QRect(220, 360, 200, 16))
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(10)
-        font.setBold(False)
         font.setWeight(50)
         self.label_68.setFont(font)
         self.label_68.setObjectName("label_68")
-        self.label_50 = QtWidgets.QLabel(self.simtab)
-        self.label_50.setGeometry(QtCore.QRect(220, 240, 300, 16))
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(11)
-        font.setBold(True)
         font.setWeight(75)
-        self.label_50.setFont(font)
-        self.label_50.setObjectName("label_50")
         self.lineEdit_delay = QtWidgets.QLineEdit(self.simtab)
         self.lineEdit_delay.setGeometry(QtCore.QRect(10, 240, 113, 22))
         self.lineEdit_delay.setObjectName("Delay")
         self.label_51 = QtWidgets.QLabel(self.simtab)
         self.label_51.setGeometry(QtCore.QRect(220, 180, 200, 16))
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(10)
-        font.setBold(False)
         font.setWeight(50)
         self.label_51.setFont(font)
         self.label_51.setObjectName("label_51")
         self.label_52 = QtWidgets.QLabel(self.simtab)
         self.label_52.setGeometry(QtCore.QRect(220, 80, 200, 16))
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(10)
-        font.setBold(False)
         font.setWeight(50)
         self.label_52.setFont(font)
         self.label_52.setObjectName("label_52")
@@ -606,9 +547,13 @@ class Ui_Neuroptimus(object):
         self.statusbar = QtWidgets.QStatusBar(Neuroptimus)
         self.statusbar.setObjectName("statusbar")
         Neuroptimus.setStatusBar(self.statusbar)
-        self.actionMultiple_Optimization = QtWidgets.QAction(Neuroptimus)
-        self.actionMultiple_Optimization.setObjectName("actionMultiple_Optimization")
-        self.menuMenu.addAction(self.actionMultiple_Optimization)
+        self.actionunlock = QtWidgets.QAction(Neuroptimus)
+        self.actionunlock.setObjectName("actionunlock")
+        self.actionexit = QtWidgets.QAction(Neuroptimus)
+        self.actionexit.setObjectName("actionexit")
+        self.menuMenu.addAction(self.actionunlock)
+        self.menubar.addAction(self.menuMenu.menuAction())
+        self.menuMenu.addAction(self.actionexit)
         self.menubar.addAction(self.menuMenu.menuAction())
         self.retranslateUi(Neuroptimus)
         QtCore.QMetaObject.connectSlotsByName(Neuroptimus)
@@ -622,23 +567,30 @@ class Ui_Neuroptimus(object):
         Neuroptimus.setWindowTitle(_translate("Neuroptimus", "Neuroptimus"))
         #self.tabwidget.currentChanged.connect(self.onChange)
         #modeltab 2 disappearing
+        self.actionunlock.triggered.connect(self.unlocktabs)
+        self.actionexit.triggered.connect(QApplication.quit)
 
-        self.tabwidget.setTabText(self.tabwidget.indexOf(self.filetab), _translate("Neuroptimus", "File"))
+        self.tabwidget.setTabText(self.tabwidget.indexOf(self.filetab), _translate("Neuroptimus", "Target data"))
         self.label_23.setText(_translate("Neuroptimus", "Load mod files from:"))
-        self.label_24.setText(_translate("Neuroptimus", "Model File"))
+        self.label_24.setText(_translate("Neuroptimus", "Model file"))
         self.lineEdit_folder2.setEnabled(False)
         self.pushButton_14.setEnabled(False)
         self.load_mods_checkbox.clicked.connect(self.disable_mod_path)
         self.pushButton_13.setText(_translate("Neuroptimus", "Load"))
         self.pushButton_13.clicked.connect(self.Load2)
+        self.pushButton_12.setText(_translate("Neuroptimus", "Load python file"))
+        self.pushButton_12.clicked.connect(self.Loadpython)
+        self.pushButton_12.hide()
         self.pushButton_14.setText(_translate("Neuroptimus", "Browse..."))
         self.pushButton_14.clicked.connect(self.openFolderNameDialog2)
         self.pushButton_15.setText(_translate("Neuroptimus", "Browse..."))
         self.pushButton_15.clicked.connect(self.openFileNameDialog2)
         self.pushButton_16.setText(_translate("Neuroptimus", "Define function"))
         self.pushButton_16.clicked.connect(self.UF)
-        self.label_26.setText(_translate("Neuroptimus", "Command to external simulator"))
+        self.label_26.setText(_translate("Neuroptimus", "Command"))
         self.label_26.hide()
+        self.label_27.setText(_translate("Neuroptimus", "Number of parameters"))
+        self.label_27.hide()
         self.setter.setText(_translate("Neuroptimus", "Set"))
         self.setter.clicked.connect(self.Set)
         self.remover.setText(_translate("Neuroptimus", "Remove"))
@@ -663,14 +615,15 @@ class Ui_Neuroptimus(object):
 
 
         #filetab 1
-        self.label_3.setText(_translate("Neuroptimus", "Base Directory"))
+        self.datfileName = ""
+        self.label_3.setText(_translate("Neuroptimus", "Base directory"))
         self.label_4.setText(_translate("Neuroptimus", "Length of traces (ms)"))
         self.label_5.setText(_translate("Neuroptimus", "Number of traces"))
         self.label_7.setText(_translate("Neuroptimus", "Units"))
         self.pushButton_3.setText(_translate("Neuroptimus", "Load trace"))
         self.pushButton_3.setEnabled(False)
         self.pushButton_3.clicked.connect(self.Load)
-        self.label_2.setText(_translate("Neuroptimus", "Input File"))
+        self.label_2.setText(_translate("Neuroptimus", "Data file"))
         self.base_dir_controll.setText(_translate("Neuroptimus", "Browse..."))
         self.base_dir_controll.clicked.connect(self.openFolderNameDialog)
         self.label_6.setText(_translate("Neuroptimus", "Sampling frequency (Hz)"))
@@ -682,6 +635,7 @@ class Ui_Neuroptimus(object):
         self.input_file_controll.setText(_translate("Neuroptimus", "Browse..."))
         self.input_file_controll.clicked.connect(self.openFileNameDialog)
         self.time_checker.setText(_translate("Neuroptimus", "Contains time"))
+        self.time_checker.toggled.connect(self.time_calc)
         self.dropdown.setItemText(0, _translate("Neuroptimus", "uV"))
         self.dropdown.setItemText(1, _translate("Neuroptimus", "mV"))
         self.dropdown.setItemText(2, _translate("Neuroptimus", "V"))
@@ -707,7 +661,7 @@ class Ui_Neuroptimus(object):
         #optiontab 3
         self.tabwidget.setTabText(self.tabwidget.indexOf(self.modeltab), _translate("Neuroptimus", "Model"))
         self.label_44.setText(_translate("Neuroptimus", "Delay (ms)"))
-        self.label_66.setText(_translate("Neuroptimus", "Initial Voltage (mV)"))
+        self.label_66.setText(_translate("Neuroptimus", "Initial voltage (mV)"))
         self.label_67.setText(_translate("Neuroptimus", "tstop (ms)"))
         self.label_45.setText(_translate("Neuroptimus", "Section"))
         self.label_46.setText(_translate("Neuroptimus", "Duration (ms)"))
@@ -715,12 +669,11 @@ class Ui_Neuroptimus(object):
         self.base_dir_controll9.clicked.connect(self.amplitudes_fun)
         self.label_48.setText(_translate("Neuroptimus", "Section"))
         self.label_49.setText(_translate("Neuroptimus", "Stimulus Type"))
-        self.label_68.setText(_translate("Neuroptimus", "dt"))
-        self.label_50.setText(_translate("Neuroptimus", "Run Control"))
-        self.label_51.setText(_translate("Neuroptimus", "Position"))
+        self.label_68.setText(_translate("Neuroptimus", "Time step"))
+        self.label_51.setText(_translate("Neuroptimus", "Position inside section"))
         self.label_52.setText(_translate("Neuroptimus", "Parameter to record"))
         self.label_55.setText(_translate("Neuroptimus", "Simulation protocol"))
-        self.label_71.setText(_translate("Neuroptimus", "Position inside the section"))
+        self.label_71.setText(_translate("Neuroptimus", "Position inside section"))
         self.lineEdit_pos.setText("0.5")
         self.lineEdit_posins.setText("0.5")
         self.lineEdit_initv.setText("-65")
@@ -750,9 +703,8 @@ class Ui_Neuroptimus(object):
         self.fitlist.setColumnWidth(1,80)
         self.fitlist.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         #self.fitlist.itemSelectionChanged.connect(self.fitselect)
-        self.fitlist.cellClicked.connect(self.fitselect)
+        #self.fitlist.cellClicked.connect(self.fitselect)
         self.fitlist.horizontalHeader().setStretchLastSection(True)
-        self.fitset=set()
         self.label_69.setText(_translate("Neuroptimus", "Spike Detection Tresh. (mv)"))
         self.label_70.setText(_translate("Neuroptimus", "Spike Window (ms)"))
         self.pushButton_normalize.clicked.connect(self.Normalize)
@@ -900,14 +852,24 @@ class Ui_Neuroptimus(object):
 
 
         self.menuMenu.setTitle(_translate("Neuroptimus", "Menu"))
-        self.actionMultiple_Optimization.setText(_translate("Neuroptimus", "Multiple Optimization"))
-        """self.tabwidget.setTabEnabled(1,False)
+        self.actionunlock.setText(_translate("Neuroptimus", "Unlock Tabs"))
+        self.actionexit.setText(_translate("Neuroptimus", "Exit"))
+        self.tabwidget.setTabEnabled(1,False)
         self.tabwidget.setTabEnabled(2,False)
         self.tabwidget.setTabEnabled(3,False)
         self.tabwidget.setTabEnabled(4,False)
         self.tabwidget.setTabEnabled(5,False)
-        self.tabwidget.setTabEnabled(6,False)"""
+        self.tabwidget.setTabEnabled(6,False)
     
+
+    def unlocktabs(self): 
+        self.tabwidget.setTabEnabled(1,True)
+        self.tabwidget.setTabEnabled(2,True)
+        self.tabwidget.setTabEnabled(3,True)
+        self.tabwidget.setTabEnabled(4,True)
+        self.tabwidget.setTabEnabled(5,True)
+        self.tabwidget.setTabEnabled(6,True)
+
                 
 
     def openFileNameDialog(self): 
@@ -916,20 +878,24 @@ class Ui_Neuroptimus(object):
         """
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
-        fileName, _ = QFileDialog.getOpenFileName(None,"QFileDialog.getOpenFileName()", "","Data files (*.dat *.json);;All Files (*);;", options=options)
-        if fileName:
-            self.lineEdit_file.setText(fileName)
-            self.lineEdit_folder.setText(os.path.dirname(os.path.realpath(fileName)))
+        self.datfileName, _ = QFileDialog.getOpenFileName(None,"QFileDialog.getOpenFileName()", "","Data files (*.dat *.json);;All Files (*);;", options=options)
+        if self.datfileName:
+            self.lineEdit_file.setText(self.datfileName)
+            self.lineEdit_folder.setText(os.path.dirname(os.path.realpath(self.datfileName)))
             self.pushButton_3.setEnabled(True)
             if self.time_checker.isChecked():
-                try:
-                    with open(str(fileName)) as data:
-                        time_vec=[float(x.split()[0]) for x in data.read().splitlines()]
-                        max_t_vec=round(max(time_vec))
-                        self.length_ctrl.setText(str(max_t_vec))
-                        self.freq_ctrl.setText(str(round((len(time_vec))*1000/max_t_vec)))
-                except:
-                    print('Time or voltage is missing from trace file')
+                self.time_calc()
+
+    def time_calc(self):
+        try:
+            with open(str(self.lineEdit_file.text())) as data:
+                all_line=data.read().splitlines()
+                time_vec=[float(x.split()[0]) for x in all_line]
+                self.length_ctrl.setText(str(round(max(time_vec))))
+                self.freq_ctrl.setText(str(round(len(time_vec)-1)*1000/(round(max(time_vec))-round(min(time_vec)))))   #frequency 
+                self.size_ctrl.setText(str(len(all_line[0].split())-1))  #trace number
+        except:
+                print('No data file found')
             
 
     def openFolderNameDialog2(self): 
@@ -1133,10 +1099,10 @@ class Ui_Neuroptimus(object):
             self.my_list=list(self.core.data_handler.features_data.keys())[3:]
         self.param_list = [[]] * len(self.my_list)
         if self.core.option_handler.type[-1]!="features":
-            self.param_list[2] = [("Spike Detection Thres. (mv)",0.0)]
-            self.param_list[1] = [("Spike Detection Thres. (mv)",0.0), ("Spike Window (ms)",1.0)]
+            self.param_list[2] = [("Spike detection thres. (mV)",0.0)]
+            self.param_list[1] = [("Spike detection thres. (mV)",0.0), ("Spike Window (ms)",1.0)]
         else:
-            self.param_list[0] = [("Spike Detection Thres. (mv)",0.0)]
+            self.param_list[0] = [("Spike detection thres. (mV)",0.0)]
 	
         if self.core.option_handler.type[-1]=="features":
             for l in range(len(self.core.data_handler.features_data["stim_amp"])):
@@ -1177,7 +1143,7 @@ class Ui_Neuroptimus(object):
             self.lineEdit_delay.setText(str(self.core.data_handler.features_data["stim_delay"]))
             self.lineEdit_duration.setText(str(self.core.data_handler.features_data["stim_duration"]))    
 
-        self.fitlist.cellChanged.connect(self.fitchanged)
+        #self.fitlist.cellChanged.connect(self.fitchanged)
 
         
         
@@ -1297,9 +1263,11 @@ class Ui_Neuroptimus(object):
         """
         Called when simulation platform changed, locks unnecessary widgets and swap Label of Load button.
         """
-        if self.dd_type.currentIndex():
+        if self.dd_type.currentIndex()==1:
             self.sim_path.show()#setEnabled(True)
+            self.sim_param.show()
             self.pushButton_13.setText(QtCore.QCoreApplication.translate("Neuroptimus", "Set"))
+            self.pushButton_12.show()
             self.pushButton_14.hide()#setEnabled(False)
             self.pushButton_15.hide()#setEnabled(False)
             self.pushButton_16.hide()#setEnabled(False)
@@ -1311,10 +1279,31 @@ class Ui_Neuroptimus(object):
             self.label_23.hide()
             self.label_24.hide()
             self.label_26.show()
+            self.label_27.show()
+            self.load_mods_checkbox.hide()
+        elif self.dd_type.currentIndex()==2:        
+            self.sim_path.show()#setEnabled(True)
+            self.sim_param.show()
+            self.pushButton_13.setText(QtCore.QCoreApplication.translate("Neuroptimus", "Set"))
+            self.pushButton_12.hide()
+            self.pushButton_14.hide()#setEnabled(False)
+            self.pushButton_15.hide()#setEnabled(False)
+            self.pushButton_16.hide()#setEnabled(False)
+            self.setter.hide()#setEnabled(False)
+            self.remover.hide()#setEnabled(False)
+            self.modellist.hide()#setEnabled(False)
+            self.lineEdit_file2.hide()#setEnabled(False)
+            self.lineEdit_folder2.hide()#setEnabled(False)
+            self.label_23.hide()
+            self.label_24.hide()
+            self.label_26.show()
+            self.label_27.show()
             self.load_mods_checkbox.hide()
         else:
             self.pushButton_13.setText(QtCore.QCoreApplication.translate("Neuroptimus", "Load"))
             self.sim_path.hide()#setEnabled(False)
+            self.sim_param.hide()
+            self.pushButton_12.hide()
             self.pushButton_14.show()#setEnabled(True)
             self.pushButton_15.show()#setEnabled(True)
             self.pushButton_16.show()#setEnabled(True)
@@ -1326,7 +1315,15 @@ class Ui_Neuroptimus(object):
             self.label_23.show()
             self.label_24.show()
             self.label_26.hide()
+            self.label_27.hide()
             self.load_mods_checkbox.show()
+
+    def Loadpython(self, e):
+        options = QtWidgets.QFileDialog.Options()
+        options |= QtWidgets.QFileDialog.DontUseNativeDialog
+        fileName, _ = QFileDialog.getOpenFileName(None,"QFileDialog.getOpenFileName()", "","Python files (*.py);;All Files (*);;", options=options)
+        if fileName:
+            self.sim_path.setText("python "+str(fileName))
 
 
     def Load2(self, e):
@@ -1345,7 +1342,7 @@ class Ui_Neuroptimus(object):
         try:
             self.core.LoadModel({"model" : [self.model_file, self.spec_file],
                                  "simulator" : self.dd_type.currentText(),
-                                 "sim_command" : self.sim_path.text()})
+                                 "sim_command" : self.sim_path.text() if not self.dd_type else self.sim_path.text()+" "+self.sim_param.text()}) # path + param for external
             temp = self.core.model_handler.GetParameters()
             if temp!=None:
                 out = open("model.txt", 'w')
@@ -1461,9 +1458,9 @@ class Ui_Neuroptimus(object):
             allRows = self.fitlist.rowCount()
             for row in range(0,allRows):
                 current_fun=str(self.fitlist.item(row, 0).text())
-                if current_fun in self.fitset:
-                    current_weight=str(self.fitlist.item(row, 1).text())
-                    self.weights.append(float(current_weight))
+                current_weight=float(self.fitlist.item(row, 1).text())
+                if current_weight:
+                    self.weights.append(current_weight) 
         except:
             self.fitlist.item(row, 1).setText("0")
         
@@ -1474,14 +1471,15 @@ class Ui_Neuroptimus(object):
         Iterates through all fitness functions and scans the ones contained in the fitness set (selected ones) with an 'if' statement.
         """
         try:
-            self.fitselect()
-            self.fitchanged()
+            #self.fitselect()
+            #self.fitchanged()
             allRows = self.fitlist.rowCount()
+            self.weights=[float(self.fitlist.item(row, 1).text()) for row in range(0,allRows)] 
             sum_o_weights = float(sum(self.weights))
             for row in range(0,allRows):
                 current_fun=str(self.fitlist.item(row, 0).text())
-                if current_fun in self.fitset:
-                    current_weight=float(str(self.fitlist.item(row, 1).text()))
+                current_weight=float(str(self.fitlist.item(row, 1).text()))
+                if current_weight:
                     try:
                         self.fitlist.item(row, 1).setText(str(round(current_weight / sum_o_weights,4)))
                     except:
@@ -1586,18 +1584,26 @@ class Ui_Neuroptimus(object):
                 err.append(2)
                 print(e)
                 errpop.append("There was an error")
-
+        self.fitfun_list=[] 
+        self.weights=[]
         try:
+            allRows = self.fitlist.rowCount()
+            for row in range(0,allRows):
+                current_fun=str(self.fitlist.item(row, 0).text())
+                current_weight=float(self.fitlist.item(row, 1).text())
+                if current_weight:
+                    self.fitfun_list.append(current_fun)
+                    self.weights.append(current_weight) 
             if self.core.option_handler.type[-1]!="features":
                 self.kwargs.update({"feat":
                                     [{"Spike Detection Thres. (mv)": float(self.spike_tresh.text()), "Spike Window (ms)":float(self.spike_window.text())},
-                                    [str(x) for x in self.my_list if x in self.fitset]]
+                                    self.fitfun_list]
                                     })
                 self.kwargs.update({"weights" : self.weights})
             else:
                 self.kwargs.update({"feat":
                                     [{"Spike Detection Thres. (mv)": float(self.spike_tresh.text()), "Spike Window (ms)":float(self.spike_window.text())},
-                                    [str(x) for x in self.my_list if x in self.fitset]]
+                                    self.fitfun_list]
                                     })
                 self.kwargs.update({"weights" : self.weights})
             if not(0.99<sum(self.kwargs["weights"])<=1.01):
