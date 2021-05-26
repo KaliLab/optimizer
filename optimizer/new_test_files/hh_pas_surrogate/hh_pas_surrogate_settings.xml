@@ -1,13 +1,13 @@
 <?xml version="1.0" ?>
 <settings>
   <acc>None</acc>
-  <adjusted_params>['soma 0 hh gnabar_hh', 'soma 0 hh gkbar_hh', 'soma 0 hh gl_hh']</adjusted_params>
+  <adjusted_params>['soma 0 hh gnabar_hh', 'soma 0 hh gkbar_hh']</adjusted_params>
   <base_dir>/home/mohacsi/work/optimizer/optimizer/new_test_files/hh_pas_surrogate</base_dir>
-  <boundaries>[[0.001, 0.001, 1e-05], [1.0, 1.0, 0.001]]</boundaries>
+  <boundaries>[[0.001, 0.001], [1.0, 1.0]]</boundaries>
   <cognitive_rate>None</cognitive_rate>
   <cooling_rate>None</cooling_rate>
   <crossover_rate>None</crossover_rate>
-  <evo_strat>Covariance Matrix Adaptation ES (CMAES) - Pygmo</evo_strat>
+  <evo_strat>Evolutionary Algorithm (EA) - Inspyred</evo_strat>
   <f_tol>None</f_tol>
   <feats>MSE, Spike count</feats>
   <force_bounds>False</force_bounds>
@@ -23,14 +23,14 @@
   <max_evaluation>100.0</max_evaluation>
   <model_path>/home/mohacsi/work/optimizer/optimizer/new_test_files/hh_pas_surrogate/hh_pas.hoc</model_path>
   <model_spec_dir>None</model_spec_dir>
-  <mutation_rate>None</mutation_rate>
+  <mutation_rate>0.25</mutation_rate>
   <neighborhood_size>None</neighborhood_size>
-  <num_islands>1.0</num_islands>
+  <num_islands>None</num_islands>
   <num_iter>None</num_iter>
-  <num_params>3</num_params>
+  <num_params>2</num_params>
   <num_repet>None</num_repet>
-  <number_of_cpu>None</number_of_cpu>
-  <param_vals>[0, 0, 0]</param_vals>
+  <number_of_cpu>1.0</number_of_cpu>
+  <param_vals>[0, 0]</param_vals>
   <pop_size>100.0</pop_size>
   <run_controll_dt>0.025</run_controll_dt>
   <run_controll_pos>0.5</run_controll_pos>
@@ -39,12 +39,12 @@
   <run_controll_tstop>1000.0</run_controll_tstop>
   <run_controll_vrest>-65.0</run_controll_vrest>
   <seed>1234</seed>
-  <sim_command>&quot;&quot;</sim_command>
+  <sim_command> </sim_command>
   <simulator>Neuron</simulator>
   <social_rate>None</social_rate>
   <spike_thres>0.0</spike_thres>
   <spike_window>40.0</spike_window>
-  <start_time_stamp>1621433954.073558</start_time_stamp>
+  <start_time_stamp>1622024057.1795766</start_time_stamp>
   <starting_points>None</starting_points>
   <std_gauss>None</std_gauss>
   <step_size>None</step_size>

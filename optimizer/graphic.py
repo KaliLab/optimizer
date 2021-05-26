@@ -1474,6 +1474,7 @@ class Ui_Neuroptimus(object):
             #self.fitselect()
             #self.fitchanged()
             allRows = self.fitlist.rowCount()
+            self.weights=[float(self.fitlist.item(row, 1).text()) for row in range(0,allRows)] 
             sum_o_weights = float(sum(self.weights))
             for row in range(0,allRows):
                 current_fun=str(self.fitlist.item(row, 0).text())
@@ -1583,7 +1584,8 @@ class Ui_Neuroptimus(object):
                 err.append(2)
                 print(e)
                 errpop.append("There was an error")
-
+        self.fitfun_list=[] 
+        self.weights=[]
         try:
             allRows = self.fitlist.rowCount()
             for row in range(0,allRows):
