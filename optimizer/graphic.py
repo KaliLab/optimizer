@@ -68,16 +68,20 @@ class Ui_Neuroptimus(object):
         self.filetab = QtWidgets.QWidget()
        
         self.filetab.setObjectName("filetab")
-        
+        self.intvalidator = QIntValidator()        
         self.size_ctrl = QtWidgets.QLineEdit(self.filetab)
         self.size_ctrl.setGeometry(QtCore.QRect(10, 230, 221, 22))
         self.size_ctrl.setObjectName("size_ctrl")
+        self.size_ctrl.setValidator(self.intvalidator)
+        self.doublevalidator = QDoubleValidator()
         self.length_ctrl = QtWidgets.QLineEdit(self.filetab)
         self.length_ctrl.setGeometry(QtCore.QRect(10, 280, 221, 22))
         self.length_ctrl.setObjectName("length_ctrl")
+        self.length_ctrl.setValidator(self.doublevalidator)
         self.freq_ctrl = QtWidgets.QLineEdit(self.filetab)
         self.freq_ctrl.setGeometry(QtCore.QRect(10, 330, 221, 22))
         self.freq_ctrl.setObjectName("freq_ctrl")
+        self.freq_ctrl.setValidator(self.doublevalidator)
         self.label_3 = QtWidgets.QLabel(self.filetab)
         self.label_3.setGeometry(QtCore.QRect(10, 130, 200, 16))
         font = QtGui.QFont()
@@ -295,9 +299,10 @@ class Ui_Neuroptimus(object):
         self.lineEdit_pos = QtWidgets.QLineEdit(self.simtab)
         self.lineEdit_pos.setGeometry(QtCore.QRect(220, 200, 113, 22))
         self.lineEdit_pos.setObjectName("position")
-        self.section_dur = QtWidgets.QComboBox(self.simtab)
-        self.section_dur.setGeometry(QtCore.QRect(10, 340, 121, 23))
-        self.section_dur.setObjectName("section dur")
+        self.lineEdit_pos.setValidator(self.doublevalidator)
+        self.section_stim = QtWidgets.QComboBox(self.simtab)
+        self.section_stim.setGeometry(QtCore.QRect(10, 340, 121, 23))
+        self.section_stim.setObjectName("section stim")
         self.label_46 = QtWidgets.QLabel(self.simtab)
         self.label_46.setGeometry(QtCore.QRect(10, 270, 200, 16))
         self.label_46.setFont(font)
@@ -315,9 +320,11 @@ class Ui_Neuroptimus(object):
         self.lineEdit_posins = QtWidgets.QLineEdit(self.simtab)
         self.lineEdit_posins.setGeometry(QtCore.QRect(10, 390, 113, 22))
         self.lineEdit_posins.setObjectName("posinside")
+        self.lineEdit_posins.setValidator(self.doublevalidator)
         self.lineEdit_duration = QtWidgets.QLineEdit(self.simtab)
         self.lineEdit_duration.setGeometry(QtCore.QRect(10, 290, 113, 22))
         self.lineEdit_duration.setObjectName("duration")
+        self.lineEdit_duration.setValidator(self.doublevalidator)
         font.setWeight(75)
         self.base_dir_controll9 = QtWidgets.QPushButton(self.simtab)
         self.base_dir_controll9.setGeometry(QtCore.QRect(10, 180, 115, 22))
@@ -330,6 +337,7 @@ class Ui_Neuroptimus(object):
         self.lineEdit_tstop = QtWidgets.QLineEdit(self.simtab)
         self.lineEdit_tstop.setGeometry(QtCore.QRect(220, 330, 113, 22))
         self.lineEdit_tstop.setObjectName("tstop")
+        self.lineEdit_tstop.setValidator(self.doublevalidator)
         self.label_49 = QtWidgets.QLabel(self.simtab)
         self.label_49.setGeometry(QtCore.QRect(10, 130, 200, 16))
         font.setWeight(50)
@@ -344,6 +352,7 @@ class Ui_Neuroptimus(object):
         self.lineEdit_delay = QtWidgets.QLineEdit(self.simtab)
         self.lineEdit_delay.setGeometry(QtCore.QRect(10, 240, 113, 22))
         self.lineEdit_delay.setObjectName("Delay")
+        self.lineEdit_delay.setValidator(self.doublevalidator)
         self.label_51 = QtWidgets.QLabel(self.simtab)
         self.label_51.setGeometry(QtCore.QRect(220, 180, 200, 16))
         font.setWeight(50)
@@ -357,12 +366,14 @@ class Ui_Neuroptimus(object):
         self.lineEdit_dt = QtWidgets.QLineEdit(self.simtab)
         self.lineEdit_dt.setGeometry(QtCore.QRect(220, 380, 113, 22))
         self.lineEdit_dt.setObjectName("lineEdit_dt")
-        self.section_box = QtWidgets.QComboBox(self.simtab)
-        self.section_box.setGeometry(QtCore.QRect(220, 150, 121, 23))
-        self.section_box.setObjectName("section")
+        self.lineEdit_dt.setValidator(self.doublevalidator)
+        self.section_rec = QtWidgets.QComboBox(self.simtab)
+        self.section_rec.setGeometry(QtCore.QRect(220, 150, 121, 23))
+        self.section_rec.setObjectName("section")
         self.lineEdit_initv = QtWidgets.QLineEdit(self.simtab)
         self.lineEdit_initv.setGeometry(QtCore.QRect(220, 280, 113, 22))
         self.lineEdit_initv.setObjectName("initv")
+        self.lineEdit_initv.setValidator(self.doublevalidator)
         self.label_55 = QtWidgets.QLabel(self.simtab)
         self.label_55.setGeometry(QtCore.QRect(10, 80, 200, 16))
         font = QtGui.QFont()
@@ -383,8 +394,7 @@ class Ui_Neuroptimus(object):
         font = QtGui.QFont()
         font.setFamily("Ubuntu")
         font.setPointSize(11)
-        font.setBold(True)
-        font.setWeight(75)
+        font.setWeight(50)
         self.label_56.setFont(font)
         self.label_56.setObjectName("label_56")
         self.fitlist = QtWidgets.QTableWidget(self.fittab)
@@ -400,20 +410,10 @@ class Ui_Neuroptimus(object):
         self.label_69.setGeometry(QtCore.QRect(330, 90, 300, 16))
         self.spike_tresh.setText("0.0")
         self.spike_window.setText("1.0")
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(11)
-        font.setBold(True)
-        font.setWeight(75)
         self.label_69.setFont(font)
         self.label_69.setObjectName("label_69")
         self.label_70 = QtWidgets.QLabel(self.fittab)
         self.label_70.setGeometry(QtCore.QRect(330, 190, 300, 16))
-        font = QtGui.QFont()
-        font.setFamily("Ubuntu")
-        font.setPointSize(11)
-        font.setBold(True)
-        font.setWeight(75)
         self.label_70.setFont(font)
         self.label_70.setObjectName("label_70")
         self.pushButton_normalize = QtWidgets.QPushButton(self.fittab)
@@ -672,7 +672,7 @@ class Ui_Neuroptimus(object):
         self.label_68.setText(_translate("Neuroptimus", "Time step"))
         self.label_51.setText(_translate("Neuroptimus", "Position inside section"))
         self.label_52.setText(_translate("Neuroptimus", "Parameter to record"))
-        self.label_55.setText(_translate("Neuroptimus", "Simulation protocol"))
+        self.label_55.setText(_translate("Neuroptimus", "Stimulation protocol"))
         self.label_71.setText(_translate("Neuroptimus", "Position inside section"))
         self.lineEdit_pos.setText("0.5")
         self.lineEdit_posins.setText("0.5")
@@ -690,14 +690,14 @@ class Ui_Neuroptimus(object):
 
 
         #fittab 4
-        self.tabwidget.setTabText(self.tabwidget.indexOf(self.simtab), _translate("Neuroptimus", "Options"))
+        self.tabwidget.setTabText(self.tabwidget.indexOf(self.simtab), _translate("Neuroptimus", "Settings"))
         self.fitlist.setColumnCount(2)
         #self.fitlist.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         #self.flist.setHorizontalHeaderLabels(("Section;Segment;Mechanism;Parameter").split(";"))
         self.fitlist.resizeColumnsToContents()
         
         #self.fitlist.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
-        self.fitlist.setHorizontalHeaderLabels(["Fitness Functions","Weights"])
+        self.fitlist.setHorizontalHeaderLabels(["Fitness functions","Weights"])
         #self.fitlist.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.fitlist.setColumnWidth(0,200)
         self.fitlist.setColumnWidth(1,80)
@@ -705,15 +705,15 @@ class Ui_Neuroptimus(object):
         #self.fitlist.itemSelectionChanged.connect(self.fitselect)
         #self.fitlist.cellClicked.connect(self.fitselect)
         self.fitlist.horizontalHeader().setStretchLastSection(True)
-        self.label_69.setText(_translate("Neuroptimus", "Spike Detection Tresh. (mv)"))
-        self.label_70.setText(_translate("Neuroptimus", "Spike Window (ms)"))
+        self.label_69.setText(_translate("Neuroptimus", "Spike detection tresh. (mV)"))
+        self.label_70.setText(_translate("Neuroptimus", "Spike window (ms)"))
         self.pushButton_normalize.clicked.connect(self.Normalize)
 
         #runtab 5
         self.tabwidget.setTabText(self.tabwidget.indexOf(self.fittab), _translate("Neuroptimus", "Fitness"))
         self.pushButton_30.setText(_translate("Neuroptimus", "Run"))
         self.pushButton_30.clicked.connect(self.runsim)
-        self.pushButton_31.setText(_translate("Neuroptimus", "Starting Points"))
+        self.pushButton_31.setText(_translate("Neuroptimus", "Starting points"))
         self.pushButton_31.clicked.connect(self.startingpoints)
         self.pushButton_32.setText(_translate("Neuroptimus", "Boundaries"))
         self.pushButton_32.clicked.connect(self.boundarywindow)
@@ -741,10 +741,10 @@ class Ui_Neuroptimus(object):
         self.aspectlist.horizontalHeader().setStretchLastSection(True)
         self.aspectlist.setHorizontalHeaderLabels(["Option","Value"])
         self.aspectlist.cellChanged.connect(self.aspect_changed)
-        self.seed=None
-
+        self.seed = []
+        self.resolution=0
         self.Recom=["Evolutionary Algorithm (EA) - Inspyred","Covariance Matrix Adaptation ES (CMAES) - Pygmo",
-                "Particle Swarm (PSO) - Inspyred","Indicator Based (IBEA) - Bluepyopt","L-BFGS-B - Scipy","Random Search"]
+                "Particle Swarm (PSO) - Inspyred","Particle Swarm Gen (PSO) - Pygmo","Indicator Based (IBEA) - Bluepyopt","L-BFGS-B - Scipy","Random Search"]
         self.Inspyred=["Evolutionary Algorithm (EA) - Inspyred","Particle Swarm (PSO) - Inspyred",
                 "Differential Evolution (DE) - Inspyred",
                 "Nondominated Sorted (NSGAII) - Inspyred","Pareto Archived (PAES) - Inspyred",
@@ -757,7 +757,7 @@ class Ui_Neuroptimus(object):
                 "Particle Swarm (PSO) - Pygmo","Exponential Evolution Strategies (XNES) - Pygmo",
                 "Simple Genetic Algorithm (SGA) - Pygmo","Covariance Matrix Adaptation ES (CMAES) - Pygmo",
                 "Single Differential Evolution - Pygmo","Differential Evolution (DE1220) - Pygmo",
-                "Bee Colony - Pygmo","FullGrid - Pygmo"]
+                "Bee Colony - Pygmo","FullGrid - Pygmo","Praxis - Pygmo","Nelder-Mead - Pygmo"]
         self.algos={
             'Recommended':self.Recom,
             'Inspyred': self.Inspyred,
@@ -813,16 +813,19 @@ class Ui_Neuroptimus(object):
             "Exponential Evolution Strategies (XNES) - Pygmo":[descr19.copy(),descr20.copy(),descr42,descr41],
             "Simple Genetic Algorithm (SGA) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "Particle Swarm (PSO) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
-            "Particle Swarm Gen (PSOG) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
-            "Nondominated Sorted Particle Swarm (NSPSO) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
-            "Nondominated Sorted GA (NSGAII) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
-            "Extended Ant Colony (GACO) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
-            "Multi-Objective Ant Colony (MACO) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
+            "Particle Swarm Gen (PSOG) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
+            "Nondominated Sorted Particle Swarm (NSPSO) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
+            "Nondominated Sorted GA (NSGAII) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
+            "Extended Ant Colony (GACO) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
+            "Multi-Objective Ant Colony (MACO) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
             "Covariance Matrix Adaptation ES (CMAES) - Pygmo":[descr19.copy(),descr20.copy(),descr42,descr41],
             "Single Differential Evolution - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "Differential Evolution (DE1220) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "Bee Colony - Pygmo":[descr19.copy(),descr20.copy(),descr41],
-            "FullGrid - Pygmo":[descr19.copy(),descr20.copy(),descr41]    #NM,prax 
+            "FullGrid - Pygmo":[descr19.copy(),descr20.copy(),descr41],
+            "Praxis - Pygmo":[descr19.copy(),descr20.copy(),descr41],
+            "Nelder-Mead - Pygmo":[descr19.copy(),descr20.copy(),descr41]
+                #NM,prax 
             }
         
 
@@ -895,7 +898,7 @@ class Ui_Neuroptimus(object):
                 self.freq_ctrl.setText(str(round(len(time_vec)-1)*1000/(round(max(time_vec))-round(min(time_vec)))))   #frequency 
                 self.size_ctrl.setText(str(len(all_line[0].split())-1))  #trace number
         except:
-                print('No data file found')
+                print('No data file selected')
             
 
     def openFolderNameDialog2(self): 
@@ -1114,9 +1117,10 @@ class Ui_Neuroptimus(object):
             item.setFlags( QtCore.Qt.ItemIsSelectable |  QtCore.Qt.ItemIsEnabled )      
             self.fitlist.setItem(index, 0, item)
             if self.core.option_handler.type[-1]=="features":
-                self.fitlist.setItem(index, 1, QTableWidgetItem(str(self.core.data_handler.features_data[self.my_list[index]]["weight"])))
+                itemv = QTableWidgetItem(str(self.core.data_handler.features_data[self.my_list[index]]["weight"]))
             else:
-                self.fitlist.setItem(index, 1, QTableWidgetItem("0"))
+                itemv = QTableWidgetItem("0")
+            self.fitlist.setItem(index, 1, itemv)
 
         if self.core.option_handler.type[-1]!="features":
             self.kwargs={"runparam" : [self.core.data_handler.data.t_length,
@@ -1370,8 +1374,9 @@ class Ui_Neuroptimus(object):
         if not self.dd_type.currentIndex():  
             try:
                 tmp=self.core.ReturnSections()
-                self.section_box.addItems(tmp)
-                self.section_dur.addItems(tmp)
+                [tmp.remove("None") for i in range(tmp.count("None"))]
+                self.section_rec.addItems(tmp)
+                self.section_stim.addItems(tmp)
             except:
                 popup("Section error")
 
@@ -1399,7 +1404,6 @@ class Ui_Neuroptimus(object):
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
         fileName, _ = QFileDialog.getOpenFileName(None,"QFileDialog.getOpenFileName()", "","Data files (*.dat *.json);;All Files (*);;", options=options)
-        print("**********************"+str(fileName))
         if fileName:
             self.container=[fileName]
                
@@ -1566,12 +1570,12 @@ class Ui_Neuroptimus(object):
 
         if not self.dd_type.currentIndex():
             try:
-                self.core.SecondStep({"stim" : [str(self.stimprot.currentText()), float(self.lineEdit_pos.text()), str(self.section_box.currentText())],
+                self.core.SecondStep({"stim" : [str(self.stimprot.currentText()), float(self.lineEdit_pos.text()), str(self.section_rec.currentText())],
                                     "stimparam" : [self.container, float(self.lineEdit_delay.text()), float(self.lineEdit_duration.text())]})
                 self.kwargs = {"runparam":[float(self.lineEdit_tstop.text()),
                                         float(self.lineEdit_dt.text()),
                                         str(self.param_to_record.currentText()),
-                                        str(self.section_dur.currentText()),
+                                        str(self.section_stim.currentText()),
                                         float(self.lineEdit_posins.text()),
                                         float(self.lineEdit_initv.text())]}
             except AttributeError:
@@ -1693,7 +1697,7 @@ class Ui_Neuroptimus(object):
                 else:
                     text += "\n" + param[0] + ": " + param[-1] + "\n" + "\t" + str(k)
         #text += "\n" + "fitness:\n" + "\t" + str(self.core.Neuroptimus.final_pop[0].fitnes)
-        text += "\n" + "fitness:\n" + "\t" + str(self.core.fits)
+        text += "\n" + "fitness:\n" + "\t" + str(self.core.last_fitness)
         for tabs in [self.eval_tab,self.plot_tab]:
             label = QtWidgets.QLabel(tabs)
             label.setGeometry(QtCore.QRect(10, 70, 170, 206))
@@ -1708,6 +1712,7 @@ class Ui_Neuroptimus(object):
             scroll_area = QtWidgets.QScrollArea(tabs)
             scroll_area.setGeometry(QtCore.QRect(10, 100, 170, 256))
             scroll_area.setWidget(label)
+            scroll_area.setWidgetResizable(True)
             label = QtWidgets.QLabel(self.plot_tab)
         label.setGeometry(QtCore.QRect(300, 80, 250, 146))
         font = QtGui.QFont()
@@ -1739,6 +1744,8 @@ class Ui_Neuroptimus(object):
             _type=self.core.data_handler.data.type
             unit="mV" if _type=="voltage" else "nA" if _type=="current" else ""
             axes.set_ylabel(_type+" [" + unit + "]")
+            axes.set_xticks([n for n in range(0, int((t * no_traces) / (step)), int((t * no_traces) / (step) / 5.0)) ])
+            axes.set_xticklabels([str(n) for n in range(0, int(t * no_traces), int((t * no_traces) / 5))])
             axes.plot(list(range(0, len(exp_data))), exp_data)
             axes.plot(list(range(0, len(model_data))), model_data, 'r')
             axes.legend(["target", "model"])
@@ -1762,7 +1769,9 @@ class Ui_Neuroptimus(object):
             _type_ = "Voltage" if _type =="v" else "Current" if _type=="c" else ""
             unit="mV" if _type=="v" else "nA" if _type=="c" else ""
             axes.set_ylabel(_type_+" [" + unit + "]")
-            axes.plot(list(range(0, len(model_data))), model_data, 'r')
+            axes.set_xticks([n for n in range(0, int((t * no_traces) / (step)), int((t * no_traces) / (step) / 5.0)) ])
+            axes.set_xticklabels([str(n) for n in range(0, int(t * no_traces), int((t * no_traces) / 5))])
+            axes.plot(list(range(0, len(model_data))),model_data, 'r')
             axes.legend(["model"])
             self.figure2.savefig("result_trace.png", dpi=300, facecolor='w', edgecolor='w',
             orientation='portrait', papertype=None, format=None,
@@ -1843,78 +1852,8 @@ class Ui_Neuroptimus(object):
         Inspyred plots generated by it's own function.
         """
         plt.close('all')
-        if self.core.deap_var:
-            with open("stat_file.txt","r") as f:
-                textlines=""
-                for line in f:
-                    if "(" not in line:
-                        break
-                    sums=0
-                    sums2=0
-                    i=0
-                    tups=line[line.index("(") + 1:line.index(")")]
-                    for word in tups.split(','):
-                        if word:
-                            sums+=float(word)*self.core.option_handler.weights[i]
-                        i+=1
-                    line=line.replace(tups,str(sums))
-                    tups2=line[line.rindex("(") + 1:line.rindex(")")]
-                    i=0
-                    for word in tups2.split(','):
-                        if word:
-                            sums2+=float(word)*self.core.option_handler.weights[i]
-                        i+=1
-                    line=line.replace(tups2,str(sums2))
-                    line=line.replace("(","")
-                    line=line.replace(")","")
-                    textlines+=line
-            if textlines:
-                statsd=open("stat_file.txt","w")
-                statsd.write(textlines)
-                statsd.close()
-        if os.path.getmtime("stat_file.txt") <= self.core.option_handler.start_time_stamp:
-            popup('Generation plot is not available for this algorithm.')
         try:
-            if self.core.deap_var:
-                genarr=[]
-                minarr=[]
-                maxarr=[]
-                avgarr=[]
-                stdarr=[]
-                for i in range(len(self.record)):
-                    genarr.append(int(self.record[i]['gen']))
-                    minarr.append(self.record[i]['min'])
-                    maxarr.append(self.record[i]['max'])
-                    avgarr.append(self.record[i]['avg'])
-                    stdarr.append(self.record[i]['std'])
-                for i in range(len(maxarr)):
-                    maxn=0
-                    minn=0
-                    avgn=0
-                    stdn=0
-                    for j in range(len(maxarr[i])):
-                        maxn+=float(maxarr[i][j])*self.core.option_handler.weights[j]
-                        minn+=float(minarr[i][j])*self.core.option_handler.weights[j]
-                        avgn+=float(avgarr[i][j])*self.core.option_handler.weights[j]
-                        stdn+=float(stdarr[i][j])*self.core.option_handler.weights[j]
-                    maxarr[i]=maxn
-                    minarr[i]=minn
-                    avgarr[i]=avgn
-                    stdarr[i]=stdn
-                plt.plot(genarr,minarr,label='Minimum')
-                plt.plot(genarr,maxarr,label='Maximum')
-                plt.plot(genarr,avgarr,label='Average')
-                plt.plot(genarr,stdarr,label='Standard Deviation')
-                legend = plt.legend(loc='upper center', shadow=True)
-                frame = legend.get_frame()
-                frame.set_facecolor('0.90')
-                for label in legend.get_texts():
-                    label.set_fontsize('large')
-                for label in legend.get_lines():
-                    label.set_linewidth(1.5)
-                plt.show()
-            else:
-                generation_plot("stat_file.txt")
+            generation_plot("stat_file.txt")
         except ValueError:
             stat_file=open("stat_file.txt","rt")
             generation_plot(stat_file)
@@ -1943,12 +1882,10 @@ class Ui_Neuroptimus(object):
 
     def startingpoints(self):
         num_o_params=len(self.core.option_handler.GetObjTOOpt())
-        seeds = []
-        self.SPW = startingpoints(self,num_o_params,seeds) 
+        self.SPW = Startingpoints(self,num_o_params) 
         self.SPW.setObjectName("Neuroptimus")
         self.SPW.resize(400, 500)
         self.SPW.show()
-        self.seed = seeds
 
     
 class SecondWindow(QtWidgets.QMainWindow):
@@ -2038,11 +1975,10 @@ class StimuliWindow(QtWidgets.QMainWindow):
         super(StimuliWindow, self).__init__()
         _translate = QtCore.QCoreApplication.translate
         self.parent=parent
-        self.temp=[]
-        self.core=Core.coreModul()
         self.amplit_edit = QtWidgets.QLineEdit(self)
         self.amplit_edit.setGeometry(QtCore.QRect(140, 10, 61, 22))
         self.amplit_edit.setObjectName("amplit_edit")
+        self.amplit_edit.setValidator(self.parent.intvalidator)
         self.label_amplit = QtWidgets.QLabel(self)
         self.label_amplit.setGeometry(QtCore.QRect(10, 10, 141, 16))
         font = QtGui.QFont()
@@ -2064,13 +2000,20 @@ class StimuliWindow(QtWidgets.QMainWindow):
         self.pushButton_accept.setText(_translate("Neuroptimus", "Accept"))
         self.pushButton_accept.clicked.connect(self.Accept)
         self.pushButton_accept.setEnabled(False)
-        self.option_handler=parent.core.option_handler
-        self.data_handler=parent.core.data_handler
+        self.option_handler=self.parent.core.option_handler
+        self.data_handler=self.parent.core.data_handler
+        self.stim_table= QtWidgets.QTableWidget(self)
+        self.stim_table.setGeometry(QtCore.QRect(80, 50, 150, 361))
+        self.stim_table.setObjectName("stim_table")
+        self.stim_table.setColumnCount(1)
+        self.stim_table.setHorizontalHeaderLabels(["Amplitude (nA)"])
+        self.stim_table.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.stim_table.horizontalHeader().setStretchLastSection(True)
         if self.parent.container:
             self.amplit_edit.setText(str(len(self.parent.container)))
-            self.container_load(self)
-            for n,v in zip(self.temp,self.parent.container):
-                n[1].setText(str(v))
+            self.stim_table.setRowCount(len(self.parent.container))
+            for idx,n in enumerate(self.parent.container):
+            	self.stim_table.setItem(idx, 0, QTableWidgetItem(str(n)))
 
         
         try:
@@ -2082,49 +2025,19 @@ class StimuliWindow(QtWidgets.QMainWindow):
 
     def Set(self, e):
         try:
-            self.container_load(self)
+            self.stim_table.setRowCount(int(self.amplit_edit.text()))
             self.pushButton_accept.setEnabled(True)
         except:
             self.close()
         
-        
-    def container_load(self,e):
-        hstep = 200
-        vstep = 35
-        hoffset = 10
-        voffset = 50
-        unit="nA" if self.parent.stimprot.currentText()=="IClamp" else "mV"
-        if self.temp:
-            for n in self.temp:
-                n[0]=None
-                n[1]=None
-            self.temp=[]
-        for l in range(min(10, int(self.amplit_edit.text()))):
-            label = QtWidgets.QLabel(self)
-            label.setGeometry(QtCore.QRect(hoffset, voffset + l * vstep, 121, 16))
-            font = QtGui.QFont()
-            font.setFamily("Ubuntu")
-            font.setPointSize(10)
-            font.setBold(False)
-            font.setWeight(50)
-            label.setFont(font)
-            label.setObjectName("label_amplit")
-            label.setText(QtCore.QCoreApplication.translate("Neuroptimus", "Amplitude" + str(l+1) + " ("+unit+"):"))
-            amplitude_edit = QtWidgets.QLineEdit(self)
-            amplitude_edit.setGeometry(QtCore.QRect(hstep / 2+25, voffset + l * vstep, 61, 22))
-            amplitude_edit.setObjectName("amplitude_edit")
-            label.show()
-            amplitude_edit.show()
-            #wx.StaticText(self.panel, label="Amplitude" + str(l+1) + " ("+unit+"):", pos=(hoffset, voffset + l * vstep))
-            #tmp_obj = wx.TextCtrl(self.panel, id=l, pos=(hstep / 2+25, voffset + l * vstep), size=(75, 30))
-            if self.option_handler.type[-1]=="features":
-                amplitude_edit.setText(str(self.data_handler.features_data["stim_amp"][l]))
-            self.temp.append([label,amplitude_edit])
 
     def Accept(self, e):
         self.parent.container=[]
-        for n in range(len(self.temp)):
-            self.parent.container.append(float(self.temp[n][1].text()))
+        try:
+            for n in range(self.stim_table.rowCount()):
+            	self.parent.container.append(float(self.stim_table.item(n, 0).text()))
+        except:
+            	print("Stimuli values are missing or incorrect")   
         self.close()
 
     
@@ -2132,7 +2045,6 @@ class BoundaryWindow(QtWidgets.QMainWindow):
     def __init__(self,parent): 
         super(BoundaryWindow, self).__init__()
         _translate = QtCore.QCoreApplication.translate
-        self.core=Core.coreModul()
         hstep = 130
         vstep = 35
         hoffset = 10
@@ -2239,19 +2151,19 @@ class BoundaryWindow(QtWidgets.QMainWindow):
                 
 
 
-class startingpoints(QtWidgets.QMainWindow):
+class Startingpoints(QtWidgets.QMainWindow):
     def __init__(self,parent,*args,**kwargs):
-        super(startingpoints,self).__init__()
+        super(Startingpoints,self).__init__()
         _translate = QtCore.QCoreApplication.translate
-        n_o_params=args[1]
+        n_o_params=args[0]
+        self.parent=parent
         self.container=[]
-        self.vals=args[2]
         hstep = 130
         vstep = 35
         hoffset = 10
         voffset = 15
         for n in range(n_o_params):
-            param=parent.option_handler.GetObjTOOpt()[n].split()
+            param=parent.core.option_handler.GetObjTOOpt()[n].split()
             if len(param)==4:
                 p_name=param[0] + " " + param[1] + " " + param[3]
             else:
@@ -2259,6 +2171,7 @@ class startingpoints(QtWidgets.QMainWindow):
                     p_name=param[0] + " " + param[-1]
                 else:
                     p_name=param[-1]
+            
             #p_name=self.parent.core.option_handler.GetObjTOOpt()[n].split()[-1]
             lbl = QtWidgets.QLabel(self)
             lbl.setGeometry(QtCore.QRect(hoffset, voffset + n * vstep, 121, 16))
@@ -2269,11 +2182,13 @@ class startingpoints(QtWidgets.QMainWindow):
             font.setWeight(50)
             lbl.setFont(font)
             lbl.setObjectName("ctrl")
-            lbl.setText(QtCore.QCoreApplication.translate("Neuroptimus", lbl))
+            lbl.setText(QtCore.QCoreApplication.translate("Neuroptimus", p_name))
 
             ctrl = QtWidgets.QLineEdit(self)
             ctrl.setGeometry(QtCore.QRect(hstep, voffset + n * vstep, 61, 22))
             ctrl.setObjectName("ctrl")
+            if self.parent.seed:
+            	ctrl.setText(str(self.parent.seed[n]))
             lbl.show()
             ctrl.show()
             self.container.append(ctrl)
@@ -2303,11 +2218,11 @@ class startingpoints(QtWidgets.QMainWindow):
 
     def OnOk(self,e):
         try:
+            self.parent.seed=[]      
             for n in self.container:
-                self.vals.append(float(n.text()))
+                self.parent.seed.append(float(n.text()))
+            self.close()
         except ValueError:
-            
-            
             popup("""You must give every parameter an initial value!
                         Error""")
             
@@ -2320,7 +2235,7 @@ class startingpoints(QtWidgets.QMainWindow):
             try:
                 f = open(fileName, "r")
                 for idx, l in enumerate(f):
-                    self.container[idx].SetValue(str(l))
+                    self.container[idx].setText(str(l))
             except Exception as e:
                 
                 
@@ -2384,7 +2299,7 @@ class startingpoints(QtWidgets.QMainWindow):
             s=l.strip()
             params = [float(x.lstrip("[").rstrip("]")) for x in s.split(", ")][3:-1]
             params = params[0:len(params) / 2 + 1]
-            self.vals.append(params)
+            self.parent.seed.append(params)
         self.close()
 
 
@@ -2425,14 +2340,9 @@ class gridwindow(QtWidgets.QMainWindow):
             self.min.append(tmp_min)
             self.max.append(tmp_max)
             if len(self.option_handler.boundaries[1]) == len(self.option_handler.GetObjTOOpt()):
-                tmp_min.SetValue(str(self.option_handler.boundaries[0][l]))
-                tmp_max.SetValue(str(self.option_handler.boundaries[1][l]))
+                tmp_min.setText(str(self.option_handler.boundaries[0][l]))
+                tmp_max.setText(str(self.option_handler.boundaries[1][l]))
 
-        lbl = QtWidgets.QLabel(self)
-        lbl.setGeometry(QtCore.QRect(hoffset, voffset + l * vstep, 121, 16))
-        lbl.setFont(font)
-        lbl.setObjectName("ctrl")
-        lbl.setText(QtCore.QCoreApplication.translate("Neuroptimus", self.option_handler.GetObjTOOpt()[l].split()[-1]))
         self.resolution_ctrl = QtWidgets.QLineEdit(self)
         self.resolution_ctrl.setGeometry(QtCore.QRect(hstep,600, 75, 30))
         self.resolution_ctrl.setObjectName("ctrl")
@@ -2474,7 +2384,7 @@ class ErrorDialog(QtWidgets.QMainWindow):
             for c in t:
                 #tmp_str.append( "*".join([str(c[0]),c[1].__name__]))
                 if parent.core.option_handler.type[-1]!="features":
-                    self.error_comp_table.setItem(c_idx,0,QTableWidgetItem(self.parent.core.ffun_mapper[c[1].__name__]))
+                    self.error_comp_table.setItem(c_idx,0,QTableWidgetItem(parent.core.ffun_mapper[c[1].__name__]))
                 else:
                     self.error_comp_table.setItem(c_idx,0,QTableWidgetItem(c[1]))
                 self.error_comp_table.setItem(c_idx,1,QTableWidgetItem(str(c[2])))
