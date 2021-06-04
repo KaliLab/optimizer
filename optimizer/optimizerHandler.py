@@ -355,6 +355,7 @@ class Problem:
 		self.min_max = bounds
 		self.fitnes_fun = fitnes_fun
 		self.num_islands = num_islands
+		self.gen_fits = []
 		self.pop_size = pop_size
 		self.max_evaluations = max_evaluations
 		self.pop_counter = 0
@@ -362,6 +363,7 @@ class Problem:
 		self.directory = directory
 		self.nobj=n_obj
 		try:
+			os.remove(self.directory + '/stat_file.txt')
 			os.remove(self.directory + '/ind_file.txt')
 		except OSError:
 			pass
@@ -375,7 +377,11 @@ class Problem:
 		with open(self.directory + '/ind_file.txt', 'a') as inds_file:
 			inds_file.write("{0}, {1}, {2}, {3}, {4}\n".format(self.gen_counter, self.pop_counter, fitness, x, normalize(x, self)))
 		self.pop_counter += 1
+		self.gen_fits.append(np.sum(fitness))
 		if (self.pop_counter * self.num_islands) % (self.pop_size * self.num_islands) == 0:
+			with open(self.directory + '/stat_file.txt', 'a') as inds_file:
+				inds_file.write("{0}, {1}, {2}, {3}, {4}, {5}, {6} \n".format(self.gen_counter, self.pop_size, np.max(self.gen_fits), np.min(self.gen_fits), np.median(self.gen_fits), np.mean(self.gen_fits), np.std(self.gen_fits)))
+			self.gen_fits = []
 			self.pop_counter = 0
 			self.gen_counter += 1
 			print("Generation: {0}".format(self.gen_counter))
