@@ -7,7 +7,7 @@
   <cognitive_rate>None</cognitive_rate>
   <cooling_rate>None</cooling_rate>
   <crossover_rate>None</crossover_rate>
-  <evo_strat>Evolutionary Algorithm (EA) - Inspyred</evo_strat>
+  <evo_strat>Covariance Matrix Adaptation ES (CMAES) - Pygmo</evo_strat>
   <f_tol>None</f_tol>
   <feats>MSE</feats>
   <force_bounds>False</force_bounds>
@@ -23,14 +23,14 @@
   <max_evaluation>10.0</max_evaluation>
   <model_path>/home/mohacsi/work/optimizer/optimizer/new_test_files/hh_pas_surrogate/hh_pas.hoc</model_path>
   <model_spec_dir>None</model_spec_dir>
-  <mutation_rate>0.25</mutation_rate>
+  <mutation_rate>None</mutation_rate>
   <neighborhood_size>None</neighborhood_size>
-  <num_islands>None</num_islands>
+  <num_islands>1.0</num_islands>
   <num_iter>None</num_iter>
   <num_params>3</num_params>
   <num_repet>None</num_repet>
-  <number_of_cpu>1.0</number_of_cpu>
-  <param_vals>[0, 0, 0]</param_vals>
+  <number_of_cpu>None</number_of_cpu>
+  <param_vals>[0, 0, 0, 0]</param_vals>
   <pop_size>10.0</pop_size>
   <run_controll_dt>0.025</run_controll_dt>
   <run_controll_pos>0.5</run_controll_pos>
@@ -44,8 +44,8 @@
   <social_rate>None</social_rate>
   <spike_thres>0.0</spike_thres>
   <spike_window>40.0</spike_window>
-  <start_time_stamp>1622796668.9374382</start_time_stamp>
-  <starting_points>None</starting_points>
+  <start_time_stamp>1623759908.6468182</start_time_stamp>
+  <starting_points>[]</starting_points>
   <std_gauss>None</std_gauss>
   <step_size>None</step_size>
   <stim_amp>[0.3]</stim_amp>

@@ -452,19 +452,19 @@ class Ui_Neuroptimus(object):
         self.label_59.setObjectName("label_59")
 
         self.pushButton_Inspyred = QtWidgets.QPushButton(self.runtab)
-        self.pushButton_Inspyred.setGeometry(QtCore.QRect(98, 90, 88, 32))
+        self.pushButton_Inspyred.setGeometry(QtCore.QRect(105, 90, 88, 32))
         self.pushButton_Inspyred.setObjectName("Inspyred")
         self.pushButton_Pygmo = QtWidgets.QPushButton(self.runtab)
-        self.pushButton_Pygmo.setGeometry(QtCore.QRect(186, 90, 88, 32))
+        self.pushButton_Pygmo.setGeometry(QtCore.QRect(193, 90, 88, 32))
         self.pushButton_Pygmo.setObjectName("Pygmo")
         self.pushButton_Bluepyopt = QtWidgets.QPushButton(self.runtab)
-        self.pushButton_Bluepyopt.setGeometry(QtCore.QRect(274, 90, 88, 32))
+        self.pushButton_Bluepyopt.setGeometry(QtCore.QRect(281, 90, 88, 32))
         self.pushButton_Bluepyopt.setObjectName("Bluepyopt")
         self.pushButton_Scipy = QtWidgets.QPushButton(self.runtab)
-        self.pushButton_Scipy.setGeometry(QtCore.QRect(362, 90, 88, 32))
+        self.pushButton_Scipy.setGeometry(QtCore.QRect(369, 90, 82, 32))
         self.pushButton_Scipy.setObjectName("Scipy")
         self.pushButton_Recom = QtWidgets.QPushButton(self.runtab)
-        self.pushButton_Recom.setGeometry(QtCore.QRect(10, 90, 88, 32))
+        self.pushButton_Recom.setGeometry(QtCore.QRect(10, 90, 95, 32))
         self.pushButton_Recom.setObjectName("Recommended")
 
         self.algolist = QtWidgets.QTableWidget(self.runtab)
@@ -511,9 +511,9 @@ class Ui_Neuroptimus(object):
         self.pushButton_35 = QtWidgets.QPushButton(self.plot_tab)
         self.pushButton_35.setGeometry(QtCore.QRect(30, 400, 111, 22))
         self.pushButton_35.setObjectName("pushButton_34")
-        self.pushButton_36 = QtWidgets.QPushButton(self.plot_tab)
-        self.pushButton_36.setGeometry(QtCore.QRect(150, 400, 111, 22))
-        self.pushButton_36.setObjectName("pushButton_34")
+        #self.pushButton_36 = QtWidgets.QPushButton(self.plot_tab)  grid_plot
+        #self.pushButton_36.setGeometry(QtCore.QRect(150, 400, 111, 22))
+        #self.pushButton_36.setObjectName("pushButton_34")
         self.pushButton_37 = QtWidgets.QPushButton(self.plot_tab)
         self.pushButton_37.setGeometry(QtCore.QRect(300, 400, 111, 22))
         self.pushButton_37.setObjectName("pushButton_34")
@@ -744,7 +744,7 @@ class Ui_Neuroptimus(object):
         self.seed = []
         self.resolution=0
         self.Recom=["Evolutionary Algorithm (EA) - Inspyred","Covariance Matrix Adaptation ES (CMAES) - Pygmo",
-                "Particle Swarm (PSO) - Inspyred","Particle Swarm Gen (PSO) - Pygmo","Indicator Based (IBEA) - Bluepyopt","L-BFGS-B - Scipy","Random Search"]
+                "Particle Swarm (PSO) - Inspyred","Particle Swarm Gen (PSOG) - Pygmo","Indicator Based (IBEA) - Bluepyopt","L-BFGS-B - Scipy","Random Search"]
         self.Inspyred=["Evolutionary Algorithm (EA) - Inspyred","Particle Swarm (PSO) - Inspyred",
                 "Differential Evolution (DE) - Inspyred",
                 "Nondominated Sorted (NSGAII) - Inspyred","Pareto Archived (PAES) - Inspyred",
@@ -757,7 +757,7 @@ class Ui_Neuroptimus(object):
                 "Particle Swarm (PSO) - Pygmo","Exponential Evolution Strategies (XNES) - Pygmo",
                 "Simple Genetic Algorithm (SGA) - Pygmo","Covariance Matrix Adaptation ES (CMAES) - Pygmo",
                 "Single Differential Evolution - Pygmo","Differential Evolution (DE1220) - Pygmo",
-                "Bee Colony - Pygmo","FullGrid - Pygmo","Praxis - Pygmo","Nelder-Mead - Pygmo"]
+                "Bee Colony (ABC) - Pygmo","FullGrid - Pygmo","Praxis - Pygmo","Nelder-Mead - Pygmo"]
         self.algos={
             'Recommended':self.Recom,
             'Inspyred': self.Inspyred,
@@ -845,8 +845,8 @@ class Ui_Neuroptimus(object):
         self.label_74.setText(_translate("Neuroptimus", "Analysis"))
         self.pushButton_35.setText(_translate("Neuroptimus", "Generation Plot"))
         self.pushButton_35.clicked.connect(self.PlotGen)
-        self.pushButton_36.setText(_translate("Neuroptimus", "Grid Plot"))
-        self.pushButton_36.clicked.connect(self.PlotGrid)
+        #self.pushButton_36.setText(_translate("Neuroptimus", "Grid Plot"))
+        #self.pushButton_36.clicked.connect(self.PlotGrid)
         self.pushButton_37.setText(_translate("Neuroptimus", "Error Details"))
         self.pushButton_37.clicked.connect(self.ShowErrorDialog)
         self.errorlist.setColumnCount(4)
@@ -1159,20 +1159,21 @@ class Ui_Neuroptimus(object):
         Loop through every selected line.
         """
         items = self.modellist.selectionModel().selectedRows()
+        print(items)
         self.remover.setEnabled(True)
         for item_selected in items:
                 #try to use the table for selection
-
-                section = str(self.modellist.item(item_selected.row(), 0).text())
+                selected_row=item_selected.row()
+                section = str(self.modellist.item(selected_row, 0).text())
                 #
-                segment = str(self.modellist.item(item_selected.row(), 1).text())
-                chan = str(self.modellist.item(item_selected.row(), 2).text())
+                segment = str(self.modellist.item(selected_row, 1).text())
+                chan = str(self.modellist.item(selected_row, 2).text())
                 morph=""
-                par = str(self.modellist.item(item_selected.row(), 3).text())
+                par = str(self.modellist.item(selected_row, 3).text())
                 if chan == "morphology":
                     chan = "None"
                     par= "None"
-                    morph = str(self.modellist.item(item_selected.row(), 3).text())
+                    morph = str(self.modellist.item(selected_row, 3).text())
 
 
 
@@ -1183,25 +1184,14 @@ class Ui_Neuroptimus(object):
                         "params" : par,
                         "values" : 0}
 
-                searchValue = [kwargs["section"], kwargs["segment"], kwargs["params"], kwargs["morph"]]
+      
+                for j in range(4):
+                    self.modellist.item(selected_row,j).setBackground(QtGui.QColor(255,0,0))
 
 
-                if True:
-
-                    for idx in range(self.modellist.rowCount()):
-                        item = self.modellist.item(idx, 3).text()
-                        item1 = self.modellist.item(idx, 1).text()
-                        item2 = self.modellist.item(idx, 2).text()
-                        item0 = self.modellist.item(idx, 0).text()
-                        
-                        if (item0 == searchValue[0] and item1 == searchValue[1])and(item == searchValue[2] or item2 == searchValue[3]):
-                            for j in range(4):
-                                self.modellist.item(idx,j).setBackground(QtGui.QColor(255,0,0))
-
-
-                    self.core.SetModel2(kwargs)
-                
-                else:
+                self.core.SetModel2(kwargs)
+        
+                """else:
                     for idx in range(self.modellist.rowCount()):
                         item = self.modellist.item(idx, 3)
                         item1 = self.modellist.item(idx, 1)
@@ -1212,7 +1202,7 @@ class Ui_Neuroptimus(object):
                             for j in range(4):
                                 self.modellist.item(idx,j).setBackground(QtGui.QColor(0,255,0))
 
-                    self.core.SetModel(kwargs)
+                    self.core.SetModel(kwargs)"""
                 
             
 
@@ -1225,17 +1215,17 @@ class Ui_Neuroptimus(object):
         items = self.modellist.selectionModel().selectedRows()
         for item_selected in items:
                 #try to use the table for selection
-
-                section = str(self.modellist.item(item_selected.row(), 0).text())
+                selected_row=item_selected.row()
+                section = str(self.modellist.item(selected_row, 0).text())
                     #
-                segment = str(self.modellist.item(item_selected.row(), 1).text())
-                chan = str(self.modellist.item(item_selected.row(), 2).text())
+                segment = str(self.modellist.item(selected_row, 1).text())
+                chan = str(self.modellist.item(selected_row, 2).text())
                 morph=""
-                par = str(self.modellist.item(item_selected.row(), 3).text())
+                par = str(self.modellist.item(selected_row, 3).text())
                 if chan == "morphology":
                     chan = "None"
                     par= "None"
-                    morph = str(self.modellist.item(item_selected.row(), 3).text())
+                    morph = str(self.modellist.item(selected_row, 3).text())
 
                 kwargs = {"section" : section,
                         "segment" : segment,
@@ -1251,15 +1241,8 @@ class Ui_Neuroptimus(object):
                 self.core.option_handler.adjusted_params.remove(temp)
                 if len(self.core.option_handler.GetObjTOOpt()) == 0:
                     self.remover.setEnabled(False )
-                searchValue = [kwargs["section"], kwargs["segment"], kwargs["params"], kwargs["morph"]]
-                for idx in range(self.modellist.rowCount()):
-                    item = self.modellist.item(idx, 3).text()
-                    item1 = self.modellist.item(idx, 1).text()
-                    item2 = self.modellist.item(idx, 2).text()
-                    item0 = self.modellist.item(idx, 0).text()
-                    if (item0 == searchValue[0] and item1 == searchValue[1])and(item == searchValue[2] or item2 == searchValue[3]):
-                        for j in range(4):
-                                    self.modellist.item(idx,j).setBackground(QtGui.QColor(255,255,255))
+                for j in range(4):
+                    self.modellist.item(selected_row,j).setBackground(QtGui.QColor(255,255,255))
 
 
 
@@ -1787,15 +1770,15 @@ class Ui_Neuroptimus(object):
         Saves the found values in a file.
         """
         try:
-            save_file_name = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File')
+            options = QtWidgets.QFileDialog.Options()
+            options |= QtWidgets.QFileDialog.DontUseNativeDialog
+            save_file_name, _ = QFileDialog.getSaveFileName(None,"QFileDialog.getSaveFileName()", "","Data files (*txt);;All Files (*);;", options=options)
             if save_file_name[0]:
-                f=open(save_file_name,"w")
-                #params=self.core.Neuroptimus.fit_obj.ReNormalize(self.core.Neuroptimus.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)])
-                params=self.core.Neuroptimus.fit_obj.ReNormalize(self.core.cands[0])
+                f=open(str(save_file_name)+".txt","w")
                 #params=self.core.Neuroptimus.final_pop[0].candidate[0:len(self.core.option_handler.adjusted_params)]
-                f.write("\n".join(map(str,params)))
+                f.write("\n".join(map(str,self.core.renormed_params)))
         except Exception as e:
-            popup("Couldn't save the parameters." + e)
+            popup("Couldn't save the parameters." + str(e))
 
 
     def plot_tab_fun(self):
@@ -1839,9 +1822,9 @@ class Ui_Neuroptimus(object):
             idx+=1
             tmp=list(map(str,tmp))
             self.errorlist.setItem(c_idx, 0, QTableWidgetItem(tmp[0]))
-            self.errorlist.setItem(c_idx, 1, QTableWidgetItem(tmp[1]))
-            self.errorlist.setItem(c_idx, 2, QTableWidgetItem(tmp[2]))
-            self.errorlist.setItem(c_idx, 3, QTableWidgetItem(tmp[3]))
+            self.errorlist.setItem(c_idx, 1, QTableWidgetItem("{:.4f}".format(float(tmp[1]))))
+            self.errorlist.setItem(c_idx, 2, QTableWidgetItem("{:.4f}".format(float(tmp[2]))))
+            self.errorlist.setItem(c_idx, 3, QTableWidgetItem("{:.4f}".format(float(tmp[3]))))
 
         self.errorlist.setRowCount(idx)
 
@@ -2120,9 +2103,9 @@ class BoundaryWindow(QtWidgets.QMainWindow):
 
     def Save(self,e):
         try:    
-            name = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File')
+            save_bound = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File')
             if name[0]:
-                f = open(name[0],'w')
+                f = open(str(save_bound)+".txt",'w')
                 for idx in range(self.boundary_table.rowCount()):
                     f.write(str(self.boundary_table.item(idx,1).text()))
                     f.write("\t")
@@ -2377,7 +2360,6 @@ class ErrorDialog(QtWidgets.QMainWindow):
         self.error_comp_table.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.error_comp_table.setHorizontalHeaderLabels(("Error Function;Value;Weight;Weighted Value").split(";"))
         self.error_comp_table.setRowCount(parent.recursive_len(parent.core.error_comps))
-        
         tmp_w_sum=0
         c_idx=0
         for t in parent.core.error_comps:
@@ -2387,9 +2369,9 @@ class ErrorDialog(QtWidgets.QMainWindow):
                     self.error_comp_table.setItem(c_idx,0,QTableWidgetItem(parent.core.ffun_mapper[c[1].__name__]))
                 else:
                     self.error_comp_table.setItem(c_idx,0,QTableWidgetItem(c[1]))
-                self.error_comp_table.setItem(c_idx,1,QTableWidgetItem(str(c[2])))
-                self.error_comp_table.setItem(c_idx,2,QTableWidgetItem(str(c[0])))
-                self.error_comp_table.setItem(c_idx,3,QTableWidgetItem(str(c[0]*c[2])))
+                self.error_comp_table.setItem(c_idx,1,QTableWidgetItem(str("{:.4f}".format(c[2]))))
+                self.error_comp_table.setItem(c_idx,2,QTableWidgetItem(str("{:.4f}".format(c[0]))))
+                self.error_comp_table.setItem(c_idx,3,QTableWidgetItem(str("{:.4f}".format(c[0]*c[2]))))
                 c_idx+=1
                 tmp_w_sum +=c[0]*c[2]
             c_idx+=1

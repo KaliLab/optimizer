@@ -113,6 +113,16 @@ def uniformz(random,size,bounds):
 	for i in range(int(size)):
 		candidate.append(random.uniform(bounds.lower_bound[i],bounds.upper_bound[i]))
 	return candidate
+	
+def SetBoundaries(bounds):
+		"""
+		Stores the bounds of the parameters and creates a ``bounder`` object which bounds
+		every parameter into the range of 0-1 since the algorithms are using normalized values.
+
+		:param bounds: ``list`` containing the minimum and maximum values.
+
+		"""
+		return ec.Bounder([0]*len(bounds[0]),[1]*len(bounds[1]))
 
 class oldBaseOptimizer():
 	"""
@@ -156,8 +166,8 @@ class baseOptimizer():
 
 		self.num_params = option_obj.num_params
 		self.number_of_cpu=option_obj.number_of_cpu
-
-		self.SetBoundaries(option_obj.boundaries)
+		self.min_max=option_obj.boundaries
+		self.bounder=SetBoundaries(option_obj.boundaries)
 
 	def SetFFun(self,option_obj):
 		"""
@@ -180,16 +190,7 @@ class baseOptimizer():
 			except KeyError:
 				print("error with fitness function: ",option_obj.feats," not in: ",list(self.fit_obj.calc_dict.keys()))
 
-	def SetBoundaries(self, bounds):
-		"""
-		Stores the bounds of the parameters and creates a ``bounder`` object which bounds
-		every parameter into the range of 0-1 since the algorithms are using normalized values.
-
-		:param bounds: ``list`` containing the minimum and maximum values.
-
-		"""
-		self.min_max = bounds
-		self.bounder = ec.Bounder([0] * len(self.min_max[0]), [1] * len(self.min_max[1]))
+	
 
 class InspyredAlgorithmBasis(baseOptimizer):
 	def __init__(self, reader_obj,  option_obj):
@@ -461,7 +462,7 @@ class SingleProblem:
 	def get_bounds(self):
 		return(self.bounds[0], self.bounds[1])
 
-class Single_Differential_Evolution_Pygmo(SinglePygmoAlgorithmBasis):
+class SDE_Pygmo(SinglePygmoAlgorithmBasis):
 	
 	def __init__(self,reader_obj,option_obj):
 
@@ -511,7 +512,7 @@ class bounderObject(object):
 		return tmax and tmin
 
 
-class Simulated_Annealing_Inspyred(InspyredAlgorithmBasis):
+class SA_Inspyred(InspyredAlgorithmBasis):
 	"""
 	Implements the ``Simulated Annealing`` algorithm for minimization from the ``inspyred`` package.
 
@@ -554,7 +555,7 @@ class Praxis_Pygmo(PygmoAlgorithmBasis):
 		self.algorithm.maxeval=int(option_obj.max_evaluation)
 
 
-class Nelder_Mead_Pygmo(PygmoAlgorithmBasis):
+class NM_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.max_evaluation=int(option_obj.max_evaluation)
@@ -563,7 +564,7 @@ class Nelder_Mead_Pygmo(PygmoAlgorithmBasis):
 		self.algorithm = pg.scipy_optimize(method="Nelder-Mead",tol=0,options={"maxfev":self.max_evaluation})
 
 
-class Differential_Evolution_Pygmo(PygmoAlgorithmBasis):
+class DE_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.max_evaluation=int(option_obj.max_evaluation)
@@ -571,7 +572,7 @@ class Differential_Evolution_Pygmo(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.de(gen=self.max_evaluation)
 
-class Covariance_Matrix_Adaptation_ES_Pygmo(PygmoAlgorithmBasis):
+class CMAES_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.max_evaluation=int(option_obj.max_evaluation)
@@ -579,7 +580,7 @@ class Covariance_Matrix_Adaptation_ES_Pygmo(PygmoAlgorithmBasis):
 		self.force_bounds = option_obj.force_bounds
 		self.algorithm = pg.cmaes(gen=self.max_evaluation,ftol=0, xtol=0, force_bounds=bool(self.force_bounds))
 		
-class Particle_Swarm_Pygmo(PygmoAlgorithmBasis):
+class PSO_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.max_evaluation=int(option_obj.max_evaluation)
@@ -587,7 +588,7 @@ class Particle_Swarm_Pygmo(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.pso(gen=self.max_evaluation)
 
-class Particle_Swarm_Gen_Pygmo(PygmoAlgorithmBasis):
+class PSOG_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiprocessing=True
@@ -596,7 +597,7 @@ class Particle_Swarm_Gen_Pygmo(PygmoAlgorithmBasis):
 		
 		self.algorithm = pg.pso_gen(gen=self.max_evaluation)
 
-class Multi_Objective_Ant_Colony_Pygmo(PygmoAlgorithmBasis):
+class MACO_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiobjective=True
@@ -606,7 +607,7 @@ class Multi_Objective_Ant_Colony_Pygmo(PygmoAlgorithmBasis):
 		
 		self.algorithm = pg.maco(gen=self.max_evaluation)
 
-class Extended_Ant_Colony_Pygmo(PygmoAlgorithmBasis):
+class GACO_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiprocessing=True
@@ -615,7 +616,7 @@ class Extended_Ant_Colony_Pygmo(PygmoAlgorithmBasis):
 	
 		self.algorithm = pg.gaco(gen=self.max_evaluation)
 
-class Nondominated_Sorted_Particle_Swarm_Pygmo(PygmoAlgorithmBasis):
+class NSPSO_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiobjective=True
@@ -625,7 +626,7 @@ class Nondominated_Sorted_Particle_Swarm_Pygmo(PygmoAlgorithmBasis):
 		
 		self.algorithm = pg.nspso(gen=self.max_evaluation)
 
-class Nondominated_Sorted_GA_Pygmo(PygmoAlgorithmBasis):
+class NSGA2_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiobjective=True
@@ -636,7 +637,7 @@ class Nondominated_Sorted_GA_Pygmo(PygmoAlgorithmBasis):
 		self.algorithm = pg.nsga2(gen=self.max_evaluation)
 
 
-class Exponential_Evolution_Strategies_Pygmo(PygmoAlgorithmBasis):
+class XNES_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.max_evaluation=int(option_obj.max_evaluation)
@@ -646,7 +647,7 @@ class Exponential_Evolution_Strategies_Pygmo(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.xnes(gen=self.max_evaluation,ftol=1e-15, xtol=1e-15, force_bounds=bool(self.force_bounds))
 
-class Bee_Colony_Pygmo(PygmoAlgorithmBasis):
+class ABC_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.max_evaluation=int(option_obj.max_evaluation)
@@ -654,7 +655,7 @@ class Bee_Colony_Pygmo(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.bee_colony(gen=self.max_evaluation)
 
-class Simple_Genetic_Algorithm_Pygmo(PygmoAlgorithmBasis):
+class SGA_Pygmo(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.max_evaluation=int(option_obj.max_evaluation)
@@ -662,7 +663,7 @@ class Simple_Genetic_Algorithm_Pygmo(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.sga(gen=self.max_evaluation)
 
-class Self_adaptive_DE_Pygmo(PygmoAlgorithmBasis):
+class SADE_Pygmo(PygmoAlgorithmBasis):
 
 	def __init__(self,reader_obj,option_obj):
 
@@ -679,7 +680,7 @@ class Self_adaptive_DE_Pygmo(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.sade(gen=self.max_evaluation,ftol=1e-15, xtol=1e-15)
 
-class Differential_Evolution_1220_Pygmo(PygmoAlgorithmBasis):
+class DE1220_Pygmo(PygmoAlgorithmBasis):
 
 	def __init__(self,reader_obj,option_obj):
 
@@ -697,7 +698,7 @@ class Differential_Evolution_1220_Pygmo(PygmoAlgorithmBasis):
 		self.algorithm = pg.de1220(gen=self.max_evaluation,ftol=1e-15, xtol=1e-15)
 
 
-class Particle_Swarm_Inspyred(InspyredAlgorithmBasis):
+class PSO_Inspyred(InspyredAlgorithmBasis):
 	"""
 	Implements the ``Particle Swarm`` algorithm for minimization from the ``inspyred`` package.
 
@@ -740,7 +741,7 @@ class Particle_Swarm_Inspyred(InspyredAlgorithmBasis):
 		'''
 		self.kwargs["topology"] = inspyred.swarm.topologies.star_topology
 
-class Basinhopping_Scipy(ScipyAlgorithmBasis):
+class BH_Scipy(ScipyAlgorithmBasis):
 	"""
 	Implements the ``Basinhopping`` algorithm for minimization from the ``scipy`` package.
 
@@ -831,21 +832,12 @@ class Basinhopping_Scipy(ScipyAlgorithmBasis):
 		#print self.result.x
 		self.final_pop=[my_candidate(self.result.x,self.result.fun)]
 
-	def SetBoundaries(self,bounds):
-		"""
-		Stores the bounds of the parameters and creates a ``bounder`` object which bounds
-		every parameter into the range of 0-1 since the algorithms are using normalized values.
-
-		:param bounds: ``list`` containing the minimum and maximum values.
-
-		"""
-		self.min_max=bounds
-		self.bounder=bounderObject([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
+	
 
 
-class Nelder_Mead_Scipy(ScipyAlgorithmBasis):
+class NM_Scipy(ScipyAlgorithmBasis):
 	"""
-	Implements a downhill simplex algorithm for minimization from the ``scipy`` package.
+	Implements a Nelder-Mead downhill simplex algorithm for minimization from the ``scipy`` package.
 
 	:param reader_obj: an instance of ``DATA`` object
 	:param model_obj: an instance of a model handler object, either ``externalHandler`` or ``modelHandlerNeuron``
@@ -870,7 +862,7 @@ class Nelder_Mead_Scipy(ScipyAlgorithmBasis):
 		self.num_repet=option_obj.num_repet
 		self.max_evaluation=option_obj.max_evaluation
 		self.num_params=option_obj.num_params
-		self.SetBoundaries(option_obj.boundaries)
+		self.bounder=SetBoundaries(option_obj.boundaries)
 		try:
 			if isinstance(option_obj.starting_points[0],list):
 				raise TypeError
@@ -942,16 +934,7 @@ class Nelder_Mead_Scipy(ScipyAlgorithmBasis):
 		#print self.result.x
 		self.final_pop=[my_candidate(self.result.x,self.result.fun)]
 
-	def SetBoundaries(self,bounds):
-		"""
-		Stores the bounds of the parameters and creates a ``bounder`` object which bounds
-		every parameter into the range of 0-1 since the algorithms are using normalized values.
-
-		:param bounds: ``list`` containing the minimum and maximum values.
-
-		"""
-		self.min_max=bounds
-		self.bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
+	
 
 
 
@@ -978,7 +961,8 @@ class L_BFGS_B_Scipy(baseOptimizer):
 		self.max_evaluation=option_obj.max_evaluation
 		self.accuracy=option_obj.acc
 		self.num_params=option_obj.num_params
-		self.SetBoundaries(option_obj.boundaries)
+		self.min_max=option_obj.boundaries
+		self.bounder=SetBoundaries(option_obj.boundaries)
 		try:
 			if isinstance(option_obj.starting_points[0],list):
 				raise TypeError
@@ -1027,16 +1011,6 @@ class L_BFGS_B_Scipy(baseOptimizer):
 		print(self.result[-1]['warnflag'])
 		self.final_pop=[my_candidate(self.result[0],self.result[1])]
 
-	def SetBoundaries(self,bounds):
-		"""
-		Stores the bounds of the parameters and creates a ``bounder`` object which bounds
-		every parameter into the range of 0-1 since the algorithms are using normalized values.
-
-		:param bounds: ``list`` containing the minimum and maximum values.
-
-		"""
-		self.min_max=bounds
-		self.bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
 
 
 
@@ -1060,7 +1034,8 @@ class grid(baseOptimizer):
 		self.SetFFun(option_obj)
 		self.num_params=option_obj.num_params
 		self.num_points_per_dim=resolution
-		self.SetBoundaries(option_obj.boundaries)
+		self.min_max=option_obj.boundaries
+		self.bounder=SetBoundaries(option_obj.boundaries)
 
 
 
@@ -1094,19 +1069,10 @@ class grid(baseOptimizer):
 		self.final_pop[1]=fitness
 
 
-	def SetBoundaries(self,bounds):
-		"""
-		Stores the bounds of the parameters and creates a ``bounder`` object which bounds
-		every parameter into the range of 0-1 since the algorithms are using normalized values.
-
-		:param bounds: ``list`` containing the minimum and maximum values.
-
-		"""
-		self.min_max=bounds
-		self.bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
+	
 
 
-class Evolutionary_Algorithm_Inspyred(InspyredAlgorithmBasis):
+class CES_Inspyred(InspyredAlgorithmBasis):
 	"""
 	Implements a custom version of ``Evolution Strategy`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1144,7 +1110,7 @@ class Evolutionary_Algorithm_Inspyred(InspyredAlgorithmBasis):
 			self.evo_strat.observer=[observers.file_observer]
 
 
-class Differential_Evolution_Inspyred(InspyredAlgorithmBasis):
+class DE_Inspyred(InspyredAlgorithmBasis):
 	"""
 	Implements the ``Differential Evolution Algorithm`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1176,7 +1142,7 @@ class Differential_Evolution_Inspyred(InspyredAlgorithmBasis):
 			self.evo_strat.observer=[observers.file_observer]
 
 
-class Random_Search(baseOptimizer):
+class RANDOMSEARCH(baseOptimizer):
 	"""
 	Implements the ``Differential Evolution Algorithm`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1246,7 +1212,7 @@ class Random_Search(baseOptimizer):
 
 
 # simple NSGA-II
-class Nondominated_Sorted_GA_Inspyred(InspyredAlgorithmBasis):
+class NSGA2_Inspyred(InspyredAlgorithmBasis):
 	"""
 	Implements a custom version of ``Evolution Strategy`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1282,7 +1248,7 @@ class Nondominated_Sorted_GA_Inspyred(InspyredAlgorithmBasis):
 
 
 
-class Pareto_Archived_ES_Inspyred(InspyredAlgorithmBasis):
+class PAES_Inspyred(InspyredAlgorithmBasis):
 	"""
 	Implements a custom version of ``PAES`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1317,7 +1283,7 @@ class Pareto_Archived_ES_Inspyred(InspyredAlgorithmBasis):
 		self.kwargs['mutation_rate'] = option_obj.mutation_rate
 		#self.kwargs['num_elites'] = int(4)
 
-class FullGrid_Pygmo(InspyredAlgorithmBasis):
+class FULLGRID_Pygmo(InspyredAlgorithmBasis):
 	
 	def __init__(self,reader_obj,option_obj):
 		InspyredAlgorithmBasis.__init__(self, reader_obj,option_obj)
@@ -1411,18 +1377,8 @@ class FullGrid_Pygmo(InspyredAlgorithmBasis):
 
 
 
-	def SetBoundaries(self,bounds):
 
-		self.min_max=bounds
-		self.bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
-		print('self.min_max')
-		print(self.min_max[0])
-		print(self.min_max[1])
-		print('self.bounder')
-		print(self.bounder)
-
-
-class Indicator_Based_Bluepyopt(oldBaseOptimizer):
+class IBEA_Bluepyopt(oldBaseOptimizer):
 
 
 	def __init__(self,reader_obj,option_obj):
@@ -1435,7 +1391,8 @@ class Indicator_Based_Bluepyopt(oldBaseOptimizer):
 		self.max_evaluation=option_obj.max_evaluation
 		self.num_params=option_obj.num_params
 		self.number_of_cpu=option_obj.number_of_cpu
-		self.SetBoundaries(option_obj.boundaries)
+		self.min_max=option_obj.boundaries
+		self.bounder=SetBoundaries(option_obj.boundaries)
 		self.param_names=self.option_obj.GetObjTOOpt()
 		if self.option_obj.type[-1]!="features":
 			self.number_of_traces=reader_obj.number_of_traces()
@@ -1480,17 +1437,7 @@ class Indicator_Based_Bluepyopt(oldBaseOptimizer):
 		self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))"""	
 		
 
-	def SetBoundaries(self,bounds):
-		"""
-		Stores the bounds of the parameters and creates a ``bounder`` object which bounds
-		every parameter into the range of 0-1 since the algorithms are using normalized values.
 
-		:param bounds: ``list`` containing the minimum and maximum values.
-
-		"""
-		self.min_max=bounds
-		self.bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
-		
 	def get_feat_names(self,feats):
 		f_m={"MSE": "calc_ase",
 						"Spike count": "calc_spike",
@@ -1511,7 +1458,7 @@ class Indicator_Based_Bluepyopt(oldBaseOptimizer):
 		return [feat_names,feats[1]]
 
 
-class Nondominated_Sorted_Bluepyopt(oldBaseOptimizer):
+class NSGA2_Bluepyopt(oldBaseOptimizer):
 
 
 	def __init__(self,reader_obj,option_obj):
@@ -1524,7 +1471,8 @@ class Nondominated_Sorted_Bluepyopt(oldBaseOptimizer):
 		self.max_evaluation=option_obj.max_evaluation
 		self.num_params=option_obj.num_params
 		self.number_of_cpu=option_obj.number_of_cpu
-		self.SetBoundaries(option_obj.boundaries)
+		self.min_max=option_obj.boundaries
+		self.bounder=SetBoundaries(option_obj.boundaries)
 		self.param_names=self.option_obj.GetObjTOOpt()
 		if self.option_obj.type[-1]!="features":
 			self.number_of_traces=reader_obj.number_of_traces()
@@ -1557,16 +1505,6 @@ class Nondominated_Sorted_Bluepyopt(oldBaseOptimizer):
 		self.final_pop, self.hall_of_fame, self.logs, self.hist = optimisation.run(int(self.max_evaluation))"""	
 			
 
-	def SetBoundaries(self,bounds):
-		"""
-		Stores the bounds of the parameters and creates a ``bounder`` object which bounds
-		every parameter into the range of 0-1 since the algorithms are using normalized values.
-
-		:param bounds: ``list`` containing the minimum and maximum values.
-
-		"""
-		self.min_max=bounds
-		self.bounder=ec.Bounder([0]*len(self.min_max[0]),[1]*len(self.min_max[1]))
 		
 	def get_feat_names(self,feats):
 		f_m={"MSE": "calc_ase",
