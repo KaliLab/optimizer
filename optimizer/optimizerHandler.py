@@ -462,7 +462,7 @@ class SingleProblem:
 	def get_bounds(self):
 		return(self.bounds[0], self.bounds[1])
 
-class SDE_Pygmo(SinglePygmoAlgorithmBasis):
+class SDE_PYGMO(SinglePygmoAlgorithmBasis):
 	
 	def __init__(self,reader_obj,option_obj):
 
@@ -512,7 +512,7 @@ class bounderObject(object):
 		return tmax and tmin
 
 
-class SA_Inspyred(InspyredAlgorithmBasis):
+class SA_INSPYRED(InspyredAlgorithmBasis):
 	"""
 	Implements the ``Simulated Annealing`` algorithm for minimization from the ``inspyred`` package.
 
@@ -544,7 +544,7 @@ class SA_Inspyred(InspyredAlgorithmBasis):
 		else:
 			self.evo_strat.observer=[observers.file_observer]
 
-class Praxis_Pygmo(PygmoAlgorithmBasis):
+class Praxis_PYGMO(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		
@@ -555,7 +555,7 @@ class Praxis_Pygmo(PygmoAlgorithmBasis):
 		self.algorithm.maxeval=int(option_obj.max_evaluation)
 
 
-class NM_Pygmo(PygmoAlgorithmBasis):
+class NM_PYGMO(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.max_evaluation=int(option_obj.max_evaluation)
@@ -564,7 +564,7 @@ class NM_Pygmo(PygmoAlgorithmBasis):
 		self.algorithm = pg.scipy_optimize(method="Nelder-Mead",tol=0,options={"maxfev":self.max_evaluation})
 
 
-class DE_Pygmo(PygmoAlgorithmBasis):
+class DE_PYGMO(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.max_evaluation=int(option_obj.max_evaluation)
@@ -572,7 +572,7 @@ class DE_Pygmo(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.de(gen=self.max_evaluation)
 
-class CMAES_Pygmo(PygmoAlgorithmBasis):
+class CMAES_PYGMO(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.max_evaluation=int(option_obj.max_evaluation)
@@ -580,7 +580,7 @@ class CMAES_Pygmo(PygmoAlgorithmBasis):
 		self.force_bounds = option_obj.force_bounds
 		self.algorithm = pg.cmaes(gen=self.max_evaluation,ftol=0, xtol=0, force_bounds=bool(self.force_bounds))
 		
-class PSO_Pygmo(PygmoAlgorithmBasis):
+class PSO_PYGMO(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.max_evaluation=int(option_obj.max_evaluation)
@@ -588,7 +588,7 @@ class PSO_Pygmo(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.pso(gen=self.max_evaluation)
 
-class PSOG_Pygmo(PygmoAlgorithmBasis):
+class PSOG_PYGMO(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiprocessing=True
@@ -597,7 +597,7 @@ class PSOG_Pygmo(PygmoAlgorithmBasis):
 		
 		self.algorithm = pg.pso_gen(gen=self.max_evaluation)
 
-class MACO_Pygmo(PygmoAlgorithmBasis):
+class MACO_PYGMO(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiobjective=True
@@ -607,7 +607,7 @@ class MACO_Pygmo(PygmoAlgorithmBasis):
 		
 		self.algorithm = pg.maco(gen=self.max_evaluation)
 
-class GACO_Pygmo(PygmoAlgorithmBasis):
+class GACO_PYGMO(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiprocessing=True
@@ -616,7 +616,7 @@ class GACO_Pygmo(PygmoAlgorithmBasis):
 	
 		self.algorithm = pg.gaco(gen=self.max_evaluation)
 
-class NSPSO_Pygmo(PygmoAlgorithmBasis):
+class NSPSO_PYGMO(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiobjective=True
@@ -626,7 +626,7 @@ class NSPSO_Pygmo(PygmoAlgorithmBasis):
 		
 		self.algorithm = pg.nspso(gen=self.max_evaluation)
 
-class NSGA2_Pygmo(PygmoAlgorithmBasis):
+class NSGA2_PYGMO(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.multiobjective=True
@@ -637,7 +637,7 @@ class NSGA2_Pygmo(PygmoAlgorithmBasis):
 		self.algorithm = pg.nsga2(gen=self.max_evaluation)
 
 
-class XNES_Pygmo(PygmoAlgorithmBasis):
+class XNES_PYGMO(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.max_evaluation=int(option_obj.max_evaluation)
@@ -647,7 +647,7 @@ class XNES_Pygmo(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.xnes(gen=self.max_evaluation,ftol=1e-15, xtol=1e-15, force_bounds=bool(self.force_bounds))
 
-class ABC_Pygmo(PygmoAlgorithmBasis):
+class ABC_PYGMO(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.max_evaluation=int(option_obj.max_evaluation)
@@ -655,7 +655,7 @@ class ABC_Pygmo(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.bee_colony(gen=self.max_evaluation)
 
-class SGA_Pygmo(PygmoAlgorithmBasis):
+class SGA_PYGMO(PygmoAlgorithmBasis):
 	def __init__(self, reader_obj,  option_obj):
 		PygmoAlgorithmBasis.__init__(self, reader_obj,  option_obj)
 		self.max_evaluation=int(option_obj.max_evaluation)
@@ -663,7 +663,7 @@ class SGA_Pygmo(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.sga(gen=self.max_evaluation)
 
-class SADE_Pygmo(PygmoAlgorithmBasis):
+class SADE_PYGMO(PygmoAlgorithmBasis):
 
 	def __init__(self,reader_obj,option_obj):
 
@@ -680,7 +680,7 @@ class SADE_Pygmo(PygmoAlgorithmBasis):
 
 		self.algorithm = pg.sade(gen=self.max_evaluation,ftol=1e-15, xtol=1e-15)
 
-class DE1220_Pygmo(PygmoAlgorithmBasis):
+class DE1220_PYGMO(PygmoAlgorithmBasis):
 
 	def __init__(self,reader_obj,option_obj):
 
@@ -698,7 +698,7 @@ class DE1220_Pygmo(PygmoAlgorithmBasis):
 		self.algorithm = pg.de1220(gen=self.max_evaluation,ftol=1e-15, xtol=1e-15)
 
 
-class PSO_Inspyred(InspyredAlgorithmBasis):
+class PSO_INSPYRED(InspyredAlgorithmBasis):
 	"""
 	Implements the ``Particle Swarm`` algorithm for minimization from the ``inspyred`` package.
 
@@ -741,7 +741,7 @@ class PSO_Inspyred(InspyredAlgorithmBasis):
 		'''
 		self.kwargs["topology"] = inspyred.swarm.topologies.star_topology
 
-class BH_Scipy(ScipyAlgorithmBasis):
+class BH_SCIPY(ScipyAlgorithmBasis):
 	"""
 	Implements the ``Basinhopping`` algorithm for minimization from the ``scipy`` package.
 
@@ -835,7 +835,7 @@ class BH_Scipy(ScipyAlgorithmBasis):
 	
 
 
-class NM_Scipy(ScipyAlgorithmBasis):
+class NM_SCIPY(ScipyAlgorithmBasis):
 	"""
 	Implements a Nelder-Mead downhill simplex algorithm for minimization from the ``scipy`` package.
 
@@ -938,7 +938,7 @@ class NM_Scipy(ScipyAlgorithmBasis):
 
 
 
-class L_BFGS_B_Scipy(baseOptimizer):
+class L_BFGS_B_SCIPY(baseOptimizer):
 	"""
 	Implements L-BFGS-B algorithm for minimization from the ``scipy`` package.
 
@@ -1072,7 +1072,7 @@ class grid(baseOptimizer):
 	
 
 
-class CES_Inspyred(InspyredAlgorithmBasis):
+class CES_INSPYRED(InspyredAlgorithmBasis):
 	"""
 	Implements a custom version of ``Evolution Strategy`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1110,7 +1110,7 @@ class CES_Inspyred(InspyredAlgorithmBasis):
 			self.evo_strat.observer=[observers.file_observer]
 
 
-class DE_Inspyred(InspyredAlgorithmBasis):
+class DE_INSPYRED(InspyredAlgorithmBasis):
 	"""
 	Implements the ``Differential Evolution Algorithm`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1142,7 +1142,7 @@ class DE_Inspyred(InspyredAlgorithmBasis):
 			self.evo_strat.observer=[observers.file_observer]
 
 
-class RANDOMSEARCH(baseOptimizer):
+class RANDOM_SEARCH(baseOptimizer):
 	"""
 	Implements the ``Differential Evolution Algorithm`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1212,7 +1212,7 @@ class RANDOMSEARCH(baseOptimizer):
 
 
 # simple NSGA-II
-class NSGA2_Inspyred(InspyredAlgorithmBasis):
+class NSGA2_INSPYRED(InspyredAlgorithmBasis):
 	"""
 	Implements a custom version of ``Evolution Strategy`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1234,6 +1234,7 @@ class NSGA2_Inspyred(InspyredAlgorithmBasis):
 	def __init__(self,reader_obj,option_obj):
 		InspyredAlgorithmBasis.__init__(self, reader_obj,option_obj)
 		self.kwargs["mp_evaluator"] = self.mfun
+		self.kwargs['mutation_rate'] = option_obj.mutation_rate
 		self.evo_strat=ec.emo.NSGA2(self.rand)
 		self.evo_strat.terminator=terminators.generation_termination
 		self.evo_strat.selector=inspyred.ec.selectors.default_selection
@@ -1248,7 +1249,7 @@ class NSGA2_Inspyred(InspyredAlgorithmBasis):
 
 
 
-class PAES_Inspyred(InspyredAlgorithmBasis):
+class PAES_INSPYRED(InspyredAlgorithmBasis):
 	"""
 	Implements a custom version of ``PAES`` algorithm for minimization from the ``inspyred`` package.
 	:param reader_obj: an instance of ``DATA`` object
@@ -1283,7 +1284,7 @@ class PAES_Inspyred(InspyredAlgorithmBasis):
 		self.kwargs['mutation_rate'] = option_obj.mutation_rate
 		#self.kwargs['num_elites'] = int(4)
 
-class FULLGRID_Pygmo(InspyredAlgorithmBasis):
+class FULLGRID_PYGMO(InspyredAlgorithmBasis):
 	
 	def __init__(self,reader_obj,option_obj):
 		InspyredAlgorithmBasis.__init__(self, reader_obj,option_obj)
@@ -1342,8 +1343,7 @@ class FULLGRID_Pygmo(InspyredAlgorithmBasis):
 			self.alldims.append(list(np.linspace(lower_bound,upper_bound,self.resolution[j])))
 			
 			
-		print(option_obj.boundaries)
-
+		
 		for i,t in enumerate(combinations(self.alldims, r=self.num_params-1)):
 			plane_dimensions = list(t) 
 			optimum_point = [self.point[self.num_params-1-i]]
@@ -1364,8 +1364,6 @@ class FULLGRID_Pygmo(InspyredAlgorithmBasis):
 				print(len(plane_dimensions[0]))
 
 
-		print(self.grid)
-		print(type(self.grid))
 
 		self.kwargs["seeds"] = self.grid
 		self.kwargs["max_generations"] = 0
@@ -1378,7 +1376,7 @@ class FULLGRID_Pygmo(InspyredAlgorithmBasis):
 
 
 
-class IBEA_Bluepyopt(oldBaseOptimizer):
+class IBEA_BLUEPYOPT(oldBaseOptimizer):
 
 
 	def __init__(self,reader_obj,option_obj):
@@ -1458,7 +1456,7 @@ class IBEA_Bluepyopt(oldBaseOptimizer):
 		return [feat_names,feats[1]]
 
 
-class NSGA2_Bluepyopt(oldBaseOptimizer):
+class NSGA2_BLUEPYOPT(oldBaseOptimizer):
 
 
 	def __init__(self,reader_obj,option_obj):

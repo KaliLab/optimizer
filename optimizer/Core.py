@@ -389,7 +389,7 @@ class coreModul():
 
 		import re 
 		algo_str=re.sub('_+',"_",re.sub("[\(\[].*?[\)\]]", "", self.option_handler.evo_strat).replace("-","_").replace(" ","_"))
-		exec("self.optimizer="+algo_str+"(self.data_handler,self.option_handler)")
+		exec("self.optimizer="+algo_str.upper()+"(self.data_handler,self.option_handler)")
 		
 
 		f_handler=open(self.option_handler.GetFileOption()+"/"+self.option_handler.GetFileOption().split("/")[-1]+"_settings.xml", 'w')

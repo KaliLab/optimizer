@@ -285,11 +285,11 @@ class Ui_Neuroptimus(object):
         self.label_44.setFont(font)
         self.label_44.setObjectName("label_44")
         self.label_66 = QtWidgets.QLabel(self.simtab)
-        self.label_66.setGeometry(QtCore.QRect(220, 260, 200, 16))
+        self.label_66.setGeometry(QtCore.QRect(420, 80, 200, 16))
         self.label_66.setFont(font)
         self.label_66.setObjectName("label_66")
         self.label_67 = QtWidgets.QLabel(self.simtab)
-        self.label_67.setGeometry(QtCore.QRect(220, 310, 200, 16))
+        self.label_67.setGeometry(QtCore.QRect(420, 130, 200, 16))
         self.label_67.setFont(font)
         self.label_67.setObjectName("label_67")
         self.label_45 = QtWidgets.QLabel(self.simtab)
@@ -335,7 +335,7 @@ class Ui_Neuroptimus(object):
         self.label_48.setFont(font)
         self.label_48.setObjectName("label_48")
         self.lineEdit_tstop = QtWidgets.QLineEdit(self.simtab)
-        self.lineEdit_tstop.setGeometry(QtCore.QRect(220, 330, 113, 22))
+        self.lineEdit_tstop.setGeometry(QtCore.QRect(420, 150, 113, 22))
         self.lineEdit_tstop.setObjectName("tstop")
         self.lineEdit_tstop.setValidator(self.doublevalidator)
         self.label_49 = QtWidgets.QLabel(self.simtab)
@@ -344,7 +344,7 @@ class Ui_Neuroptimus(object):
         self.label_49.setFont(font)
         self.label_49.setObjectName("label_49")
         self.label_68 = QtWidgets.QLabel(self.simtab)
-        self.label_68.setGeometry(QtCore.QRect(220, 360, 200, 16))
+        self.label_68.setGeometry(QtCore.QRect(420, 180, 200, 16))
         font.setWeight(50)
         self.label_68.setFont(font)
         self.label_68.setObjectName("label_68")
@@ -364,14 +364,14 @@ class Ui_Neuroptimus(object):
         self.label_52.setFont(font)
         self.label_52.setObjectName("label_52")
         self.lineEdit_dt = QtWidgets.QLineEdit(self.simtab)
-        self.lineEdit_dt.setGeometry(QtCore.QRect(220, 380, 113, 22))
+        self.lineEdit_dt.setGeometry(QtCore.QRect(420, 200, 113, 22))
         self.lineEdit_dt.setObjectName("lineEdit_dt")
         self.lineEdit_dt.setValidator(self.doublevalidator)
         self.section_rec = QtWidgets.QComboBox(self.simtab)
         self.section_rec.setGeometry(QtCore.QRect(220, 150, 121, 23))
         self.section_rec.setObjectName("section")
         self.lineEdit_initv = QtWidgets.QLineEdit(self.simtab)
-        self.lineEdit_initv.setGeometry(QtCore.QRect(220, 280, 113, 22))
+        self.lineEdit_initv.setGeometry(QtCore.QRect(420, 100, 113, 22))
         self.lineEdit_initv.setObjectName("initv")
         self.lineEdit_initv.setValidator(self.doublevalidator)
         self.label_55 = QtWidgets.QLabel(self.simtab)
@@ -743,21 +743,21 @@ class Ui_Neuroptimus(object):
         self.aspectlist.cellChanged.connect(self.aspect_changed)
         self.seed = []
         self.resolution=0
-        self.Recom=["Evolutionary Algorithm (EA) - Inspyred","Covariance Matrix Adaptation ES (CMAES) - Pygmo",
+        self.Recom=["Classical Evolution Strategy (CES) - Inspyred","Covariance Matrix Adaptation ES (CMAES) - Pygmo",
                 "Particle Swarm (PSO) - Inspyred","Particle Swarm Gen (PSOG) - Pygmo","Indicator Based (IBEA) - Bluepyopt","L-BFGS-B - Scipy","Random Search"]
         self.Inspyred=["Evolutionary Algorithm (EA) - Inspyred","Particle Swarm (PSO) - Inspyred",
                 "Differential Evolution (DE) - Inspyred",
-                "Nondominated Sorted (NSGAII) - Inspyred","Pareto Archived (PAES) - Inspyred",
-                "Simulated Annealing - Inspyred"]
-        self.Scipy=["Basinhopping - Scipy","Nelder-Mead - Scipy","L-BFGS-B - Scipy"]
+                "Nondominated Sorted (NSGA2) - Inspyred","Pareto Archived (PAES) - Inspyred",
+                "Simulated Annealing (SA) - Inspyred"]
+        self.Scipy=["Basinhopping (BH) - Scipy","Nelder-Mead (NM) - Scipy","L-BFGS-B - Scipy"]
         self.Bluepyopt=["Nondominated Sorted (NSGAII) - Bluepyopt","Indicator Based (IBEA) - Bluepyopt"]
         self.Pygmo=["Particle Swarm Gen (PSOG) - Pygmo","Nondominated Sorted Particle Swarm (NSPSO) - Pygmo",
-                "Nondominated Sorted GA (NSGAII) - Pygmo","Differential Evolution (DE) - Pygmo",
+                "Nondominated Sorted GA (NSGA2) - Pygmo","Differential Evolution (DE) - Pygmo",
                 "Extended Ant Colony (GACO) - Pygmo","Multi-Objective Ant Colony (MACO) - Pygmo","Self-Adaptive DE (SADE) - Pygmo",
-                "Particle Swarm (PSO) - Pygmo","Exponential Evolution Strategies (XNES) - Pygmo",
+                "Particle Swarm (PSO) - Pygmo","Exponential Natural ES (XNES) - Pygmo",
                 "Simple Genetic Algorithm (SGA) - Pygmo","Covariance Matrix Adaptation ES (CMAES) - Pygmo",
-                "Single Differential Evolution - Pygmo","Differential Evolution (DE1220) - Pygmo",
-                "Bee Colony (ABC) - Pygmo","FullGrid - Pygmo","Praxis - Pygmo","Nelder-Mead - Pygmo"]
+                "Single Differential Evolution (SDE) - Pygmo","Differential Evolution (DE1220) - Pygmo",
+                "Bee Colony (ABC) - Pygmo","FullGrid - Pygmo","Praxis - Pygmo","Nelder-Mead (NM) - Pygmo"]
         self.algos={
             'Recommended':self.Recom,
             'Inspyred': self.Inspyred,
@@ -792,39 +792,41 @@ class Ui_Neuroptimus(object):
         descr39 = {'Crossover Rate:':1}
         descr40 = {'Number of CPU:':1}
         descr41 = {'Number of Islands:':1}
+        descr42 = {'Force bounds:' : False}
+        descr42 = {'Force bounds:' : False}
         descr42 = {'Force bounds:' : False}   #extend options  
 
 
         self.algo_dict={
             "Evolutionary Algorithm (EA) - Inspyred": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
-            "Simulated Annealing - Inspyred": [descr20.copy(),descr21.copy(),descr22.copy(),descr23.copy(),descr24.copy(),descr26.copy(),descr40],
+            "Simulated Annealing (SA) - Inspyred": [descr20.copy(),descr21.copy(),descr22.copy(),descr23.copy(),descr24.copy(),descr26.copy(),descr40],
             "Particle Swarm (PSO) - Inspyred" : [descr19.copy(),descr20.copy(),descr34.copy(),descr35.copy(),descr36.copy(),descr40],
-            "Basinhopping - Scipy": [descr32.copy(),descr33.copy(),descr25.copy(),descr27.copy(),descr29],
-            "Nelder-Mead - Scipy": [descr20.copy(),descr30.copy(),descr31],
+            "Basinhopping (BH) - Scipy": [descr32.copy(),descr33.copy(),descr25.copy(),descr27.copy(),descr29],
+            "Nelder-Mead (NM) - Scipy": [descr20.copy(),descr30.copy(),descr31],
             "L-BFGS-B - Scipy": [descr20.copy(),descr28],
             "Differential Evolution (DE) - Inspyred": [descr19.copy(),descr20.copy(),descr21.copy(),descr39.copy(),descr40],
             "Random Search - Base": [descr19.copy(),descr40],
-            "Nondominated Sorted (NSGAII) - Inspyred": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
+            "Nondominated Sorted (NSGA2) - Inspyred": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
             "Pareto Archived (PAES) - Inspyred": [descr19.copy(),descr20.copy(),descr40],
-            "Nondominated Sorted (NSGAII) - Bluepyopt": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
+            "Nondominated Sorted (NSGA2) - Bluepyopt": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
             "Indicator Based (IBEA) - Bluepyopt": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
             "Differential Evolution (DE) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "Self-Adaptive DE (SADE) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "Exponential Evolution Strategies (XNES) - Pygmo":[descr19.copy(),descr20.copy(),descr42,descr41],
             "Simple Genetic Algorithm (SGA) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
-            "Particle Swarm (PSO) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
-            "Particle Swarm Gen (PSOG) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
-            "Nondominated Sorted Particle Swarm (NSPSO) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
-            "Nondominated Sorted GA (NSGAII) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
+            "Particle Swarm (PSO) - Pygmo":[descr19.copy(),descr20.copy(),descr35.copy(),descr36.copy(),descr41],
+            "Particle Swarm Gen (PSOG) - Pygmo":[descr19.copy(),descr20.copy(),descr35.copy(),descr36.copy(),descr40,descr41],
+            "Nondominated Sorted Particle Swarm (NSPSO) - Pygmo":[descr19.copy(),descr20.copy(),descr35.copy(),descr36.copy(),descr40,descr41],
+            "Nondominated Sorted GA (NSGAII) - Pygmo":[descr19.copy(),descr20.copy(),descr21.copy(),descr40,descr41],
             "Extended Ant Colony (GACO) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
             "Multi-Objective Ant Colony (MACO) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
             "Covariance Matrix Adaptation ES (CMAES) - Pygmo":[descr19.copy(),descr20.copy(),descr42,descr41],
             "Single Differential Evolution - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "Differential Evolution (DE1220) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
-            "Bee Colony - Pygmo":[descr19.copy(),descr20.copy(),descr41],
+            "Bee Colony (ABC) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "FullGrid - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "Praxis - Pygmo":[descr19.copy(),descr20.copy(),descr41],
-            "Nelder-Mead - Pygmo":[descr19.copy(),descr20.copy(),descr41]
+            "Nelder-Mead (NM) - Pygmo":[descr19.copy(),descr20.copy(),descr41]
                 #NM,prax 
             }
         
@@ -1606,8 +1608,10 @@ class Ui_Neuroptimus(object):
         try:
             selected_algo = self.algolist.selectionModel().selectedRows()
             algo_name=str(self.algolist.item(selected_algo[0].row(), 0).text())
+            algo_str=algo_name[algo_name.find("(")+1:].replace(")","")
+            print(algo_str)
             tmp = {"seed" : int(self.aspectlist.item(0,1).text()),
-                "evo_strat" : str(algo_name)
+                "evo_strat" : str(algo_str)
                 }
             #for n in self.algo_param:
                 #tmp.update({str(n[1]) : float(n[0].GetValue())})
