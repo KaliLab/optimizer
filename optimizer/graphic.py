@@ -745,12 +745,12 @@ class Ui_Neuroptimus(object):
         self.resolution=0
         self.Recom=["Classical Evolution Strategy (CES) - Inspyred","Covariance Matrix Adaptation ES (CMAES) - Pygmo",
                 "Particle Swarm (PSO) - Inspyred","Particle Swarm Gen (PSOG) - Pygmo","Indicator Based (IBEA) - Bluepyopt","L-BFGS-B - Scipy","Random Search"]
-        self.Inspyred=["Evolutionary Algorithm (EA) - Inspyred","Particle Swarm (PSO) - Inspyred",
+        self.Inspyred=["Classical Evolution Strategy (CES) - Inspyred","Particle Swarm (PSO) - Inspyred",
                 "Differential Evolution (DE) - Inspyred",
-                "Nondominated Sorted (NSGA2) - Inspyred","Pareto Archived (PAES) - Inspyred",
+                "Nondominated Sorted GA (NSGA2) - Inspyred","Pareto Archived ES (PAES) - Inspyred",
                 "Simulated Annealing (SA) - Inspyred"]
         self.Scipy=["Basinhopping (BH) - Scipy","Nelder-Mead (NM) - Scipy","L-BFGS-B - Scipy"]
-        self.Bluepyopt=["Nondominated Sorted (NSGAII) - Bluepyopt","Indicator Based (IBEA) - Bluepyopt"]
+        self.Bluepyopt=["Nondominated Sorted GA (NSGA2) - Bluepyopt","Indicator Based (IBEA) - Bluepyopt"]
         self.Pygmo=["Particle Swarm Gen (PSOG) - Pygmo","Nondominated Sorted Particle Swarm (NSPSO) - Pygmo",
                 "Nondominated Sorted GA (NSGA2) - Pygmo","Differential Evolution (DE) - Pygmo",
                 "Extended Ant Colony (GACO) - Pygmo","Multi-Objective Ant Colony (MACO) - Pygmo","Self-Adaptive DE (SADE) - Pygmo",
@@ -792,36 +792,34 @@ class Ui_Neuroptimus(object):
         descr39 = {'Crossover Rate:':1}
         descr40 = {'Number of CPU:':1}
         descr41 = {'Number of Islands:':1}
-        descr42 = {'Force bounds:' : False}
-        descr42 = {'Force bounds:' : False}
         descr42 = {'Force bounds:' : False}   #extend options  
 
 
         self.algo_dict={
-            "Evolutionary Algorithm (EA) - Inspyred": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
+            "Classical Evolution Strategy (CES) - Inspyred": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
             "Simulated Annealing (SA) - Inspyred": [descr20.copy(),descr21.copy(),descr22.copy(),descr23.copy(),descr24.copy(),descr26.copy(),descr40],
             "Particle Swarm (PSO) - Inspyred" : [descr19.copy(),descr20.copy(),descr34.copy(),descr35.copy(),descr36.copy(),descr40],
             "Basinhopping (BH) - Scipy": [descr32.copy(),descr33.copy(),descr25.copy(),descr27.copy(),descr29],
             "Nelder-Mead (NM) - Scipy": [descr20.copy(),descr30.copy(),descr31],
             "L-BFGS-B - Scipy": [descr20.copy(),descr28],
             "Differential Evolution (DE) - Inspyred": [descr19.copy(),descr20.copy(),descr21.copy(),descr39.copy(),descr40],
-            "Random Search - Base": [descr19.copy(),descr40],
-            "Nondominated Sorted (NSGA2) - Inspyred": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
-            "Pareto Archived (PAES) - Inspyred": [descr19.copy(),descr20.copy(),descr40],
-            "Nondominated Sorted (NSGA2) - Bluepyopt": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
+            "Random Search": [descr19.copy(),descr40],
+            "Nondominated Sorted GA (NSGA2) - Inspyred": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
+            "Pareto Archived ES (PAES) - Inspyred": [descr19.copy(),descr20.copy(),descr40],
+            "Nondominated Sorted GA (NSGA2) - Bluepyopt": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
             "Indicator Based (IBEA) - Bluepyopt": [descr19.copy(),descr20.copy(),descr21.copy(),descr40],
             "Differential Evolution (DE) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "Self-Adaptive DE (SADE) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
-            "Exponential Evolution Strategies (XNES) - Pygmo":[descr19.copy(),descr20.copy(),descr42,descr41],
+            "Exponential Natural ES (XNES) - Pygmo":[descr19.copy(),descr20.copy(),descr42,descr41],
             "Simple Genetic Algorithm (SGA) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "Particle Swarm (PSO) - Pygmo":[descr19.copy(),descr20.copy(),descr35.copy(),descr36.copy(),descr41],
             "Particle Swarm Gen (PSOG) - Pygmo":[descr19.copy(),descr20.copy(),descr35.copy(),descr36.copy(),descr40,descr41],
             "Nondominated Sorted Particle Swarm (NSPSO) - Pygmo":[descr19.copy(),descr20.copy(),descr35.copy(),descr36.copy(),descr40,descr41],
-            "Nondominated Sorted GA (NSGAII) - Pygmo":[descr19.copy(),descr20.copy(),descr21.copy(),descr40,descr41],
+            "Nondominated Sorted GA (NSGA2) - Pygmo":[descr19.copy(),descr20.copy(),descr21.copy(),descr40,descr41],
             "Extended Ant Colony (GACO) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
             "Multi-Objective Ant Colony (MACO) - Pygmo":[descr19.copy(),descr20.copy(),descr40,descr41],
             "Covariance Matrix Adaptation ES (CMAES) - Pygmo":[descr19.copy(),descr20.copy(),descr42,descr41],
-            "Single Differential Evolution - Pygmo":[descr19.copy(),descr20.copy(),descr41],
+            "Single Differential Evolution (SDE) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "Differential Evolution (DE1220) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "Bee Colony (ABC) - Pygmo":[descr19.copy(),descr20.copy(),descr41],
             "FullGrid - Pygmo":[descr19.copy(),descr20.copy(),descr41],
