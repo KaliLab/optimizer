@@ -15,10 +15,12 @@ def main(parameters):
 	for o,a in parameters:
 		if o=="-h":
 			print("This is the command line help of Optimizer\nRecognised arguments:\n\t-h:Help\n\t-g:Graphical interface\n\t-c:Command line interface, specify the settings file in the 2nd argument")
+			sys.exit()
 		elif o=="-g":
 			import graphic
 			try:
 				graphic.main(a)
+				sys.exit()
 			except IndexError as IE:
 				print(IE)
 				traceback.print_exc()
@@ -29,19 +31,22 @@ def main(parameters):
 				sys.exit("Cannot find command line file!")
 			try:
 				cmd_line.main(a)
+				sys.exit()
 			except IndexError as IE:
 				print(IE)
 				traceback.print_exc()
 				sys.exit("Missing filename!")
-	sys.exit("Unknown arguments!\nPlease run the program with either -h, -g,-c arguments!")         
+			         
     
     
 
 
 if __name__=="__main__":
     #print sys.argv
-    #try:
-        opts, args = getopt.getopt(sys.argv[1:], "c:gh", ["help"])
-        main(opts)
-    #except IndexError:
-        #sys.exit("Missing arguments!\n Please run the program with either -h, -g,-c arguments!")
+    try:
+    	opts, args = getopt.getopt(sys.argv[1:], "c:gh", ["help"])
+    except getopt.GetoptError as err:
+            sys.exit("Invalid argument! Please run the program with -h argument for help!")
+    main(opts)
+   
+
