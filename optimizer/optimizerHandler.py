@@ -329,6 +329,24 @@ class PygmoAlgorithmBasis(baseOptimizer):
 				self.best_fitness = self.champions_f
 				self.best = normalize(self.champions_x, self)
 				
+			with open(self.directory + '/ind_file.txt', "r") as out_handler:
+				lines=out_handler.readlines()
+				allstat=[]
+				minl=[]
+				for line in lines:
+					if "[" in line:
+						lina=line.split(", ")
+						lin=lina[2]
+						currmin=float(lin[1:-1])
+						minl.append(currmin)
+						if len(minl)==self.pop_size:
+							allstat.append([np.max(minl), np.min(minl), np.median(minl), np.mean(minl), np.std(minl)])
+							minl=[]
+						
+			with open(self.directory + '/stat_file.txt', 'w') as inds_file:
+				for i,stat in enumerate(allstat):
+					inds_file.write("{0}, {1}, {2}, {3}, {4}, {5}, {6} \n".format(i+1, self.pop_size, stat[0],stat[1],stat[2],stat[3],stat[4]))
+					
 		else:
 			self.pgalgo=pg.algorithm(self.algorithm)
 			self.pgalgo.set_verbosity(1)
