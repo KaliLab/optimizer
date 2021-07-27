@@ -91,9 +91,10 @@ class modelHandlerNeuron():
 
 
     def __init__(self,model_path,special_path,base=os.getcwd()):
+        self.base_directory=base
+        os.chdir(self.base_directory)
         import neuron
         print('*********** NEURON '+neuron.__version__+' LOADED ***********')
-        self.base_directory=base
         self.special= None if special_path == 'None' else special_path
         self.model=model_path
         self.model_dir=('/').join(self.model.rsplit('/')[0:-1])
@@ -103,7 +104,6 @@ class modelHandlerNeuron():
         self.hoc_obj.load_file(1,str(self.model))
         self.hoc_obj.load_file("stdrun.hoc")
         self.vec=self.hoc_obj.Vector()
-        os.chdir(self.base_directory)
         self.stimulus=None
         self.record=[]
         self.spike_times=None
