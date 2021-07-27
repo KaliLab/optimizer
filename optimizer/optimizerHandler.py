@@ -334,7 +334,7 @@ class PygmoAlgorithmBasis(baseOptimizer):
 				allstat=[]
 				minl=[]
 				for line in lines:
-					if "[" in line:
+					if "0, 0, [" in line:
 						lina=line.split(", ")
 						lin=lina[2]
 						currmin=float(lin[1:-1])
