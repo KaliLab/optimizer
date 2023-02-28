@@ -1,5 +1,7 @@
 import sys
+#provides various functions and variables that are used to manipulate different parts of the Python runtime environment
 import traceback
+
 import getopt
 
 def main(parameters):
