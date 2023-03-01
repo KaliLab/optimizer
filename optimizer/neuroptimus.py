@@ -1,8 +1,10 @@
 import sys
 #provides various functions and variables that are used to manipulate different parts of the Python runtime environment
 import traceback
+#This module provides a standard interface to extract, format and print stack traces of Python programs. It exactly mimics the behavior of the Python interpreter when it prints a stack trace. This is useful when you want to print stack traces under program control, such as in a “wrapper” around the interpreter.
 
 import getopt
+#like args[] in Java
 
 def main(parameters):
 	"""
