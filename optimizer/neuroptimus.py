@@ -36,6 +36,8 @@ def main(parameters):
 				print(IE)
 				traceback.print_exc()
 				sys.exit("Missing filename!")
+		else:
+			print("Invalid arguement.\nRecognised arguments:\n\t-h:Help\n\t-g:Graphical interface\n\t-c:Command line interface, specify the settings file in the 2nd argument")
 			         
     
     
