@@ -2,6 +2,7 @@ import sys
 import traceback
 import getopt
 
+
 def main(parameters):
 	"""
 	The main function, which starts to software according to the given command line arguments.
@@ -36,6 +37,8 @@ def main(parameters):
 				print(IE)
 				traceback.print_exc()
 				sys.exit("Missing filename!")
+		else:
+			print("Invalid arguement.\nRecognised arguments:\n\t-h:Help\n\t-g:Graphical interface\n\t-c:Command line interface, specify the settings file in the 2nd argument")
 			         
     
     
